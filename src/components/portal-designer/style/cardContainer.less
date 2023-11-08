@@ -1,0 +1,148 @@
+/**  首页配置card卡片样式  by mzy 2020-0527  **/
+.box-card {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #fff;
+  border: 1px solid @border-color-split;
+  border-radius: 4px;
+  .ant-card-body {
+    padding: 0;
+    height: 100%;
+    .box-card-body {
+      height: 100%;
+    }
+    &:has(.box-card-title) {
+      .box-card-body {
+        height: calc(100% - 40px);
+      }
+    }
+  }
+  .ant-empty {
+    // margin-top: 88px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-width: 12px 0 0 12px !important;
+  }
+
+  > .ant-card-head::after {
+    width: 4px;
+    height: 24px;
+    transform: perspective(0.5em) rotateY(25deg);
+  }
+
+  .box-card-title {
+    .box-card-title-text {
+      display: inline-block;
+      padding: 0px 12px;
+
+      // 014 门户小页标题样式调整，与张颜确认回归平台
+      // border-left: 2px solid #ddd;
+      .vertical-line {
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        display: inline-block;
+        width: 14px;
+        height: 24px;
+        background-image: linear-gradient(to bottom, @primary-6, @primary-2);
+        border-radius: 8px;
+      }
+    }
+
+    .box-card-title-bar {
+      text-align: right;
+      .btn-icon {
+        color: #86909c;
+      }
+    }
+
+    i {
+      width: 28px;
+      height: 28px;
+      margin: 0 6px 0 0px;
+      color: #8291a9;
+      font-size: 17px;
+      line-height: 28px;
+      border: 1px solid #d9dee5;
+      border-radius: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background: #fbfbfb;
+        opacity: 0.6;
+      }
+    }
+  }
+
+  & > .ant-card-head {
+    height: 45px;
+    min-height: 45px;
+    padding: 0 10px 0 0;
+    line-height: 45px;
+  }
+
+  & > .ant-card-head::after {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    width: 4px;
+    height: 25px;
+    transform: perspective(0.5em) rotateY(25deg);
+    content: '';
+  }
+
+  .ant-card-head-title {
+    padding: 0;
+  }
+
+  .ant-card-extra {
+    padding: 0 0;
+
+    span {
+      position: relative;
+      top: -1px;
+      left: 8px;
+      display: inline-block;
+      margin-right: 12px;
+    }
+  }
+  // 添加设计区域遮罩样式
+  .box-card-body {
+    overflow: auto;
+    &::after {
+      display: none;
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: 1;
+    }
+  }
+  // .body-mask {
+  //   position: relative;
+  // }
+  // .body-mask:after {
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   z-index: 2;
+  //   display: block;
+  //   opacity: 0;
+  //   content: '';
+  // }
+}
+.portal-widget-form-container,
+.ant-modal-body {
+  .box-card-body::after {
+    display: block;
+  }
+}
+// 添加设计区域遮罩样式

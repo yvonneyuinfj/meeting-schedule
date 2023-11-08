@@ -1,0 +1,100 @@
+.icons-container {
+  height: 100%;
+  background: #fff;
+
+  .top-search-box {
+    padding: 8px;
+    border: 0;
+  }
+
+  .ant-tabs {
+    height: calc(100% - 48px);
+
+    .ant-tabs-nav {
+      padding: 0 8px;
+    }
+  }
+
+  .ant-input-affix-wrapper {
+    padding: 8px;
+  }
+
+  .ant-tabs-card-content {
+    height: calc(100% - 80px);
+    overflow: auto;
+  }
+
+  .ant-tabs-bar {
+    padding: 0 8px;
+  }
+
+  .ant-input-affix-wrapper .ant-input-suffix {
+    right: 16px;
+  }
+
+  .grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    max-height: calc(100vh - 180px);
+    padding: 8px;
+    overflow: auto;
+  }
+
+  .icon-item {
+    float: left;
+    width: 100px;
+    height: 85px;
+    margin: 20px;
+    color: #24292e;
+    font-size: 30px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  span {
+    display: block;
+    font-size: 16px;
+  }
+
+  .disabled {
+    pointer-events: none;
+  }
+
+  .grid {
+    text-align: center;
+
+    > div {
+      min-height: 100px;
+      border: 1px solid transparent;
+      cursor: pointer;
+
+      .anticon,
+      .svg-icon {
+        margin-top: 16px;
+        color: @text-color-secondary;
+        font-size: 24px;
+      }
+
+      span {
+        margin: 8px;
+        color: @text-color-less;
+        font-size: 12px;
+        line-height: 1;
+      }
+    }
+
+    > div:hover {
+      border: 1px solid @primary-4;
+
+      .anticon,
+      .svg-icon {
+        color: @primary-color;
+      }
+
+      span {
+        color: @primary-color;
+      }
+    }
+  }
+}

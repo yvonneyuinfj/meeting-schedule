@@ -1,0 +1,200 @@
+.module {
+  .surely-table-header-cell {
+    font-weight: 500;
+  }
+  .refresh {
+    display: flex;
+    align-items: center;
+  }
+  .ant-pagination-simple .ant-pagination-simple-pager {
+    margin-right: 0;
+  }
+  .ant-pagination-simple .ant-pagination-simple-pager input {
+    width: 40px;
+    margin-right: 0;
+  }
+  .panel-icon {
+    width: 24px;
+    color: @text-color-less;
+  }
+
+  .backlog {
+    padding: 0 12px;
+    .inner-table-wrapper {
+      margin-top: 0;
+      margin-top: 8px;
+      border-radius: 4px 4px 0 0;
+    }
+    .surely-table-header,
+    .surely-table-header-cell {
+      // color: #646a73;
+    }
+    .surely-table-cell-box::before {
+      width: 0;
+    }
+    .inner-table-wrapper:hover .surely-table-cell-box::before {
+      // width: 1px;
+    }
+    .surely-table-cell {
+      border-color: #dededf;
+    }
+    .task_text .a-icon-style {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+      text-align: center;
+      border-radius: 4px;
+      .svg-icon {
+        vertical-align: -0.1em;
+      }
+      &.orange {
+        color: rgba(255, 125, 0, 1);
+        background: rgba(255, 125, 0, 0.15);
+      }
+      &.red {
+        color: rgba(245, 63, 63, 1);
+        background: rgba(245, 63, 63, 0.15);
+      }
+    }
+  }
+}
+
+.more-icon {
+  .ant-btn-text {
+    color: @text-color-less;
+    &:hover {
+      color: @primary-color;
+    }
+  }
+}
+
+.guide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .inner-table-wrapper {
+    margin: 0;
+  }
+  .usedNav {
+    overflow-x: hidden;
+  }
+  .guide-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px 0 12px;
+    // border-bottom: 1px solid @border-color-split;
+  }
+  .tabBox {
+    margin: 0;
+    padding: 0;
+    color: @text-color;
+    font-weight: 600;
+    font-size: @font-size-base + 2;
+  }
+  .usedNavrow {
+    padding: 12px 12px 16px 12px;
+  }
+  .usedNavrowIcon {
+    display: flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    margin-right: 8px;
+    border-radius: 8px;
+  }
+  .ant-col:has(.usedNavText) {
+    min-width: 180px;
+  }
+  .usedNavText {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 12px 16px;
+    text-align: center;
+    // border: 1px solid @border-color-split;
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px 0 rgba(55, 99, 170, 0.1), -4px -4px 8px 0 #fff;
+    cursor: pointer;
+    .usedNavTitle {
+      flex: 1 1 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+    &:hover {
+      background-color: #f8f9fa;
+      box-shadow: inset 8px 8px 20px 0 rgba(55, 99, 170, 0.11), inset -8px -8px 20px 0 #fff;
+    }
+  }
+  .usedNavicon,
+  .IconClass {
+    color: white;
+    font-size: 1.5em;
+    opacity: 0.85;
+    /deep/.svg-icon {
+      vertical-align: -0.125em;
+    }
+  }
+  .usedNav .ant-col-3 {
+    display: block;
+    box-sizing: border-box;
+    width: 14.2857143%;
+  }
+  .guild {
+    flex: 0 0 200px;
+    padding-bottom: 24px;
+    overflow: hidden;
+    border-bottom: 4px solid #f0f2f5;
+    .developGuild {
+      margin: 0;
+      padding: 12px 16px 0;
+      font-size: 16px;
+    }
+    .ant-row {
+      padding: 16px;
+    }
+    .ant-col {
+      display: inline-block;
+      width: 20%;
+      h2 {
+        margin-bottom: 0;
+        font-weight: 600;
+        font-size: 16px;
+      }
+      h4 {
+        font-weight: normal;
+        font-size: 14px;
+      }
+    }
+    .bpm_entry_icon {
+      display: block;
+      width: 60px;
+      height: 60px;
+      margin: 0 16px 0 24px;
+      background-repeat: no-repeat;
+      background-position: top;
+      background-size: 100% auto;
+    }
+    .bpm_entry {
+      display: -ms-flexbox;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      box-sizing: border-box;
+      height: 108px;
+      background-image: linear-gradient(0deg, #fff, #f3f5f8);
+      border: 2px solid #fff;
+      border-radius: 10px;
+      box-shadow: 8px 8px 20px 0 rgba(55, 99, 170, 0.1), -8px -8px 20px 0 #fff;
+      transition: all 0.2s ease-in-out;
+      -ms-flex-align: center;
+      -ms-flex-pack: center;
+    }
+  }
+}

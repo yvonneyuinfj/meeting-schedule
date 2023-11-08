@@ -1,0 +1,187 @@
+.flow-detail-body {
+    
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    padding-top:88px;
+    background: @layout-body-background;
+    .ant-layout.ant-layout-has-sider {
+      overflow: hidden;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .flow-content-top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 99;
+    }
+
+    .ant-slider .ant-slider-mark .ant-slider-mark-text:last-child {
+      transform: translateX(-90%) !important;
+    }
+
+    .flow-detail-card {
+      height: 100%;
+      width: 100%;
+
+      .flow-head {
+        padding: 8px;
+        background: #fff;
+        .flow-button{
+          .avic-icon{
+            margin-right: 4px;
+            font-size: @font-size-lg;
+            vertical-align: -0.175em;
+          }
+        }
+      }
+
+      .flow-content-body {
+        .bpm-pic-tab {
+          height: auto;
+          background: #f3f4f9;
+          width: 100%;
+
+          .section-content {
+            height: auto;
+            background: #fff;
+            width: 100%;
+            margin: auto;
+            margin-bottom: 2px;
+            .section-title {
+              text-align: left;
+              line-height: 1.5;
+              font-style: normal;
+              display: flex;
+              align-items: center;
+              padding: 8px 16px 8px 16px;
+              .title{
+                font-size: 1.1em;
+                font-weight: 600;
+                z-index: 2;
+                display: flex;
+                align-items: center;
+                color: @primary-color;
+                fill: @primary-color;
+                h4{
+                  color: inherit;
+                  margin: 0;
+                  margin-left: 4px;
+                  display: inline-block;
+                  font-weight: 600;
+                }
+                .avic-icon{
+                  font-size: 1.2em;
+                  .svg-icon{
+                    vertical-align: -0.1em;
+                  }
+                }
+              }
+              
+              a {
+                font-size: 1em;
+                font-weight: 400;
+                margin-left: auto;
+              }
+
+              .flow-tabs {
+                margin-left: auto;
+                .svg-icon{
+                  vertical-align: -0.15em;
+                }   
+              }
+            }
+
+            .section-iframe {
+              width: 100%;
+              padding:0 16px 8px 16px;
+
+              .main {
+                height: 100%;
+                overflow-x: hidden;
+                overflow-y: auto;
+                text-align: left;
+                :deep(.customform_subtable_bpm_auth) {
+                  display: none;
+                }
+
+                .ant-collapse-content-box {
+                  padding: 8px;
+                }
+
+                .form-excel-style .ant-input.ant-input-disabled {
+                  border: 0;
+                }
+
+                .bpm-chart {
+                  max-height: 400px;
+                  min-height: 240px;
+                  height: 100%;
+                  // border: 1px solid @border-color-split;
+                  .error-card .error-card-box{
+                    top: 60px;
+                  }
+                }
+
+                .flow-track {
+                }
+
+                /* 详情页非编辑状态下的表单展示 */
+                .ant-form-text {
+                  display: block;
+                  width: 100%;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                }
+
+                /* 附件label */
+                // .button-box {
+                //   margin: 0;
+                //   margin-right: 10px;
+                // }
+              }
+
+
+              .ant-form-extra {
+                position: absolute;
+                top: 7px;
+                right: 26px;
+              }
+            }
+          }
+        }
+      }
+
+      /* 子表的btn 样式 */
+      :deep(.table-operator) {
+        .ant-btn {
+          margin: 10px 5px;
+          padding: 0 14px;
+        }
+
+        .ant-btn:first-of-type {
+          margin-left: 0;
+        }
+
+        .table-handle-button {
+          margin-right: 8px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  body .x6-graph-scroller{
+    overflow: visible!important;
+  }
+  .table-child-box {
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+    padding: 0;
+  }

@@ -1,0 +1,604 @@
+.tableToolBar {
+  display: inline-flex;
+  padding: @padding-xs;
+  padding-bottom: 0;
+}
+
+.required-table-title .surely-table-header-cell-title-inner::before {
+  margin: 0 4px;
+  color: red;
+  content: '*';
+}
+
+.surely-table-header-container {
+  .surely-table-fix-left,
+  .surely-table-fix-right {
+    background-color: @table-header-bg;
+  }
+}
+
+.table-wrapper {
+  flex: 1 1 0;
+  height: 100%;
+  padding: @padding-xs;
+
+  .surely-table-wrapper {
+    height: 100%;
+  }
+
+  .surely-table-wrapper.ant-spin-nested-loading,
+  .ant-spin-container {
+    height: 100%;
+
+    &.ant-spin-container {
+      display: flex;
+      flex-direction: column;
+
+      .surely-table {
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: column;
+        width: 100%;
+        height: 100% !important;
+      }
+    }
+
+    .surely-table-body {
+      flex: 1 1 0;
+      max-height: initial !important;
+    }
+  }
+}
+.table-wrapper {
+  .surely-table-header-cell-title {
+    .surely-table-cell-text-ellipsis {
+      text-align: center !important;
+    }
+  }
+}
+
+.surely-table-has-animate .surely-table-row {
+  transition: none;
+}
+
+.surely-table.surely-table-stripe
+  .surely-table-body
+  .surely-table-row-odd:not(.surely-table-row-selected) {
+  background: #f7f8fa;
+}
+
+.surely-table-bordered .surely-table-empty-container {
+  border: 0;
+}
+
+.ant-pagination-options-size-changer.ant-select {
+  font-size: @font-size-sm;
+}
+
+.advanced-table {
+  background-color: #fff;
+
+  .tableRefresh {
+    position: absolute;
+    right: 6px;
+    bottom: 5px;
+    z-index: 22;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    background: #eff0f2;
+    border-radius: 2px;
+  }
+
+  .header-bar {
+    display: flex;
+    flex: 0;
+    align-items: center;
+    padding: 0;
+    border-radius: 4px;
+    transition: all 0.3s;
+
+    .title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .search {
+      flex: 1;
+      margin: 0 8px;
+      text-align: right;
+    }
+
+    .actions {
+      font-size: 17px;
+      text-align: right;
+
+      .action {
+        margin: 0 8px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .toolBarLeft {
+    flex: 1;
+    margin: 0;
+    margin-bottom: 8px;
+    text-align: left;
+
+    slot {
+      display: block;
+      padding: 8px 0 0 8px;
+    }
+  }
+
+  .toolBarRight {
+    flex: initial;
+    margin-bottom: 8px;
+    margin-left: auto;
+    text-align: right;
+
+    slot {
+      display: block;
+      padding: 8px 8px 0 0;
+    }
+  }
+
+  .tableSelection {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 22;
+    width: 88px;
+    height: 12px;
+    margin-right: 8px;
+    font-size: @font-size-sm;
+    line-height: 12px;
+    text-align: left;
+    border-right: 1px solid @border-color-split;
+  }
+}
+
+.surely-table-bordered {
+  border-right: 1px solid @border-color-split;
+}
+
+.surely-table-bordered .surely-table-header-scrollbar,
+.surely-table-bordered .surely-table-summary-scrollbar {
+  border-right: 0;
+}
+
+// 表格没数据时高度也要能撑开
+.advanced-table,
+.ant-spin-nested-loading,
+.ant-spin-container,
+.ant-table,
+.ant-table-content,
+.ant-table-scroll,
+.ant-table-placeholder {
+  height: 100%;
+}
+
+.inner-table-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 100px;
+  overflow: hidden;
+}
+
+.ant-table-wrapper {
+  height: 100%; // 表格高度问题修改
+}
+
+.ant-table-empty .ant-table-placeholder {
+  position: absolute;
+  top: 50px;
+  right: 8px;
+  left: 8px;
+  height: calc(100% - 60px);
+  padding: 0;
+  overflow: auto;
+  background: transparent;
+  border: 0 !important;
+}
+
+.ant-table-thead > tr > th {
+  font-weight: 600;
+  border-bottom-width: 2px;
+}
+
+.ant-table-thead > tr > th .ant-table-column-sorter .ant-table-column-sorter-inner {
+  margin-top: -0.35em;
+  margin-left: 0.3em;
+}
+
+// 表格分页样式
+.surely-table-wrapper {
+  .ant-pagination-simple .ant-pagination-simple-pager input {
+    margin: 0 4px;
+    background-color: @layout-body-background;
+    border: 1px solid @layout-body-background;
+  }
+
+  .ant-pagination {
+    position: relative;
+    z-index: 11;
+    display: flex;
+    flex: 0 0 32px;
+    float: initial;
+    margin: 0;
+    padding: 4px 36px 4px 0;
+    font-size: @font-size-sm;
+    text-align: right;
+    background: #fff;
+    border: 1px solid @border-color-split;
+    border-top: 0;
+
+    .ant-select:hover:has(.ant-select-selection-item) .ant-select-arrow {
+      right: 12px;
+    }
+
+    .ant-pagination-total-text {
+      margin-right: auto;
+      margin-left: 8px;
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next,
+    .ant-pagination-item:not(.ant-pagination-item-active),
+    .ant-pagination-item:not(.ant-pagination-item-active),
+    .ant-pagination-prev .ant-pagination-item-link,
+    .ant-pagination-next .ant-pagination-item-link {
+      background-color: @layout-body-background;
+      border-color: @layout-body-background;
+    }
+
+    .ant-pagination-item-link,
+    .ant-pagination-item {
+      border: 0;
+    }
+
+    .ant-pagination-options-quick-jumper,
+    .ant-pagination-total-text,
+    .ant-select-selection__rendered {
+      height: 24px;
+      line-height: 24px;
+    }
+
+    .ant-pagination-options {
+      .ant-select-selection--single {
+        height: 24px;
+        line-height: 24px;
+        background-color: @layout-body-background;
+        border-color: @layout-body-background;
+      }
+
+      .ant-pagination-options-quick-jumper input {
+        height: 24px;
+        line-height: 24px;
+        background-color: @layout-body-background;
+        border-color: @layout-body-background;
+      }
+    }
+
+    .ant-pagination-prev,
+    .ant-pagination-next,
+    .ant-pagination-jump-prev,
+    .ant-pagination-jump-next,
+    .ant-pagination-item,
+    .ant-select-selector,
+    .ant-select-single:not(.ant-select-customize-input)
+      .ant-select-selector
+      .ant-select-selection-search-input,
+    .ant-select-single .ant-select-selector .ant-select-selection-item,
+    .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
+      min-width: 24px;
+      height: 24px;
+      margin: 0 2px;
+      line-height: 24px;
+    }
+
+    .ant-select-item-option-content {
+      text-align: left;
+    }
+
+    .ant-pagination-item-active a {
+      color: #fff;
+      background: @primary-color;
+    }
+
+    .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+      background-color: @layout-body-background;
+      border-color: @layout-body-background;
+    }
+  }
+}
+
+// 树表格样式
+.advanced-table.tree-grid .surely-table .surely-table-cell-content {
+  padding-left: 4px;
+}
+
+// 无数据
+.surely-table-empty-container {
+  padding: 0;
+  border: 0;
+
+  > div {
+    height: 100%;
+
+    .ant-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.surely-table-body-container {
+  height: 100% !important;
+}
+
+.surely-table-bordered .surely-table-extra-cell,
+.surely-table-bordered .surely-table-header-extra-cell,
+.surely-table-bordered .surely-table-cell-group {
+  border-right: 1px solid @border-color-split;
+}
+
+// 表格内控件样式
+.surely-table-checkbox-inner {
+  border-radius: @border-radius-base;
+}
+// .surely-table-checkbox-checked .surely-table-checkbox-inner{
+//     background-color: @primary-color;
+//     border-color: @primary-color;
+// }
+.surely-table-cell-inner {
+  align-items: center;
+
+  // .ant-tag:not(.ant-tag-checkable) {
+  //   color: rgb(134, 144, 156);
+  //   font-weight: 600;
+  //   background: rgba(134, 144, 156, 0.15);
+  //   border-color: rgba(134, 144, 156, 0);
+
+  //   .avic-icon {
+  //     font-size: 1.24em;
+
+  //     .svg-icon {
+  //       vertical-align: -0.15em;
+  //     }
+  //   }
+  // }
+  .ant-tag.ant-tag-has-color {
+    color: #fff;
+  }
+  .ant-tag.ant-tag-blue,
+  .ant-tag-processing {
+    padding: 0 8px;
+    color: rgb(22, 93, 255);
+    font-weight: 600;
+    background: rgba(22, 93, 255, 0.1);
+    border-color: rgba(52, 145, 250, 0);
+  }
+
+  .ant-tag.ant-tag-red,
+  .ant-tag-error {
+    padding: 0 8px;
+    color: rgb(245, 63, 63);
+    font-weight: 600;
+    background: rgb(255, 236, 232);
+    border-color: rgba(245, 63, 63, 0);
+  }
+
+  .ant-tag.ant-tag-green {
+    padding: 0 8px;
+    color: rgb(0, 180, 42);
+    font-weight: 600;
+    background: rgba(0, 180, 42, 0.1);
+    border-color: rgba(0, 180, 42, 0);
+  }
+
+  .ant-tag.ant-tag-grey {
+    color: rgb(134, 144, 156);
+    font-weight: 600;
+    background: rgba(134, 144, 156, 0.15);
+    border-color: rgba(134, 144, 156, 0);
+  }
+
+  .ant-tag.ant-tag-cyan {
+    padding: 0 8px;
+    color: rgb(15, 198, 194);
+    font-weight: 600;
+    background: rgba(15, 198, 194, 0.1);
+    border-color: rgba(15, 198, 194, 0);
+  }
+
+  .ant-tag.ant-tag-orange {
+    padding: 0 8px;
+    color: rgb(255, 125, 0);
+    font-weight: 600;
+    background: rgba(255, 125, 0, 0.1);
+    border-color: rgba(255, 125, 0, 0);
+  }
+
+  .surely-table-row-indent + .surely-table-row-expand-icon {
+    margin-top: 6px;
+    margin-right: 8px;
+  }
+  .surely-table-cell-content > .avic-icon {
+    position: relative;
+    z-index: 2;
+    font-size: 1.24em;
+    margin-right: 3px;
+    .svg-icon {
+      vertical-align: -0.15em;
+    }
+  }
+  .ant-btn-link {
+    height: auto;
+    padding: 0 8px;
+    line-height: 14px;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+  }
+
+  .ant-btn-link:not(:last-child) {
+    border-right: 1px solid @border-color-split;
+  }
+
+  .ant-tag:last-child {
+    margin: 0;
+  }
+}
+
+.surely-table-row-expand-icon {
+  border: 1px solid #b8c1cb;
+  transform: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 2px;
+  z-index: 2;
+  &::after {
+    left: 7px;
+  }
+  &::before {
+    top: 7px;
+  }
+}
+
+// 去水印
+.surely-table-body-container + div[style] {
+  visibility: hidden !important;
+}
+
+.surely-table-body + div[style] {
+  visibility: hidden !important;
+}
+
+.treeGridLineClass {
+  position: relative;
+
+  .line-ver {
+    position: absolute;
+    bottom: 50%;
+    left: -32px;
+    z-index: 2;
+    width: 5px;
+    height: 1px;
+    border-top: 1px solid #b8c1cb;
+  }
+
+  .line-hor {
+    position: absolute;
+    bottom: 50%;
+    left: -34px;
+    z-index: 2;
+    width: 1px;
+    height: 40px;
+    border-left: 1px solid #b8c1cb;
+  }
+}
+
+.surely-table-row-expand-icon {
+  position: relative;
+  z-index: 99;
+}
+
+.surely-table-cell-inner {
+  overflow: initial;
+}
+
+.tableTreeLine {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 100px;
+  border-left: 1px solid #b8c1cb;
+}
+
+.firstNodeClass {
+  .tableTreeLine {
+    height: 50%;
+  }
+
+  .line-hor {
+    height: 0;
+  }
+}
+
+.surely-table.surely-table-stripe
+  .surely-table-body
+  .surely-table-row-odd:not(.surely-table-row-selected).surely-table-row-hover {
+  background: @primary-1;
+}
+
+.surely-table.surely-table-stripe
+  .surely-table-body
+  .surely-table-row-odd:not(.surely-table-row-selected).surely-table-row-hover {
+  background: @primary-1;
+}
+// .surely-table-body-cell:focus-within {
+//   outline: 1px solid @primary-color!important;
+// }
+.surely-table-body-cell:focus-within {
+  outline: 0;
+}
+// 修改表格换肤问题
+.surely-table-checkbox:hover .surely-table-checkbox-inner,
+.surely-table-checkbox-input:focus + .surely-table-checkbox-inner,
+.surely-table-checkbox-checked::after {
+  border-color: @primary-color;
+}
+.surely-table-checkbox-checked .surely-table-checkbox-inner {
+  background: @primary-color;
+  border-color: @primary-color;
+}
+.surely-table-checkbox-indeterminate .surely-table-checkbox-inner::after {
+  background: @primary-color;
+}
+.surely-table-checkbox-disabled .surely-table-checkbox-inner {
+  background: #f5f5f5;
+}
+.surely-table-column-sorter {
+  margin-left: 4px;
+}
+.tableCustomPage {
+  position: absolute;
+  right: 40px;
+  bottom: 5px;
+  z-index: 22;
+  height: 24px;
+  line-height: 24px;
+  display: flex;
+  line-height: 22px;
+  align-items: center;
+  input {
+    background-color: #f2f3f5;
+    border-color: #f2f3f5;
+    line-height: 22px;
+  }
+
+  button {
+    background-color: #f2f3f5;
+    border-color: #f2f3f5;
+    line-height: 22px;
+    margin-right: 4px;
+  }
+}
+
+.customPageClass {
+  .surely-table-wrapper .ant-pagination {
+    padding-right: 230px;
+  }
+}
+.has-rowSelection {
+  .surely-table-wrapper .ant-pagination .ant-pagination-total-text {
+    padding-left: 100px;
+  }
+}

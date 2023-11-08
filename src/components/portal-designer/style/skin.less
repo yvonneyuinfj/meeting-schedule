@@ -1,0 +1,57 @@
+/* 2020-07-13 mzy 主题样式 start */
+.avic_formmake_skin(@primary-color) {
+  /* 桌面门户设计器 --基础组件 */
+  .portal-container-center-left {
+    .portal-left-li-list {
+      &:hover {
+        border: 1px dashed;
+        border-color: fade(@primary-color, 90%);
+        //background-color: fade(@primary-color, 8%) !important;
+      }
+      a {
+        color: #333;
+      }
+      a:hover {
+        color: fade(@primary-color, 90%);
+        background-color: fade(@primary-color, 8%);
+      }
+    }
+  }
+  .portal-widget-view.active {
+    border: 0 solid @primary-color;
+    outline: 2px dashed @primary-color;
+    .portal-widget-view-action i {
+      color: @primary-color;
+    }
+  }
+  .portal-container
+    .portal-widget-form-container
+    .portal-widget-form-list
+    .portal-widget-view
+    .portal-widget-view-action
+    span:hover {
+    background-color: @primary-color!important;
+  }
+  .portal-container {
+    .portal-widget-config-container.drawer-box-right {
+      .portal-config-tab.active {
+        border-color: @primary-color;
+      }
+    }
+  }
+
+  .box-card {
+    .box-card-title {
+      .box-card-title-text {
+        // border-left-color: @primary-color!important
+        .vertical-line {
+          background-image: linear-gradient(
+            to bottom,
+            fade(@primary-color, 100%),
+            fade(@primary-color, 60%)
+          );
+        }
+      }
+    }
+  }
+}

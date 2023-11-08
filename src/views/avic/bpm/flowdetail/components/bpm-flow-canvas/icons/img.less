@@ -1,0 +1,129 @@
+.task-node {
+  position: relative;
+}
+.task_icon {
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  &.tool_bar {
+    width: 24px;
+    height: 24px;
+  }
+  &.start_event {
+    background-image: url(./img/48/start_event_empty.png);
+    &.norun {
+      background-image: url(./img/48/norun/start_event_empty.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/start_event_empty.png);
+    }
+  }
+  &.task_human {
+    background-image: url(./img/48/task_human.png);
+    &.norun {
+      background-image: url(./img/48/norun/task_human.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/task_human.png);
+      &.back {
+        background-image: url(./img/48/over/task_human_back.png);
+      }
+    }
+    &.run {
+      background-image: url(./img/48/run/task_human.gif);
+    }
+    &.subrun {
+      background-image: url(./img/48/run/task_human_sub.gif);
+    }
+    &.subover {
+      background-image: url(./img/48/over/task_human_sub.png);
+    }
+    &.red {
+      outline: 2px solid red;
+    }
+  }
+  &.end_event {
+    background-image: url(./img/48/end_event_terminate.png);
+    &.norun {
+      background-image: url(./img/48/norun/end_event_terminate.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/end_event_terminate.png);
+    }
+  }
+  &.task_webservice {
+    background-image: url(./img/48/task_webservice.png);
+    &.norun {
+      background-image: url(./img/48/norun/task_webservice.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/task_webservice.png);
+    }
+  }
+  &.gateway_fork {
+    background-image: url(./img/48/gateway_fork.png);
+
+    &.norun {
+      background-image: url(./img/48/norun/gateway_fork.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/gateway_fork.png);
+    }
+  }
+  &.gateway_join {
+    background-image: url(./img/48/gateway_join.png);
+    &.norun {
+      background-image: url(./img/48/norun/gateway_join.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/gateway_join.png);
+    }
+  }
+  &.task_subprocess {
+    background-image: url(./img/48/task_subprocess.png);
+    &.norun {
+      background-image: url(./img/48/norun/task_subprocess.png);
+    }
+    &.subrun {
+      background-image: url(./img/48/run/task_subprocess.gif);
+    }
+    &.over {
+      background-image: url(./img/48/over/task_subprocess.png);
+    }
+  }
+  &.task_custom {
+    background-image: url(./img/48/task_custom.png);
+    &.run {
+      background-image: url(./img/48/run/task_custom.gif);
+    }
+    &.norun {
+      background-image: url(./img/48/norun/task_custom.png);
+    }
+    &.over {
+      background-image: url(./img/48/over/task_custom.png);
+    }
+  }
+}
+
+.task-label {
+  position: absolute;
+  right: -24px;
+  left: -24px;
+  width: 100px;
+  margin: auto;
+  text-align: center;
+}
+
+.user-defined-icon {
+  position: absolute;
+  right: -15px;
+  top: -8px;
+  color: #0e42d2;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  background-image: url(./img/48/avatar.svg);
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,208 @@
+.bpm-start-process {
+  height: 100%;
+  background: #fff;
+
+  .process-tab-pane {
+    position: relative;
+  }
+
+  .avic-module-tab {
+    .ant-tabs-bar {
+      padding: 8px;
+    }
+
+    .ant-tabs-nav .ant-tabs-tab {
+      line-height: 20px;
+    }
+  }
+
+  .process-tab-search {
+    display: inline-flex;
+  }
+  .process-show-type {
+    display: inline-flex;
+    margin: 0 0 0 8px;
+  }
+  .avic-module-tab {
+    height: 100%;
+
+    .ant-tabs-content {
+      height: 100%;
+
+      .ant-tabs-tabpane {
+        height: 100%;
+      }
+
+      .process-tab-pane {
+        .process-tree-content {
+          height: calc(100% - 40px);
+          padding-top: 0;
+        }
+
+        .process-tab-content {
+          width: 100%;
+          height: 95%;
+          padding: 8px;
+          background: #fff;
+          .process-title {
+            font-size: 14px;
+
+            & > span {
+              position: relative;
+              top: 3px;
+              display: inline-block;
+              height: 16px;
+              padding-left: 10px;
+              border-left-color: blue;
+              border-left-width: 3px;
+              border-left-style: solid;
+            }
+          }
+
+          .table-wrapper {
+            height: 100%;
+            overflow: hidden;
+          }
+
+          .process-model-group {
+            padding-left: 8px;
+            font-size: 14px;
+          }
+          .ant-list-item {
+            margin: 0 0 8px 0;
+          }
+          .process-model-item {
+            .ant-card {
+              background: transparent;
+            }
+            &:hover {
+              background: #f2f4f6;
+            }
+            .ant-card-body {
+              display: flex;
+              align-items: center;
+              cursor: pointer;
+            }
+            .process-item-icon-bg {
+              width: 32px;
+              height: 32px;
+              color: #ffffff;
+              font-size: 18px;
+              line-height: 30px;
+              text-align: center;
+              border-radius: 50%;
+            }
+
+            .process-item-content {
+              max-width: calc(100% - 50px);
+              padding-left: 8px;
+              .process-item-name {
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+            .process-item-fav {
+              margin-left: auto;
+            }
+            .process-item-fav {
+              color: #67758d;
+              &.fav-icon {
+                color: #ffa500;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .process-grid {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    border: 1px solid #000;
+    border-color: rgba(232, 232, 232, 1);
+    border-radius: 2px;
+
+    .fav-process-item {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      font-size: 12px;
+      white-space: nowrap;
+      text-align: center;
+      text-overflow: ellipsis;
+
+      &.process-title {
+        position: absolute;
+        top: 70px;
+        left: 22px;
+        width: 80%;
+        height: 20px;
+        color: #67758d;
+        font-size: 14px;
+        font-family: '微软雅黑';
+        font-style: normal;
+        line-height: 20px;
+        cursor: pointer;
+      }
+
+      &.process-fav-status {
+        position: absolute;
+        top: 150px;
+        left: 0;
+        color: #ffa500;
+        font-size: 19px;
+      }
+
+      .process-icon {
+        width: 40px;
+        height: 40px;
+        margin: 20px auto 0;
+        padding: 0;
+        font-size: 24px;
+        line-height: 40px;
+        background-color: #695294;
+        border-radius: 2px;
+      }
+
+      .process-start {
+        position: absolute;
+        top: 190px;
+        left: 25%;
+        width: 50%;
+        height: 30px;
+        padding-left: 7px;
+        color: #67758d;
+        font-weight: 400;
+        font-size: 12px;
+        font-style: normal;
+        text-align: center;
+        background-color: rgba(243, 244, 249, 1);
+      }
+
+      &.process-version {
+        position: absolute;
+        top: 100px;
+        left: 10px;
+        color: #98a5ba;
+        font-size: 12px;
+      }
+
+      &.process-type {
+        position: absolute;
+        top: 120px;
+        right: 0;
+        left: 0;
+        margin: auto;
+        color: #98a5ba;
+        font-weight: 400;
+        font-size: 12px;
+        font-style: normal;
+        border-width: 0;
+      }
+    }
+  }
+}

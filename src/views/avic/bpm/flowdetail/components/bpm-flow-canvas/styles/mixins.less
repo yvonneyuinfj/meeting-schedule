@@ -1,0 +1,80 @@
+// 宽高动态设置
+// 如果只传一个值，那么高=宽
+.set_w_h(@width: 100%, @height: @width) {
+  width: @width;
+  height: @height;
+}
+
+// flex、居中
+.flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// flex、居中、竖向排列
+.flex_column_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex_column_between_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex_column_between {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+// flex、左右居中
+.flex_content_center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex_item_center {
+  display: flex;
+  align-items: center;
+}
+
+.flex_between_center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex_around_center {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex_center_end {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.flex_start_end {
+  display: flex;
+  align-items: flex-end;
+}
+
+// position 左右居中
+.position_content_center {
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+
+.position_item_center {
+  top: 50%;
+  transform: translateY(-50%);
+}

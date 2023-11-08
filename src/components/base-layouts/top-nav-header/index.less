@@ -1,0 +1,251 @@
+@import '../basic-layout.less';
+
+@top-nav-header-prefix-cls: ~'@{ant-prefix}-pro-top-nav-header';
+
+.@{top-nav-header-prefix-cls} {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 1px 4px 0 rgba(0, 21, 41, 0.12);
+  transition: background 0.3s, width 0.2s;
+
+  .ant-menu-item .ant-menu-item-icon+span,
+  .ant-menu-submenu-title .ant-menu-item-icon+span,
+  .ant-menu-item .anticon+span,
+  .ant-menu-submenu-title .anticon+span {
+    padding: 0;
+  }
+
+  //修改顶部菜单star------zhangyan
+  .ant-menu {
+    font-size: 16px;
+  }
+
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-selected,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-selected {
+    color: #fff;
+    // background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .ant-menu-horizontal>.ant-menu-item::after,
+  .ant-menu-horizontal>.ant-menu-submenu::after {
+    border-radius: 2px;
+    border-bottom: 3px solid @primary-color;
+    bottom: 2px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-selected::after {
+    border-bottom: 3px solid #fff;
+  }
+
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-selected::after,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-open::after {
+    border-bottom: 3px solid #fff;
+  }
+
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item:hover,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu:hover,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-active,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-active,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-open,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-open,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item-selected,
+  .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu-selected {
+    color: #fff;
+  }
+  
+  .ant-menu-light .ant-menu-submenu-title:hover {
+    color: #fff;
+  }
+
+  .ant-pro-header-account-avatar {
+    color: #fff;
+  }
+
+  //修改顶部菜单end------zhangyan
+  .@{ant-prefix}-menu {
+    color: #fff;
+    background: transparent;
+  }
+
+  .ant-menu {
+    line-height: inherit;
+  }
+
+  .@{ant-prefix}-menu-submenu.@{ant-prefix}-menu-submenu-horizontal {
+    height: 100%;
+    padding: 0 12px;
+
+    .@{ant-prefix}-menu-submenu-title {
+      height: 100%;
+    }
+  }
+
+  &.light {
+    background-color: @component-background;
+
+    .@{top-nav-header-prefix-cls}-logo {
+      h1 {
+        color: @primary-color;
+      }
+    }
+
+    .anticon {
+      color: inherit;
+    }
+  }
+
+  &-main {
+    display: flex;
+    height: 100%;
+    padding-left: 12px;
+
+    &-left {
+      display: flex;
+      min-width: 192px;
+    }
+  }
+
+  .anticon {
+    color: @btn-primary-color;
+  }
+
+  &-logo {
+    position: relative;
+    min-width: 165px;
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    .router-link-active {
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      display: inline-block;
+      height: 32px;
+      vertical-align: middle;
+    }
+
+    h1 {
+      display: inline-block;
+      min-width: 160px;
+      max-width: 560px;
+      margin: 0 8px;
+      overflow: hidden;
+      color: @btn-primary-color;
+      font-weight: 600;
+      font-size: 16px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      vertical-align: top;
+    }
+  }
+
+  &-menu {
+    min-width: 0;
+
+    .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-item,
+    .ant-menu-horizontal:not(.ant-menu-dark)>.ant-menu-submenu {
+      padding: 0 12px;
+      top: 0;
+
+      .ant-menu-item-icon,
+      .menu-star {
+        display: none;
+      }
+
+      .ant-menu-item .ant-menu-item-icon+span {
+        padding-left: 0;
+      }
+
+      .ant-menu-submenu-title {
+        padding-right: 16px;
+      
+        &::after {
+          content: '';
+          position: absolute;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid rgba(255, 255, 255, 0.85);
+          top: 50%;
+          margin-top: -4px;
+          right: 0;
+        }
+
+        &:has(.anticon-ellipsis) {
+          &::after {
+            display: none;
+          }
+        }
+
+        .ant-menu-title-content {
+          padding: 0;
+        }
+      }
+    }
+
+    .@{ant-prefix}-menu.@{ant-prefix}-menu-horizontal {
+      height: 100%;
+      border: none;
+    }
+  }
+
+  .ant-menu {
+    box-shadow: initial;
+  }
+  //修改更多按钮大小和位置
+.ant-menu-submenu.ant-menu-submenu-horizontal .ant-menu-submenu-title:has(.anticon-ellipsis){
+    padding: 0 8px;
+    .anticon-ellipsis{
+      font-size: 1.4em;
+      svg{
+        vertical-align: -0.125em;
+      }
+    }
+  }
+}
+
+// 解决三级菜单无投影的问题
+.ant-menu-submenu-popup {
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ant-menu-submenu-popup.ant-menu-submenu {
+  .ant-menu-item {
+    display: flex;
+    margin-bottom: @menu-item-vertical-margin;
+
+    .ant-menu-title-content {
+      display: inline-flex;
+    }
+
+    .ant-menu-submenu-title,
+    .ant-menu-title-content {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      padding-right: 16px;
+
+      .menu-star {
+        margin-left: auto;
+        opacity: 0.45;
+        display: none;
+
+        .svg-icon {
+          vertical-align: -0.125em;
+        }
+      }
+    }
+
+    &:hover {
+      .menu-star {
+        display: block;
+      }
+    }
+  }
+}

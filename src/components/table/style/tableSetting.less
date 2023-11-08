@@ -1,0 +1,209 @@
+/* Start 列显隐样式 */
+
+.table-column-setting-popover .ant-popover-inner-content {
+  max-height: 260px;
+  padding: 12px 12px 12px 12px;
+  overflow-y: auto;
+}
+
+// 固定列设置 by cuijj 2022-10-10
+
+.tableSet {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  z-index: 99;
+  background-color: @table-header-bg;
+  .action-columns-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    border-bottom: 0;
+    border-left: 0;
+    cursor: pointer;
+  }
+  &:hover {
+    .avic-icon {
+      color: @primary-color;
+      fill: @primary-color;
+    }
+  }
+  .avic-icon {
+    padding: 0 4px;
+    color: @text-color-less;
+    font-size: 1.2em;
+    line-height: 0.6;
+    fill: @text-color-less;
+    .check-all {
+      margin-right: 8px;
+    }
+
+    .left,
+    .right {
+      transform: rotate(-90deg);
+    }
+  }
+}
+.ant-drawer-wrapper-body {
+  overflow: hidden;
+}
+.table-column-setting-title {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  padding-left: 24px;
+  font-weight: 600;
+}
+.table-column {
+  height: calc(100% - 70px);
+}
+.table-column-setting-list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 40px);
+  margin-right: -8px;
+  overflow: auto;
+
+  .table-column-setting-list-item {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    .table-column-setting-list-item-li {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      height: 32px;
+      .svg-icon {
+        vertical-align: middle;
+      }
+      .table-column-setting-list-item-input {
+        width: 50px;
+        height: 24px;
+        margin-right: 8px;
+        padding: 1px 2px;
+      }
+
+      .ant-checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        max-width: 210px;
+        height: 22px;
+        margin-left: 0;
+        overflow: hidden;
+        line-height: 22px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        .ant-checkbox + span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .li-drag {
+        margin-right: 8px;
+        color: @text-color-less;
+        font-size: 1.2em;
+        vertical-align: middle;
+        cursor: move;
+      }
+      .ant-checkbox {
+        top: initial;
+      }
+    }
+
+    .fixed-icon-l {
+      margin-right: 16px;
+      cursor: pointer;
+      .svg-icon {
+        display: inline-block;
+        -ms-transform: rotate(90deg);
+        /* IE 9 */
+        -webkit-transform: rotate(90deg);
+        /* Safari and Chrome */
+        transform: rotate(90deg);
+      }
+    }
+    .fixed-icon-l,
+    .fixed-icon-r {
+      color: @text-color-less;
+      fill: @text-color-less;
+      &.active {
+        color: @primary-color;
+        fill: @primary-color;
+      }
+    }
+
+    .fixed-icon-r {
+      margin-right: 8px;
+      cursor: pointer;
+      .svg-icon {
+        display: inline-block;
+        -ms-transform: rotate(-90deg);
+        /* IE 9 */
+        -webkit-transform: rotate(-90deg);
+        /* Safari and Chrome */
+        transform: rotate(-90deg);
+      }
+    }
+  }
+}
+
+.table-column-setting-reset {
+  margin-right: 12px;
+}
+
+/* End 列显隐样式 */
+/* Start 拖拽相关 */
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
+}
+
+.ghost {
+  i,
+  label,
+  div {
+    opacity: 0.5;
+  }
+
+  z-index: 1;
+  background-color: @primary-1;
+  border: 2px solid @primary-3;
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.drag-fallback {
+  position: fixed;
+  z-index: 10;
+  background: #fff;
+  box-shadow: 0 0 1px rgba(9, 30, 66, 0.12), 0 4px 8px rgba(9, 30, 66, 0.12);
+  opacity: 1 !important;
+}
+
+/* End 拖拽相关 */
+
+// 表格尺寸
+.table-size {
+  .ant-form-item {
+    margin: 4px 0 12px 0;
+  }
+
+  .ant-radio-button-wrapper {
+    padding: 0 20px;
+  }
+
+  .ant-col.ant-form-item-label {
+    width: 86px;
+  }
+}

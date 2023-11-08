@@ -1,0 +1,286 @@
+// NOTE: 此文件定义或引入的变量可以在全局使用；请勿在此直接写样式
+@import 'ant-design-vue/es/style/themes/variable.less';
+
+//自定义变量
+@theme-dark-color: var(--ant-primary-8);;
+@success-color: #52c41a; // 成功色
+@warning-color: #faad14; // 警告色
+@error-color: #f5222d; // 错误色
+// Popover background color
+@popover-background: @component-background;
+@popover-customize-border-color: @border-color-split;
+@font-family: -apple-system, sans-serif, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans',  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
+@code-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+@text-color: #1D2129; // 主文本色
+@text-color-secondary: #4E5969; // 次文本色
+@text-color-inverse: @white;
+@text-color-less: #86909c;
+@icon-color: inherit;
+@input-placeholder-color: #C9CDD4;
+@icon-color-hover: fade(@black, 75%);
+@heading-color: #4E5969;
+@text-color-dark: @white;
+@text-color-secondary-dark: fade(@white, 65%);
+@text-selection-bg: @primary-color;
+@font-variant-base: tabular-nums;
+@font-feature-settings-base: 'tnum';
+@font-size-base: 14px;
+@font-size-lg: @font-size-base + 2px;
+@font-size-sm: 12px;
+@heading-1-size: ceil(@font-size-base * 2.71);
+@heading-2-size: ceil(@font-size-base * 2.14);
+@heading-3-size: ceil(@font-size-base * 1.71);
+@heading-4-size: ceil(@font-size-base * 1.42);
+@heading-5-size: ceil(@font-size-base * 1.14);
+// https://github.com/ant-design/ant-design/issues/20210
+@line-height-base: 1.5715;
+@border-radius-base: 2px;
+@border-radius-sm: @border-radius-base;
+
+// Border color
+@border-color-fill: #D6DCE3; // 基础组件边框轮廓
+@border-color-base: #C9CDD4; // 基础组件边框轮廓
+@border-color-split: #E5E6EB; // 组件内部的拆分边框
+@border-color-inverse: @white;
+@border-width-base: 1px; // width of the border for a component
+@border-style-base: solid; // style of a components border
+
+
+// Menu
+// ---
+@menu-inline-toplevel-item-height: 38px;
+@menu-item-height: 38px;
+@menu-item-group-height: @line-height-base;
+@menu-collapsed-width: 80px;
+@menu-bg: @component-background;
+@menu-popup-bg: @component-background;
+@menu-item-color: @text-color;
+@menu-inline-submenu-bg: @background-color-light;
+@menu-highlight-color: @primary-color;
+@menu-highlight-danger-color: @error-color;
+@menu-item-active-bg: @primary-1;
+@menu-item-active-danger-bg: @red-1;
+@menu-item-active-border-width: 3px;
+@menu-item-group-title-color: @text-color-secondary;
+@menu-item-vertical-margin: 0;
+@menu-item-font-size: @font-size-base;
+@menu-item-boundary-margin: 8px;
+@menu-item-padding-horizontal: 4px;
+@menu-item-padding: 0 @menu-item-padding-horizontal;
+@menu-horizontal-line-height: 40px;
+@menu-icon-margin-right: 8px;
+@menu-icon-size: @menu-item-font-size;
+@menu-icon-size-lg: @font-size-lg;
+@menu-item-group-title-font-size: @menu-item-font-size;
+
+// dark theme
+@menu-dark-color: @text-color-secondary-dark;
+@menu-dark-danger-color: @error-color;
+@menu-dark-bg: @theme-dark-color;
+@menu-dark-arrow-color: #fff;
+@menu-dark-inline-submenu-bg: rgba(0, 0, 0, .1);
+@menu-dark-highlight-color: #fff;
+@menu-dark-item-active-bg: @theme-dark-color;
+@menu-dark-item-active-danger-bg: @error-color;
+@menu-dark-selected-item-icon-color: @white;
+@menu-dark-selected-item-text-color: @white;
+@menu-dark-item-hover-bg: transparent;
+
+
+
+
+// Layout
+@layout-body-background: #F2F3F5;
+@label-background: #F7F8FA;
+@layout-header-background: @primary-color;
+@layout-header-height: 64px;
+@layout-header-padding: 0 50px;
+@layout-header-color: @text-color;
+@layout-footer-padding: 24px 50px;
+@layout-footer-background: @layout-body-background;
+@layout-sider-background: @theme-dark-color;
+@layout-trigger-height: 56px;
+@layout-trigger-background: @theme-dark-color;
+@layout-trigger-color: #fff;
+@layout-zero-trigger-width: 36px;
+@layout-zero-trigger-height: 42px;
+// Layout light theme
+@layout-sider-background-light: #fff;
+@layout-trigger-background-light: #fff;
+@layout-trigger-color-light: @text-color;
+
+// vertical paddings
+@padding-lg: 24px; // containers
+@padding-md: 16px; // small containers and buttons
+@padding-sm: 12px; // Form controls and items
+@padding-xs: 8px; // small items
+@padding-xss: 4px; // more small
+
+// vertical margins
+@margin-lg: 24px; // containers
+@margin-md: 16px; // small containers and buttons
+@margin-sm: 12px; // Form controls and items
+@margin-xs: 8px; // small items
+@margin-xss: 4px; // more small
+
+
+// Form
+// ---
+@label-required-color: @highlight-color;
+@label-color: @text-color;
+@form-warning-input-bg: @input-bg;
+@form-item-margin-bottom: 24px;
+@form-item-trailing-colon: true;
+@form-vertical-label-padding: 0 0 8px;
+@form-vertical-label-margin: 0;
+@form-item-label-font-size: @font-size-base;
+@form-item-label-height: @input-height-base;
+@form-item-label-colon-margin-right: 8px;
+@form-item-label-colon-margin-left: 2px;
+@form-error-input-bg: @input-bg;
+
+// Table
+// --
+@table-bg: @component-background;
+@table-header-bg: #eff0f1;
+@table-header-color:  @text-color;
+@table-header-sort-bg: @background-color-base;
+@table-body-sort-bg: rgba(0, 0, 0, .02);
+@table-row-hover-bg: @primary-1;
+@table-selected-row-color: inherit;
+@table-selected-row-bg: #fffad3;
+@table-body-selected-sort-bg: @table-selected-row-bg;
+@table-selected-row-hover-bg: @table-selected-row-bg;
+@table-expanded-row-bg: #fbfbfb;
+@table-padding-vertical: 8px;
+@table-padding-horizontal: 8px;
+@table-padding-vertical-md: (@table-padding-vertical * 3 / 4);
+@table-padding-horizontal-md: (@table-padding-vertical * 3 / 4);
+@table-padding-vertical-sm: (@table-padding-vertical / 2);
+@table-padding-horizontal-sm: (@table-padding-vertical / 2);
+@table-border-color: @border-color-split;
+@table-border-radius-base: @border-radius-base;
+@table-footer-bg: @background-color-light;
+@table-footer-color: @heading-color;
+@table-header-bg-sm: @table-header-bg;
+@table-font-size: @font-size-base;
+@table-font-size-md: @table-font-size;
+@table-font-size-sm: @table-font-size;
+@table-header-cell-split-color: rgba(0, 0, 0, 0.06);
+// Sorter
+// Legacy: `table-header-sort-active-bg` is used for hover not real active
+@table-header-sort-active-bg: rgba(0, 0, 0, 0.04);
+@table-fixed-header-sort-active-bg: hsv(0, 0, 96%);
+
+// Filter
+@table-header-filter-active-bg: rgba(0, 0, 0, 0.04);
+@table-filter-btns-bg: inherit;
+@table-filter-dropdown-bg: @component-background;
+@table-expand-icon-bg: @component-background;
+@table-selection-column-width: 32px;
+// Sticky
+@table-sticky-scroll-bar-bg: fade(#000, 35%);
+@table-sticky-scroll-bar-radius: 4px;
+
+// Modal
+// --
+@modal-header-padding-vertical: @padding-sm;
+@modal-header-padding-horizontal: @padding-md;
+@modal-body-padding: 16px 24px;
+@modal-header-bg: @component-background;
+@modal-header-padding: @modal-header-padding-vertical @modal-header-padding-horizontal;
+@modal-header-border-width: @border-width-base;
+@modal-header-border-style: @border-style-base;
+@modal-header-title-line-height: 22px;
+@modal-header-title-font-size: @font-size-lg;
+@modal-header-border-color-split: @border-color-split;
+@modal-header-close-size: 46px;
+@modal-content-bg: @component-background;
+@modal-heading-color: @heading-color;
+@modal-close-color: @text-color-secondary;
+@modal-footer-bg: transparent;
+@modal-footer-border-color-split: @border-color-split;
+@modal-footer-border-style: @border-style-base;
+@modal-footer-padding-vertical: @padding-sm;
+@modal-footer-padding-horizontal: @padding-md;
+@modal-footer-border-width: @border-width-base;
+@modal-mask-bg: fade(@black, 45%);
+@modal-confirm-body-padding: 32px 32px 24px;
+@modal-confirm-title-font-size: @font-size-lg;
+
+// Tabs
+// ---
+@tabs-card-head-background: @background-color-light;
+@tabs-card-height: 32px;
+@tabs-card-active-color: @primary-color;
+@tabs-card-horizontal-padding: ((@tabs-card-height - floor(@font-size-base * @line-height-base)) / 2) - @border-width-base @padding-md;
+@tabs-card-horizontal-padding-sm: 6px @padding-md;
+@tabs-card-horizontal-padding-lg: 7px @padding-md 6px;
+@tabs-title-font-size: @font-size-base;
+@tabs-title-font-size-lg: @font-size-lg;
+@tabs-title-font-size-sm: @font-size-base;
+@tabs-ink-bar-color: @primary-color;
+@tabs-bar-margin: 0 0 @margin-md 0;
+@tabs-horizontal-gutter: 8px;
+@tabs-horizontal-margin: 0 0 0 @tabs-horizontal-gutter;
+@tabs-horizontal-margin-rtl: 0 0 0 8px;
+@tabs-horizontal-padding: @padding-xs;
+@tabs-horizontal-padding-lg: @padding-md 0;
+@tabs-horizontal-padding-sm: @padding-xs 0;
+@tabs-vertical-padding: @padding-xs @padding-lg;
+@tabs-vertical-margin: @margin-md 0 0 0;
+@tabs-scrolling-size: 32px;
+@tabs-highlight-color: @primary-color;
+@tabs-hover-color: @primary-5;
+@tabs-active-color: @primary-7;
+@tabs-card-gutter: 2px;
+@tabs-card-tab-active-border-top: 2px solid transparent;
+
+
+// Input
+// ---
+@input-height-base: @height-base;
+@input-height-lg: @height-lg;
+@input-height-sm: @height-sm;
+@input-padding-horizontal: @padding-xss;
+@input-padding-horizontal-base: @padding-xss;
+@input-padding-horizontal-sm: @padding-sm;
+@input-padding-horizontal-lg: @padding-lg;
+@input-padding-vertical-base: max((round(((@input-height-base - @font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    3px);
+@input-padding-vertical-sm: max((round(((@input-height-sm - @font-size-base * @line-height-base) / 2) * 10) / 10) - @border-width-base,
+    0);
+@input-padding-vertical-lg: (ceil(((@input-height-lg - @font-size-lg * @line-height-base) / 2) * 10) / 10) - @border-width-base;
+@input-color: @text-color;
+@input-icon-color: @input-color;
+@input-border-color: @border-color-base;
+@input-bg: @component-background;
+@input-number-hover-border-color: @input-hover-border-color;
+@input-number-handler-active-bg: #f4f4f4;
+@input-number-handler-hover-bg: @primary-5;
+@input-number-handler-bg: @component-background;
+@input-number-handler-border-color: @border-color-base;
+@input-addon-bg: @background-color-light;
+@input-hover-border-color: @primary-5;
+@input-disabled-bg: @disabled-bg;
+@input-outline-offset: 0 0;
+@input-icon-hover-color: fade(@black, 85%);
+@input-disabled-color: @disabled-color;
+
+// Tree 
+@tree-bg: @component-background;
+@tree-child-padding: 18px;
+@tree-directory-selected-color: #fff;
+@tree-directory-selected-bg: @primary-color;
+@tree-node-hover-bg: @item-hover-bg;
+@tree-node-selected-bg: @primary-1;
+
+// Disabled states
+@disabled-color: @text-color-less;
+@disabled-bg: @background-color-base;
+@disabled-active-bg: tint(@black, 90%);
+@disabled-color-dark: fade(#fff, 35%);
+
+@import './project.less';

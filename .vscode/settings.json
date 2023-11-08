@@ -1,0 +1,16 @@
+{
+    "EnglishChineseDictionary.enableHover": true,
+    "editor.formatOnSave": true,
+    "i18n-ally.localesPaths": [
+      "src/locales",
+      "src/locales/lang",
+      "src/components/setting-drawer/locales",
+      "src/views/dashboard/analysis/locales",
+      "src/views/dashboard/monitor/locales",
+      "src/views/form/advance-form/locales",
+      "src/views/form/basic-form/locales",
+      "src/views/form/step-form/locales"
+    ],
+    "vue.features.codeActions.enable": false,
+    "editor.formatOnSaveMode": "modifications"
+}

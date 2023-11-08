@@ -1,0 +1,307 @@
+/* antd 样式end */
+.portal-container {
+  height: 100%;
+  background: #fff;
+  .ant-layout-sider,
+  .ant-layout-header {
+    background: #fff;
+  }
+
+  .ant-layout-header {
+    padding: 0;
+    line-height: 46px;
+    border-bottom: 1px solid @border-color-split;
+
+    .edit-title {
+      padding: 0 8px;
+      text-align: left;
+    }
+
+    .btn-group {
+      padding: 0 8px;
+      text-align: right;
+    }
+  }
+  .ant-layout-content {
+    overflow: auto;
+  }
+  .ant-form.ant-form-horizontal {
+    padding: 0;
+  }
+  .ant-form-item .ant-form-item-label {
+    flex: 0 0 66px;
+  }
+  .ant-form-item-control {
+    .ant-form-item-children {
+      display: inline-flex;
+      align-items: center;
+      textarea.ant-input {
+        height: 120px;
+      }
+    }
+  }
+  main {
+    padding: 0;
+  }
+  .portal-title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .portal-title-text {
+    display: inline-block;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    font-weight: 600;
+    font-size: @font-size-lg;
+    padding-left: 12px;
+  }
+  .portal-title-icon {
+    font-size: @font-size-lg;
+    display: inline-block;
+    vertical-align: text-bottom;
+    color: @primary-color;
+    margin-left: 8px;
+  }
+  /* 设计器内容区小页列表start */
+  .portal-container-center-left {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding-top: 40px;
+    background-color: #ffffff;
+    .drag-icon {
+      color: @text-color-secondary;
+      cursor: pointer;
+      &:hover {
+        color: @primary-color;
+      }
+    }
+    .drag-icon.success {
+      color: @success-color;
+    }
+    .portal-left-title {
+      padding: 8px 16px;
+      font-size: @font-size-sm;
+      font-weight: 600;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      background: #fff;
+    }
+
+    .portal-left-li-list {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin: 0 8px 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: @label-background;
+      &:hover {
+        background-color: @primary-1;
+      }
+    }
+    .portal-left-li-modeltemp {
+      & > a {
+        cursor: pointer;
+      }
+    }
+  }
+  /* 设计器内容区小页列表end */
+  /* 设计器内容区start */
+  .portal-container-center {
+    // background-color: red;
+    // border-right: 1px solid #e0e0e0;
+    // border-left: 1px solid #e0e0e0;
+    .splitpanes__pane {
+      // background-color: transparent;
+    }
+    .portal-icon-question-circle {
+      vertical-align: middle;
+    }
+  }
+  /* 设计器内容区end */
+  .portal-widget-form-container {
+    height: 100%;
+    background-color: @layout-body-background;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .portal-widget-form-list {
+      height: 100%;
+      background: #fff;
+
+      .portal-widget-col-list {
+        min-height: 50px;
+        background: #fff;
+      }
+      /* widgetFormItem 样式style */
+      .portal-widget-view {
+        position: relative;
+        height: 100%;
+        border: 1px solid @border-color-split;
+        .box-card {
+          border: 0;
+        }
+        &.active {
+          border-color: @primary-color;
+        }
+        .portal-widget-view-action {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          bottom: 0;
+          z-index: 9;
+          height: 24px;
+          > span {
+            display: inline-block;
+            padding: 0px 4px;
+            margin: 0 2px;
+            background: #f2f2f2;
+            border-radius: 2px;
+            border: 1px solid @border-color-base;
+            cursor: pointer;
+          }
+          > span:hover {
+            background-color: @primary-1;
+            border-color: @primary-4;
+            svg {
+              color: @primary-color;
+            }
+          }
+        }
+
+        &::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: block;
+        }
+
+        &:hover {
+          outline-offset: 0;
+
+          &.active {
+            outline-offset: 0;
+          }
+
+          .widget-view-drag {
+            display: block;
+          }
+        }
+      }
+      /* widgetFormItem 样式end */
+    }
+    /* 拖拽显示可放入的位置 */
+    .ghost {
+      position: relative;
+      background: #f56c6c;
+      border: 2px solid #f56c6c;
+
+      &::after {
+        background: #f56c6c;
+      }
+    }
+
+    li.ghost {
+      height: 5px;
+      overflow: hidden;
+      font-size: 0;
+      list-style: none;
+    }
+    /* 空数据显示 */
+    .portal-widget-form-empty {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 300px;
+      height: 200px;
+      margin: auto;
+      color: #ccc;
+      font-size: 20px;
+      text-align: center;
+    }
+    .widget-form-empty {
+      font-size: 120px;
+      line-height: 50px;
+    }
+  }
+  .portal-widget-config-container {
+    .portal-config-tab {
+      font-weight: 600;
+      padding-left: 16px;
+    }
+    .portal-config-content {
+      background: #ffffff;
+      padding: 16px 8px;
+      .avic-font-setting {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        width: 24px;
+        height: 32px;
+        font-weight: bold;
+        justify-content: center;
+      }
+      .vc-color-wrap {
+        margin: 0;
+        width: 16px;
+        height: 16px;
+        border-radius: 2px;
+        vertical-align: middle;
+      }
+      .avic-font-set-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .ant-select {
+          margin-right: 4px;
+        }
+        .ant-tag-checkable {
+          vertical-align: middle;
+          margin-right: 4px;
+          width: 24px;
+          height: 24px;
+          line-height: 24px;
+          font-size: 18px;
+          font-family: monospace;
+          font-weight: bold;
+        }
+
+        .ant-select-arrow {
+          right: 6px;
+        }
+      }
+      .ant-tag-checkable {
+      }
+      .ant-tag-checkable:last-child {
+        border: 1px solid #ddd;
+      }
+      .empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
