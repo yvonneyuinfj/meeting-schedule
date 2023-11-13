@@ -8,47 +8,24 @@
       class="form-excel-style"
     >
       <a-row>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('secretLevel')">
-          <a-form-item name="secretLevel" label="数据密级" :rules="fieldRequired('secretLevel')" has-feedback>
-            <a-select
-              v-model:value="form.secretLevel"
-              :auto-focus="true"
-              :get-popup-container="triggerNode => triggerNode.parentNode"
-              option-filter-prop="children"
-              :show-search="true"
-              :allow-clear="true"
-              :disabled="fieldDisabled('secretLevel')"
-            >
-              <a-select-option
-                v-for="item in secretLevelList"
-                :key="item.sysLookupTlId"
-                :value="item.lookupCode"
-              >
-                {{ item.lookupName }}
-              </a-select-option>
-            </a-select>
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('note')">
-          <a-form-item name="note" label="备注" :rules="fieldRequired('note')" has-feedback>
-            <a-input
-              v-model:value="form.note"
-              :disabled="fieldDisabled('note')"
-            />
-          </a-form-item>
-        </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billNo')">
           <a-form-item name="billNo" label="单据号" :rules="fieldRequired('billNo')" has-feedback>
-            <a-input
-              v-model:value="form.billNo"
-              :disabled="fieldDisabled('billNo')"
-            />
+              <AvicAutoCode
+                v-model:value="form.billNo"
+                ref="autoCode"
+                code-type="FAM_BILL_NO"
+                code-param="FAM_OVERHAUL_REQUIRE"
+                :allow-clear="true"
+                :disabled="fieldDisabled('billNo')"
+                placeholder="请输入单据号"
+              />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('maintPlan')">
           <a-form-item name="maintPlan" label="维修计划" :rules="fieldRequired('maintPlan')" has-feedback>
             <a-input
               v-model:value="form.maintPlan"
+              :auto-focus="true"
               :disabled="fieldDisabled('maintPlan')"
             />
           </a-form-item>
@@ -80,14 +57,6 @@
               format="YYYY-MM-DD"
               value-format="YYYY-MM-DD"
               :disabled="fieldDisabled('expectMaintTime')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
-          <a-form-item name="managerDeptId" label="主管部门id" :rules="fieldRequired('managerDeptId')" has-feedback>
-            <a-input
-              v-model:value="form.managerDeptId"
-              :disabled="fieldDisabled('managerDeptId')"
             />
           </a-form-item>
         </a-col>
@@ -146,7 +115,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('annualProvisional')">
-          <a-form-item name="annualProvisional" label="年度/临时" :rules="fieldRequired('annualProvisional')" has-feedback>
+          <a-form-item name="annualProvisional" label="年度/临时（勾选）" :rules="fieldRequired('annualProvisional')" has-feedback>
             <a-radio-group v-model:value="form.annualProvisional" :disabled="fieldDisabled('annualProvisional')">
               <a-radio
                 v-for="item in annualProvisionalList"
@@ -168,12 +137,8 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('projectAmount')">
           <a-form-item name="projectAmount" label="项目金额（万元）" :rules="fieldRequired('projectAmount')" has-feedback>
-            <a-input-number
+            <a-input
               v-model:value="form.projectAmount"
-              :min="0"
-              :max="9999999999.99"
-              :precision="2"
-              :step="0.01"
               :disabled="fieldDisabled('projectAmount')"
             />
           </a-form-item>
@@ -198,25 +163,6 @@
             </a-select>
           </a-form-item>
         </a-col>
-        </a-row>
-        <a-row>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('applyReason')">
-          <a-form-item name="applyReason" label="申请理由" :rules="fieldRequired('applyReason')" has-feedback>
-            <div class="Richtext" >
-              <Toolbar
-                style="border-bottom: 1px solid #ccc"
-                :editor="editorRef"
-                :defaultConfig="toolbarConfig"
-              />
-              <Editor
-                style="height: 500px; overflow-y: auto"
-                v-model:value="form.applyReason"
-                :defaultConfig="editorConfig"
-                @onCreated="onCreated"
-              />
-            </div>
-          </a-form-item>
-        </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('reqSuggest')">
           <a-form-item name="reqSuggest" label="要求及建议" :rules="fieldRequired('reqSuggest')" has-feedback>
             <a-input
@@ -225,12 +171,11 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
-          <a-form-item name="applyDeptId" label="申请部门id" :rules="fieldRequired('applyDeptId')" has-feedback>
-            <a-input
-              v-model:value="form.applyDeptId"
-              :disabled="fieldDisabled('applyDeptId')"
-            />
+        </a-row>
+        <a-row>
+        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('applyReason')">
+          <a-form-item name="applyReason" label="申请理由" :rules="fieldRequired('applyReason')" has-feedback>
+            <a-textarea v-model:value="form.applyReason" :rows="2" :disabled="fieldDisabled('applyReason')" />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptName')">
@@ -240,14 +185,6 @@
               type="deptSelect"
               :defaultShowValue="form.applyDeptNameAlias"
               :disabled="fieldDisabled('applyDeptName')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
-          <a-form-item name="handlePersonId" label="需求申请人id" :rules="fieldRequired('handlePersonId')" has-feedback>
-            <a-input
-              v-model:value="form.handlePersonId"
-              :disabled="fieldDisabled('handlePersonId')"
             />
           </a-form-item>
         </a-col>
@@ -276,14 +213,6 @@
             <a-input
               v-model:value="form.telephone"
               :disabled="fieldDisabled('telephone')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('annex')">
-          <a-form-item name="annex" label="附件" :rules="fieldRequired('annex')" has-feedback>
-            <a-input
-              v-model:value="form.annex"
-              :disabled="fieldDisabled('annex')"
             />
           </a-form-item>
         </a-col>
@@ -335,8 +264,6 @@
 <script lang="ts" setup>
 import { useFamOverhaulRequireForm, emits } from './ts/FamOverhaulRequireForm'; // 引入表单ts
 import FamOverhaulRequireListEdit from '@/views/avic/mms/fam/famoverhaulrequirelist/FamOverhaulRequireListEdit.vue'; // 引入子表组件
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
-import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
 
 const props = defineProps({
   formId: {
@@ -372,10 +299,7 @@ const {
   uploadFile,
   afterUploadEvent,
   attachmentRequired,
-  toolbarConfig,
-  editorConfig,
-  editorRef,
-  onCreated,
+  autoCode,
   famOverhaulRequireListEdit,
   fieldVisible,
   fieldDisabled,

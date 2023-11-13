@@ -2,8 +2,8 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable
-      ref="famOverhaulRequireList"
-      table-key="famOverhaulRequireList"
+      ref="famAccpetList"
+      table-key="famAccpetList"
       :height="300"
       :columns="columns"
       :row-key="record => record.id"
@@ -25,7 +25,7 @@
         <a-space>
           <a-space>
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
+              v-hasPermi="['famAccpetList:add']"
               title="添加"
               type="primary"
               @click="handleAdd"
@@ -36,18 +36,7 @@
               添加
             </a-button>
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
-              title="添加"
-              type="primary"
-              @click="handleMostAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              批量添加
-            </a-button>
-            <a-button
-              v-hasPermi="['famOverhaulRequireList:del']"
+              v-hasPermi="['famAccpetList:del']"
               title="删除"
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
@@ -68,7 +57,7 @@
       </template>
       <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-           v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetNo','assetSpec'].includes(
+           v-if="['installLocation','ownershipCertNo','assetOriginalValue','assetModel','factoryNo','procureOrder','assetClass','assetNo','assetSpec','liablePerson','equipClass','assetUnit','warrantyPeriod','assetNum','assetName','producer','equipNo','invoiceNo','brand','parentAssetNo'].includes(
                column.dataIndex
               )"
             :record="record"
@@ -84,6 +73,20 @@
                 @blur="blurInput($event, record, column.dataIndex)"
              >
               </a-input>
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit
+            v-else-if="column.dataIndex === 'productionDate'"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-date-picker
+                v-model:value="record.productionDate"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择出厂日期"
+              >
+              </a-date-picker>
             </template>
           </AvicRowEdit>
           <AvicRowEdit
@@ -116,6 +119,36 @@
               />
             </template>
           </AvicRowEdit>
+          <AvicRowEdit
+            v-else-if="column.dataIndex === 'isNewAsset'"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-select
+                v-model:value="record.isNewAsset"
+                style="width: 100%"
+                placeholder="请选择是否新增资产"
+                @change="(value)=>changeControlValue(value,record,'isNewAsset')"
+              >
+                <a-select-option
+                  v-for="select in isNewAssetList"
+                  :key="select.sysLookupTlId"
+                  :value="select.lookupCode"
+                  :title="select.lookupName"
+                  :disabled="select.disabled === true"
+                >
+                  {{ select.lookupName }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <template #default>
+              <AvicDictTag
+                :value="record.isNewAssetName"
+                :options="isNewAssetList"
+              />
+            </template>
+          </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -132,10 +165,11 @@
       </template>
     </AvicTable>
   </div>
+
 </template>
 <script lang="ts" setup>
-import type { FamOverhaulRequireListDto } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块DTO
-import { listFamOverhaulRequireListByPage } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块API
+import type { FamAccpetListDto } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块DTO
+import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -151,6 +185,20 @@ const props = defineProps({
   }
 });
 const columns = [
+  {
+    title: '是否新增资产',
+    dataIndex: 'isNewAsset',
+    key: 'isNewAsset',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
   {
     title: '资产类别',
     dataIndex: 'assetClass',
@@ -183,6 +231,20 @@ const columns = [
     title: '设备编号',
     dataIndex: 'equipNo',
     key: 'equipNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '设备大类',
+    dataIndex: 'equipClass',
+    key: 'equipClass',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -236,9 +298,191 @@ const columns = [
     align: 'left'
   },
   {
+    title: '资产单价',
+    dataIndex: 'assetUnit',
+    key: 'assetUnit',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '资产数量',
+    dataIndex: 'assetNum',
+    key: 'assetNum',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
     title: '资产原值',
     dataIndex: 'assetOriginalValue',
     key: 'assetOriginalValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '安装地点',
+    dataIndex: 'installLocation',
+    key: 'installLocation',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '责任人',
+    dataIndex: 'liablePerson',
+    key: 'liablePerson',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '生产商',
+    dataIndex: 'producer',
+    key: 'producer',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '出厂号',
+    dataIndex: 'factoryNo',
+    key: 'factoryNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '品牌',
+    dataIndex: 'brand',
+    key: 'brand',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '采购合同',
+    dataIndex: 'procureOrder',
+    key: 'procureOrder',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '发票号',
+    dataIndex: 'invoiceNo',
+    key: 'invoiceNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '权属证号',
+    dataIndex: 'ownershipCertNo',
+    key: 'ownershipCertNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '出厂日期',
+    dataIndex: 'productionDate',
+    key: 'productionDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '父资产编号',
+    dataIndex: 'parentAssetNo',
+    key: 'parentAssetNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell () {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '质保期',
+    dataIndex: 'warrantyPeriod',
+    key: 'warrantyPeriod',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -264,7 +508,7 @@ const columns = [
     align: 'center'
   }
 ] as any[];
-const queryForm = ref<FamOverhaulRequireListDto>({});
+const queryForm = ref<FamAccpetListDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -276,7 +520,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const famOverhaulRequireList = ref(null);
+const famAccpetList = ref(null);
 const list = ref([]); //表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -285,11 +529,16 @@ const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
+const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const lookupParams = [
+  { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
 ];
 const validateRules = {
+  isNewAsset: [
+    { required:true, message: '是否新增资产列不能为空' }
+  ],
   assetClass: [
     { required:true, message: '资产类别列不能为空' }
   ],
@@ -298,6 +547,9 @@ const validateRules = {
   ],
   equipNo: [
     { required:true, message: '设备编号列不能为空' }
+  ],
+  equipClass: [
+    { required:true, message: '设备大类列不能为空' }
   ],
   assetName: [
     { required:true, message: '资产名称列不能为空' }
@@ -308,8 +560,47 @@ const validateRules = {
   assetModel: [
     { required:true, message: '资产型号列不能为空' }
   ],
+  assetUnit: [
+    { required:true, message: '资产单价列不能为空' }
+  ],
+  assetNum: [
+    { required:true, message: '资产数量列不能为空' }
+  ],
   assetOriginalValue: [
     { required:true, message: '资产原值列不能为空' }
+  ],
+  installLocation: [
+    { required:true, message: '安装地点列不能为空' }
+  ],
+  liablePerson: [
+    { required:true, message: '责任人列不能为空' }
+  ],
+  producer: [
+    { required:true, message: '生产商列不能为空' }
+  ],
+  factoryNo: [
+    { required:true, message: '出厂号列不能为空' }
+  ],
+  brand: [
+    { required:true, message: '品牌列不能为空' }
+  ],
+  procureOrder: [
+    { required:true, message: '采购合同列不能为空' }
+  ],
+  invoiceNo: [
+    { required:true, message: '发票号列不能为空' }
+  ],
+  ownershipCertNo: [
+    { required:true, message: '权属证号列不能为空' }
+  ],
+  productionDate: [
+    { required:true, message: '出厂日期列不能为空' }
+  ],
+  parentAssetNo: [
+    { required:true, message: '父资产编号列不能为空' }
+  ],
+  warrantyPeriod: [
+    { required:true, message: '质保期列不能为空' }
   ],
   importedOrNot: [
     { required:true, message: '是否为进口设备列不能为空' }
@@ -340,9 +631,9 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  queryForm.value.overhaulRequireId = props.mainId ? props.mainId : '-1';
+  queryForm.value.amAccpetId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
-  listFamOverhaulRequireListByPage(queryParam)
+  listFamAccpetListByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
@@ -359,6 +650,7 @@ function getList() {
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
+    isNewAssetList.value = result.isNewAsset;
     importedOrNotList.value = result.importedOrNot;
   });
 }
@@ -371,23 +663,33 @@ function getChangedData() {
   return deletedData.value.concat(changedData);
 }
 
-/** 批量添加 */
-function handleMostAdd(){
-
-}
-
 /** 添加 */
 function handleAdd() {
   let item = {
     id: 'newLine' + proxy.$uuid(),
     operationType_: 'insert',
+    isNewAsset: undefined,
     assetClass: '',
     assetNo: '',
     equipNo: '',
+    equipClass: '',
     assetName: '',
     assetSpec: '',
     assetModel: '',
+    assetUnit: '',
+    assetNum: '',
     assetOriginalValue: '',
+    installLocation: '',
+    liablePerson: '',
+    producer: '',
+    factoryNo: '',
+    brand: '',
+    procureOrder: '',
+    invoiceNo: '',
+    ownershipCertNo: '',
+    productionDate: null,
+    parentAssetNo: '',
+    warrantyPeriod: '',
     importedOrNot: undefined,
     editable: true // true为编辑中, false为未编辑
   };
@@ -415,8 +717,6 @@ function handleEdit(record) {
   });
   list.value = newData;
 }
-
-
 
 /** 删除处理逻辑*/
 function handleDelete(ids, e) {
@@ -494,7 +794,7 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, famOverhaulRequireList);
+    flag = proxy.$validateRecordData(records[index], validateRules, list.value, famAccpetList);
     if (!flag) {
       break;
     }

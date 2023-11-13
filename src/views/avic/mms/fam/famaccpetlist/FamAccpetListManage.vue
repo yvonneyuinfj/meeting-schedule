@@ -3,8 +3,8 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="famOverhaulRequireList"
-        table-key="famOverhaulRequireList"
+        ref="famAccpetList"
+        table-key="famAccpetList"
         :columns="columns"
         :row-key="record => record.id"
         :data-source="list"
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { listFamOverhaulRequireListByPage, delFamOverhaulRequireList } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块API
+import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -91,6 +91,14 @@ const columns = [
     width: 60,
     align: 'center',
     fixed: 'left'
+  },
+  {
+    title: '是否新增资产',
+    dataIndex: 'isNewAssetName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '资产类别',
@@ -113,6 +121,15 @@ const columns = [
   {
     title: '设备编号',
     dataIndex: 'equipNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '设备大类',
+    dataIndex: 'equipClass',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -147,8 +164,124 @@ const columns = [
     align: 'left'
   },
   {
+    title: '资产单价',
+    dataIndex: 'assetUnit',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产数量',
+    dataIndex: 'assetNum',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '资产原值',
     dataIndex: 'assetOriginalValue',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '安装地点',
+    dataIndex: 'installLocation',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '责任人',
+    dataIndex: 'liablePerson',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '生产商',
+    dataIndex: 'producer',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '出厂号',
+    dataIndex: 'factoryNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '品牌',
+    dataIndex: 'brand',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '采购合同',
+    dataIndex: 'procureOrder',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '发票号',
+    dataIndex: 'invoiceNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '权属证号',
+    dataIndex: 'ownershipCertNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '出厂日期',
+    dataIndex: 'productionDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '父资产编号',
+    dataIndex: 'parentAssetNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '质保期',
+    dataIndex: 'warrantyPeriod',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -178,7 +311,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    overhaulRequireId: ''
+    amAccpetId: ''
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -191,8 +324,10 @@ const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
+const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const lookupParams = [
+  { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
 ];
 
@@ -208,8 +343,8 @@ function getList () {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  queryParam.searchParams.overhaulRequireId = props.mainId ? props.mainId : '-1';
-  listFamOverhaulRequireListByPage(queryParam)
+  queryParam.searchParams.amAccpetId = props.mainId ? props.mainId : '-1';
+  listFamAccpetListByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
@@ -224,6 +359,7 @@ function getList () {
 /** 获取通用代码  */
 function getLookupList () {
   proxy.$getLookupByType(lookupParams, result => {
+    isNewAssetList.value = result.isNewAsset;
     importedOrNotList.value = result.importedOrNot;
   });
 }
@@ -247,7 +383,7 @@ function handleDelete (ids, type) {
     cancelText: '取消',
     onOk: () => {
       delLoading.value = true;
-      delFamOverhaulRequireList(ids)
+      delFamAccpetList(ids)
         .then(res => {
           if (res.success) {
             proxy.$message.success('删除成功！');

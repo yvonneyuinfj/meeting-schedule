@@ -5,26 +5,6 @@
       <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="数据密级">
-              <a-select
-                v-model:value="queryForm.secretLevel"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择数据密级"
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
             <a-form-item label="备注">
               <a-input
                 v-model:value="queryForm.note"
@@ -44,7 +24,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-bind="colLayout.cols">
             <a-form-item label="在研开始时间(起)">
               <a-date-picker
                 v-model:value="queryForm.urStartTimeBegin"
@@ -55,7 +35,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-bind="colLayout.cols">
             <a-form-item label="在研开始时间(止)">
               <a-date-picker
                 v-model:value="queryForm.urStartTimeEnd"
@@ -139,7 +119,7 @@
           <a-input-search
             class="opt-btn-commonsearch"
             style="width: 200px"
-            placeholder="请输入备注"
+            placeholder="请输入"
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />
@@ -172,14 +152,6 @@ const columns = [
     width: 60,
     align: 'center',
     fixed: 'left'
-  },
-  {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
   },
   {
     title: '备注',
@@ -244,13 +216,10 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const  totalPage = ref(0);
-const secretLevelList = ref([]); // 数据密级通用代码
 
 onMounted(() => {
   // 加载表格数据
   getList();
-  // 获取当前用户对应的文档密级
-  getUserFileSecretList();
 });
 /** 查询数据  */
 function getList() {
@@ -268,12 +237,6 @@ function getList() {
       totalPage.value = 0;
       loading.value = false;
     });
-}
-/** 获取当前用户对应的文档密级 */
-function getUserFileSecretList() {
-  proxy.$getUserFileSecretLevelList(result => {
-    secretLevelList.value = result;
-  });
 }
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
@@ -294,7 +257,6 @@ function toggleAdvanced() {
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
-    note: value
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;

@@ -3,9 +3,9 @@ import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
-const basePath = '/mms/fam/famoverhaulrequires';
-/** 默认配置表 */
-export interface FamOverhaulRequireDto extends BaseBeanModel {
+const basePath = '/mms/fam/famaccpets';
+/** FAM_ACCPET */
+export interface FamAccpetDto extends BaseBeanModel {
   /** 数据密级 */
   secretLevel?: any;
   /** 备注 */
@@ -30,78 +30,68 @@ export interface FamOverhaulRequireDto extends BaseBeanModel {
   attribute09?: string;
   /** ATTRIBUTE_10 */
   attribute10?: string;
-  /** 单据号 */
-  billNo?: any;
-  /** 维修计划 */
-  maintPlan?: string;
-  /** 维修类别 */
-  maintCategory?: any;
-  /** 需求时间 */
-  expectMaintTime?: any;
-  expectMaintTimeBegin?: any;
-  expectMaintTimeEnd?: any;
+  /** 验收申请单号 */
+  accpetApplyNo?: any;
+  /** 验收类型 */
+  accpetType?: any;
+  /** 合同名称 */
+  orderName?: string;
+  /** 合同编号 */
+  orderNo?: string;
+  /** 合同金额 */
+  orderValue?: string;
+  /** 采购部门id */
+  procureDeptId?: string;
+  /** 采购部门名称 */
+  procureDeptName?: string;
+  procureDeptNameAlias?: string;
+  /** 验收日期 */
+  accpetDate?: any;
+  accpetDateBegin?: any;
+  accpetDateEnd?: any;
   /** 主管部门id */
   managerDeptId?: string;
   /** 主管部门名称 */
   managerDeptName?: string;
   managerDeptNameAlias?: string;
-  /** 是否使用型号经费 */
-  isUsedScientificrs?: any;
-  /** 预算项目 */
-  budgetProject?: string;
-  /** 预算分项 */
-  budgetSubitem?: string;
-  /** 预算组织 */
-  budgetOrg?: string;
-  /** 年度/临时（勾选） */
-  annualProvisional?: string;
-  annualProvisionalName?: string;
-  /** 课题号 */
-  projectNumber?: string;
-  /** 项目金额（万元） */
-  projectAmount?: string;
-  /** 是否需要评审 */
-  isNeedReview?: any;
-  /** 要求及建议 */
-  reqSuggest?: string;
-  /** 申请理由 */
-  applyReason?: string;
-  /** 申请部门id */
-  applyDeptId?: string;
-  /** 申请部门名称 */
-  applyDeptName?: string;
-  applyDeptNameAlias?: string;
-  /** 需求申请人id */
+  /** 接收部门ID */
+  receiveDeptId?: string;
+  /** 接收部门名称 */
+  receiveDeptName?: string;
+  receiveDeptNameAlias?: string;
+  /** 资产类别 */
+  assetClass?: string;
+  /** 资金来源 */
+  fundSource?: string;
+  /** 其他事项 */
+  otherMatter?: string;
+  /** 购置方式 */
+  purchWay?: string;
+  /** 项目名称 */
+  projectName?: string;
+  /** 经办人id */
   handlePersonId?: string;
-  /** 需求申请人名称 */
+  /** 经办人名称 */
   handlePersonName?: string;
   handlePersonNameAlias?: string;
-  /** 故障时间 */
-  applyDate?: any;
-  applyDateBegin?: any;
-  applyDateEnd?: any;
-  /** 联系电话 */
-  telephone?: string;
-  /** 附件 */
-  annex?: string;
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */
-  famOverhaulRequireListList?: [];
+  famAccpetListList?: [];
 }
 
 /** 获取分页数据 */
-export function listFamOverhaulRequireByPage(param: QueryParamModel): Promise<ResponsePageData<FamOverhaulRequireDto>> {
+export function listFamAccpetByPage(param: QueryParamModel): Promise<ResponsePageData<FamAccpetDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getFamOverhaulRequire (id: string): Promise<ResponseBaseData<FamOverhaulRequireDto>> {
+export function getFamAccpet (id: string): Promise<ResponseBaseData<FamAccpetDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamOverhaulRequire (form: FamOverhaulRequireDto): Promise<ResponseBaseData<any>> {
+export function saveFamAccpet (form: FamAccpetDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
@@ -119,7 +109,7 @@ export function saveFormAndStartProcess({
 }
 
 /** 根据id集合删除数据 */
-export function delFamOverhaulRequire(ids: [string]): Promise<ResponseBaseData<any>> {
+export function delFamAccpet(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 

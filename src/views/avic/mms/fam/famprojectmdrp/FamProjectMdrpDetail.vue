@@ -16,29 +16,8 @@
        >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="secretLevel" label="数据密级">
-              <a-select
-                v-model:value="form.secretLevel"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                disabled
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
             <a-form-item name="note" label="备注">
-              <a-input v-model:value="form.note" disabled />
+              <a-input v-model:value="form.note" :auto-focus="true" disabled />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -89,7 +68,6 @@ const {
   layout,
   colLayout,
   loading,
-  secretLevelList,
   closeModal
 } = useFamProjectMdrpForm({
   props: props,

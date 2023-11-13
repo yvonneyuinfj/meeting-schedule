@@ -1,54 +1,46 @@
-import type { DemoSingle2Dto } from '@/api/avic/demo/DemoSingle2Api'; // 引入模块DTO
-import { getDemoSingle2, saveDemoSingle2 } from '@/api/avic/demo/DemoSingle2Api'; // 引入模块API
-export const emits = ['reloadData', 'close'];
-export function useDemoSingle2Form({
-  props: props,
-  emit: emit
-}) {
+import type { FamAssetClassTherrDto } from '@/api/avic/mms/fam/FamAssetClassTherrApi'; // 引入模块DTO
+import { getFamAssetClassTherr, saveFamAssetClassTherr, basePath } from '@/api/avic/mms/fam/FamAssetClassTherrApi'; // 引入模块API
+export const emits = ['afterAddTreeNode', 'afterEditTreeNode', 'close'];
+export function useFamAssetClassTherrForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<DemoSingle2Dto>({});
-  const formRef = ref(null);
+  const form = ref<FamAssetClassTherrDto>({
+    attribute01: props.parentId
+  });
+  const formRef = ref(null);  // 表单ref
   const rules: Record<string, Rule[]> = {
-    demoUserId: [
-      { required: true, message: '用户不能为空', trigger: 'change' }
+    attribute01: [
+      { required: true, message: 'ATTRIBUTE_01不能为空', trigger: 'change' }
     ],
-    secretLevel: [
-      { required: true, message: '密级不能为空', trigger: 'change' }
+    parentId: [
+      { required: true, message: '上级节点ID不能为空', trigger: 'change' }
     ],
-    demoNotnull: [
-      { required: true, message: '必填不能为空', trigger: 'change' }
+    treeSort: [
+      { required: true, message: '树节点排序号(本级)不能为空', trigger: 'change' }
+    ],
+    parentClassName: [
+      { required: true, message: '上级类别名称不能为空', trigger: 'change' }
     ]
   };
   const layout = {
-    labelCol: { flex: '0 0 140px' },
+    labelCol: { flex: '0 0 120px' },
     wrapperCol: { flex: '1 1 0' }
   };
   const colLayout = proxy.$colLayout2; // 调用布局公共方法
+  const baseUrl = basePath; // 树选择组件的baseUrl
   const loading = ref(false);
-  const secretLevelList = ref([]); // 密级通用代码
-
   onMounted(() => {
-    // 获取当前用户对应的文档密级
-    getUserFileSecretList();
     if (props.formId) {
       // 编辑、详情页面加载数据
       getFormData(props.formId);
     }
   });
-
-  /** 获取当前用户对应的文档密级 */
-  function getUserFileSecretList () {
-    proxy.$getUserFileSecretLevelList(result => {
-      secretLevelList.value = result;
-    });
-  }
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
    */
-  function getFormData (id) {
+  function getFormData(id) {
     loading.value = true;
-    getDemoSingle2(id)
+    getFamAssetClassTherr(id)
       .then(async (res) => {
         if (res.success) {
           form.value = res.data;
@@ -62,17 +54,25 @@ export function useDemoSingle2Form({
       });
   }
   /** 保存 */
-  function saveForm () {
+  function saveForm() {
     formRef.value
       .validate()
-      .then( () => {
+      .then(() => {
         loading.value = true;
+        const id = form.value.id;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        saveDemoSingle2(postData)
-          .then((res) => {
+        saveFamAssetClassTherr(postData)
+          .then(res => {
             if (res.success) {
+              if (id) {
+                // 编辑
+                emit('afterEditTreeNode', res.data);
+              } else {
+                // 添加
+                emit('afterAddTreeNode', res.data);
+              }
               successCallback();
             } else {
               loading.value = false;
@@ -88,13 +88,12 @@ export function useDemoSingle2Form({
       });
   }
   /** 数据保存成功的回调 */
-  function successCallback () {
+  function successCallback() {
     proxy.$message.success('保存成功！');
-    emit('reloadData');
     emit('close');
   }
   /** 返回关闭事件 */
-  function closeModal () {
+  function closeModal() {
     emit('close');
   }
   return {
@@ -103,11 +102,9 @@ export function useDemoSingle2Form({
     rules,
     layout,
     colLayout,
+    baseUrl,
     loading,
-    secretLevelList,
     saveForm,
     closeModal
   };
 }
-
-

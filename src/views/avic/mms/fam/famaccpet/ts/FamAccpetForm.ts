@@ -1,5 +1,5 @@
-import type { FamOverhaulRequireDto } from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块DTO
-import { getFamOverhaulRequire, saveFamOverhaulRequire, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块API
+import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块DTO
+import { getFamAccpet, saveFamAccpet, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -12,75 +12,63 @@ import {
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 export const emits = ['reloadData', 'close'];
-export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
+export function useFamAccpetForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<FamOverhaulRequireDto>({});
+  const form = ref<FamAccpetDto>({});
   const formRef = ref(null);
-  const formCode = 'FamOverhaulRequire';
+  const formCode = 'FamAccpet';
   const openType = ref('add'); // 流程表单的打开方式，add: 流程中心打开, edit: 待办打开
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    billNo: [
-      { required: true, message: '单据号不能为空', trigger: 'change' }
+    accpetApplyNo: [
+      { required: true, message: '验收申请单号不能为空', trigger: 'change' }
     ],
-    maintPlan: [
-      { required: true, message: '维修计划不能为空', trigger: 'change' }
+    accpetType: [
+      { required: true, message: '验收类型不能为空', trigger: 'change' }
     ],
-    maintCategory: [
-      { required: true, message: '维修类别不能为空', trigger: 'change' }
+    orderName: [
+      { required: true, message: '合同名称不能为空', trigger: 'change' }
     ],
-    expectMaintTime: [
-      { required: true, message: '需求时间不能为空', trigger: 'change' }
+    orderNo: [
+      { required: true, message: '合同编号不能为空', trigger: 'change' }
+    ],
+    orderValue: [
+      { required: true, message: '合同金额不能为空', trigger: 'change' }
+    ],
+    procureDeptName: [
+      { required: true, message: '采购部门名称不能为空', trigger: 'change' }
+    ],
+    accpetDate: [
+      { required: true, message: '验收日期不能为空', trigger: 'change' }
     ],
     managerDeptName: [
       { required: true, message: '主管部门名称不能为空', trigger: 'change' }
     ],
-    isUsedScientificrs: [
-      { required: true, message: '是否使用型号经费不能为空', trigger: 'change' }
+    receiveDeptName: [
+      { required: true, message: '接收部门名称不能为空', trigger: 'change' }
     ],
-    budgetProject: [
-      { required: true, message: '预算项目不能为空', trigger: 'change' }
+    assetClass: [
+      { required: true, message: '资产类别不能为空', trigger: 'change' }
     ],
-    budgetSubitem: [
-      { required: true, message: '预算分项不能为空', trigger: 'change' }
+    fundSource: [
+      { required: true, message: '资金来源不能为空', trigger: 'change' }
     ],
-    budgetOrg: [
-      { required: true, message: '预算组织不能为空', trigger: 'change' }
+    otherMatter: [
+      { required: true, message: '其他事项不能为空', trigger: 'change' }
     ],
-    annualProvisional: [
-      { required: true, message: '年度/临时（勾选）不能为空', trigger: 'change' }
+    purchWay: [
+      { required: true, message: '购置方式不能为空', trigger: 'change' }
     ],
-    projectNumber: [
-      { required: true, message: '课题号不能为空', trigger: 'change' }
-    ],
-    projectAmount: [
-      { required: true, message: '项目金额（万元）不能为空', trigger: 'change' }
-    ],
-    isNeedReview: [
-      { required: true, message: '是否需要评审不能为空', trigger: 'change' }
-    ],
-    reqSuggest: [
-      { required: true, message: '要求及建议不能为空', trigger: 'change' }
-    ],
-    applyReason: [
-      { required: true, message: '申请理由不能为空', trigger: 'change' }
-    ],
-    applyDeptName: [
-      { required: true, message: '申请部门名称不能为空', trigger: 'change' }
+    projectName: [
+      { required: true, message: '项目名称不能为空', trigger: 'change' }
     ],
     handlePersonName: [
-      { required: true, message: '需求申请人名称不能为空', trigger: 'change' }
-    ],
-    applyDate: [
-      { required: true, message: '故障时间不能为空', trigger: 'change' }
-    ],
-    telephone: [
-      { required: true, message: '联系电话不能为空', trigger: 'change' }
+      { required: true, message: '经办人名称不能为空', trigger: 'change' }
     ]
   };
-  const famOverhaulRequireListEdit = ref();
+  const famAccpetListEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
@@ -90,15 +78,9 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const uploadFile = ref(null); // 附件ref
   const autoCode = ref(null); // 自动编码ref
   const secretLevelList = ref([]); // 数据密级通用代码
-  const maintCategoryList = ref([]); // 维修类别通用代码
-  const isUsedScientificrsList = ref([]); // 是否使用型号经费通用代码
-  const annualProvisionalList = ref([]); // 年度/临时（勾选）通用代码
-  const isNeedReviewList = ref([]); // 是否需要评审通用代码
+  const accpetTypeList = ref([]); // 验收类型通用代码
   const lookupParams = [
-    { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
-    { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
-    { fieldName: 'isNeedReview', lookUpType: 'FAM_PROGRAM_VERSION' }
+    { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' }
     ];
   const authJson = ref(null);
 
@@ -129,10 +111,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   /** 获取通用代码  */
   function getLookupList () {
     proxy.$getLookupByType(lookupParams, result => {
-    maintCategoryList.value = result.maintCategory;
-    isUsedScientificrsList.value = result.isUsedScientificrs;
-    annualProvisionalList.value = result.annualProvisional;
-    isNeedReviewList.value = result.isNeedReview;
+    accpetTypeList.value = result.accpetType;
     });
   }
   /**
@@ -144,7 +123,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       return;
     }
     loading.value = true;
-    getFamOverhaulRequire(id)
+    getFamAccpet(id)
       .then(async res => {
         if (res.data) {
           form.value = res.data;
@@ -165,7 +144,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(async () => {
-        famOverhaulRequireListEdit.value
+        famAccpetListEdit.value
           .validate(async validate => {
             if (!validate) {
               return;
@@ -177,11 +156,11 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
             }
             loading.value = true;
             const postData = proxy.$lodash.cloneDeep(form.value);
-            const subInfoList = famOverhaulRequireListEdit.value.getChangedData(); // 获取子表数据
+            const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
             // 处理数据
-            postData.famOverhaulRequireListList = subInfoList; // 挂载子表数据
+            postData.famAccpetListList = subInfoList; // 挂载子表数据
             // 发送请求
-            saveFamOverhaulRequire(postData)
+            saveFamAccpet(postData)
               .then(res => {
                 if (res.success) {
                   if (props.bpmInstanceObject) {
@@ -221,7 +200,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(() => {
-        famOverhaulRequireListEdit.value
+        famAccpetListEdit.value
           .validate(validate => {
             if (!validate) {
               return;
@@ -262,14 +241,14 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       if (!validateResult) {
         return;
       }
-      const subInfoList = famOverhaulRequireListEdit.value.getChangedData(); // 获取子表数据
+      const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
       loading.value = true;
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
-      postData.famOverhaulRequireListList = subInfoList; // 挂载子表数据
+      postData.famAccpetListList = subInfoList; // 挂载子表数据
         if (autoCode.value) {
           // 获取编码码段值
-          postData.billNo = autoCode.value.getSegmentValue();
+          postData.accpetApplyNo = autoCode.value.getSegmentValue();
         }
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
@@ -399,10 +378,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     colLayout,
     loading,
     secretLevelList,
-    maintCategoryList,
-    isUsedScientificrsList,
-    annualProvisionalList,
-    isNeedReviewList,
+    accpetTypeList,
     uploadFile,
     afterUploadEvent,
     attachmentRequired,
@@ -415,7 +391,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     fieldRequired,
     beforeClickBpmButtons,
     afterClickBpmButtons,
-    famOverhaulRequireListEdit
+    famAccpetListEdit
   };
 }
 

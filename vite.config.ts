@@ -72,18 +72,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         /* env.VITE_HTTP_MOCK === 'true'
         ? undefined
         : */
-        { '/api/mms/mds': {
-            target: 'http://127.0.0.1:10008',
-            ws: false,
-            changeOrigin: true
-          },
-	        '/api/mms/tpm': {
-            target: 'http://127.0.0.1:10009',
-            ws: false,
-            changeOrigin: true
+        {
+          '/api/mms/fam/': {
+            target: 'http://192.168.1.102:10008',
+            ws: false,
+            changeOrigin: true
           },
           '/api': {
-            target: 'http://127.0.0.1:10001',
+            target: 'http://192.168.1.102:10001',
             ws: false,
             changeOrigin: true
             // rewrite: (p) => p.replace(/^\/api/, '')

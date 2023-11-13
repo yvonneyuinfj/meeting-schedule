@@ -3,7 +3,7 @@ import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 const basePath = '/mms/fam/famprojectmdrps';
-/** 默认配置表 */
+/** 项目在研期间维护表 */
 export interface FamProjectMdrpDto extends BaseBeanModel {
   /** 数据密级 */
   secretLevel?: any;

@@ -9,9 +9,6 @@ export function useFamProjectMdrpForm({
   const form = ref<FamProjectMdrpDto>({});
   const formRef = ref(null);
   const rules: Record<string, Rule[]> = {
-    secretLevel: [
-      { required: true, message: '数据密级不能为空', trigger: 'change' }
-    ],
     projectName: [
       { required: true, message: '项目名称不能为空', trigger: 'change' }
     ],
@@ -28,23 +25,14 @@ export function useFamProjectMdrpForm({
   };
   const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
-  const secretLevelList = ref([]); // 数据密级通用代码
 
   onMounted(() => {
-    // 获取当前用户对应的文档密级
-    getUserFileSecretList();
     if (props.formId) {
       // 编辑、详情页面加载数据
       getFormData(props.formId);
     }
   });
 
-  /** 获取当前用户对应的文档密级 */
-  function getUserFileSecretList () {
-    proxy.$getUserFileSecretLevelList(result => {
-      secretLevelList.value = result;
-    });
-  }
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
@@ -107,7 +95,6 @@ export function useFamProjectMdrpForm({
     layout,
     colLayout,
     loading,
-    secretLevelList,
     saveForm,
     closeModal
   };
