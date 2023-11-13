@@ -24,11 +24,36 @@
                 </a>
               </template>
             </template>
+            <template #toolBarLeft>
+              <a-space>
+                <a-button
+                  v-hasPermi="['famProjectMdrp:import']"
+                  title="导入"
+                  type="primary"
+                  ghost
+                  @click="handleImport">
+                  <template #icon>
+                     <import-outlined />
+                  </template>
+                  导入
+                </a-button>
+              </a-space>
+            </template>
           </AvicTable>
         </div>
+       
       </div>
     </AvicPane>
   </AvicSplit>
+  <AvicExcelImport
+    v-if="showImportModal"
+    :formData="excelParams"
+    title="单表模板导入"
+    importUrl="/mms/fam/famassetclass/importData/v1"
+    downloadTemplateUrl="/mms/fam/famassetclass/downloadTemplate/v1"
+    @reloadData="getList"
+    @close="showImportModal = false"
+  />
 </template>
 <script lang="ts" setup>
 import type { FamAssetClassDto } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块DTO
@@ -118,6 +143,8 @@ const queryParam = reactive({
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
+const showImportModal = ref(false); // 是否展示导入弹窗
+const excelParams = ref({ tableName: 'famAssetClass' }); // 导入Excel数据过滤参数
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); //表格数据集合
 const formId = ref(''); // 当前行数据id
@@ -147,6 +174,11 @@ onMounted(() => {
   // 加载查询区所需通用代码
   getLookupList();
 });
+
+/** 导入 */
+function handleImport () {
+  showImportModal.value = true;
+}
 
 /** 查询数据  */
 function getList() {
