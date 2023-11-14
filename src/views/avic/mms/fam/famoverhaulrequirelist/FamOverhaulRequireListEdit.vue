@@ -2,64 +2,65 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable
-      ref="famOverhaulRequireList"
-      table-key="famOverhaulRequireList"
-      :height="300"
-      :columns="columns"
-      :row-key="record => record.id"
-      :data-source="list"
-      :loading="loading"
-      :row-selection="{
+        ref="famOverhaulRequireList"
+        table-key="famOverhaulRequireList"
+        :height="300"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange,
         columnWidth: 40,
         fixed: true
       }"
-      :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
-      :total="totalPage"
-      :customRow="customRow"
-      @change="handleTableChange"
+        :showTableSetting="false"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
     >
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['famOverhaulRequireList:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
+            <!--            v-hasPermi="['famOverhaulRequireList:add']"-->
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
-              title="添加"
-              type="primary"
-              @click="handleMostAdd"
+
+                title="添加"
+                type="primary"
+                @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
             <a-button
-              v-hasPermi="['famOverhaulRequireList:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
+                v-hasPermi="['famOverhaulRequireList:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="
                 event => {
                   handleDelete(selectedRowKeys, event);
                 }
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -67,60 +68,60 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetNo','assetSpec'].includes(
+        <AvicRowEdit
+            v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetNo','assetSpec'].includes(
                column.dataIndex
               )"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record[column.dataIndex]"
                 :maxLength="32"
                 @input="$forceUpdate()"
                 style="width: 100%"
                 placeholder="请输入"
                 @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'importedOrNot'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
+        >
+          <template #edit>
+            <a-select
                 v-model:value="record.importedOrNot"
                 style="width: 100%"
                 placeholder="请选择是否为进口设备"
                 @change="(value)=>changeControlValue(value,record,'importedOrNot')"
-              >
-                <a-select-option
+            >
+              <a-select-option
                   v-for="select in importedOrNotList"
                   :key="select.sysLookupTlId"
                   :value="select.lookupCode"
                   :title="select.lookupName"
                   :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              <AvicDictTag
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag
                 :value="record.importedOrNotName"
                 :options="importedOrNotList"
-              />
-            </template>
-          </AvicRowEdit>
+            />
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
-            class="inner-btn"
-            type="link"
-            @click="
+              class="inner-btn"
+              type="link"
+              @click="
               event => {
                 handleDelete([record.id], event);
               }
@@ -131,11 +132,19 @@
         </template>
       </template>
     </AvicTable>
+
+    <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage" ></fam-inventory-manage>
+      </div>
+
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamOverhaulRequireListDto } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块DTO
 import { listFamOverhaulRequireListByPage } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块API
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -158,7 +167,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -172,7 +181,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -186,7 +195,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -200,7 +209,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -214,7 +223,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -228,7 +237,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -242,7 +251,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -256,7 +265,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -265,6 +274,8 @@ const columns = [
   }
 ] as any[];
 const queryForm = ref<FamOverhaulRequireListDto>({});
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -291,28 +302,28 @@ const lookupParams = [
 ];
 const validateRules = {
   assetClass: [
-    { required:true, message: '资产类别列不能为空' }
+    { required: true, message: '资产类别列不能为空' }
   ],
   assetNo: [
-    { required:true, message: '资产编号列不能为空' }
+    { required: true, message: '资产编号列不能为空' }
   ],
   equipNo: [
-    { required:true, message: '设备编号列不能为空' }
+    { required: true, message: '设备编号列不能为空' }
   ],
   assetName: [
-    { required:true, message: '资产名称列不能为空' }
+    { required: true, message: '资产名称列不能为空' }
   ],
   assetSpec: [
-    { required:true, message: '资产规格列不能为空' }
+    { required: true, message: '资产规格列不能为空' }
   ],
   assetModel: [
-    { required:true, message: '资产型号列不能为空' }
+    { required: true, message: '资产型号列不能为空' }
   ],
   assetOriginalValue: [
-    { required:true, message: '资产原值列不能为空' }
+    { required: true, message: '资产原值列不能为空' }
   ],
   importedOrNot: [
-    { required:true, message: '是否为进口设备列不能为空' }
+    { required: true, message: '是否为进口设备列不能为空' }
   ]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
@@ -335,6 +346,7 @@ onMounted(() => {
   // 加载查询区所需通用代码
   getLookupList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -343,25 +355,27 @@ function getList() {
   queryForm.value.overhaulRequireId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
   listFamOverhaulRequireListByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     importedOrNotList.value = result.importedOrNot;
   });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -372,9 +386,17 @@ function getChangedData() {
 }
 
 /** 批量添加 */
-function handleMostAdd(){
-
+function handleMostAdd() {
+  open.value = true;
+  console.log(open.value);
 }
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  console.log( famInventoryManage.value.selectedRow());
+  list.value = [...list.value ,...famInventoryManage.value.selectedRow()]
+};
 
 /** 添加 */
 function handleAdd() {
@@ -403,6 +425,7 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -415,7 +438,6 @@ function handleEdit(record) {
   });
   list.value = newData;
 }
-
 
 
 /** 删除处理逻辑*/
@@ -452,11 +474,13 @@ function customRow(record) {
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -467,6 +491,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -486,10 +511,12 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -501,6 +528,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -516,11 +544,14 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData
 });
 </script>
+<style lang="less" scoped>
+</style>
 
 
 

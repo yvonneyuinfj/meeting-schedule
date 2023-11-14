@@ -30,6 +30,9 @@ export function useFamInventoryForm({
     entryDate: [
       { required: true, message: '入账日期不能为空', trigger: 'change' }
     ],
+    storageLocation:[
+      { required: true, message: '存放地点不能为空', trigger: 'change' }
+    ],
     assetOriginalValue: [
       { required: true, message: '资产原值不能为空', trigger: 'change' }
     ],

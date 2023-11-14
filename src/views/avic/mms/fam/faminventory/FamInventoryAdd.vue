@@ -116,7 +116,11 @@
                 <a-input v-model:value="form.useTime" :maxLength="16" placeholder="请输入使用年限" />
               </a-form-item>
             </a-col>
-
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="storageLocation" label="存放地点">
+                <a-input v-model:value="form.storageLocation" :maxLength="16" placeholder="请输入存放地点" />
+              </a-form-item>
+            </a-col>
             <a-col v-bind="colLayout.cols">
               <a-form-item name="monDepreciation" label="月折旧额" has-feedback>
                 <a-input v-model:value="form.monDepreciation" :maxLength="16" placeholder="请输入月折旧额" />
