@@ -189,6 +189,7 @@
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+      <a-button title="保存" type="primary" :loading="loading" @click="saveAndStartProcess">推进流程</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
@@ -229,6 +230,7 @@ const {
   uploadFile,
   afterUploadEvent,
   saveForm,
+  saveAndStartProcess,
   closeModal,
   famAccpetListEdit
 } = useFamAccpetForm({

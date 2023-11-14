@@ -2,45 +2,44 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable
-        ref="famOverhaulRequireList"
-        table-key="famOverhaulRequireList"
-        :height="300"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+      ref="famOverhaulRequireList"
+      table-key="famOverhaulRequireList"
+      :height="300"
+      :columns="columns"
+      :row-key="record => record.id"
+      :data-source="list"
+      :loading="loading"
+      :row-selection="{
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange,
         columnWidth: 40,
         fixed: true
       }"
-        :showTableSetting="false"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        :customRow="customRow"
-        @change="handleTableChange"
+      :showTableSetting="false"
+      :pageParameter="queryParam.pageParameter"
+      :total="totalPage"
+      :customRow="customRow"
+      @change="handleTableChange"
     >
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button
-                v-hasPermi="['famOverhaulRequireList:add']"
-                title="添加"
-                type="primary"
-                @click="handleAdd"
+              v-hasPermi="['famOverhaulRequireList:add']"
+              title="添加"
+              type="primary"
+              @click="handleAdd"
             >
               <template #icon>
                 <plus-outlined/>
               </template>
               添加
             </a-button>
-            <!--            v-hasPermi="['famOverhaulRequireList:add']"-->
             <a-button
-
-                title="添加"
-                type="primary"
-                @click="handleMostAdd"
+              v-hasPermi="['famOverhaulRequireList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
             >
               <template #icon>
                 <plus-outlined/>
@@ -48,12 +47,12 @@
               批量添加
             </a-button>
             <a-button
-                v-hasPermi="['famOverhaulRequireList:del']"
-                title="删除"
-                danger
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                :loading="delLoading"
-                @click="
+              v-hasPermi="['famOverhaulRequireList:del']"
+              title="删除"
+              danger
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="delLoading"
+              @click="
                 event => {
                   handleDelete(selectedRowKeys, event);
                 }
@@ -69,42 +68,42 @@
       </template>
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
-            v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetNo','assetSpec'].includes(
+          v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetNo','assetSpec'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
+          :record="record"
+          :column="column.dataIndex"
         >
           <template #edit>
             <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="32"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
+              v-model:value="record[column.dataIndex]"
+              :maxLength="32"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
-            v-else-if="column.dataIndex === 'importedOrNot'"
-            :record="record"
-            :column="column.dataIndex"
+          v-else-if="column.dataIndex === 'importedOrNot'"
+          :record="record"
+          :column="column.dataIndex"
         >
           <template #edit>
             <a-select
-                v-model:value="record.importedOrNot"
-                style="width: 100%"
-                placeholder="请选择是否为进口设备"
-                @change="(value)=>changeControlValue(value,record,'importedOrNot')"
+              v-model:value="record.importedOrNot"
+              style="width: 100%"
+              placeholder="请选择是否为进口设备"
+              @change="(value)=>changeControlValue(value,record,'importedOrNot')"
             >
               <a-select-option
-                  v-for="select in importedOrNotList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
+                v-for="select in importedOrNotList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
               >
                 {{ select.lookupName }}
               </a-select-option>
@@ -112,16 +111,16 @@
           </template>
           <template #default>
             <AvicDictTag
-                :value="record.importedOrNotName"
-                :options="importedOrNotList"
+              :value="record.importedOrNotName"
+              :options="importedOrNotList"
             />
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
-              class="inner-btn"
-              type="link"
-              @click="
+            class="inner-btn"
+            type="link"
+            @click="
               event => {
                 handleDelete([record.id], event);
               }
@@ -135,7 +134,7 @@
 
     <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
       <div style="height: 600px;overflow: auto">
-        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage" ></fam-inventory-manage>
+        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
       </div>
 
     </a-modal>
@@ -355,18 +354,18 @@ function getList() {
   queryForm.value.overhaulRequireId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
   listFamOverhaulRequireListByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-        // 查询的初始数据,保存时做比对
-        initialList.value = proxy.$lodash.cloneDeep(list.value);
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+      // 查询的初始数据,保存时做比对
+      initialList.value = proxy.$lodash.cloneDeep(list.value);
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 获取通用代码  */
@@ -394,8 +393,8 @@ function handleMostAdd() {
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  console.log( famInventoryManage.value.selectedRow());
-  list.value = [...list.value ,...famInventoryManage.value.selectedRow()]
+  console.log(famInventoryManage.value.selectedRow());
+  list.value = [...list.value, ...famInventoryManage.value.selectedRow()];
 };
 
 /** 添加 */

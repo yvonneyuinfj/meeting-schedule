@@ -232,25 +232,7 @@
                 placeholder="请输入联系电话"
               />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item
-              label="附件"
-            >
-              <AvicUploader
-                element-id="1"
-                form-type="edit"
-                ref="uploadFile"
-                :allow-download="true"
-                :allow-preview="true"
-                :allow-delete="true"
-                :allow-update-secret-level="true"
-                :form-id="form.id"
-                table-name="FAM_OVERHAUL_REQUIRE"
-                @afterUpload="afterUploadEvent"
-              />
-            </a-form-item>
-          </a-col>
+            </a-col>
         </a-row>
         <FamOverhaulRequireListEdit ref="famOverhaulRequireListEdit" :mainId="formId || form.id" />
       </a-form>

@@ -215,22 +215,7 @@
               :disabled="fieldDisabled('telephone')"
             />
           </a-form-item>
-        </a-col>
-      <a-col v-bind="colLayout.cols2">
-        <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
-          <AvicUploader
-            element-id="1"
-            ref="uploadFile"
-            label="上传附件"
-            :form-id="form.id"
-            :bpm-instance-object="props.bpmInstanceObject"
-            :form-secret-level="form.secretLevel"
-            :allow-download="true"
-            table-name="FAM_OVERHAUL_REQUIRE"
-            @afterUpload="afterUploadEvent"
-          />
-        </a-form-item>
-      </a-col>
+          </a-col>
       </a-row>
     </a-form>
     <FamOverhaulRequireListEdit
