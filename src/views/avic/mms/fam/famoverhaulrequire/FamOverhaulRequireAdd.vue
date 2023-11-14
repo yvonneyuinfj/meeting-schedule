@@ -11,14 +11,40 @@
       <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" class="form-excel-style">
         <a-row :gutter="0">
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="billNo" label="单据号" has-feedback>
-              <avic-auto-code
-                v-model:value="form.billNo"
-                ref="autoCode"
-                code-type="FAM_BILL_NO"
-                code-param="FAM_OVERHAUL_REQUIRE"
+            <a-form-item name="secretLevel" label="数据密级" has-feedback>
+              <a-select
+                v-model:value="form.secretLevel"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
                 :allow-clear="true"
-                :disabled="false"
+                placeholder="请选择数据密级"
+              >
+                <a-select-option
+                  v-for="item in secretLevelList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="note" label="备注">
+              <a-input
+                v-model:value="form.note"
+                :maxLength="512"
+                placeholder="请输入备注"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="billNo" label="单据号" has-feedback>
+              <a-input
+                v-model:value="form.billNo"
+                :maxLength="32"
                 placeholder="请输入单据号"
               />
             </a-form-item>
@@ -28,7 +54,6 @@
               <a-input
                 v-model:value="form.maintPlan"
                 :maxLength="32"
-                :auto-focus="true"
                 placeholder="请输入维修计划"
               />
             </a-form-item>
@@ -60,6 +85,15 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择需求时间"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="managerDeptId" label="主管部门id" has-feedback>
+              <a-input
+                v-model:value="form.managerDeptId"
+                :maxLength="64"
+                placeholder="请输入主管部门id"
               />
             </a-form-item>
           </a-col>
@@ -120,7 +154,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="annualProvisional" label="年度/临时（勾选）">
+            <a-form-item name="annualProvisional" label="年度/临时">
               <a-radio-group v-model:value="form.annualProvisional">
                 <a-radio
                   v-for="item in annualProvisionalList"
@@ -143,9 +177,12 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="projectAmount" label="项目金额（万元）" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.projectAmount"
-                :maxLength="16"
+                :min="0"
+                :max="9999999999.99"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入项目金额（万元）"
               />
             </a-form-item>
@@ -170,6 +207,28 @@
               </a-select>
             </a-form-item>
           </a-col>
+        </a-row>
+        <a-row>
+          <a-col v-bind="colLayout.cols2">
+            <a-form-item
+              name="applyReason"
+              label="申请理由"
+            >
+              <div class="Richtext">
+                <Toolbar
+                  style="border-bottom: 1px solid #ccc"
+                  :editor="editorRef"
+                  :defaultConfig="toolbarConfig"
+                />
+                <Editor
+                  style="height: 500px; overflow-y: auto"
+                  v-model:value="form.applyReason"
+                  :defaultConfig="editorConfig"
+                  @onCreated="onCreated"
+                />
+              </div>
+            </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reqSuggest" label="要求及建议" has-feedback>
               <a-input
@@ -179,18 +238,12 @@
               />
             </a-form-item>
           </a-col>
-        </a-row>
-        <a-row>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item
-              name="applyReason"
-              label="申请理由"
-            >
-              <a-textarea
-                v-model:value="form.applyReason"
-                :rows="2"
-                :maxLength="4000"
-                placeholder="请输入申请理由"
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="applyDeptId" label="申请部门id" has-feedback>
+              <a-input
+                v-model:value="form.applyDeptId"
+                :maxLength="64"
+                placeholder="请输入申请部门id"
               />
             </a-form-item>
           </a-col>
@@ -200,6 +253,15 @@
                 v-model:value="form.applyDeptName"
                 type="deptSelect"
                 placeholder="请选择申请部门名称"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="handlePersonId" label="需求申请人id" has-feedback>
+              <a-input
+                v-model:value="form.handlePersonId"
+                :maxLength="64"
+                placeholder="请输入需求申请人id"
               />
             </a-form-item>
           </a-col>
@@ -230,7 +292,35 @@
                 placeholder="请输入联系电话"
               />
             </a-form-item>
-            </a-col>
+          </a-col>
+ <!--         <a-col v-bind="colLayout.cols">
+            <a-form-item name="annex" label="附件" has-feedback>
+              <a-input
+                v-model:value="form.annex"
+                :maxLength="65535"
+                placeholder="请输入附件"
+              />
+            </a-form-item>
+          </a-col> -->
+          <a-col v-bind="colLayout.cols2">
+            <a-form-item
+              label="附件"
+            >
+              <AvicUploader
+                element-id="1"
+                form-type="add"
+                ref="uploadFile"
+                :allow-download="true"
+                :allow-preview="true"
+                :allow-delete="true"
+                :allow-update-secret-level="true"
+                :form-id="form.id"
+                :form-secret-level="form.secretLevel"
+                table-name="FAM_OVERHAUL_REQUIRE"
+                @afterUpload="afterUploadEvent"
+              />
+            </a-form-item>
+          </a-col>
         </a-row>
       </a-form>
       <FamOverhaulRequireListEdit ref="famOverhaulRequireListEdit" />
@@ -244,6 +334,8 @@
 <script lang="ts" setup>
 import { useFamOverhaulRequireForm, emits } from './ts/FamOverhaulRequireForm'; // 引入表单ts
 import FamOverhaulRequireListEdit from '@/views/avic/mms/fam/famoverhaulrequirelist/FamOverhaulRequireListEdit.vue'; // 引入子表组件
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
+import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
 
 const props = defineProps({
   formId: {
@@ -277,9 +369,12 @@ const {
   isUsedScientificrsList,
   annualProvisionalList,
   isNeedReviewList,
+  toolbarConfig,
+  editorConfig,
+  editorRef,
+  onCreated,
   uploadFile,
   afterUploadEvent,
-  autoCode,
   closeModal,
   saveAndStartProcess,
   famOverhaulRequireListEdit

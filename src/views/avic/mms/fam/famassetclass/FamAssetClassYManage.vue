@@ -49,8 +49,8 @@
     v-if="showImportModal"
     :formData="excelParams"
     title="单表模板导入"
-    importUrl="/mms/fam/famassetclass/importData/v1"
-    downloadTemplateUrl="/mms/fam/famassetclass/downloadTemplate/v1"
+    importUrl="/mms/fam/famassetclasss/importData/v1"
+    downloadTemplateUrl="/mms/fam/famassetclasss/downloadTemplate/v1"
     @reloadData="getList"
     @close="showImportModal = false"
   />
