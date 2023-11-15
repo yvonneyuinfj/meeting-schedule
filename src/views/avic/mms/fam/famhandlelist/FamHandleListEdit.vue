@@ -31,9 +31,20 @@
               @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
+            </a-button>
+            <a-button
+              v-hasPermi="['famOverhaulRequireList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famHandleList:del']"
@@ -48,7 +59,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -56,39 +67,39 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['assetCode','assetOriginalValue','attachmentToolList','scrapReason','assetModel','assetSecretLevel','assetSpec','classifiedStorageMediaList','assetNetValue','handleType','factorySerialNumber','assetName','handleStatus','equipNo'].includes(
+        <AvicRowEdit
+          v-if="['assetCode','assetOriginalValue','attachmentToolList','scrapReason','assetModel','assetSecretLevel','assetSpec','classifiedStorageMediaList','assetNetValue','handleType','factorySerialNumber','assetName','handleStatus','equipNo'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="64"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'purchaseTime'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-date-picker
-                v-model:value="record.purchaseTime"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择购置时间"
-              >
-              </a-date-picker>
-            </template>
-          </AvicRowEdit>
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="64"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'purchaseTime'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-date-picker
+              v-model:value="record.purchaseTime"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择购置时间"
+            >
+            </a-date-picker>
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -104,11 +115,17 @@
         </template>
       </template>
     </AvicTable>
+    <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamHandleListDto } from '@/api/avic/mms/fam/FamHandleListApi'; // 引入模块DTO
-import { listFamHandleListByPage } from '@/api/avic/mms/fam/FamHandleListApi'; // 引入模块API
+import { listFamHandleListByPage } from '@/api/avic/mms/fam/FamHandleListApi';
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -279,9 +296,10 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const totalPage = ref(0);
-const validateRules = {
-}; // 必填列,便于保存和新增数据时校验
+const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
 // 非只读状态添加操作列
@@ -300,6 +318,7 @@ onMounted(() => {
   // 加载表格数据
   getList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -321,6 +340,7 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -329,6 +349,26 @@ function getChangedData() {
   const changedData = proxy.$getChangeRecords(list, initialList);
   return deletedData.value.concat(changedData);
 }
+
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  console.log(famInventoryManage.value.selectedRow());
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['assetCode'] = item.assetsCode;
+    item['purchaseTime'] = item.purchaseDate;
+    item['factorySerialNumber'] = item.productionNo;
+  });
+  list.value = [...list.value, ...selectRow];
+};
 
 /** 添加 */
 function handleAdd() {
@@ -364,6 +404,7 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -411,11 +452,13 @@ function customRow(record) {
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -426,10 +469,12 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -441,6 +486,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -456,6 +502,7 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData

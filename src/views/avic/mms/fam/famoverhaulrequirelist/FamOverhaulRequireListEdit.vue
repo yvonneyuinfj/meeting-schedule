@@ -136,7 +136,6 @@
       <div style="height: 600px;overflow: auto">
         <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
       </div>
-
     </a-modal>
   </div>
 </template>
@@ -387,14 +386,18 @@ function getChangedData() {
 /** 批量添加 */
 function handleMostAdd() {
   open.value = true;
-  console.log(open.value);
 }
 
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
   console.log(famInventoryManage.value.selectedRow());
-  list.value = [...list.value, ...famInventoryManage.value.selectedRow()];
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+  });
+  list.value = [...list.value, ...selectRow];
 };
 
 /** 添加 */

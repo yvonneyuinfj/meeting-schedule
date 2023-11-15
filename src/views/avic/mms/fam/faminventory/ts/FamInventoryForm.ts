@@ -39,6 +39,12 @@ export function useFamInventoryForm({
     assetNum: [
       { required: true, message: '资产数量不能为空', trigger: 'change' }
     ],
+    equipNo:[
+      { required: true, message: '设备编号不能为空', trigger: 'change' }
+    ],
+    assetName:[
+      { required: true, message: '资产名称不能为空', trigger: 'change' }
+    ],
     assetNetValue: [
       { required: true, message: '资产净值不能为空', trigger: 'change' }
     ],

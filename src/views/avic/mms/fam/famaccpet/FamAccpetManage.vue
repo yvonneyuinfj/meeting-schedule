@@ -690,7 +690,7 @@ function handleDelete(rows, ids) {
     proxy. $message.warning('请选择要删除的数据！');
     return;
   }
-  if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
+  if (rows.filter(row => row.bpmState !== null && row.bpmState !== 'start')?.length > 0) {
     proxy. $message.warning('只有拟稿中的数据才可以删除！');
     return;
   }
