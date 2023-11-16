@@ -4,7 +4,11 @@
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
-          <a-form v-bind="layout" ref="formRef" :model="queryForm">
+          <a-form
+            v-bind="layout"
+            ref="formRef"
+            :model="queryForm"
+          >
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="验收申请单号">
@@ -46,7 +50,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="合同编号">
                   <a-input
                     v-model:value="queryForm.orderNo"
@@ -56,7 +63,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="合同金额">
                   <a-input
                     v-model:value="queryForm.orderValue"
@@ -66,7 +76,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="采购部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.procureDeptName"
@@ -81,7 +94,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="验收日期(起)">
                   <a-date-picker
                     v-model:value="queryForm.accpetDateBegin"
@@ -92,7 +108,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="验收日期(止)">
                   <a-date-picker
                     v-model:value="queryForm.accpetDateEnd"
@@ -103,7 +122,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="主管部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptName"
@@ -118,7 +140,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="接收部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.receiveDeptName"
@@ -133,7 +158,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="资产属性">
                   <a-input
                     v-model:value="queryForm.assetClass"
@@ -143,7 +171,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="资金来源">
                   <a-input
                     v-model:value="queryForm.fundSource"
@@ -153,7 +184,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="其他事项">
                   <a-input
                     v-model:value="queryForm.otherMatter"
@@ -163,7 +197,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="购置方式">
                   <a-input
                     v-model:value="queryForm.purchWay"
@@ -173,7 +210,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="项目名称">
                   <a-input
                     v-model:value="queryForm.projectName"
@@ -183,7 +223,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="经办人名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonName"
@@ -204,15 +247,26 @@
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
-                    <a-button type="primary" @click="handleQuery">
+                    <a-button
+                      type="primary"
+                      @click="handleQuery"
+                    >
                       <search-outlined />
                       查询
                     </a-button>
-                    <a-button type="primary" @click="resetQuery" ghost>
+                    <a-button
+                      type="primary"
+                      @click="resetQuery"
+                      ghost
+                    >
                       <redo-outlined />
                       重置
                     </a-button>
-                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                    <a-button
+                      type="link"
+                      @click="toggleAdvanced"
+                      style="margin: 0"
+                    >
                       {{ advanced ? '收起' : '展开' }}
                       <up-outlined v-if="advanced" />
                       <down-outlined v-else />
@@ -245,63 +299,64 @@
             @refresh="getList"
           >
             <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['famAccpet:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['famAccpet:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
-            >
-              <template #icon>
-                <edit-outlined />
-              </template>
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['famAccpet:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['famAccpet:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
-          </a-space>
+              <a-space>
+                <a-button
+                  v-hasPermi="['famAccpet:add']"
+                  title="添加"
+                  type="primary"
+                  @click="handleAdd"
+                >
+                  <template #icon>
+                    <plus-outlined />
+                  </template>
+                  添加
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAccpet:edit']"
+                  title="编辑"
+                  type="primary"
+                  ghost
+                  @click="handleEdit"
+                >
+                  <template #icon>
+                    <edit-outlined />
+                  </template>
+                  编辑
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAccpet:del']"
+                  title="删除"
+                  danger
+                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                  :loading="delLoading"
+                  @click="handleDelete(selectedRows, selectedRowKeys)"
+                >
+                  <template #icon>
+                    <delete-outlined />
+                  </template>
+                  删除
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAccpet:export']"
+                  title="导出"
+                  type="primary"
+                  ghost
+                  @click="handleExport"
+                >
+                  <template #icon>
+                    <export-outlined />
+                  </template>
+                  导出
+                </a-button>
+              </a-space>
             </template>
             <template #toolBarRight>
               <a-space>
                 <AvicBpmFilter
                   :allFileAuth="['famAccpet:all']"
                   :myFileAuth="['famAccpet:my']"
-                  :defaultBpmType = 'queryForm.bpmType'
-                  :defaultBpmState = 'queryForm.bpmState'
+                  :defaultBpmType='queryForm.bpmType'
+                  :defaultBpmState='queryForm.bpmState'
                   @change="changeBpmFilter"
                 />
                 <a-input-search
@@ -567,9 +622,7 @@ const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
 const accpetTypeList = ref([]); // 验收类型通用代码
-const lookupParams = [
-  { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' }
-];
+const lookupParams = [{ fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' }];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
@@ -607,7 +660,7 @@ function getList() {
     });
 }
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     accpetTypeList.value = result.accpetType;
   });
@@ -640,8 +693,7 @@ function toggleAdvanced() {
 }
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
@@ -656,6 +708,11 @@ function handleEdit() {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value[0].businessstate_ === '拟稿中') {
+    proxy.$message.warning('拟稿中的数据不可修改提交！');
+    return;
+  }
+
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
@@ -669,7 +726,7 @@ function handleFlowDetail(record) {
   }
 }
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -687,14 +744,14 @@ function handleExport () {
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
-    proxy. $message.warning('请选择要删除的数据！');
+    proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   if (rows.filter(row => row.bpmState !== null && row.bpmState !== 'start')?.length > 0) {
-    proxy. $message.warning('只有拟稿中的数据才可以删除！');
+    proxy.$message.warning('只有拟稿中的数据才可以删除！');
     return;
   }
-  proxy. $confirm({
+  proxy.$confirm({
     title: '确定删除已选数据及关联的子表数据吗？',
     okText: '确定',
     cancelText: '取消',

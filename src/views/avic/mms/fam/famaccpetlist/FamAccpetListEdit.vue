@@ -73,7 +73,8 @@
       </template>
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
-          v-if="['installLocation','ownershipCertNo','assetOriginalValue','assetModel','factoryNo','procureOrder','assetSpec','liablePerson','equipClass','assetUnit','warrantyPeriod','assetNum','assetName','producer','equipNo','invoiceNo','brand','parentAssetNo'].includes(
+          v-if="['assetSource','assetsUse','fundSource','equipType'
+           ,'firstDepreciationValue','installLocation','ownershipCertNo','assetOriginalValue','assetModel','factoryNo','procureOrder','assetSpec','liablePerson','equipClass','assetUnit','warrantyPeriod','assetNum','assetName','producer','equipNo','invoiceNo','brand','parentAssetNo'].includes(
                column.dataIndex
               )"
           :record="record"
@@ -154,6 +155,36 @@
             <AvicDictTag
               :value="record.importedOrNotName"
               :options="importedOrNotList"
+            />
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'ynMilitaryKeyEquip'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record.ynMilitaryKeyEquip"
+              style="width: 100%"
+              placeholder="请选择是否为进口设备"
+              @change="(value)=>changeControlValue(value,record,'ynMilitaryKeyEquip')"
+            >
+              <a-select-option
+                v-for="select in ynMilitaryKeyEquipList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag
+              :value="record.ynMilitaryKeyEquip"
+              :options="ynMilitaryKeyEquipList"
             />
           </template>
         </AvicRowEdit>
@@ -599,6 +630,91 @@ const columns = [
       };
     },
     align: 'center'
+  },
+  {
+    title: '资产来源',
+    dataIndex: 'assetSource',
+    key: 'assetSource',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+
+  {
+    title: '资产用途',
+    dataIndex: 'assetsUse',
+    key: 'assetsUse',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '资金来源',
+    dataIndex: 'fundSource',
+    key: 'fundSource',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '设备类型',
+    dataIndex: 'equipType',
+    key: 'equipType',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '入账时累计折旧',
+    dataIndex: 'firstDepreciationValue',
+    key: 'firstDepreciationValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '是否军工关键设备',
+    dataIndex: 'ynMilitaryKeyEquip',
+    key: 'ynMilitaryKeyEquip',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
   }
 ] as any[];
 
@@ -624,7 +740,7 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
-const expandedKeys = ref([]); //树节点
+const expandedKeys = ref([]); //树节点validateRules
 const treeData = ref(null);
 const selectedKeys = ref([]);
 const secretLevelList = ref([]); // 数据密级通用代码
@@ -633,9 +749,11 @@ const treeLoading = ref(false);
 const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const assetClassRecord = ref();
+const ynMilitaryKeyEquipList = ref([]);
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_YN_FLAG' }
 ];
 const validateRules = {
   isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
@@ -785,16 +903,20 @@ function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     isNewAssetList.value = result.isNewAsset;
     importedOrNotList.value = result.importedOrNot;
+    ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
   });
 }
 
 /** 获取修改的数据 */
 function getChangedData() {
-  deletedData.value.forEach(item => {
-    item['operationType_'] = 'delete';
-  });
+  // deletedData.value.forEach(item => {
+  //   item['operationType_'] = 'delete';
+  // });
   const changedData = proxy.$getChangeRecords(list, initialList);
-  return deletedData.value.concat(changedData);
+  console.log(changedData);
+  
+  // return deletedData.value.concat(changedData);
+  return changedData
 }
 
 /** 批量添加 */
@@ -815,7 +937,12 @@ const handleOk = () => {
     item['liablePerson'] = item.responseUserId;
     item['factoryNo'] = item.productionNo;
     item['procureOrder'] = item.procureOrderNo;
+    item['equipType'] = item.equipClass;
+    item['attribute01'] = item.id
+    item['installLocation'] = item.installLocation
   });
+  console.log(selectRow);
+  console.log(list.value)
   list.value = [...list.value, ...selectRow];
 };
 
