@@ -693,7 +693,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="assetType"
-              label="资产分类"
+              label="资产属性"
               has-feedback
             >
               <a-select
@@ -702,7 +702,7 @@
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择资产分类"
+                placeholder="请选择资产属性"
               >
                 <a-select-option
                   v-for="item in assetTypeList"

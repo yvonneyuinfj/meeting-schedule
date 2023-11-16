@@ -1,5 +1,9 @@
 import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块DTO
-import { getFamAccpet, saveFamAccpet, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
+import {
+  getFamAccpet,
+  saveFamAccpet,
+  saveFormAndStartProcess
+} from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -18,56 +22,27 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const form = ref<FamAccpetDto>({});
   const formRef = ref(null);
   const formCode = 'FamAccpet';
+  const accpetType = ref();
   const openType = ref('add'); // 流程表单的打开方式，add: 流程中心打开, edit: 待办打开
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    accpetApplyNo: [
-      { required: true, message: '验收申请单号不能为空', trigger: 'change' }
-    ],
-    accpetType: [
-      { required: true, message: '验收类型不能为空', trigger: 'change' }
-    ],
-    orderName: [
-      { required: true, message: '合同名称不能为空', trigger: 'change' }
-    ],
-    orderNo: [
-      { required: true, message: '合同编号不能为空', trigger: 'change' }
-    ],
-    orderValue: [
-      { required: true, message: '合同金额不能为空', trigger: 'change' }
-    ],
-    procureDeptName: [
-      { required: true, message: '采购部门名称不能为空', trigger: 'change' }
-    ],
-    accpetDate: [
-      { required: true, message: '验收日期不能为空', trigger: 'change' }
-    ],
-    managerDeptName: [
-      { required: true, message: '主管部门名称不能为空', trigger: 'change' }
-    ],
-    receiveDeptName: [
-      { required: true, message: '接收部门名称不能为空', trigger: 'change' }
-    ],
-    assetClass: [
-      { required: true, message: '资产类别不能为空', trigger: 'change' }
-    ],
-    fundSource: [
-      { required: true, message: '资金来源不能为空', trigger: 'change' }
-    ],
-    otherMatter: [
-      { required: true, message: '其他事项不能为空', trigger: 'change' }
-    ],
-    purchWay: [
-      { required: true, message: '购置方式不能为空', trigger: 'change' }
-    ],
-    projectName: [
-      { required: true, message: '项目名称不能为空', trigger: 'change' }
-    ],
-    handlePersonName: [
-      { required: true, message: '经办人名称不能为空', trigger: 'change' }
-    ]
+    accpetApplyNo: [{ required: true, message: '验收申请单号不能为空', trigger: 'change' }],
+    accpetType: [{ required: true, message: '验收类型不能为空', trigger: 'change' }],
+    orderName: [{ required: true, message: '合同名称不能为空', trigger: 'change' }],
+    orderNo: [{ required: true, message: '合同编号不能为空', trigger: 'change' }],
+    orderValue: [{ required: true, message: '合同金额不能为空', trigger: 'change' }],
+    procureDeptName: [{ required: true, message: '采购部门名称不能为空', trigger: 'change' }],
+    accpetDate: [{ required: true, message: '验收日期不能为空', trigger: 'change' }],
+    managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
+    receiveDeptName: [{ required: true, message: '接收部门名称不能为空', trigger: 'change' }],
+    assetClass: [{ required: true, message: '资产属性不能为空', trigger: 'change' }],
+    fundSource: [{ required: true, message: '资金来源不能为空', trigger: 'change' }],
+    otherMatter: [{ required: true, message: '其他事项不能为空', trigger: 'change' }],
+    purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
+    projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
+    handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }]
   };
   const famAccpetListEdit = ref();
   const layout = {
@@ -80,8 +55,10 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const autoCode = ref(null); // 自动编码ref
   const secretLevelList = ref([]); // 数据密级通用代码
   const accpetTypeList = ref([]); // 验收类型通用代码
+  const assetTypeList = ref([]);//资产属性通用代码
   const lookupParams = [
-    { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' }
+    { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
+    { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' }
   ];
   const authJson = ref(null);
 
@@ -114,6 +91,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
       accpetTypeList.value = result.accpetType;
+      assetTypeList.value = result.assetType;
     });
   }
 
@@ -406,6 +384,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     loading,
     secretLevelList,
     accpetTypeList,
+    assetTypeList,
     uploadFile,
     afterUploadEvent,
     attachmentRequired,
@@ -421,4 +400,3 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     famAccpetListEdit
   };
 }
-

@@ -129,8 +129,8 @@
 
 
             <a-col v-bind="colLayout.cols">
-              <a-form-item name="responseUserName" label="责任人">
-                <AvicCommonSelect v-model:value="form.responseUserName" type="userSelect" placeholder="请选择责任人NAME" />
+              <a-form-item name="responseUserId" label="责任人">
+                <AvicCommonSelect v-model:value="form.responseUserName" type="userSelect" placeholder="请选择责任人" />
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
@@ -239,8 +239,8 @@
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
-              <a-form-item name="assetClass" label="资产类别">
-                <a-input v-model:value="form.assetClass" :maxLength="64" placeholder="请输入资产类别" />
+              <a-form-item name="assetClass" label="资产属性">
+                <a-input v-model:value="form.assetClass" :maxLength="64" placeholder="请输入资产属性" />
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
@@ -297,9 +297,9 @@
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
-              <a-form-item name="assetType" label="资产分类" has-feedback>
+              <a-form-item name="assetType" label="资产属性" has-feedback>
                 <a-select v-model:value="form.assetType" :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择资产分类">
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择资产属性">
                   <a-select-option v-for="item in assetTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
                     {{ item.lookupName }}
                   </a-select-option>

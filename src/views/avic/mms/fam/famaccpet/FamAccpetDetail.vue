@@ -108,10 +108,26 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetClass')">
           <a-form-item name="assetClass" label="资产类别" :rules="fieldRequired('assetClass')" has-feedback>
-            <a-input
-              v-model:value="form.assetClass"
-              :disabled="fieldDisabled('assetClass')"
-            />
+            
+             <a-select
+                  v-model:value="form.assetClass"
+                  :auto-focus="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择验收类型"
+                  :disabled="fieldDisabled('assetClass')"
+              >
+                <a-select-option
+                    v-for="item in assetTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+         
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('fundSource')">
@@ -232,6 +248,7 @@ const {
   layout,
   colLayout,
   secretLevelList,
+  assetTypeList,
   accpetTypeList,
   uploadFile,
   afterUploadEvent,

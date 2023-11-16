@@ -134,10 +134,10 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="资产类别">
+                <a-form-item label="资产属性">
                   <a-input
                     v-model:value="queryForm.assetClass"
-                    placeholder="请输入资产类别"
+                    placeholder="请输入资产属性"
                     :allow-clear="true"
                     @pressEnter="handleQuery"
                   />
@@ -462,7 +462,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资产类别',
+    title: '资产属性',
     dataIndex: 'assetClass',
     ellipsis: true,
     sorter: true,

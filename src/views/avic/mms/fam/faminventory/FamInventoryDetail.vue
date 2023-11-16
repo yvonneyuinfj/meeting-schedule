@@ -478,6 +478,7 @@
                   type="deptSelect"
                   placeholder="请选择管理部门"
                    :defaultShowValue="form.managerDeptNameAlias"
+                   disabled
                 />
               </a-form-item>
             </a-col>

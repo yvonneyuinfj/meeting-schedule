@@ -18,12 +18,23 @@
       >
         <a-row :gutter="0">
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="accpetApplyNo" label="验收申请单号" has-feedback>
-              <a-input v-model:value="form.accpetApplyNo" disabled />
+            <a-form-item
+              name="accpetApplyNo"
+              label="验收申请单号"
+              has-feedback
+            >
+              <a-input
+                v-model:value="form.accpetApplyNo"
+                disabled
+              />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="accpetType" label="验收类型" has-feedback>
+            <a-form-item
+              name="accpetType"
+              label="验收类型"
+              has-feedback
+            >
               <a-select
                 v-model:value="form.accpetType"
                 :auto-focus="true"
@@ -31,6 +42,7 @@
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
+                @change="accpetTypeChange"
                 placeholder="请选择验收类型"
               >
                 <a-select-option
@@ -44,7 +56,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="orderName" label="合同名称" has-feedback>
+            <a-form-item
+              name="orderName"
+              label="合同名称"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.orderName"
                 :maxLength="64"
@@ -53,7 +69,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="orderNo" label="合同编号" has-feedback>
+            <a-form-item
+              name="orderNo"
+              label="合同编号"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.orderNo"
                 :maxLength="64"
@@ -62,7 +82,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="orderValue" label="合同金额" has-feedback>
+            <a-form-item
+              name="orderValue"
+              label="合同金额"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.orderValue"
                 :maxLength="16"
@@ -71,7 +95,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="procureDeptName" label="采购部门名称" has-feedback>
+            <a-form-item
+              name="procureDeptName"
+              label="采购部门名称"
+              has-feedback
+            >
               <AvicCommonSelect
                 v-model:value="form.procureDeptName"
                 type="deptSelect"
@@ -81,7 +109,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="accpetDate" label="验收日期" has-feedback>
+            <a-form-item
+              name="accpetDate"
+              label="验收日期"
+              has-feedback
+            >
               <a-date-picker
                 v-model:value="form.accpetDate"
                 format="YYYY-MM-DD"
@@ -91,7 +123,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptName" label="主管部门名称" has-feedback>
+            <a-form-item
+              name="managerDeptName"
+              label="主管部门名称"
+              has-feedback
+            >
               <AvicCommonSelect
                 v-model:value="form.managerDeptName"
                 type="deptSelect"
@@ -101,7 +137,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="receiveDeptName" label="接收部门名称" has-feedback>
+            <a-form-item
+              name="receiveDeptName"
+              label="接收部门名称"
+              has-feedback
+            >
               <AvicCommonSelect
                 v-model:value="form.receiveDeptName"
                 type="deptSelect"
@@ -111,16 +151,35 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产类别" has-feedback>
-              <a-input
-                v-model:value="form.assetClass"
-                :maxLength="10"
-                placeholder="请输入资产类别"
-              />
+            <a-form-item
+              name="assetClass"
+              label="资产属性"
+              has-feedback
+            >
+              <a-select
+                v-model:value="form.accpetType"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="fundSource" label="资金来源" has-feedback>
+            <a-form-item
+              name="fundSource"
+              label="资金来源"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.fundSource"
                 :maxLength="32"
@@ -129,7 +188,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="otherMatter" label="其他事项" has-feedback>
+            <a-form-item
+              name="otherMatter"
+              label="其他事项"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.otherMatter"
                 :maxLength="32"
@@ -138,7 +201,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="purchWay" label="购置方式" has-feedback>
+            <a-form-item
+              name="purchWay"
+              label="购置方式"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.purchWay"
                 :maxLength="32"
@@ -147,7 +214,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="projectName" label="项目名称" has-feedback>
+            <a-form-item
+              name="projectName"
+              label="项目名称"
+              has-feedback
+            >
               <a-input
                 v-model:value="form.projectName"
                 :maxLength="32"
@@ -156,7 +227,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonName" label="经办人名称" has-feedback>
+            <a-form-item
+              name="handlePersonName"
+              label="经办人名称"
+              has-feedback
+            >
               <AvicCommonSelect
                 v-model:value="form.handlePersonName"
                 type="userSelect"
@@ -166,9 +241,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
-            <a-form-item
-              label="附件"
-            >
+            <a-form-item label="附件">
               <AvicUploader
                 element-id="1"
                 form-type="edit"
@@ -184,13 +257,32 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <FamAccpetListEdit ref="famAccpetListEdit" :mainId="formId || form.id" />
+        <FamAccpetListEdit
+          ref="famAccpetListEdit"
+          :accpetType="accpetType"
+          :mainId="formId || form.id"
+        />
       </a-form>
     </a-spin>
     <template #footer>
-      <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
-      <a-button title="保存" type="primary" :loading="loading" @click="saveAndStartProcess">推进流程</a-button>
-      <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
+      <a-button
+        title="保存"
+        type="primary"
+        :loading="loading"
+        @click="saveForm"
+      >保存</a-button>
+      <a-button
+        title="保存"
+        type="primary"
+        :loading="loading"
+        @click="saveAndStartProcess"
+      >推进流程</a-button>
+      <a-button
+        title="返回"
+        type="primary"
+        ghost
+        @click="closeModal"
+      >返回</a-button>
     </template>
   </AvicModal>
 </template>
@@ -217,13 +309,21 @@ const props = defineProps({
     type: Function
   }
 });
+const accpetType = ref()
 const emit = defineEmits(emits);
+
+function accpetTypeChange (v){
+  accpetType.value = v
+}
+
+
 const {
   form,
   formRef,
   rules,
   layout,
   colLayout,
+  assetTypeList,
   loading,
   secretLevelList,
   accpetTypeList,
@@ -237,4 +337,9 @@ const {
   props: props,
   emit: emit
 });
+
+watch( ()=> form.value.accpetType ,newV => {
+  accpetType.value = newV
+})
+
 </script>

@@ -121,7 +121,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '资产类别',
+    title: '资产属性',
     dataIndex: 'assetClass',
     ellipsis: true,
     sorter: true,

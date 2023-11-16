@@ -109,12 +109,24 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产类别" has-feedback>
-              <a-input
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
                   v-model:value="form.assetClass"
-                  :maxLength="10"
-                  placeholder="请输入资产类别"
-              />
+                  :auto-focus="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择验收类型"
+              >
+                <a-select-option
+                    v-for="item in assetTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -222,6 +234,7 @@ const {
   colLayout,
   loading,
   secretLevelList,
+  assetTypeList,
   accpetTypeList,
   uploadFile,
   afterUploadEvent,

@@ -566,14 +566,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="资产分类">
+            <a-form-item label="资产属性">
               <a-select
                   v-model:value="queryForm.assetType"
                   :get-popup-container="triggerNode => triggerNode.parentNode"
                   option-filter-prop="children"
                   :show-search="true"
                   :allow-clear="true"
-                  placeholder="请选择资产分类"
+                  placeholder="请选择资产属性"
               >
                 <a-select-option
                     v-for="item in assetTypeList"
@@ -717,12 +717,12 @@
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
-            <!-- <a-button
+            <a-button
                 type="link"
                 class="inner-btn"
                 @click.stop="handleEdit(record.id)">
               编辑
-            </a-button> -->
+            </a-button>
             <a-button
                 v-hasPermi="['famInventory:del']"
                 type="link"

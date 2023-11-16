@@ -28,6 +28,7 @@
         <a-space>
           <a-space>
             <a-button
+              v-if="props.accpetType === '1'"
               v-hasPermi="['famAccpetList:add']"
               title="添加"
               type="primary"
@@ -37,6 +38,18 @@
                 <plus-outlined />
               </template>
               添加
+            </a-button>
+            <a-button
+              v-if="props.accpetType === '2'"
+              v-hasPermi="['famAccpetList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined />
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famAccpetList:del']"
@@ -227,6 +240,21 @@
         </a-tree>
       </a-spin>
     </a-modal>
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 
 </template>
@@ -235,6 +263,8 @@ import type { FamAccpetListDto } from '@/api/avic/mms/fam/FamAccpetListApi'; // 
 import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
 import { setNodeSlots, getExpandedKeys, findNodeForTreegrid } from '@/utils/tree-util'; // 引入树公共方法
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
+
 const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
 const props = defineProps({
@@ -243,12 +273,17 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  accpetType: {
+    type: String,
+    defalut: ''
+  },
   // 只读
   readOnly: {
     type: Boolean,
     default: false
   }
 });
+
 const columns = [
   {
     title: '是否新增资产',
@@ -566,6 +601,7 @@ const columns = [
     align: 'center'
   }
 ] as any[];
+
 const queryForm = ref<FamAccpetListDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
@@ -579,6 +615,8 @@ const queryParam = reactive({
   sord: null // 排序方式: desc降序 asc升序
 });
 const famAccpetList = ref(null);
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const list = ref([]); //表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -758,6 +796,29 @@ function getChangedData() {
   const changedData = proxy.$getChangeRecords(list, initialList);
   return deletedData.value.concat(changedData);
 }
+
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    console.log(item);
+    item['attribute01'] = item.assetClassName;
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['assetCode'] = item.assetsCode;
+    item['managerDeptId'] = item.managerDeptName;
+    item['liablePerson'] = item.responseUserId;
+    item['factoryNo'] = item.productionNo;
+    item['procureOrder'] = item.procureOrderNo;
+  });
+  list.value = [...list.value, ...selectRow];
+};
 
 /** 添加 */
 function handleAdd() {
