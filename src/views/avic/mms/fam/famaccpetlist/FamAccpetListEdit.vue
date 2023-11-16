@@ -307,8 +307,8 @@ const columns = [
   },
   {
     title: '资产类别名称',
-    dataIndex: 'attribute01',
-    key: 'attribute01',
+    dataIndex: 'assetClassName',
+    key: 'assetClassName',
     minWidth: 120
   },
   {
@@ -741,7 +741,7 @@ function handleSummit() {
       if (res.success) {
         const record = list.value.filter(item => item.id === assetClassRecord.value.id)[0];
         record.assetClass = res.data.classCode;
-        record.attribute01 = res.data.className;
+        record.assetClassName = res.data.className;
         assetClassOpen.value = false;
         assetClassRecord.value = null;
       }
@@ -808,7 +808,6 @@ const handleOk = () => {
   const selectRow = famInventoryManage.value.selectedRow();
   selectRow.map(item => {
     console.log(item);
-    item['attribute01'] = item.assetClassName;
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['assetCode'] = item.assetsCode;
