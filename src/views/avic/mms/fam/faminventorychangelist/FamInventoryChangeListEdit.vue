@@ -21,7 +21,10 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template
+        v-if="!props.readOnly"
+        #toolBarLeft
+      >
         <a-space>
           <a-space>
             <a-button
@@ -34,6 +37,17 @@
                 <plus-outlined />
               </template>
               添加
+            </a-button>
+            <a-button
+              v-hasPermi="['famInventoryChangeList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined />
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famInventoryChangeList:del']"
@@ -56,25 +70,25 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['inventoryId'].includes(
+        <AvicRowEdit
+          v-if="['inventoryId'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="128"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="128"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -90,11 +104,27 @@
         </template>
       </template>
     </AvicTable>
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamInventoryChangeListDto } from '@/api/avic/mms/fam/FamInventoryChangeListApi'; // 引入模块DTO
 import { listFamInventoryChangeListByPage } from '@/api/avic/mms/fam/FamInventoryChangeListApi'; // 引入模块API
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -117,7 +147,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -142,13 +172,13 @@ const list = ref([]); //表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const validateRules = {
-  inventoryId: [
-    { required:true, message: '资产表ID列不能为空' }
-  ]
+  inventoryId: [{ required: true, message: '资产表ID列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
@@ -197,6 +227,23 @@ function getChangedData() {
   const changedData = proxy.$getChangeRecords(list, initialList);
   return deletedData.value.concat(changedData);
 }
+
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  console.log(famInventoryManage.value.selectedRow());
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+  });
+  list.value = [...list.value, ...selectRow];
+};
 
 /** 添加 */
 function handleAdd() {
@@ -288,7 +335,12 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, famInventoryChangeList);
+    flag = proxy.$validateRecordData(
+      records[index],
+      validateRules,
+      list.value,
+      famInventoryChangeList
+    );
     if (!flag) {
       break;
     }

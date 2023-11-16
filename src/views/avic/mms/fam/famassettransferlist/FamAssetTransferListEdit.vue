@@ -21,7 +21,10 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template
+        v-if="!props.readOnly"
+        #toolBarLeft
+      >
         <a-space>
           <a-space>
             <a-button
@@ -34,6 +37,17 @@
                 <plus-outlined />
               </template>
               添加
+            </a-button>
+            <a-button
+              v-hasPermi="['famOverhaulRequireList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined />
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famAssetTransferList:del']"
@@ -56,77 +70,77 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['assetCode','assetOriginalValue','technicalDataList','factorySerialNumber','attachmentToolList','assetModel','assetName','assetSecretLevel','assetSpec'].includes(
+        <AvicRowEdit
+          v-if="['assetCode','assetOriginalValue','technicalDataList','factorySerialNumber','attachmentToolList','assetModel','assetName','assetSecretLevel','assetSpec'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="64"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'isAssetIntact'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
-                v-model:value="record.isAssetIntact"
-                style="width: 100%"
-                placeholder="请选择资产是否完好"
-                @change="(value)=>changeControlValue(value,record,'isAssetIntact')"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="64"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'isAssetIntact'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record.isAssetIntact"
+              style="width: 100%"
+              placeholder="请选择资产是否完好"
+              @change="(value)=>changeControlValue(value,record,'isAssetIntact')"
+            >
+              <a-select-option
+                v-for="select in isAssetIntactList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
               >
-                <a-select-option
-                  v-for="select in isAssetIntactList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              <AvicDictTag
-                :value="record.isAssetIntactName"
-                :options="isAssetIntactList"
-              />
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'responseUserId'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicCommonSelect
-                v-model:value="record.responseUserId"
-                :defaultShowValue="record.responseUserIdAlias"
-                placeholder="请选择责任人ID"
-                type="userSelect"
-                @callback="
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag
+              :value="record.isAssetIntactName"
+              :options="isAssetIntactList"
+            />
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'responseUserId'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <AvicCommonSelect
+              v-model:value="record.responseUserId"
+              :defaultShowValue="record.responseUserIdAlias"
+              placeholder="请选择责任人"
+              type="userSelect"
+              @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value,record,'responseUserId')
                   }
                 "
             />
-            </template>
-            <template #default>
-              {{ record['responseUserIdAlias'] }}
-            </template>
-          </AvicRowEdit>
+          </template>
+          <template #default>
+            {{ record['responseUserIdAlias'] }}
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -142,11 +156,27 @@
         </template>
       </template>
     </AvicTable>
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamAssetTransferListDto } from '@/api/avic/mms/fam/FamAssetTransferListApi'; // 引入模块DTO
 import { listFamAssetTransferListByPage } from '@/api/avic/mms/fam/FamAssetTransferListApi'; // 引入模块API
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -190,7 +220,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人ID',
+    title: '责任人',
     dataIndex: 'responseUserId',
     key: 'responseUserId',
     ellipsis: true,
@@ -225,15 +255,15 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '资产原值（元）',
-    dataIndex: 'factorySerialNumber',
-    key: 'factorySerialNumber',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '资产原值（元）',
+  //   dataIndex: 'factorySerialNumber',
+  //   key: 'factorySerialNumber',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '资产规格',
     dataIndex: 'assetSpec',
@@ -281,14 +311,13 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // SECRET_LEVEL通用代码
 const isAssetIntactList = ref([]); // 资产是否完好通用代码
-const lookupParams = [
-  { fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' }
-];
-const validateRules = {
-}; // 必填列,便于保存和新增数据时校验
+const lookupParams = [{ fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' }];
+const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
 // 非只读状态添加操作列
@@ -375,6 +404,24 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['assetCode'] = item.assetsCode;
+  });
+  list.value = [...list.value, ...selectRow];
+};
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -468,7 +515,12 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, famAssetTransferList);
+    flag = proxy.$validateRecordData(
+      records[index],
+      validateRules,
+      list.value,
+      famAssetTransferList
+    );
     if (!flag) {
       break;
     }

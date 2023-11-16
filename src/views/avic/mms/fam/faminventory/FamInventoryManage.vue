@@ -642,7 +642,7 @@
       >
         <template #toolBarLeft v-if="!isAdd">
           <a-space>
-            <a-button
+            <!-- <a-button
                 v-hasPermi="['famInventory:add']"
                 title="添加"
                 type="primary"
@@ -652,7 +652,7 @@
                 <plus-outlined/>
               </template>
               添加
-            </a-button>
+            </a-button> -->
             <a-button
                 v-hasPermi="['famInventory:del']"
                 title="删除"
@@ -717,12 +717,12 @@
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
-            <a-button
+            <!-- <a-button
                 type="link"
                 class="inner-btn"
                 @click.stop="handleEdit(record.id)">
               编辑
-            </a-button>
+            </a-button> -->
             <a-button
                 v-hasPermi="['famInventory:del']"
                 type="link"

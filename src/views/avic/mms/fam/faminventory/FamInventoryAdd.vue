@@ -234,7 +234,7 @@
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
-              <a-form-item name="managerDeptName" label="管理部门">
+              <a-form-item name="managerDeptName" label="主管部门">
                 <AvicCommonSelect v-model:value="form.managerDeptName" type="deptSelect" placeholder="请选择管理部门" />
               </a-form-item>
             </a-col>
@@ -315,20 +315,6 @@
         </a-form>
       </a-spin>
     </div>
-    <div style="display:flex;">
-      <div v-for="item in famTabs" :class="tab === item.id ? 'active' : 'unActive'" style="margin:0 20px 10px 0"
-        @click="famTabsClick(item.id)">{{
-          item.label }}</div>
-    </div>
-    <AvicTable ref="famInventory" table-key="famInventory" :columns="columns" :row-key="record => record.id"
-      :data-source="data" :loading="loading" :row-selection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange,
-        columnWidth: 40,
-        fixed: true
-      }" :pageParameter="queryParam.pageParameter" :total="totalPage" @refresh="getList">
-    </AvicTable>
-
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
@@ -343,84 +329,7 @@ const props = defineProps({
     default: ''
   }
 });
-const queryParam = reactive({
-  // 请求表格数据参数
-  pageParameter: {
-    page: 1, // 页数
-    rows: 20 // 每页条数
-  },
-  keyWord: ref(''), // 快速查询数据
-  sidx: null, // 排序字段
-  sord: null // 排序方式: desc降序 asc升序
-});
-const data = ref([]);
-const tab = ref(0);
-const famTabs = ref([
-  {
-    label: '资产变更记录',
-    id: 0
-  },
-  {
-    label: '资产改造信息',
-    id: 1
-  },
-  {
-    label: '资产出租/出借信息',
-    id: 2
-  },
-  {
-    label: '资产调配信息',
-    id: 3
-  },
-  {
-    label: '资产封存/启封信息',
-    id: 4
-  },
-  {
-    label: '附属台账信息',
-    id: 5
-  }
-]);
-const columns = [
-  {
-    name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
-  },
-  {
-    title: '更改单号',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '更改内容',
-    dataIndex: 'address',
-    key: 'address'
-  },
-  {
-    title: '更改原因',
-    key: 'tags',
-    dataIndex: 'tags'
-  },
-  {
-    title: '申请人',
-    key: 'action'
-  },
-  {
-    title: '申请日期',
-    key: 'action'
-  },
-  {
-    title: '联系电话',
-    key: 'action'
-  },
-  {
-    title: '密级',
-    key: 'action'
-  }
-];
-const selectedRowKeys = ref([]); // 选中数据主键集合
-const totalPage = ref(0);
+
 const emit = defineEmits(emits);
 const {
   form,
@@ -445,66 +354,8 @@ const {
 function onSelectChange(rowKeys) {
   selectedRowKeys.value = rowKeys;
 }
-/** 获取列表 */
-function getList() {
 
-}
 
-/** 资产列表tab点击 */
-function famTabsClick(id) {
-  tab.value = id;
-  getList();
-}
+
 </script>
-<style scope lang="less">
-.active {
-  line-height: 1.5715;
-  position: relative;
-  display: inline-block;
-  font-weight: 400;
-  white-space: nowrap;
-  text-align: center;
-  background-image: none;
-  border: 1px solid transparent;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  user-select: none;
-  touch-action: manipulation;
-  height: 32px;
-  padding: 4px 15px;
-  font-size: 14px;
-  border-radius: 2px;
-  color: #fff;
-  background-color: #1677ff;
-  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
-}
 
-.unActive {
-  line-height: 1.5715;
-  position: relative;
-  display: inline-block;
-  font-weight: 400;
-  white-space: nowrap;
-  text-align: center;
-  background-image: none;
-  border: 1px solid transparent;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-  user-select: none;
-  touch-action: manipulation;
-  height: 32px;
-  padding: 4px 15px;
-  font-size: 14px;
-  border-radius: 2px;
-  color: #1D2129;
-  border-color: #C9CDD4;
-  background: #fff;
-
-  &:hover {
-    color: #4096ff;
-    border-color: #4096ff;
-  }
-}
-</style>

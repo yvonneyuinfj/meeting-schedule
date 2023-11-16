@@ -21,7 +21,10 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template
+        v-if="!props.readOnly"
+        #toolBarLeft
+      >
         <a-space>
           <a-space>
             <a-button
@@ -34,6 +37,17 @@
                 <plus-outlined />
               </template>
               添加
+            </a-button>
+            <a-button
+              v-hasPermi="['famOverhaulRequireList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined />
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famAssetLendList:del']"
@@ -56,69 +70,69 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['assetCode','assetOriginalValue','factorySerialNumber','assetNum','assetModel','assetName','assetSecretLevel','isAssetIntact','assetSpec','leaseStatus'].includes(
+        <AvicRowEdit
+          v-if="['assetCode','assetOriginalValue','factorySerialNumber','assetNum','assetModel','assetName','assetSecretLevel','isAssetIntact','assetSpec','leaseStatus'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="64"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'responseUserId'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicCommonSelect
-                v-model:value="record.responseUserId"
-                :defaultShowValue="record.responseUserIdAlias"
-                placeholder="请选择责任人ID"
-                type="userSelect"
-                @callback="
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="64"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'responseUserId'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <AvicCommonSelect
+              v-model:value="record.responseUserId"
+              :defaultShowValue="record.responseUserIdAlias"
+              placeholder="请选择责任人ID"
+              type="userSelect"
+              @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value,record,'responseUserId')
                   }
                 "
             />
-            </template>
-            <template #default>
-              {{ record['responseUserIdAlias'] }}
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'managerDeptId'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicCommonSelect
-                v-model:value="record.managerDeptId"
-                :defaultShowValue="record.managerDeptIdAlias"
-                placeholder="请选择主管部门名称id"
-                type="deptSelect"
-                @callback="
+          </template>
+          <template #default>
+            {{ record['responseUserIdAlias'] }}
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'managerDeptId'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <AvicCommonSelect
+              v-model:value="record.managerDeptId"
+              :defaultShowValue="record.managerDeptIdAlias"
+              placeholder="请选择主管部门名称id"
+              type="deptSelect"
+              @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value,record,'managerDeptId')
                   }
                 "
             />
-            </template>
-            <template #default>
-              {{ record['managerDeptIdAlias'] }}
-            </template>
-          </AvicRowEdit>
+          </template>
+          <template #default>
+            {{ record['managerDeptNameAlias'] }}
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -134,11 +148,28 @@
         </template>
       </template>
     </AvicTable>
+
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamAssetLendListDto } from '@/api/avic/mms/fam/FamAssetLendListApi'; // 引入模块DTO
 import { listFamAssetLendListByPage } from '@/api/avic/mms/fam/FamAssetLendListApi'; // 引入模块API
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -153,6 +184,8 @@ const props = defineProps({
     default: false
   }
 });
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const columns = [
   {
     title: '资产编码',
@@ -164,7 +197,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资产编码',
+    title: '资产名称',
     dataIndex: 'assetName',
     key: 'assetName',
     ellipsis: true,
@@ -182,7 +215,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人ID',
+    title: '责任人',
     dataIndex: 'responseUserId',
     key: 'responseUserId',
     ellipsis: true,
@@ -191,7 +224,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '主管部门名称id',
+    title: '主管部门',
     dataIndex: 'managerDeptId',
     key: 'managerDeptId',
     ellipsis: true,
@@ -221,15 +254,6 @@ const columns = [
     title: '资产原值（元）',
     dataIndex: 'assetOriginalValue',
     key: 'assetOriginalValue',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂序列号',
-    dataIndex: 'factorySerialNumber',
-    key: 'factorySerialNumber',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -283,8 +307,7 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
-const validateRules = {
-}; // 必填列,便于保存和新增数据时校验
+const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
 // 非只读状态添加操作列
@@ -364,6 +387,28 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  console.log(famInventoryManage.value.selectedRow());
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    console.log(item);
+    
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['assetCode'] = item.assetsCode;
+    item['managerDeptId'] = item.managerDeptName;
+  });
+  list.value = [...list.value, ...selectRow];
+};
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
