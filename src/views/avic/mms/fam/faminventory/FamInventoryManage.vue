@@ -653,7 +653,7 @@
               </template>
               添加
             </a-button> -->
-            <a-button
+            <!-- <a-button
                 v-hasPermi="['famInventory:del']"
                 title="删除"
                 danger
@@ -665,7 +665,7 @@
                 <delete-outlined/>
               </template>
               删除
-            </a-button>
+            </a-button> -->
             <a-button
                 v-hasPermi="['famInventory:import']"
                 title="导入"
@@ -696,6 +696,14 @@
               </template>
               打印卡片
             </a-button>
+              <a-button
+                title="同步浪潮折旧信息"
+                type="primary">
+              <template #icon>
+                <import-outlined/>
+              </template>
+              同步浪潮折旧信息
+            </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -717,7 +725,7 @@
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
-            <a-button
+            <!-- <a-button
                 type="link"
                 class="inner-btn"
                 @click.stop="handleEdit(record.id)">
@@ -729,7 +737,7 @@
                 class="inner-btn"
                 @click.stop="handleDelete([record.id], 'row')">
               删除
-            </a-button>
+            </a-button> -->
           </template>
         </template>
       </AvicTable>

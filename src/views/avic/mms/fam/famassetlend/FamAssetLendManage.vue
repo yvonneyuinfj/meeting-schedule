@@ -4,7 +4,11 @@
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
-          <a-form v-bind="layout" ref="formRef" :model="queryForm">
+          <a-form
+            v-bind="layout"
+            ref="formRef"
+            :model="queryForm"
+          >
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="申请单编号">
@@ -41,7 +45,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="出租单位ID">
                   <AvicCommonSelect
                     v-model:value="queryForm.hireDeptId"
@@ -56,7 +63,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="承租单位ID">
                   <AvicCommonSelect
                     v-model:value="queryForm.lesseeDeptId"
@@ -71,7 +81,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="起租日期(起)">
                   <a-date-picker
                     v-model:value="queryForm.startLeaseDateBegin"
@@ -82,7 +95,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="起租日期(止)">
                   <a-date-picker
                     v-model:value="queryForm.startLeaseDateEnd"
@@ -93,7 +109,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="经办人ID">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonId"
@@ -108,7 +127,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="经办人名称">
                   <a-input
                     v-model:value="queryForm.handlePersonName"
@@ -118,7 +140,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="申请时间(起)">
                   <a-date-picker
                     v-model:value="queryForm.applyDateBegin"
@@ -129,7 +154,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="申请时间(止)">
                   <a-date-picker
                     v-model:value="queryForm.applyDateEnd"
@@ -140,7 +168,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="审批状态(编制中/流程中/审批通过)">
                   <a-input
                     v-model:value="queryForm.billStatus"
@@ -150,7 +181,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="租赁期限(单位年)">
                   <a-input
                     v-model:value="queryForm.leaseTerm"
@@ -160,7 +194,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="租金">
                   <a-input
                     v-model:value="queryForm.rent"
@@ -176,15 +213,26 @@
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
-                    <a-button type="primary" @click="handleQuery">
+                    <a-button
+                      type="primary"
+                      @click="handleQuery"
+                    >
                       <search-outlined />
                       查询
                     </a-button>
-                    <a-button type="primary" @click="resetQuery" ghost>
+                    <a-button
+                      type="primary"
+                      @click="resetQuery"
+                      ghost
+                    >
                       <redo-outlined />
                       重置
                     </a-button>
-                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                    <a-button
+                      type="link"
+                      @click="toggleAdvanced"
+                      style="margin: 0"
+                    >
                       {{ advanced ? '收起' : '展开' }}
                       <up-outlined v-if="advanced" />
                       <down-outlined v-else />
@@ -217,63 +265,73 @@
             @refresh="getList"
           >
             <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['famAssetLend:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['famAssetLend:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
-            >
-              <template #icon>
-                <edit-outlined />
-              </template>
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['famAssetLend:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['famAssetLend:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
-          </a-space>
+              <a-space>
+                <a-button
+                  v-hasPermi="['famAssetLend:add']"
+                  title="添加"
+                  type="primary"
+                  @click="handleAdd"
+                >
+                  <template #icon>
+                    <plus-outlined />
+                  </template>
+                  添加
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAssetLend:edit']"
+                  title="编辑"
+                  type="primary"
+                  ghost
+                  @click="handleEdit"
+                >
+                  <template #icon>
+                    <edit-outlined />
+                  </template>
+                  编辑
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAssetLend:del']"
+                  title="删除"
+                  danger
+                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                  :loading="delLoading"
+                  @click="handleDelete(selectedRows, selectedRowKeys)"
+                >
+                  <template #icon>
+                    <delete-outlined />
+                  </template>
+                  删除
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAssetLend:export']"
+                  title="导出"
+                  type="primary"
+                  ghost
+                  @click="handleExport"
+                >
+                  <template #icon>
+                    <export-outlined />
+                  </template>
+                  导出
+                </a-button>
+                <a-button
+                  title="归还"
+                  type="primary"
+                >
+                  <template #icon>
+                    <import-outlined />
+                  </template>
+                  归还
+                </a-button>
+              </a-space>
             </template>
             <template #toolBarRight>
               <a-space>
                 <AvicBpmFilter
                   :allFileAuth="['famAssetLend:all']"
                   :myFileAuth="['famAssetLend:my']"
-                  :defaultBpmType = 'queryForm.bpmType'
-                  :defaultBpmState = 'queryForm.bpmState'
+                  :defaultBpmType='queryForm.bpmType'
+                  :defaultBpmState='queryForm.bpmState'
                   @change="changeBpmFilter"
                 />
                 <a-input-search
@@ -336,7 +394,11 @@
 </template>
 <script lang="ts" setup>
 import type { FamAssetLendDto } from '@/api/avic/mms/fam/FamAssetLendApi'; // 引入模块DTO
-import { listFamAssetLendByPage, delFamAssetLend, exportExcel } from '@/api/avic/mms/fam/FamAssetLendApi'; // 引入模块API
+import {
+  listFamAssetLendByPage,
+  delFamAssetLend,
+  exportExcel
+} from '@/api/avic/mms/fam/FamAssetLendApi'; // 引入模块API
 import FamAssetLendAdd from './FamAssetLendAdd.vue'; // 引入添加页面组件
 import FamAssetLendEdit from './FamAssetLendEdit.vue'; // 引入编辑页面组件
 import FamAssetLendDetail from './FamAssetLendDetail.vue'; // 引入详情页面组件
@@ -572,8 +634,7 @@ function toggleAdvanced() {
 }
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
@@ -601,7 +662,7 @@ function handleFlowDetail(record) {
   }
 }
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -619,14 +680,14 @@ function handleExport () {
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
-    proxy. $message.warning('请选择要删除的数据！');
+    proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-    proxy. $message.warning('只有拟稿中的数据才可以删除！');
+    proxy.$message.warning('只有拟稿中的数据才可以删除！');
     return;
   }
-  proxy. $confirm({
+  proxy.$confirm({
     title: '确定删除已选数据及关联的子表数据吗？',
     okText: '确定',
     cancelText: '取消',

@@ -4,7 +4,11 @@
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
-          <a-form v-bind="layout" ref="formRef" :model="queryForm">
+          <a-form
+            v-bind="layout"
+            ref="formRef"
+            :model="queryForm"
+          >
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="盘点编号">
@@ -41,7 +45,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="盘点日期(起)">
                   <a-date-picker
                     v-model:value="queryForm.inventoryDateBegin"
@@ -52,7 +59,10 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col
+                v-bind="colLayout.cols"
+                v-show="advanced"
+              >
                 <a-form-item label="盘点日期(止)">
                   <a-date-picker
                     v-model:value="queryForm.inventoryDateEnd"
@@ -69,15 +79,26 @@
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
-                    <a-button type="primary" @click="handleQuery">
+                    <a-button
+                      type="primary"
+                      @click="handleQuery"
+                    >
                       <search-outlined />
                       查询
                     </a-button>
-                    <a-button type="primary" @click="resetQuery" ghost>
+                    <a-button
+                      type="primary"
+                      @click="resetQuery"
+                      ghost
+                    >
                       <redo-outlined />
                       重置
                     </a-button>
-                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                    <a-button
+                      type="link"
+                      @click="toggleAdvanced"
+                      style="margin: 0"
+                    >
                       {{ advanced ? '收起' : '展开' }}
                       <up-outlined v-if="advanced" />
                       <down-outlined v-else />
@@ -110,32 +131,32 @@
             @refresh="getList"
           >
             <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['famAssetInventoryTask:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['famAssetInventoryTask:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
+              <a-space>
+                <a-button
+                  v-hasPermi="['famAssetInventoryTask:add']"
+                  title="添加"
+                  type="primary"
+                  @click="handleAdd"
+                >
+                  <template #icon>
+                    <plus-outlined />
+                  </template>
+                  添加
+                </a-button>
+                <a-button
+                  v-hasPermi="['famAssetInventoryTask:del']"
+                  title="删除"
+                  danger
+                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                  :loading="delLoading"
+                  @click="handleDelete(selectedRowKeys, '')"
+                >
+                  <template #icon>
+                    <delete-outlined />
+                  </template>
+                  删除
+                </a-button>
+                <!-- <a-button
               v-hasPermi="['famAssetInventoryTask:import']"
               title="导入"
               type="primary"
@@ -156,8 +177,14 @@
                  <export-outlined />
               </template>
               导出
-            </a-button>
-          </a-space>
+            </a-button> -->
+                <a-button
+                  title="打印"
+                  type="primary"
+                >
+                  打印
+                </a-button>
+              </a-space>
             </template>
             <template #toolBarRight>
               <a-input-search
@@ -232,14 +259,22 @@
     </AvicPane>
     <AvicPane>
       <!-- 子表组件 -->
-      <fam-asset-inventory-task-list-manage key="famAssetInventoryTaskListManage" ref="famAssetInventoryTaskListManage" :mainId="mainId" />
+      <fam-asset-inventory-task-list-manage
+        key="famAssetInventoryTaskListManage"
+        ref="famAssetInventoryTaskListManage"
+        :mainId="mainId"
+      />
     </AvicPane>
   </AvicSplit>
 </template>
 
 <script lang="ts" setup>
 import type { FamAssetInventoryTaskDto } from '@/api/avic/mms/fam/FamAssetInventoryTaskApi'; // 引入模块DTO
-import { listFamAssetInventoryTaskByPage, delFamAssetInventoryTask, exportExcel } from '@/api/avic/mms/fam/FamAssetInventoryTaskApi'; // 引入模块API
+import {
+  listFamAssetInventoryTaskByPage,
+  delFamAssetInventoryTask,
+  exportExcel
+} from '@/api/avic/mms/fam/FamAssetInventoryTaskApi'; // 引入模块API
 import FamAssetInventoryTaskAdd from './FamAssetInventoryTaskAdd.vue'; // 引入添加页面组件
 import FamAssetInventoryTaskEdit from './FamAssetInventoryTaskEdit.vue'; // 引入编辑页面组件
 import FamAssetInventoryTaskDetail from './FamAssetInventoryTaskDetail.vue'; // 引入详情页面组件
@@ -317,7 +352,7 @@ const columns = [
     width: 120,
     fixed: 'right'
   }
- ];
+];
 const queryForm = ref<FamAssetInventoryTaskDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
@@ -357,7 +392,7 @@ onMounted(() => {
 });
 
 /** 查询数据  */
-function getList () {
+function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
@@ -380,49 +415,48 @@ function getList () {
     });
 }
 /** 高级搜索按钮操作 */
-function handleQuery () {
+function handleQuery() {
   queryParam.searchParams = queryForm.value;
   queryParam.keyWord = '';
   queryParam.pageParameter.page = 1;
   getList();
 }
 /** 高级查询重置按钮操作  */
-function resetQuery () {
+function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
 /** 高级查询 展开/收起 */
-function toggleAdvanced () {
+function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
 /** 快速查询逻辑 */
-function handleKeyWordQuery (value) {
-  const keyWord = {
-  };
+function handleKeyWordQuery(value) {
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
 /** 添加 */
-function handleAdd () {
+function handleAdd() {
   showAddModal.value = true;
 }
 /** 编辑 */
-function handleEdit (id) {
+function handleEdit(id) {
   formId.value = id;
   showEditModal.value = true;
 }
 /** 详情 */
-function handleDetail (record) {
+function handleDetail(record) {
   formId.value = record.id;
   showDetailModal.value = true;
 }
 /** 导入 */
-function handleImport () {
+function handleImport() {
   showImportModal.value = true;
 }
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -438,7 +472,7 @@ function handleExport () {
   });
 }
 /** 删除 */
-function handleDelete (ids, type) {
+function handleDelete(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
@@ -467,12 +501,12 @@ function handleDelete (ids, type) {
   });
 }
 /** 勾选复选框时触发 */
-function onSelectChange (rowKeys, rows) {
+function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
 /** 表头排序 */
-function handleTableChange (pagination, filters, sorter) {
+function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
@@ -481,6 +515,5 @@ function handleTableChange (pagination, filters, sorter) {
   }
   getList();
 }
-
 </script>
 

@@ -31,7 +31,7 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famAssetInventoryTaskList:add']"
               title="添加"
               type="primary"
@@ -41,7 +41,13 @@
                 <plus-outlined />
               </template>
               添加
-            </a-button>
+            </a-button> -->
+              <a-button
+                  title="批量添加"
+                  type="primary"
+                >
+                  批量添加
+                </a-button>
             <a-button
               v-hasPermi="['famAssetInventoryTaskList:del']"
               title="删除"
@@ -55,7 +61,7 @@
               </template>
               删除
             </a-button>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famAssetInventoryTaskList:import']"
               title="导入"
               type="primary"
@@ -76,7 +82,7 @@
                  <export-outlined />
               </template>
               导出
-            </a-button>
+            </a-button> -->
           </a-space>
         </template>
         <template #toolBarRight>
