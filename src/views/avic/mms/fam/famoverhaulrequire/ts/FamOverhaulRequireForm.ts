@@ -1,5 +1,11 @@
 import type { FamOverhaulRequireDto } from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块DTO
-import { getFamOverhaulRequire, saveFamOverhaulRequire, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块API
+import {
+  getFamOverhaulRequire,
+  saveFamOverhaulRequire,
+  saveFormAndStartProcess
+} from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块API
+import { createEditor } from '@wangeditor/editor'; // 引入富文本依赖
+import { useRichText } from '@/utils/hooks/useRichText'; // 引入富文本相关配置及方法
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -22,91 +28,64 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    billNo: [
-      { required: true, message: '单据号不能为空', trigger: 'change' }
-    ],
-    maintPlan: [
-      { required: true, message: '维修计划不能为空', trigger: 'change' }
-    ],
-    maintCategory: [
-      { required: true, message: '维修类别不能为空', trigger: 'change' }
-    ],
-    expectMaintTime: [
-      { required: true, message: '需求时间不能为空', trigger: 'change' }
-    ],
-    managerDeptName: [
-      { required: true, message: '主管部门名称不能为空', trigger: 'change' }
-    ],
+    secretLevel: [{ required: true, message: '数据密级不能为空', trigger: 'change' }],
+    billNo: [{ required: true, message: '单据号不能为空', trigger: 'change' }],
+    maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
+    maintCategory: [{ required: true, message: '维修类别不能为空', trigger: 'change' }],
+    expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
+    managerDeptId: [{ required: true, message: '主管部门id不能为空', trigger: 'change' }],
+    managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
     isUsedScientificrs: [
       { required: true, message: '是否使用型号经费不能为空', trigger: 'change' }
     ],
-    budgetProject: [
-      { required: true, message: '预算项目不能为空', trigger: 'change' }
-    ],
-    budgetSubitem: [
-      { required: true, message: '预算分项不能为空', trigger: 'change' }
-    ],
-    budgetOrg: [
-      { required: true, message: '预算组织不能为空', trigger: 'change' }
-    ],
-    annualProvisional: [
-      { required: true, message: '年度/临时（勾选）不能为空', trigger: 'change' }
-    ],
-    projectNumber: [
-      { required: true, message: '课题号不能为空', trigger: 'change' }
-    ],
-    projectAmount: [
-      { required: true, message: '项目金额（万元）不能为空', trigger: 'change' }
-    ],
-    isNeedReview: [
-      { required: true, message: '是否需要评审不能为空', trigger: 'change' }
-    ],
-    reqSuggest: [
-      { required: true, message: '要求及建议不能为空', trigger: 'change' }
-    ],
-    applyReason: [
-      { required: true, message: '申请理由不能为空', trigger: 'change' }
-    ],
-    applyDeptName: [
-      { required: true, message: '申请部门名称不能为空', trigger: 'change' }
-    ],
-    handlePersonName: [
-      { required: true, message: '需求申请人名称不能为空', trigger: 'change' }
-    ],
-    applyDate: [
-      { required: true, message: '故障时间不能为空', trigger: 'change' }
-    ],
-    telephone: [
-      { required: true, message: '联系电话不能为空', trigger: 'change' }
-    ]
+    budgetProject: [{ required: true, message: '预算项目不能为空', trigger: 'change' }],
+    budgetSubitem: [{ required: true, message: '预算分项不能为空', trigger: 'change' }],
+    budgetOrg: [{ required: true, message: '预算组织不能为空', trigger: 'change' }],
+    annualProvisional: [{ required: true, message: '年度/临时不能为空', trigger: 'change' }],
+    projectNumber: [{ required: true, message: '课题号不能为空', trigger: 'change' }],
+    projectAmount: [{ required: true, message: '项目金额（万元）不能为空', trigger: 'change' }],
+    isNeedReview: [{ required: true, message: '是否需要评审不能为空', trigger: 'change' }],
+    reqSuggest: [{ required: true, message: '要求及建议不能为空', trigger: 'change' }],
+    applyDeptId: [{ required: true, message: '申请部门id不能为空', trigger: 'change' }],
+    applyDeptName: [{ required: true, message: '申请部门名称不能为空', trigger: 'change' }],
+    handlePersonId: [{ required: true, message: '需求申请人id不能为空', trigger: 'change' }],
+    handlePersonName: [{ required: true, message: '需求申请人名称不能为空', trigger: 'change' }],
+    applyDate: [{ required: true, message: '故障时间不能为空', trigger: 'change' }],
+    telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }]
   };
   const famOverhaulRequireListEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout2; // 调用布局公共方法
+  const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
-  const autoCode = ref(null); // 自动编码ref
   const secretLevelList = ref([]); // 数据密级通用代码
   const maintCategoryList = ref([]); // 维修类别通用代码
   const isUsedScientificrsList = ref([]); // 是否使用型号经费通用代码
-  const annualProvisionalList = ref([]); // 年度/临时（勾选）通用代码
+  const annualProvisionalList = ref([]); // 年度/临时通用代码
+  const autoCode = ref(null); // 自动编码ref
   const isNeedReviewList = ref([]); // 是否需要评审通用代码
   const lookupParams = [
     { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
     { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' },
     { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
     { fieldName: 'isNeedReview', lookUpType: 'FAM_PROGRAM_VERSION' }
-    ];
+  ];
+  const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
+  const { toolbarConfig, editorConfig, onCreated, dealRichText, convertImageSrc } = useRichText(
+    editorRef,
+    'famOverhaulRequireApplyReason',
+    'FAM_OVERHAUL_REQUIRE'
+  );
   const authJson = ref(null);
 
   if (props.params) {
     bpmParams.value = props.params;
   } else {
     if (proxy.$route) {
-      bpmParams.value = proxy. $route.query;
+      bpmParams.value = proxy.$route.query;
     }
   }
   if (bpmParams) {
@@ -118,6 +97,8 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   onMounted(() => {
     // 加载查询区所需通用代码
     getLookupList();
+    // 获取当前用户对应的文档密级
+    getUserFileSecretList();
     if (props.formId || form.value.id) {
       // 编辑详情页面加载数据
       getFormData(props.formId || form.value.id);
@@ -126,13 +107,24 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+  onBeforeUnmount(() => {
+    const editor = editorRef.value;
+    if (editor == null) return;
+    editor.destroy(); // 组件销毁时，及时销毁编辑器
+  });
   /** 获取通用代码  */
-  function getLookupList () {
+  function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-    maintCategoryList.value = result.maintCategory;
-    isUsedScientificrsList.value = result.isUsedScientificrs;
-    annualProvisionalList.value = result.annualProvisional;
-    isNeedReviewList.value = result.isNeedReview;
+      maintCategoryList.value = result.maintCategory;
+      isUsedScientificrsList.value = result.isUsedScientificrs;
+      annualProvisionalList.value = result.annualProvisional;
+      isNeedReviewList.value = result.isNeedReview;
+    });
+  }
+  /** 获取当前用户对应的文档密级 */
+  function getUserFileSecretList() {
+    proxy.$getUserFileSecretLevelList(result => {
+      secretLevelList.value = result;
     });
   }
   /**
@@ -148,8 +140,15 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       .then(async res => {
         if (res.data) {
           form.value = res.data;
-        // 处理数据
-           loading.value = false;
+          // 处理数据
+          // 处理富文本
+          await dealRichText(form.value.applyReason);
+          // 详情表单 富文本是否可编辑
+          if (fieldDisabled('applyReason')) {
+            editorRef.value.disable();
+          }
+
+          loading.value = false;
         } else {
           initForm();
           loading.value = false;
@@ -180,6 +179,12 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
             const subInfoList = famOverhaulRequireListEdit.value.getChangedData(); // 获取子表数据
             // 处理数据
             postData.famOverhaulRequireListList = subInfoList; // 挂载子表数据
+            // 处理富文本
+            const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
+            convertImageSrc(editorHtmljsonCopy);
+            const newEditor = createEditor({ content: editorHtmljsonCopy });
+            const newEditorHtml = newEditor.getHtml();
+            postData.applyReason = newEditorHtml;
             // 发送请求
             saveFamOverhaulRequire(postData)
               .then(res => {
@@ -187,8 +192,8 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
                   if (props.bpmInstanceObject) {
                     bpmButtonParams.value = { params, result: res.data };
                   }
-                  if (!form.value.id){
-                    form.value.id=res.data;
+                  if (!form.value.id) {
+                    form.value.id = res.data;
                   }
                   uploadFile.value.upload(form.value.id || res.data); // 附件上传
                 } else {
@@ -267,10 +272,16 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famOverhaulRequireListList = subInfoList; // 挂载子表数据
-        if (autoCode.value) {
-          // 获取编码码段值
-          postData.billNo = autoCode.value.getSegmentValue();
-        }
+      // 处理富文本
+      const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
+      convertImageSrc(editorHtmljsonCopy);
+      const newEditor = createEditor({ content: editorHtmljsonCopy });
+      const newEditorHtml = newEditor.getHtml();
+      if (autoCode.value) {
+        // 获取编码码段值
+        postData.billNo = autoCode.value.getSegmentValue();
+      }
+      postData.applyReason = newEditorHtml;
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
@@ -284,8 +295,8 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
               bpmButtonParams.value = { params, result: res.data };
             }
             bpmResult.value = res.data;
-            if (!form.value.id){
-              form.value.id=res.data.formId;
+            if (!form.value.id) {
+              form.value.id = res.data.formId;
             }
             uploadFile.value.upload(form.value.id || res.data); // 附件上传
           } else {
@@ -406,11 +417,15 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     uploadFile,
     afterUploadEvent,
     attachmentRequired,
-    autoCode,
+    toolbarConfig,
+    editorConfig,
+    editorRef,
+    onCreated,
     saveForm,
     saveAndStartProcess,
     closeModal,
     fieldVisible,
+    autoCode,
     fieldDisabled,
     fieldRequired,
     beforeClickBpmButtons,
@@ -418,4 +433,3 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     famOverhaulRequireListEdit
   };
 }
-

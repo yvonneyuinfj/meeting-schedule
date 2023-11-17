@@ -82,8 +82,6 @@ export interface FamOverhaulRequireDto extends BaseBeanModel {
   applyDateEnd?: any;
   /** 联系电话 */
   telephone?: string;
-  /** 附件 */
-  annex?: string;
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */
