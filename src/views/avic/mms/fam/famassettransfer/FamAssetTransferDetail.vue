@@ -31,7 +31,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
-          <a-form-item name="managerDeptId" label="主管部门id" :rules="fieldRequired('managerDeptId')" has-feedback>
+          <a-form-item name="managerDeptId" label="主管部门" :rules="fieldRequired('managerDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.managerDeptId"
               type="deptSelect"
@@ -41,7 +41,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('inTransferDeptId')">
-          <a-form-item name="inTransferDeptId" label="调入部门ID" :rules="fieldRequired('inTransferDeptId')" has-feedback>
+          <a-form-item name="inTransferDeptId" label="调入部门" :rules="fieldRequired('inTransferDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.inTransferDeptId"
               type="deptSelect"
@@ -59,7 +59,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('outTransferDeptId')">
-          <a-form-item name="outTransferDeptId" label="调出部门ID" :rules="fieldRequired('outTransferDeptId')" has-feedback>
+          <a-form-item name="outTransferDeptId" label="调出部门" :rules="fieldRequired('outTransferDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.outTransferDeptId"
               type="deptSelect"
@@ -69,7 +69,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
-          <a-form-item name="handlePersonId" label="经办人ID" :rules="fieldRequired('handlePersonId')" has-feedback>
+          <a-form-item name="handlePersonId" label="经办人" :rules="fieldRequired('handlePersonId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.handlePersonId"
               type="userSelect"

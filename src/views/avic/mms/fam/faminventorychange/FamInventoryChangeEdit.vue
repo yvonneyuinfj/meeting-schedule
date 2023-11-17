@@ -194,21 +194,21 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptId" label="主管部门id">
+            <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
-                placeholder="请选择主管部门id"
+                placeholder="请选择主管部门"
                 :defaultShowValue="form.managerDeptIdAlias"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="responseUserId" label="责任人ID">
+            <a-form-item name="responseUserId" label="责任人">
               <AvicCommonSelect
                 v-model:value="form.responseUserId"
                 type="userSelect"
-                placeholder="请选择责任人ID"
+                placeholder="请选择责任人"
                 :defaultShowValue="form.responseUserIdAlias"
               />
             </a-form-item>
@@ -389,11 +389,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="receiveDeptId" label="接收部门ID">
+            <a-form-item name="receiveDeptId" label="接收部门">
               <AvicCommonSelect
                 v-model:value="form.receiveDeptId"
                 type="deptSelect"
-                placeholder="请选择接收部门ID"
+                placeholder="请选择接收部门"
                 :defaultShowValue="form.receiveDeptIdAlias"
               />
             </a-form-item>
@@ -426,11 +426,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人ID">
+            <a-form-item name="handlePersonId" label="经办人">
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
-                placeholder="请选择经办人ID"
+                placeholder="请选择经办人"
                 :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>

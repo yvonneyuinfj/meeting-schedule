@@ -120,7 +120,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人ID',
+    title: '责任人',
     dataIndex: 'responseUserIdAlias',
     ellipsis: true,
     minWidth: 120,

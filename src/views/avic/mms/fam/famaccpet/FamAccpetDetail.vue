@@ -19,6 +19,10 @@
                 :disabled="fieldDisabled('accpetApplyNo')"
                 placeholder="请输入验收申请单号"
               />
+               <!-- <a-input
+              v-model:value="form.accpetApplyNo"
+              :disabled="fieldDisabled('accpetApplyNo')"
+            /> -->
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('accpetType')">
