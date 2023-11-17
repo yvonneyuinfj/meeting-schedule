@@ -39,15 +39,9 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billNo')">
           <a-form-item name="billNo" label="单据号" :rules="fieldRequired('billNo')" has-feedback>
-            <avic-auto-code
-              v-model:value="form.billNo"
-              ref="autoCode"
-              code-type="FAM_BILL_NO"
-              code-param="FAM_CIP_ACCPET"
-              :allow-clear="true"
-              :disabled="false"
-              :maxLength="32"
-              placeholder="请输入单据号"
+            <a-input
+                v-model:value="form.billNo"
+                :disabled="fieldDisabled('billNo')"
             />
           </a-form-item>
         </a-col>
