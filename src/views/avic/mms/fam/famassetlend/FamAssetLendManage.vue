@@ -31,11 +31,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
-                <a-form-item label="主管部门id">
+                <a-form-item label="主管部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptId"
                     type="deptSelect"
-                    placeholder="请选择主管部门id"
+                    placeholder="请选择主管部门"
                     :defaultShowValue="queryForm.managerDeptIdAlias"
                     @callback="
                       result => {
@@ -49,11 +49,11 @@
                 v-bind="colLayout.cols"
                 v-show="advanced"
               >
-                <a-form-item label="出租单位ID">
+                <a-form-item label="出租单位">
                   <AvicCommonSelect
                     v-model:value="queryForm.hireDeptId"
                     type="deptSelect"
-                    placeholder="请选择出租单位ID"
+                    placeholder="请选择出租单位"
                     :defaultShowValue="queryForm.hireDeptIdAlias"
                     @callback="
                       result => {
@@ -67,11 +67,11 @@
                 v-bind="colLayout.cols"
                 v-show="advanced"
               >
-                <a-form-item label="承租单位ID">
+                <a-form-item label="承租单位">
                   <AvicCommonSelect
                     v-model:value="queryForm.lesseeDeptId"
                     type="deptSelect"
-                    placeholder="请选择承租单位ID"
+                    placeholder="请选择承租单位"
                     :defaultShowValue="queryForm.lesseeDeptIdAlias"
                     @callback="
                       result => {
@@ -113,11 +113,11 @@
                 v-bind="colLayout.cols"
                 v-show="advanced"
               >
-                <a-form-item label="经办人ID">
+                <a-form-item label="经办人">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonId"
                     type="userSelect"
-                    placeholder="请选择经办人ID"
+                    placeholder="请选择经办人"
                     :defaultShowValue="queryForm.handlePersonIdAlias"
                     @callback="
                       result => {
@@ -131,10 +131,10 @@
                 v-bind="colLayout.cols"
                 v-show="advanced"
               >
-                <a-form-item label="经办人名称">
+                <a-form-item label="经办人">
                   <a-input
                     v-model:value="queryForm.handlePersonName"
-                    placeholder="请输入经办人名称"
+                    placeholder="请输入经办人"
                     :allow-clear="true"
                     @pressEnter="handleQuery"
                   />
@@ -438,7 +438,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '主管部门id',
+    title: '主管部门',
     dataIndex: 'managerDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -446,7 +446,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '出租单位ID',
+    title: '出租单位',
     dataIndex: 'hireDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -454,7 +454,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '承租单位ID',
+    title: '承租单位',
     dataIndex: 'lesseeDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -470,7 +470,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '经办人ID',
+    title: '经办人',
     dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -478,7 +478,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '经办人名称',
+    title: '经办人',
     dataIndex: 'handlePersonName',
     ellipsis: true,
     sorter: true,

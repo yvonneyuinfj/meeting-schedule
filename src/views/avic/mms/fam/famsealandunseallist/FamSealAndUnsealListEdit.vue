@@ -21,10 +21,13 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template
+        v-if="!props.readOnly"
+        #toolBarLeft
+      >
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famSealAndUnsealList:add']"
               title="添加"
               type="primary"
@@ -34,6 +37,17 @@
                 <plus-outlined />
               </template>
               添加
+            </a-button> -->
+            <a-button
+              v-hasPermi="['famSealAndUnsealList:add']"
+              title="批量添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined />
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famSealAndUnsealList:del']"
@@ -56,25 +70,25 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['assetCode','assetModel','assetName','assetSpec'].includes(
+        <AvicRowEdit
+          v-if="['assetCode','assetModel','assetName','assetSpec'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="64"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="64"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -90,11 +104,27 @@
         </template>
       </template>
     </AvicTable>
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamSealAndUnsealListDto } from '@/api/avic/mms/fam/FamSealAndUnsealListApi'; // 引入模块DTO
 import { listFamSealAndUnsealListByPage } from '@/api/avic/mms/fam/FamSealAndUnsealListApi'; // 引入模块API
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -167,8 +197,9 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
-const validateRules = {
-}; // 必填列,便于保存和新增数据时校验
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
+const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
 // 非只读状态添加操作列
@@ -240,6 +271,25 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['inventoryId'] = item.id;
+    item['assetCode'] = item.assetsCode;
+  });
+  list.value = [...list.value, ...selectRow];
+};
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -310,7 +360,12 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, famSealAndUnsealList);
+    flag = proxy.$validateRecordData(
+      records[index],
+      validateRules,
+      list.value,
+      famSealAndUnsealList
+    );
     if (!flag) {
       break;
     }

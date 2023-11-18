@@ -24,7 +24,7 @@
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famHandleList:add']"
               title="添加"
               type="primary"
@@ -34,9 +34,9 @@
                 <plus-outlined/>
               </template>
               添加
-            </a-button>
+            </a-button> -->
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
+              v-hasPermi="['famHandleList:add']"
               title="添加"
               type="primary"
               @click="handleMostAdd"
@@ -358,7 +358,6 @@ function handleMostAdd() {
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  console.log(famInventoryManage.value.selectedRow());
   const selectRow = famInventoryManage.value.selectedRow();
   selectRow.map(item => {
     item['assetNo'] = item.assetsName;
@@ -366,6 +365,7 @@ const handleOk = () => {
     item['assetCode'] = item.assetsCode;
     item['purchaseTime'] = item.purchaseDate;
     item['factorySerialNumber'] = item.productionNo;
+    item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow];
 };

@@ -21,10 +21,13 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template
+        v-if="!props.readOnly"
+        #toolBarLeft
+      >
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famAssetInventoryResultList:add']"
               title="添加"
               type="primary"
@@ -34,6 +37,17 @@
                 <plus-outlined />
               </template>
               添加
+            </a-button> -->
+            <a-button
+              v-hasPermi="['famAccpetList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined />
+              </template>
+              批量添加
             </a-button>
             <a-button
               v-hasPermi="['famAssetInventoryResultList:del']"
@@ -56,69 +70,69 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['inventoryNum','assetCode','assetNetValue','assetOriginalValue','factorySerialNumber','assetModel','assetName','equipNo','assetSecretLevel','assetSpec'].includes(
+        <AvicRowEdit
+          v-if="['inventoryNum','assetCode','assetNetValue','assetOriginalValue','factorySerialNumber','assetModel','assetName','equipNo','assetSecretLevel','assetSpec'].includes(
                column.dataIndex
               )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="22"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'purchaseTime'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-date-picker
-                v-model:value="record.purchaseTime"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择购置时间"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="22"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'purchaseTime'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-date-picker
+              v-model:value="record.purchaseTime"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择购置时间"
+            >
+            </a-date-picker>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'inventoryResults'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record.inventoryResults"
+              style="width: 100%"
+              placeholder="请选择盘点结果（正常/盘盈/盘亏）"
+              @change="(value)=>changeControlValue(value,record,'inventoryResults')"
+            >
+              <a-select-option
+                v-for="select in inventoryResultsList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
               >
-              </a-date-picker>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'inventoryResults'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
-                v-model:value="record.inventoryResults"
-                style="width: 100%"
-                placeholder="请选择盘点结果（正常/盘盈/盘亏）"
-                @change="(value)=>changeControlValue(value,record,'inventoryResults')"
-              >
-                <a-select-option
-                  v-for="select in inventoryResultsList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              <AvicDictTag
-                :value="record.inventoryResultsName"
-                :options="inventoryResultsList"
-              />
-            </template>
-          </AvicRowEdit>
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag
+              :value="record.inventoryResultsName"
+              :options="inventoryResultsList"
+            />
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -134,11 +148,27 @@
         </template>
       </template>
     </AvicTable>
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px;overflow: auto">
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamAssetInventoryResultListDto } from '@/api/avic/mms/fam/FamAssetInventoryResultListApi'; // 引入模块DTO
 import { listFamAssetInventoryResultListByPage } from '@/api/avic/mms/fam/FamAssetInventoryResultListApi'; // 引入模块API
+import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -260,7 +290,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -286,17 +316,15 @@ const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
+const open = ref<boolean>(false);
+const famInventoryManage = ref(null);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // SECRET_LEVEL通用代码
 const inventoryResultsList = ref([]); // 盘点结果（正常/盘盈/盘亏）通用代码
-const lookupParams = [
-  { fieldName: 'inventoryResults', lookUpType: 'FAM_INVENTORY_RESULTS' }
-];
+const lookupParams = [{ fieldName: 'inventoryResults', lookUpType: 'FAM_INVENTORY_RESULTS' }];
 const validateRules = {
-  inventoryResults: [
-    { required:true, message: '盘点结果（正常/盘盈/盘亏）列不能为空' }
-  ]
+  inventoryResults: [{ required: true, message: '盘点结果（正常/盘盈/盘亏）列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
@@ -398,6 +426,33 @@ function handleEdit(record) {
   list.value = newData;
 }
 
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    console.log(item);
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['assetCode'] = item.assetsCode;
+    item['managerDeptId'] = item.managerDeptName;
+    item['liablePerson'] = item.responseUserId;
+    item['factoryNo'] = item.productionNo;
+    item['procureOrder'] = item.procureOrderNo;
+    item['equipType'] = item.equipClass;
+    item['inventoryId'] = item.id;
+    item['installLocation'] = item.installLocation;
+  });
+  console.log(selectRow);
+  console.log(list.value);
+  list.value = [...list.value, ...selectRow];
+};
+
 /** 删除处理逻辑*/
 function handleDelete(ids, e) {
   if (e) {
@@ -474,7 +529,12 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, famAssetInventoryResultList);
+    flag = proxy.$validateRecordData(
+      records[index],
+      validateRules,
+      list.value,
+      famAssetInventoryResultList
+    );
     if (!flag) {
       break;
     }

@@ -27,11 +27,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
-                <a-form-item label="借用部门ID">
+                <a-form-item label="借用部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.borrowDeptId"
                     type="deptSelect"
-                    placeholder="请选择借用部门ID"
+                    placeholder="请选择借用部门"
                     :defaultShowValue="queryForm.borrowDeptIdAlias"
                     @callback="
                       result => {
@@ -52,11 +52,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="主管部门id">
+                <a-form-item label="主管部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptId"
                     type="deptSelect"
-                    placeholder="请选择主管部门id"
+                    placeholder="请选择主管部门"
                     :defaultShowValue="queryForm.managerDeptIdAlias"
                     @callback="
                       result => {

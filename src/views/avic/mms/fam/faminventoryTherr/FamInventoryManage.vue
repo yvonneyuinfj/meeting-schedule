@@ -195,10 +195,10 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="主管部门id">
+            <a-form-item label="主管部门">
               <a-input
                 v-model:value="queryForm.managerDeptId"
-                placeholder="请输入主管部门id"
+                placeholder="请输入主管部门"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />

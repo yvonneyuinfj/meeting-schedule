@@ -37,14 +37,14 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="资产是否完好（是/否）">
+                <a-form-item label="资产是否完好">
                   <a-select
                     v-model:value="queryForm.isAssetIntact"
                     :get-popup-container="triggerNode => triggerNode.parentNode"
                     option-filter-prop="children"
                     :show-search="true"
                     :allow-clear="true"
-                    placeholder="请选择资产是否完好（是/否）"
+                    placeholder="请选择资产是否完好"
                   >
                     <a-select-option
                       v-for="item in isAssetIntactList"
@@ -57,11 +57,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="主管部门id">
+                <a-form-item label="主管部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptId"
                     type="deptSelect"
-                    placeholder="请选择主管部门id"
+                    placeholder="请选择主管部门"
                     :defaultShowValue="queryForm.managerDeptIdAlias"
                     @callback="
                       result => {
@@ -178,11 +178,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="申请部门id">
+                <a-form-item label="申请部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.applyDeptId"
                     type="deptSelect"
-                    placeholder="请选择申请部门id"
+                    placeholder="请选择申请部门"
                     :defaultShowValue="queryForm.applyDeptIdAlias"
                     @callback="
                       result => {
@@ -193,11 +193,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="经办人id">
+                <a-form-item label="经办人">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonId"
                     type="userSelect"
-                    placeholder="请选择经办人id"
+                    placeholder="请选择经办人"
                     :defaultShowValue="queryForm.handlePersonIdAlias"
                     @callback="
                       result => {
@@ -444,7 +444,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资产是否完好（是/否）',
+    title: '资产是否完好',
     dataIndex: 'isAssetIntactName',
     ellipsis: true,
     minWidth: 120,
@@ -452,7 +452,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '主管部门id',
+    title: '主管部门',
     dataIndex: 'managerDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -520,7 +520,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '申请部门id',
+    title: '申请部门',
     dataIndex: 'applyDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -528,7 +528,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '经办人id',
+    title: '经办人',
     dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,

@@ -27,7 +27,7 @@
       >
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famInventoryChangeList:add']"
               title="添加"
               type="primary"
@@ -37,7 +37,7 @@
                 <plus-outlined />
               </template>
               添加
-            </a-button>
+            </a-button> -->
             <a-button
               v-hasPermi="['famInventoryChangeList:add']"
               title="添加"
@@ -241,6 +241,7 @@ const handleOk = () => {
   selectRow.map(item => {
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
+    item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow];
 };

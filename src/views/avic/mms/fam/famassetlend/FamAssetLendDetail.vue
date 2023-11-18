@@ -31,7 +31,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
-          <a-form-item name="managerDeptId" label="主管部门id" :rules="fieldRequired('managerDeptId')" has-feedback>
+          <a-form-item name="managerDeptId" label="主管部门" :rules="fieldRequired('managerDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.managerDeptId"
               type="deptSelect"
@@ -41,7 +41,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('hireDeptId')">
-          <a-form-item name="hireDeptId" label="出租单位ID" :rules="fieldRequired('hireDeptId')" has-feedback>
+          <a-form-item name="hireDeptId" label="出租单位" :rules="fieldRequired('hireDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.hireDeptId"
               type="deptSelect"
@@ -51,7 +51,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('lesseeDeptId')">
-          <a-form-item name="lesseeDeptId" label="承租单位ID" :rules="fieldRequired('lesseeDeptId')" has-feedback>
+          <a-form-item name="lesseeDeptId" label="承租单位" :rules="fieldRequired('lesseeDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.lesseeDeptId"
               type="deptSelect"
@@ -71,7 +71,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
-          <a-form-item name="handlePersonId" label="经办人ID" :rules="fieldRequired('handlePersonId')" has-feedback>
+          <a-form-item name="handlePersonId" label="经办人" :rules="fieldRequired('handlePersonId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.handlePersonId"
               type="userSelect"
@@ -91,7 +91,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billStatus')">
-          <a-form-item name="billStatus" label="审批状态(编制中/流程中/审批通过)" :rules="fieldRequired('billStatus')" has-feedback>
+          <a-form-item name="billStatus" label="审批状态" :rules="fieldRequired('billStatus')" has-feedback>
             <a-input
               v-model:value="form.billStatus"
               :disabled="fieldDisabled('billStatus')"

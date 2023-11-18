@@ -100,7 +100,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门id" has-feedback>
               <a-input
                 v-model:value="form.managerDeptId"
@@ -108,14 +108,14 @@
                 placeholder="请输入主管部门id"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptName" label="主管部门名称" has-feedback>
+            <a-form-item name="managerDeptId" label="主管部门" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.managerDeptName"
+                v-model:value="form.managerDeptId"
                 type="deptSelect"
                 placeholder="请选择主管部门名称"
-                :defaultShowValue="form.managerDeptNameAlias"
+                :defaultShowValue="form.managerDeptIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -251,7 +251,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="applyDeptId" label="申请部门id" has-feedback>
               <a-input
                 v-model:value="form.applyDeptId"
@@ -259,18 +259,18 @@
                 placeholder="请输入申请部门id"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyDeptName" label="申请部门名称" has-feedback>
+            <a-form-item name="applyDeptId" label="申请部门名称" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.applyDeptName"
+                v-model:value="form.applyDeptId"
                 type="deptSelect"
                 placeholder="请选择申请部门名称"
-                :defaultShowValue="form.applyDeptNameAlias"
+                :defaultShowValue="form.applyDeptIdAlias"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersonId" label="需求申请人id" has-feedback>
               <a-input
                 v-model:value="form.handlePersonId"
@@ -278,14 +278,14 @@
                 placeholder="请输入需求申请人id"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonName" label="需求申请人名称" has-feedback>
+            <a-form-item name="handlePersonId" label="需求申请人名称" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.handlePersonName"
+                v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择需求申请人名称"
-                :defaultShowValue="form.handlePersonNameAlias"
+                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>

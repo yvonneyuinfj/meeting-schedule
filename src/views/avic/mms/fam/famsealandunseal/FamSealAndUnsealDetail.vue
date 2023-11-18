@@ -39,7 +39,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('isAssetIntact')">
-          <a-form-item name="isAssetIntact" label="资产是否完好（是/否）" :rules="fieldRequired('isAssetIntact')" has-feedback>
+          <a-form-item name="isAssetIntact" label="资产是否完好" :rules="fieldRequired('isAssetIntact')" has-feedback>
             <a-select
               v-model:value="form.isAssetIntact"
               :get-popup-container="triggerNode => triggerNode.parentNode"
@@ -59,7 +59,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
-          <a-form-item name="managerDeptId" label="主管部门id" :rules="fieldRequired('managerDeptId')" has-feedback>
+          <a-form-item name="managerDeptId" label="主管部门" :rules="fieldRequired('managerDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.managerDeptId"
               type="deptSelect"
@@ -131,7 +131,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
-          <a-form-item name="applyDeptId" label="申请部门id" :rules="fieldRequired('applyDeptId')" has-feedback>
+          <a-form-item name="applyDeptId" label="申请部门" :rules="fieldRequired('applyDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.applyDeptId"
               type="deptSelect"
@@ -141,7 +141,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
-          <a-form-item name="handlePersonId" label="经办人id" :rules="fieldRequired('handlePersonId')" has-feedback>
+          <a-form-item name="handlePersonId" label="经办人" :rules="fieldRequired('handlePersonId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.handlePersonId"
               type="userSelect"

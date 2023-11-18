@@ -21,28 +21,31 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template
+        v-if="!props.readOnly"
+        #toolBarLeft
+      >
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famScrapList:add']"
               title="添加"
               type="primary"
               @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined/>
+                <plus-outlined />
               </template>
               添加
-            </a-button>
+            </a-button> -->
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
+              v-hasPermi="['famScrapList:add']"
               title="添加"
               type="primary"
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined/>
+                <plus-outlined />
               </template>
               批量添加
             </a-button>
@@ -59,7 +62,7 @@
               "
             >
               <template #icon>
-                <delete-outlined/>
+                <delete-outlined />
               </template>
               删除
             </a-button>
@@ -115,9 +118,19 @@
         </template>
       </template>
     </AvicTable>
-    <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
       <div style="height: 600px;overflow: auto">
-        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
+        <fam-inventory-manage
+          :isAdd="'true'"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
       </div>
     </a-modal>
   </div>
@@ -391,6 +404,7 @@ const handleOk = () => {
     item['assetCode'] = item.assetsCode;
     item['purchaseTime'] = item.purchaseDate;
     item['factorySerialNumber'] = item.productionNo;
+    item['inventoryId'] = item.inventoryId;
   });
   list.value = [...list.value, ...selectRow];
 };

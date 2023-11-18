@@ -120,7 +120,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人ID',
+    title: '责任人',
     dataIndex: 'responseUserIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -128,7 +128,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '主管部门名称id',
+    title: '主管部门名称',
     dataIndex: 'managerDeptIdAlias',
     ellipsis: true,
     minWidth: 120,

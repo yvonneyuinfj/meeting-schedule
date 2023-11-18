@@ -43,14 +43,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="isAssetIntact" label="资产是否完好（是/否）">
+            <a-form-item name="isAssetIntact" label="资产是否完好">
               <a-select
                 v-model:value="form.isAssetIntact"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择资产是否完好（是/否）"
+                placeholder="请选择资产是否完好"
               >
                 <a-select-option
                   v-for="item in isAssetIntactList"
@@ -63,11 +63,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptId" label="主管部门id">
+            <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
-                placeholder="请选择主管部门id"
+                placeholder="请选择主管部门"
               />
             </a-form-item>
           </a-col>
@@ -138,20 +138,20 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyDeptId" label="申请部门id" has-feedback>
+            <a-form-item name="applyDeptId" label="申请部门" has-feedback>
               <AvicCommonSelect
                 v-model:value="form.applyDeptId"
                 type="deptSelect"
-                placeholder="请选择申请部门id"
+                placeholder="请选择申请部门"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人id" has-feedback>
+            <a-form-item name="handlePersonId" label="经办人" has-feedback>
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
-                placeholder="请选择经办人id"
+                placeholder="请选择经办人"
               />
             </a-form-item>
           </a-col>

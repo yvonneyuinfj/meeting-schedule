@@ -33,31 +33,31 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptId" label="主管部门id">
+            <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
-                placeholder="请选择主管部门id"
+                placeholder="请选择主管部门"
                 :defaultShowValue="form.managerDeptIdAlias"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="hireDeptId" label="出租单位ID">
+            <a-form-item name="hireDeptId" label="出租单位">
               <AvicCommonSelect
                 v-model:value="form.hireDeptId"
                 type="deptSelect"
-                placeholder="请选择出租单位ID"
+                placeholder="请选择出租单位"
                 :defaultShowValue="form.hireDeptIdAlias"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="lesseeDeptId" label="承租单位ID">
+            <a-form-item name="lesseeDeptId" label="承租单位">
               <AvicCommonSelect
                 v-model:value="form.lesseeDeptId"
                 type="deptSelect"
-                placeholder="请选择承租单位ID"
+                placeholder="请选择承租单位"
                 :defaultShowValue="form.lesseeDeptIdAlias"
               />
             </a-form-item>
@@ -73,11 +73,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人ID">
+            <a-form-item name="handlePersonId" label="经办人">
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
-                placeholder="请选择经办人ID"
+                placeholder="请选择经办人"
                 :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
@@ -93,11 +93,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="billStatus" label="审批状态(编制中/流程中/审批通过)">
+            <a-form-item name="billStatus" label="审批状态">
               <a-input
                 v-model:value="form.billStatus"
                 :maxLength="32"
-                placeholder="请输入审批状态(编制中/流程中/审批通过)"
+                placeholder="请输入审批状态"
               />
             </a-form-item>
           </a-col>

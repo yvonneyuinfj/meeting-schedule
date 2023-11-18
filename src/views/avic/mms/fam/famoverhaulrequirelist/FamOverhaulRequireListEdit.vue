@@ -24,7 +24,7 @@
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famOverhaulRequireList:add']"
               title="添加"
               type="primary"
@@ -34,10 +34,10 @@
                 <plus-outlined/>
               </template>
               添加
-            </a-button>
+            </a-button> -->
             <a-button
               v-hasPermi="['famOverhaulRequireList:add']"
-              title="添加"
+              title="批量添加"
               type="primary"
               @click="handleMostAdd"
             >
@@ -396,6 +396,7 @@ const handleOk = () => {
   selectRow.map(item => {
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
+    item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow];
 };

@@ -914,9 +914,9 @@ function getChangedData() {
   // });
   const changedData = proxy.$getChangeRecords(list, initialList);
   console.log(changedData);
-  
+
   // return deletedData.value.concat(changedData);
-  return changedData
+  return changedData;
 }
 
 /** 批量添加 */
@@ -938,11 +938,11 @@ const handleOk = () => {
     item['factoryNo'] = item.productionNo;
     item['procureOrder'] = item.procureOrderNo;
     item['equipType'] = item.equipClass;
-    item['attribute01'] = item.id
-    item['installLocation'] = item.installLocation
+    item['inventoryId'] = item.id;
+    item['installLocation'] = item.installLocation;
   });
   console.log(selectRow);
-  console.log(list.value)
+  console.log(list.value);
   list.value = [...list.value, ...selectRow];
 };
 

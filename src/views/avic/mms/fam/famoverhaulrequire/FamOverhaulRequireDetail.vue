@@ -83,22 +83,22 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
+        <!-- <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
           <a-form-item name="managerDeptId" label="主管部门id" :rules="fieldRequired('managerDeptId')" has-feedback>
             <a-input
               v-model:value="form.managerDeptId"
               :disabled="fieldDisabled('managerDeptId')"
             />
           </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptName')">
-          <a-form-item name="managerDeptName" label="主管部门名称" :rules="fieldRequired('managerDeptName')"
+        </a-col> -->
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
+          <a-form-item name="managerDeptName" label="主管部门名称" :rules="fieldRequired('managerDeptId')"
                        has-feedback>
             <AvicCommonSelect
-              v-model:value="form.managerDeptName"
+              v-model:value="form.managerDeptId"
               type="deptSelect"
-              :defaultShowValue="form.managerDeptNameAlias"
-              :disabled="fieldDisabled('managerDeptName')"
+              :defaultShowValue="form.managerDeptIdAlias"
+              :disabled="fieldDisabled('managerDeptId')"
             />
           </a-form-item>
         </a-col>
@@ -228,40 +228,40 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
+        <!-- <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
           <a-form-item name="applyDeptId" label="申请部门id" :rules="fieldRequired('applyDeptId')" has-feedback>
             <a-input
               v-model:value="form.applyDeptId"
               :disabled="fieldDisabled('applyDeptId')"
             />
           </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptName')">
-          <a-form-item name="applyDeptName" label="申请部门名称" :rules="fieldRequired('applyDeptName')" has-feedback>
+        </a-col> -->
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
+          <a-form-item name="applyDeptId" label="申请部门名称" :rules="fieldRequired('applyDeptId')" has-feedback>
             <AvicCommonSelect
-              v-model:value="form.applyDeptName"
+              v-model:value="form.applyDeptId"
               type="deptSelect"
-              :defaultShowValue="form.applyDeptNameAlias"
-              :disabled="fieldDisabled('applyDeptName')"
+              :defaultShowValue="form.applyDeptIdAlias"
+              :disabled="fieldDisabled('applyDeptId')"
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
+        <!-- <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
           <a-form-item name="handlePersonId" label="需求申请人id" :rules="fieldRequired('handlePersonId')" has-feedback>
             <a-input
               v-model:value="form.handlePersonId"
               :disabled="fieldDisabled('handlePersonId')"
             />
           </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonName')">
-          <a-form-item name="handlePersonName" label="需求申请人名称" :rules="fieldRequired('handlePersonName')"
+        </a-col> -->
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
+          <a-form-item name="handlePersonId" label="需求申请人名称" :rules="fieldRequired('handlePersonId')"
                        has-feedback>
             <AvicCommonSelect
-              v-model:value="form.handlePersonName"
+              v-model:value="form.handlePersonId"
               type="userSelect"
-              :defaultShowValue="form.handlePersonNameAlias"
-              :disabled="fieldDisabled('handlePersonName')"
+              :defaultShowValue="form.handlePersonIdAlias"
+              :disabled="fieldDisabled('handlePersonId')"
             />
           </a-form-item>
         </a-col>

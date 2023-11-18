@@ -27,7 +27,7 @@
       >
         <a-space>
           <a-space>
-            <a-button
+            <!-- <a-button
               v-hasPermi="['famAssetLendList:add']"
               title="添加"
               type="primary"
@@ -37,9 +37,9 @@
                 <plus-outlined />
               </template>
               添加
-            </a-button>
+            </a-button> -->
             <a-button
-              v-hasPermi="['famOverhaulRequireList:add']"
+              v-hasPermi="['famAssetLendList:add']"
               title="添加"
               type="primary"
               @click="handleMostAdd"
@@ -98,7 +98,7 @@
             <AvicCommonSelect
               v-model:value="record.responseUserId"
               :defaultShowValue="record.responseUserIdAlias"
-              placeholder="请选择责任人ID"
+              placeholder="请选择责任人"
               type="userSelect"
               @callback="
                   (value, _selectRows) => {
@@ -120,7 +120,7 @@
             <AvicCommonSelect
               v-model:value="record.managerDeptId"
               :defaultShowValue="record.managerDeptIdAlias"
-              placeholder="请选择主管部门名称id"
+              placeholder="请选择主管部门名称"
               type="deptSelect"
               @callback="
                   (value, _selectRows) => {
@@ -400,7 +400,7 @@ const handleOk = () => {
   const selectRow = famInventoryManage.value.selectedRow();
   selectRow.map(item => {
     console.log(item);
-    
+    item['inventoryId'] = item.id;
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['assetCode'] = item.assetsCode;
