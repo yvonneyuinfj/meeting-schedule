@@ -141,17 +141,48 @@ const props = defineProps({
 });
 const columns = [
   {
-    title: '资产表ID',
-    dataIndex: 'inventoryId',
-    key: 'inventoryId',
+    title: '资产编码',
+    dataIndex: 'assetCode',
+    key: 'assetCode',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
+    align: 'left'
+  },
+  {
+    title: '资产名称',
+    dataIndex: 'assetName',
+    key: 'assetName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产规格',
+    dataIndex: 'assetSpec',
+    key: 'assetSpec',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产型号',
+    dataIndex: 'assetModel',
+    key: 'assetModel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '设备编号',
+    dataIndex: 'equipNo',
+    key: 'equipNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
     align: 'left'
   }
 ] as any[];
@@ -242,6 +273,7 @@ const handleOk = () => {
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
+    item['assetCode'] = item.assetsCode;
   });
   list.value = [...list.value, ...selectRow];
 };
