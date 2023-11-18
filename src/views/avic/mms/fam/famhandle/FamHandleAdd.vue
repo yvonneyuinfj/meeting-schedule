@@ -45,20 +45,20 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptId" label="主管部门id">
+            <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
-                placeholder="请选择主管部门id"
+                placeholder="请选择主管部门"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handleDeptId" label="处置部门ID">
+            <a-form-item name="handleDeptId" label="处置部门">
               <AvicCommonSelect
                 v-model:value="form.handleDeptId"
                 type="deptSelect"
-                placeholder="请选择处置部门ID"
+                placeholder="请选择处置部门"
               />
             </a-form-item>
           </a-col>
@@ -96,20 +96,20 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyDeptId" label="申请部门id" has-feedback>
+            <a-form-item name="applyDeptId" label="申请部门" has-feedback>
               <AvicCommonSelect
                 v-model:value="form.applyDeptId"
                 type="deptSelect"
-                placeholder="请选择申请部门id"
+                placeholder="请选择申请部门"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人id" has-feedback>
+            <a-form-item name="handlePersonId" label="经办人" has-feedback>
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
-                placeholder="请选择经办人id"
+                placeholder="请选择经办人"
               />
             </a-form-item>
           </a-col>

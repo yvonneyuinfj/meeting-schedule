@@ -61,7 +61,7 @@
       </div>
     </AvicPane>
     <AvicPane>
-      <FamAssetClassYManage ref="RightListManageRef" :mainId="nodeId" />
+      <FamAssetClassYManage ref="RightListManageRef"  @getTree="getTreeList" :mainId="nodeId" />
     </AvicPane>
     <!-- 添加页面弹窗 -->
     <FamAssetClassAdd v-if="showAddNodeModal" :parentId="parentId" :parentTitle="parentTitle"

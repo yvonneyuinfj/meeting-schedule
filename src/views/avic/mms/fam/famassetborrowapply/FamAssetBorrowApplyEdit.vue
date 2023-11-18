@@ -33,21 +33,21 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="borrowDeptId" label="借用部门ID">
+            <a-form-item name="borrowDeptId" label="借用部门">
               <AvicCommonSelect
                 v-model:value="form.borrowDeptId"
                 type="deptSelect"
-                placeholder="请选择借用部门ID"
+                placeholder="请选择借用部门"
                 :defaultShowValue="form.borrowDeptIdAlias"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptId" label="主管部门id">
+            <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
-                placeholder="请选择主管部门id"
+                placeholder="请选择主管部门"
                 :defaultShowValue="form.managerDeptIdAlias"
               />
             </a-form-item>
@@ -62,11 +62,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人id" has-feedback>
+            <a-form-item name="handlePersonId" label="经办人" has-feedback>
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
-                placeholder="请选择经办人id"
+                placeholder="请选择经办人"
                 :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>

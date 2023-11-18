@@ -157,7 +157,7 @@
               has-feedback
             >
               <a-select
-                v-model:value="form.accpetType"
+                v-model:value="form.assetClass"
                 :auto-focus="true"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
@@ -309,11 +309,11 @@ const props = defineProps({
     type: Function
   }
 });
-const accpetType = ref()
+const accpetType = ref();
 const emit = defineEmits(emits);
 
 function accpetTypeChange (v){
-  accpetType.value = v
+  accpetType.value = v;
 }
 
 
@@ -339,7 +339,7 @@ const {
 });
 
 watch( ()=> form.value.accpetType ,newV => {
-  accpetType.value = newV
-})
+  accpetType.value = newV;
+});
 
 </script>

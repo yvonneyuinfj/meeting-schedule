@@ -13,11 +13,11 @@
               <a-input v-model:value="form.className" disabled />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="modelContent" label="编码规则">
               <a-input v-model:value="form.modelContent" disabled />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useTime" label="使用年限">
               <a-input v-model:value="form.useTime" disabled />

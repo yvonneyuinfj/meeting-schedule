@@ -51,7 +51,7 @@
     title="单表模板导入"
     importUrl="/mms/fam/famassetclasss/importData/v1"
     downloadTemplateUrl="/mms/fam/famassetclasss/downloadTemplate/v1"
-    @reloadData="getList"
+    @reloadData="reload"
     @close="showImportModal = false"
   />
 </template>
@@ -90,14 +90,14 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '编码规则',
-    dataIndex: 'modelContent',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  // {
+  //   title: '编码规则',
+  //   dataIndex: 'modelContent',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
   {
     title: '使用年限',
     dataIndex: 'useTime',
@@ -158,6 +158,7 @@ const maintCategoryList = ref([]); // 维修类别通用代码
 const isUsedScientificrsList = ref([]); // 是否使用型号经费通用代码
 const annualProvisionalList = ref([]); // 年度/临时（勾选）通用代码
 const isNeedReviewList = ref([]); // 是否需要评审通用代码
+const emit = defineEmits(['getTree']);
 const lookupParams = [
   { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
   { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' },
@@ -178,6 +179,11 @@ onMounted(() => {
 /** 导入 */
 function handleImport () {
   showImportModal.value = true;
+}
+
+function reload(){
+  getList();
+  emit('getTree');
 }
 
 /** 查询数据  */

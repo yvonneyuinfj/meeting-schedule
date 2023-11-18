@@ -29,7 +29,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="modelContent" label="编码规则" has-feedback>
               <a-input
                 v-model:value="form.modelContent"
@@ -37,7 +37,7 @@
                 placeholder="请输入编码规则"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useTime" label="使用年限" has-feedback>
               <a-input

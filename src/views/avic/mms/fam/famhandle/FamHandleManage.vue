@@ -37,11 +37,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
-                <a-form-item label="主管部门id">
+                <a-form-item label="主管部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptId"
                     type="deptSelect"
-                    placeholder="请选择主管部门id"
+                    placeholder="请选择主管部门"
                     :defaultShowValue="queryForm.managerDeptIdAlias"
                     @callback="
                       result => {
@@ -51,7 +51,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门名称">
                   <a-input
                     v-model:value="queryForm.managerDeptName"
@@ -60,13 +60,13 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="处置部门ID">
+                <a-form-item label="处置部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.handleDeptId"
                     type="deptSelect"
-                    placeholder="请选择处置部门ID"
+                    placeholder="请选择处置部门"
                     :defaultShowValue="queryForm.handleDeptIdAlias"
                     @callback="
                       result => {
@@ -76,7 +76,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="处置部门名称">
                   <a-input
                     v-model:value="queryForm.handleDeptName"
@@ -85,7 +85,7 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="资产更新替换方案">
                   <a-input
@@ -107,11 +107,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="申请部门id">
+                <a-form-item label="申请部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.applyDeptId"
                     type="deptSelect"
-                    placeholder="请选择申请部门id"
+                    placeholder="请选择申请部门"
                     :defaultShowValue="queryForm.applyDeptIdAlias"
                     @callback="
                       result => {
@@ -121,7 +121,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="申请部门名称">
                   <a-input
                     v-model:value="queryForm.applyDeptName"
@@ -130,13 +130,13 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="经办人id">
+                <a-form-item label="经办人">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonId"
                     type="userSelect"
-                    placeholder="请选择经办人id"
+                    placeholder="请选择经办人"
                     :defaultShowValue="queryForm.handlePersonIdAlias"
                     @callback="
                       result => {
@@ -146,7 +146,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="经办人名称">
                   <a-input
                     v-model:value="queryForm.handlePersonName"
@@ -155,7 +155,7 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="申请时间(起)">
                   <a-date-picker
@@ -403,39 +403,39 @@ const columns = [
     align: 'center'
   },
   {
-    title: '主管部门id',
+    title: '主管部门',
     dataIndex: 'managerDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
+  // {
+  //   title: '主管部门名称',
+  //   dataIndex: 'managerDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '主管部门名称',
-    dataIndex: 'managerDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '处置部门ID',
+    title: '处置部门',
     dataIndex: 'handleDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
-  {
-    title: '处置部门名称',
-    dataIndex: 'handleDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '处置部门名称',
+  //   dataIndex: 'handleDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '处置理由',
     dataIndex: 'handleReason',
@@ -463,39 +463,39 @@ const columns = [
     align: 'left'
   },
   {
-    title: '申请部门id',
+    title: '申请部门',
     dataIndex: 'applyDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
+  // {
+  //   title: '申请部门名称',
+  //   dataIndex: 'applyDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '申请部门名称',
-    dataIndex: 'applyDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '经办人id',
+    title: '经办人',
     dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
-  {
-    title: '经办人名称',
-    dataIndex: 'handlePersonName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '经办人名称',
+  //   dataIndex: 'handlePersonName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '申请时间',
     dataIndex: 'applyDate',
