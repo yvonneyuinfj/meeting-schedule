@@ -15,11 +15,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="经办人id">
+            <a-form-item label="经办人">
               <AvicCommonSelect
                 v-model:value="queryForm.handlePersonId"
                 type="userSelect"
-                placeholder="请选择经办人id"
+                placeholder="请选择经办人"
                 :defaultShowValue="queryForm.handlePersonIdAlias"
                 @callback="
                   result => {
@@ -30,11 +30,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="盘点部门ID">
+            <a-form-item label="盘点部门">
               <AvicCommonSelect
                 v-model:value="queryForm.inventoryDeptId"
                 type="deptSelect"
-                placeholder="请选择盘点部门ID"
+                placeholder="请选择盘点部门"
                 :defaultShowValue="queryForm.inventoryDeptIdAlias"
                 @callback="
                   result => {

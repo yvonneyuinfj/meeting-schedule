@@ -23,7 +23,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人id">
+            <a-form-item name="handlePersonId" label="经办人">
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
@@ -33,7 +33,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="inventoryDeptId" label="盘点部门ID">
+            <a-form-item name="inventoryDeptId" label="盘点部门">
               <AvicCommonSelect
                 v-model:value="form.inventoryDeptId"
                 type="deptSelect"

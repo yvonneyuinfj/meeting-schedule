@@ -7,11 +7,11 @@
           <a-form v-bind="layout" ref="formRef" :model="queryForm">
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
-                <a-form-item label="经办人id">
+                <a-form-item label="经办人">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonId"
                     type="userSelect"
-                    placeholder="请选择经办人id"
+                    placeholder="请选择经办人"
                     :defaultShowValue="queryForm.handlePersonIdAlias"
                     @callback="
                       result => {
@@ -21,7 +21,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols">
+              <!-- <a-col v-bind="colLayout.cols">
                 <a-form-item label="经办人名称">
                   <a-input
                     v-model:value="queryForm.handlePersonName"
@@ -30,13 +30,13 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols">
-                <a-form-item label="盘点部门ID">
+                <a-form-item label="盘点部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.inventoryDeptId"
                     type="deptSelect"
-                    placeholder="请选择盘点部门ID"
+                    placeholder="请选择盘点部门"
                     :defaultShowValue="queryForm.inventoryDeptIdAlias"
                     @callback="
                       result => {
@@ -46,7 +46,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="盘点部门名称">
                   <a-input
                     v-model:value="queryForm.inventoryDeptName"
@@ -55,7 +55,7 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="盘点日期(起)">
                   <a-date-picker
@@ -267,39 +267,39 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '经办人id',
+    title: '经办人',
     dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
+  // {
+  //   title: '经办人名称',
+  //   dataIndex: 'handlePersonName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '经办人名称',
-    dataIndex: 'handlePersonName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '盘点部门ID',
+    title: '盘点部门',
     dataIndex: 'inventoryDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
-  {
-    title: '盘点部门名称',
-    dataIndex: 'inventoryDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '盘点部门名称',
+  //   dataIndex: 'inventoryDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '盘点日期',
     dataIndex: 'inventoryDate',

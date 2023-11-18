@@ -22,7 +22,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
-          <a-form-item name="handlePersonId" label="经办人id" :rules="fieldRequired('handlePersonId')" has-feedback>
+          <a-form-item name="handlePersonId" label="经办人" :rules="fieldRequired('handlePersonId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.handlePersonId"
               :auto-focus="true"
@@ -33,7 +33,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('inventoryDeptId')">
-          <a-form-item name="inventoryDeptId" label="盘点部门ID" :rules="fieldRequired('inventoryDeptId')" has-feedback>
+          <a-form-item name="inventoryDeptId" label="盘点部门" :rules="fieldRequired('inventoryDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.inventoryDeptId"
               type="deptSelect"
