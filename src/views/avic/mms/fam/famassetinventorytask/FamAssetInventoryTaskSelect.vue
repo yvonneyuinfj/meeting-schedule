@@ -15,6 +15,21 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item label="经办人id">
+              <AvicCommonSelect
+                v-model:value="queryForm.handlePersonId"
+                type="userSelect"
+                placeholder="请选择经办人id"
+                :defaultShowValue="queryForm.handlePersonIdAlias"
+                @callback="
+                  result => {
+                    queryForm.handlePersonIdAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item label="盘点部门ID">
               <AvicCommonSelect
                 v-model:value="queryForm.inventoryDeptId"
@@ -26,16 +41,6 @@
                     queryForm.inventoryDeptIdAlias = result.names;
                   }
                 "
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="盘点部门名称">
-              <a-input
-                v-model:value="queryForm.inventoryDeptName"
-                placeholder="请输入盘点部门名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
@@ -150,10 +155,9 @@ const columns = [
     title: '盘点编号',
     dataIndex: 'inventoryNo',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '经办人id',
@@ -164,27 +168,9 @@ const columns = [
     align: 'left'
   },
   {
-    title: '经办人名称',
-    dataIndex: 'handlePersonName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '盘点部门ID',
     dataIndex: 'inventoryDeptIdAlias',
     ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '盘点部门名称',
-    dataIndex: 'inventoryDeptName',
-    ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'

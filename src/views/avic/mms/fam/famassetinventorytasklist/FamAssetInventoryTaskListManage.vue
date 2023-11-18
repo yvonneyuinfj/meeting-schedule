@@ -15,6 +15,8 @@
           columnWidth: 40,
           fixed: true
         }"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
         :customRow="
           record => {
             return {
@@ -24,35 +26,15 @@
             };
           }
         "
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
         @change="handleTableChange"
         @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
-            <!-- <a-button
-              v-hasPermi="['famAssetInventoryTaskList:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button> -->
-              <a-button
-                  title="批量添加"
-                  type="primary"
-                >
-                  批量添加
-                </a-button>
             <a-button
-              v-hasPermi="['famAssetInventoryTaskList:del']"
-              title="删除"
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              title="删除"
               :loading="delLoading"
               @click="handleDelete(selectedRowKeys, '')"
             >
@@ -61,19 +43,17 @@
               </template>
               删除
             </a-button>
-            <!-- <a-button
-              v-hasPermi="['famAssetInventoryTaskList:import']"
+            <a-button
               title="导入"
               type="primary"
               ghost
               @click="handleImport">
               <template #icon>
-                 <import-outlined />
+                <import-outlined />
               </template>
               导入
             </a-button>
             <a-button
-              v-hasPermi="['famAssetInventoryTaskList:export']"
               title="导出"
               type="primary"
               ghost
@@ -82,7 +62,7 @@
                  <export-outlined />
               </template>
               导出
-            </a-button> -->
+            </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -95,22 +75,14 @@
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
-          <template v-if="column.dataIndex  === 'id'">
+          <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex  === 'action'">
+          <template v-if="column.dataIndex === 'action'">
             <a-button
               type="link"
               class="inner-btn"
-              @click.stop="handleEdit(record.id)"
-            >
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['famAssetInventoryTaskList:del']"
-              type="link"
-              class="inner-btn"
-              @click.stop="handleDelete([record.id], 'row')"
+              @click="handleDelete([record.id], 'row')"
             >
               删除
             </a-button>
@@ -118,23 +90,6 @@
         </template>
       </AvicTable>
     </div>
-    <!-- 添加页面弹窗 -->
-    <fam-asset-inventory-task-list-add
-      v-if="showAddModal"
-      ref="addModal"
-      :mainId="mainId"
-      @reloadData="getList"
-      @close="showAddModal = false"
-    />
-    <!-- 编辑页面弹窗 -->
-    <fam-asset-inventory-task-list-edit
-      v-if="showEditModal"
-      ref="editModal"
-      :mainId="mainId"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
-    />
     <AvicExcelImport
       v-if="showImportModal"
       :formData="excelParams"
@@ -148,8 +103,7 @@
 </template>
 <script lang="ts" setup>
 import { listFamAssetInventoryTaskListByPage, delFamAssetInventoryTaskList, exportExcel } from '@/api/avic/mms/fam/FamAssetInventoryTaskListApi'; // 引入模块API
-import FamAssetInventoryTaskListAdd from './FamAssetInventoryTaskListAdd.vue'; // 引入添加页面组件
-import FamAssetInventoryTaskListEdit from './FamAssetInventoryTaskListEdit.vue'; // 引入编辑页面组件
+
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
@@ -277,20 +231,17 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const showAddModal = ref(false); // 是否展示添加弹窗
-const showEditModal = ref(false); // 是否展示编辑弹窗
 const showImportModal = ref(false); // 是否展示导入弹窗
 const excelParams = ref({ tableName: 'famAssetInventoryTaskList', inventoryTaskId: '' });
 const list = ref([]); // 表格数据集合
-const formId = ref(''); // 当前行数据id
-const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
+const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 
 onMounted(() => {
-  //重载子表数据
+  // 加载表格数据
   getList();
 });
 
@@ -320,27 +271,14 @@ function handleKeyWordQuery (value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
-/** 添加 */
-function handleAdd () {
-  if (props.mainId == '') {
-    proxy.$message.warning('请选择一条主数据');
-    return;
-  }
-  showAddModal.value = true;
-}
-/** 编辑 */
-function handleEdit (id) {
-  formId.value = id;
-  showEditModal.value = true;
-}
-/* 子表删除 */
+/** 子表删除 */
 function handleDelete (ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
@@ -364,11 +302,6 @@ function handleDelete (ids, type) {
 }
 /** 导入 */
 function handleImport () {
-  if (props.mainId == '') {
-    proxy.$message.warning('请选择一条主数据');
-    return;
-  }
-  excelParams.value.inventoryTaskId = props.mainId;
   showImportModal.value = true;
 }
 /** 导出 */
@@ -392,7 +325,7 @@ function onSelectChange (rowKeys, rows) {
   selectedRows.value = rows;
 }
 /** 表头排序 */
-function handleTableChange (pagination, filters, sorter) {
+function handleTableChange (pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
@@ -429,3 +362,4 @@ watch(
   { immediate: true }
 );
 </script>
+

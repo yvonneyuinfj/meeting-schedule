@@ -30,7 +30,7 @@ export interface FamAssetInventoryTaskDto extends BaseBeanModel {
   /** ATTRIBUTE_10 */
   attribute10?: string;
   /** 盘点编号 */
-  inventoryNo?: string;
+  inventoryNo?: any;
   /** 经办人id */
   handlePersonId?: string;
   handlePersonIdAlias?: string;
@@ -45,6 +45,8 @@ export interface FamAssetInventoryTaskDto extends BaseBeanModel {
   inventoryDate?: any;
   inventoryDateBegin?: any;
   inventoryDateEnd?: any;
+  /** 子表集合 */
+  famAssetInventoryTaskListList?: [];
 }
 
 /** 获取分页数据 */

@@ -53,6 +53,8 @@ export interface FamAssetInventoryTaskListDto extends BaseBeanModel {
   assetSpec?: string;
   /** 主表ID */
   inventoryTaskId?: string;
+  /** 资产台账ID */
+  inventoryId?: string;
 }
 
 /** 获取分页数据 */
