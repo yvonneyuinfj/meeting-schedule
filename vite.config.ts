@@ -75,12 +75,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       : */
         {
           '/api/mms/fam/': {
-            target: 'http://192.168.1.101:10008',
+            target: 'http://127.0.0.1:10008',
+            // target: 'http://192.168.1.101:10008',
             ws: false,
             changeOrigin: true
           },
-          '/api': {   
-            target: 'http://192.168.1.101:10001',
+          '/api': {
+            target: 'http://127.0.0.1:10001',
+            // target: 'http://192.168.1.101:10001',
             ws: false,
             changeOrigin: true
             // rewrite: (p) => p.replace(/^\/api/, '')
