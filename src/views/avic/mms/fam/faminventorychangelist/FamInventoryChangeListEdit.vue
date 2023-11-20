@@ -273,7 +273,7 @@ const handleOk = () => {
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
   });
-  list.value = [...list.value, ...selectRow];
+  list.value = [...list.value, ...selectRow]; 
 };
 
 /** 添加 */

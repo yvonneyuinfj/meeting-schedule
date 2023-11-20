@@ -76,14 +76,14 @@ export const useLogoConfig = () => {
     return previewData.value
       ? {
           fontFamily: previewData.value.oneFont,
-          fontSize: `${previewData.value.oneFontSize || 20}px`,
+          fontSize: `${previewData.value.oneFontSize || 18}px`,
           color: `${previewData.value.oneFontColor || '#fff'}`,
           fontWeight: previewData.value.oneFontBold === 'Y' ? 'bold' : 'normal',
           fontStyle: previewData.value.oneFontItalic === 'Y' ? 'italic' : ''
         }
       : {
           fontFamily: logo.value?.oneFont,
-          fontSize: `${logo.value?.oneFontSize || 20}px`,
+          fontSize: `${logo.value?.oneFontSize || 18}px`,
           color: `${logo.value?.oneFontColor || '#fff'}`,
           fontWeight: logo.value?.oneFontBold === 'Y' ? 'bold' : 'normal',
           fontStyle: logo.value?.oneFontItalic === 'Y' ? 'italic' : ''
@@ -93,7 +93,7 @@ export const useLogoConfig = () => {
     return previewData.value
       ? {
           fontFamily: previewData.value.secondFont,
-          fontSize: `${previewData.value.secondFontSize || 20}px`,
+          fontSize: `${previewData.value.secondFontSize || 18}px`,
           color: `${previewData.value.secondFontColor || '#fff'}`,
           fontWeight: previewData.value.secondFontBold === 'Y' ? 'bold' : 'normal',
           fontStyle: previewData.value.secondFontItalic === 'Y' ? 'italic' : ''
@@ -101,7 +101,7 @@ export const useLogoConfig = () => {
       : logo.value
       ? {
           fontFamily: logo.value.secondFont,
-          fontSize: `${logo.value.secondFontSize || 20}px`,
+          fontSize: `${logo.value.secondFontSize || 18}px`,
           color: `${logo.value.secondFontColor || '#fff'}`,
           fontWeight: logo.value.secondFontBold === 'Y' ? 'bold' : 'normal',
           fontStyle: logo.value.secondFontItalic === 'Y' ? 'italic' : ''
