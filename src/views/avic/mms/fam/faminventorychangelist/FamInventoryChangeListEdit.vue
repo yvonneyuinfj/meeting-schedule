@@ -142,7 +142,7 @@ const props = defineProps({
 const columns = [
   {
     title: '资产编码',
-    dataIndex: 'assetCode',
+    dataIndex: 'assetsCode',
     key: 'assetCode',
     ellipsis: true,
     minWidth: 120,
@@ -151,7 +151,7 @@ const columns = [
   },
   {
     title: '资产名称',
-    dataIndex: 'assetName',
+    dataIndex: 'assetsName',
     key: 'assetName',
     ellipsis: true,
     minWidth: 120,
@@ -270,10 +270,8 @@ const handleOk = () => {
   console.log(famInventoryManage.value.selectedRow());
   const selectRow = famInventoryManage.value.selectedRow();
   selectRow.map(item => {
-    item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
-    item['assetCode'] = item.assetsCode;
   });
   list.value = [...list.value, ...selectRow];
 };

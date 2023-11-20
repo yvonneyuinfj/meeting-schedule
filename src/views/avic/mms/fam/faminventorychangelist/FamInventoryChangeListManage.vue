@@ -94,7 +94,7 @@ const columns = [
   },
    {
     title: '资产编码',
-    dataIndex: 'assetCode',
+    dataIndex: 'assetsCode',
     key: 'assetCode',
     ellipsis: true, 
     minWidth: 120,
@@ -103,7 +103,7 @@ const columns = [
   },
   {
     title: '资产名称',
-    dataIndex: 'assetName',
+    dataIndex: 'assetsName',
     key: 'assetName',
     ellipsis: true,
     minWidth: 120,
