@@ -162,6 +162,7 @@
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
+                 @change="assetClassChange"
                 :allow-clear="true"
               >
                 <a-select-option
@@ -260,6 +261,7 @@
         <FamAccpetListEdit
           ref="famAccpetListEdit"
           :accpetType="accpetType"
+          :asset-class="assetClass"
           :mainId="formId || form.id"
         />
       </a-form>
@@ -310,10 +312,15 @@ const props = defineProps({
   }
 });
 const accpetType = ref();
+const assetClass = ref();
 const emit = defineEmits(emits);
 
 function accpetTypeChange (v){
   accpetType.value = v;
+}
+
+function assetClassChange(v){
+  assetClass.value = v;
 }
 
 
@@ -341,5 +348,10 @@ const {
 watch( ()=> form.value.accpetType ,newV => {
   accpetType.value = newV;
 });
+
+watch( ()=> form.value.assetClass ,newV => {
+  assetClass.value = newV;
+});
+
 
 </script>

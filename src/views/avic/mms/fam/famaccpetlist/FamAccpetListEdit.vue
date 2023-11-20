@@ -74,9 +74,29 @@
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
           v-if="['assetSource','assetsUse','fundSource','equipType'
-           ,'firstDepreciationValue','installLocation','ownershipCertNo','assetOriginalValue','assetModel','factoryNo','procureOrder','assetSpec','liablePerson','equipClass','assetUnit','warrantyPeriod','assetNum','assetName','producer','equipNo','invoiceNo','brand','parentAssetNo'].includes(
+           ,'firstDepreciationValue','installLocation','ownershipCertNo',
+           'assetModel','factoryNo','procureOrder','assetSpec','liablePerson','equipClass',
+           'assetUnit','warrantyPeriod','assetNum','assetName','producer','equipNo','invoiceNo',
+           'brand','parentAssetNo'].includes(
                column.dataIndex
-              )"
+              ) && (props.accpetType === '1' || (props.accpetType === '2' && props.assetClass === '2' ) )"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="32"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'assetOriginalValue'"
           :record="record"
           :column="column.dataIndex"
         >
@@ -93,7 +113,7 @@
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'assetNo'">
-          提交后自动生成
+          {{props.accpetType === '1' ? '提交后自动生成' : record.assetNo}}
         </template>
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetClass'"
@@ -102,6 +122,7 @@
         >
           <template #edit>
             <a-input
+              v-if="props.accpetType === '1' "
               v-model:value="record.assetClass"
               @click="assetClassClick(record)"
               placeholder="请选择资产类别"
@@ -112,10 +133,13 @@
                 </a-tooltip>
               </template>
             </a-input>
+            <div v-else>
+              {{ record. assetClass}}
+            </div>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'productionDate'"
+          v-else-if="column.dataIndex === 'productionDate' "
           :record="record"
           :column="column.dataIndex"
         >
@@ -124,6 +148,7 @@
               v-model:value="record.productionDate"
               value-format="YYYY-MM-DD"
               placeholder="请选择出厂日期"
+              :disabled="props.accpetType === '2' && props.assetClass === '1'"
             >
             </a-date-picker>
           </template>
@@ -138,6 +163,7 @@
               v-model:value="record.importedOrNot"
               style="width: 100%"
               placeholder="请选择是否为进口设备"
+              :disabled=" props.accpetType === '2' && props.assetClass === '1'"
               @change="(value)=>changeControlValue(value,record,'importedOrNot')"
             >
               <a-select-option
@@ -167,7 +193,8 @@
             <a-select
               v-model:value="record.ynMilitaryKeyEquip"
               style="width: 100%"
-              placeholder="请选择是否为进口设备"
+              placeholder="请选择是否为军工关键设备"
+              :disabled="props.accpetType === '2' && props.assetClass === '1'"
               @change="(value)=>changeControlValue(value,record,'ynMilitaryKeyEquip')"
             >
               <a-select-option
@@ -182,10 +209,13 @@
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag
+            <div>
+              {{ record.ynMilitaryKeyEquip ?  record.ynMilitaryKeyEquip === '1' ? '是' : '否' : '' }}
+            </div>
+            <!-- <AvicDictTag
               :value="record.ynMilitaryKeyEquip"
               :options="ynMilitaryKeyEquipList"
-            />
+            /> -->
           </template>
         </AvicRowEdit>
         <AvicRowEdit
@@ -282,6 +312,7 @@
       <div style="height: 600px;overflow: auto">
         <fam-inventory-manage
           :isAdd="'true'"
+          :assetClass="props.assetClass"
           ref="famInventoryManage"
         ></fam-inventory-manage>
       </div>
@@ -293,7 +324,7 @@
 import type { FamAccpetListDto } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块DTO
 import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
-import { setNodeSlots, getExpandedKeys, findNodeForTreegrid } from '@/utils/tree-util'; // 引入树公共方法
+import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
@@ -305,6 +336,10 @@ const props = defineProps({
     default: ''
   },
   accpetType: {
+    type: String,
+    defalut: ''
+  },
+  assetClass: {
     type: String,
     defalut: ''
   },
@@ -753,7 +788,7 @@ const ynMilitaryKeyEquipList = ref([]);
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_YN_FLAG' }
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' }
 ];
 const validateRules = {
   isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
@@ -903,7 +938,7 @@ function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     isNewAssetList.value = result.isNewAsset;
     importedOrNotList.value = result.importedOrNot;
-    ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
+    ynMilitaryKeyEquipList.value = result.importedOrNot;
   });
 }
 
@@ -939,7 +974,9 @@ const handleOk = () => {
     item['procureOrder'] = item.procureOrderNo;
     item['equipType'] = item.equipClass;
     item['inventoryId'] = item.id;
-    item['installLocation'] = item.installLocation;
+    item['installLocation'] = item.storageLocation;
+    item['producer'] = item.factoryOwner;
+    item['liablePerson'] = item.responseUserName;
   });
   console.log(selectRow);
   console.log(list.value);
@@ -1106,6 +1143,16 @@ function validate(callback) {
     }
   }
 }
+
+// watch(
+//   () => props.assetClass,
+//   newV => {
+//     if (newV === '1')
+//       nextTick(() => {
+//         famInventoryManage.value.getAccpetList(newV);
+//       });
+//   }
+// );
 
 defineExpose({
   validate,
