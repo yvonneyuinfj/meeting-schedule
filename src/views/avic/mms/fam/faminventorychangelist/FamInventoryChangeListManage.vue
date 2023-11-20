@@ -92,11 +92,47 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
+   {
+    title: '资产编码',
+    dataIndex: 'assetCode',
+    key: 'assetCode',
+    ellipsis: true, 
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   {
-    title: '资产表ID',
-    dataIndex: 'inventoryId',
+    title: '资产名称',
+    dataIndex: 'assetName',
+    key: 'assetName',
     ellipsis: true,
-    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产规格',
+    dataIndex: 'assetSpec',
+    key: 'assetSpec',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产型号',
+    dataIndex: 'assetModel',
+    key: 'assetModel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '设备编号',
+    dataIndex: 'equipNo',
+    key: 'equipNo',
+    ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
