@@ -2,6 +2,7 @@ import type { ConfigEnv, UserConfig } from 'vite';
 import { loadEnv } from 'vite';
 import path, { resolve } from 'path';
 import createVitePlugins from './vite/plugins';
+
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
@@ -70,16 +71,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       host: true,
       proxy:
         /* env.VITE_HTTP_MOCK === 'true'
-        ? undefined
-        : */
+      ? undefined
+      : */
         {
           '/api/mms/fam/': {
-            target: 'http://192.168.1.102:10008',
-            ws: false,
-            changeOrigin: true
+            target: 'http://192.168.1.101:10008',
+            ws: false,
+            changeOrigin: true
           },
-          '/api': {
-            target: 'http://192.168.1.102:10001',
+          '/api': {   
+            target: 'http://192.168.1.101:10001',
             ws: false,
             changeOrigin: true
             // rewrite: (p) => p.replace(/^\/api/, '')

@@ -288,7 +288,7 @@ const handleOk = () => {
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['assetCode'] = item.assetsCode;
-    item['inventoryId'] = item.inventoryId;
+    item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow];
 };
