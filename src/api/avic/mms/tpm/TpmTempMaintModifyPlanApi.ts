@@ -120,6 +120,12 @@ export function listTpmTempMaintModifyPlanByPage(
     return request.post(basePath + '/search-by-page/v1', param);
 }
 
+export function listTpmTempMaintModifyPlanReleaseByPage(
+    param: QueryParamModel
+): Promise<ResponsePageData<TpmTempMaintModifyPlanDto>> {
+    return request.post(basePath + '/searchRelease-by-page/v1', param);
+}
+
 /** 保存表单数据 */
 export function saveTpmTempMaintModifyPlan(form: [TpmTempMaintModifyPlanDto]): Promise<ResponseBaseData<any>> {
     return request.post(basePath + '/save/v1', form);
@@ -132,6 +138,14 @@ export function delTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBaseDa
 
 export function commitTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBaseData<any>> {
     return request.post(basePath + '/commit-by-ids/v1', { ids: ids });
+}
+
+export function releaseTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBaseData<any>> {
+    return request.post(basePath + '/release-by-ids/v1', { ids: ids });
+}
+
+export function backTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBaseData<any>> {
+    return request.post(basePath + '/back-by-ids/v1', { ids: ids });
 }
 
 /** 编制页导出Excel */

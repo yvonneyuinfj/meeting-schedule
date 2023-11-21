@@ -159,7 +159,7 @@
                 title="下达"
                 :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 :loading="commitLoading"
-                @click="handleOrder(selectedRowKeys, '')"
+                @click="handleRelease(selectedRowKeys, '')"
             >
               下达
             </a-button>
@@ -313,7 +313,7 @@ import {
   saveTpmTempMaintModifyPlan,
   delTpmTempMaintModifyPlan,
   commitTpmTempMaintModifyPlan,
-  exportReleaseExcel
+  exportReleaseExcel, releaseTpmTempMaintModifyPlan, backTpmTempMaintModifyPlan
 } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
@@ -717,7 +717,7 @@ function handleBack(ids, type) {
     cancelText: '取消',
     onOk: () => {
       commitLoading.value = true;
-      commitTpmTempMaintModifyPlan(ids)
+      backTpmTempMaintModifyPlan(ids)
           .then(res => {
             if (res.success) {
               proxy.$message.success('退回成功！');
@@ -733,7 +733,7 @@ function handleBack(ids, type) {
 }
 
 /** 下达 */
-function handleOrder(ids, type) {
+function handleRelease(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要下达的数据！');
     return;
@@ -750,7 +750,7 @@ function handleOrder(ids, type) {
     cancelText: '取消',
     onOk: () => {
       commitLoading.value = true;
-      commitTpmTempMaintModifyPlan(ids)
+      releaseTpmTempMaintModifyPlan(ids)
           .then(res => {
             if (res.success) {
               proxy.$message.success('下达成功！');
