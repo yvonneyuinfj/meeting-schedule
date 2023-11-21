@@ -476,17 +476,17 @@
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined/>
+                  <search-outlined />
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined/>
+                  <redo-outlined />
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced"/>
-                  <down-outlined v-else/>
+                  <up-outlined v-if="advanced" />
+                  <down-outlined v-else />
                 </a-button>
               </a-space>
             </div>
@@ -524,7 +524,7 @@
               @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined/>
+                <plus-outlined />
               </template>
               添加
             </a-button>
@@ -536,7 +536,7 @@
               @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined/>
+                <save-outlined />
               </template>
               保存
             </a-button>
@@ -553,7 +553,7 @@
               "
             >
               <template #icon>
-                <delete-outlined/>
+                <delete-outlined />
               </template>
               删除
             </a-button>
@@ -570,7 +570,7 @@
         </template>
         <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-            v-if="['agentId','returnReason'].includes(
+           v-if="['agentId','returnReason'].includes(
                column.dataIndex
               )"
             :record="record"
@@ -584,7 +584,7 @@
                 style="width: 100%"
                 placeholder="请输入"
                 @blur="blurInput($event, record, column.dataIndex)"
-              >
+             >
               </a-input>
             </template>
           </AvicRowEdit>
@@ -662,17 +662,12 @@
 </template>
 <script lang="ts" setup>
 import type { TpmTempMaintModifyPlanDto } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块DTO
-import {
-  listTpmTempMaintModifyPlanByPage,
-  saveTpmTempMaintModifyPlan,
-  delTpmTempMaintModifyPlan,
-  exportExcel
-} from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
+import { listTpmTempMaintModifyPlanByPage, saveTpmTempMaintModifyPlan, delTpmTempMaintModifyPlan, exportExcel } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '120px' },
-  wrapperCol: { flex: '1' }
+    labelCol: { flex: '120px' },
+    wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 调用布局公共方法
 const columns = [
@@ -899,7 +894,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
+    customHeaderCell () {
       return {
         ['class']: 'required-table-title'
       };
@@ -976,7 +971,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
+    customHeaderCell () {
       return {
         ['class']: 'required-table-title'
       };
@@ -999,7 +994,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
+    customHeaderCell () {
       return {
         ['class']: 'required-table-title'
       };
@@ -1041,16 +1036,17 @@ const saveLoading = ref(false); // 统一保存按钮loading 状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
-const lookupParams = [];
+const lookupParams = [
+];
 const validateRules = {
   agentId: [
-    { required: true, message: '经办人ID列不能为空' }
+    { required:true, message: '经办人ID列不能为空' }
   ],
   returnReason: [
-    { required: true, message: '退回原因列不能为空' }
+    { required:true, message: '退回原因列不能为空' }
   ],
   secretLevel: [
-    { required: true, message: '密级列不能为空' }
+    { required:true, message: '密级列不能为空' }
   ]
 }; // 必填列,便于保存和新增数据时校验
 const editingId = ref(''); // 正在编辑中的数据
@@ -1065,7 +1061,7 @@ onMounted(() => {
 });
 
 /** 查询数据  */
-function getList() {
+function getList () {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
@@ -1083,41 +1079,35 @@ function getList() {
       loading.value = false;
     });
 }
-
 /** 获取通用代码  */
-function getLookupList() {
+function getLookupList () {
   proxy.$getLookupByType(lookupParams, result => {
   });
 }
-
 /** 获取当前用户对应的文档密级 */
-function getUserFileSecretList() {
+function getUserFileSecretList () {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
-
 /** 高级查询 查询按钮操作 */
-function handleQuery() {
+function handleQuery () {
   queryParam.searchParams = queryForm.value;
   queryParam.keyWord = '';
   queryParam.pageParameter.page = 1;
   getList();
 }
-
 /** 高级查询 重置按钮操作  */
-function resetQuery() {
+function resetQuery () {
   queryForm.value = {};
   handleQuery();
 }
-
 /** 高级查询 展开/收起 */
-function toggleAdvanced() {
+function toggleAdvanced () {
   advanced.value = !advanced.value;
 }
-
 /** 快速查询逻辑 */
-function handleKeyWordQuery(value) {
+function handleKeyWordQuery (value) {
   const keyWord = {
     planNo: value
   };
@@ -1125,9 +1115,8 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
-
 /** 添加 */
-function handleAdd() {
+function handleAdd () {
   let item = {
     id: 'newLine' + proxy.$uuid(),
     operationType_: 'insert',
@@ -1181,9 +1170,8 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
-
 /** 编辑 */
-function handleEdit(record) {
+function handleEdit (record) {
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
@@ -1195,9 +1183,8 @@ function handleEdit(record) {
   });
   list.value = newData;
 }
-
 /** 保存 */
-function handleSave(record) {
+function handleSave (record) {
   let target = proxy.$lodash.cloneDeep(record);
   // 单数据校验
   if (!validateRecordData([target])) {
@@ -1220,9 +1207,8 @@ function handleSave(record) {
     }
   });
 }
-
 /** 批量保存 */
-function handleSaveAll() {
+function handleSaveAll () {
   // 规避正在保存时连续点击
   if (saveLoading.value) return;
   // 开始处理数据
@@ -1243,21 +1229,19 @@ function handleSaveAll() {
         saveLoading.value = false;
       }
     })
-      .catch(() => {
-        saveLoading.value = false;
-      });
+    .catch(() => {
+      saveLoading.value = false;
+    });
   } else {
     saveLoading.value = false;
   }
 }
-
 /** 导入 */
-function handleImport() {
+function handleImport () {
   showImportModal.value = true;
 }
-
 /** 导出 */
-function handleExport() {
+function handleExport () {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -1272,9 +1256,8 @@ function handleExport() {
     }
   });
 }
-
 /** 删除 */
-function handleDelete(ids, e, type) {
+function handleDelete (ids, e, type) {
   if (e) {
     e.stopPropagation(); // 阻止冒泡
   }
@@ -1304,9 +1287,8 @@ function handleDelete(ids, e, type) {
     }
   });
 }
-
 /** 删除操作后更新list */
-function removeRecordByIds(deleteIds) {
+function removeRecordByIds (deleteIds) {
   let newData = [...list.value];
   let updateList = [...list.value];
   let delUpdateData = [];
@@ -1336,18 +1318,16 @@ function removeRecordByIds(deleteIds) {
     totalPage.value = totalPage.value - delUpdateData.length;
   }
 }
-
 /** 行点击事件 */
-function customRow(record) {
+function customRow (record) {
   return {
     onClick: () => {
       handleEdit(record);
     }
   };
 }
-
 /** 控件变更事件  */
-function changeControlValue(values, record, column) {
+function changeControlValue (values, record, column) {
   let labels = [];
   if (Array.isArray(values)) {
     // 多选处理
@@ -1365,14 +1345,12 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
-
 /** 输入框的值失去焦点 */
-function blurInput(e, record, column) {
+function blurInput (e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
-
 /** 批量数据校验 */
-function validateRecordData(records) {
+function validateRecordData (records) {
   let flag = true;
   for (let index in records) {
     flag = proxy.$validateRecordData(records[index], validateRules, list.value, tpmTempMaintModifyPlan);
@@ -1382,15 +1360,13 @@ function validateRecordData(records) {
   }
   return flag;
 }
-
 /** 勾选复选框时触发 */
-function onSelectChange(rowKeys, rows) {
+function onSelectChange (rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
-
 /** 表头排序 */
-function handleTableChange(pagination, filters, sorter) {
+function handleTableChange (pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
