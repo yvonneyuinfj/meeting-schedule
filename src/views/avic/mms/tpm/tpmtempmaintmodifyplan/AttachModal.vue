@@ -8,13 +8,15 @@
   >
     <AvicUploader
       element-id="1"
+      form-type="edit"
       ref="uploadFile"
-      label="上传附件"
-      :form-id="props.attachForm.id"
-      :bpm-instance-object="props.bpmInstanceObject"
-      :form-secret-level="props.attachForm.secretLevel"
       :allow-download="true"
-      table-name="FAM_ACCPET"
+      :allow-preview="true"
+      :allow-delete="true"
+      :allow-update-secret-level="true"
+      :form-id="form.id"
+      :form-secret-level="form.secretLevel"
+      table-name="TPM_YEAR_MAINT_MODIFY_PLAN"
       @afterUpload="afterUploadEvent"
     />
   </a-modal>
@@ -33,6 +35,10 @@ const props = defineProps({
     type: Object
   }
 });
+const form = reactive({
+  id: '',
+  secretLevel: ''
+});
 const emit = defineEmits(['closeAttach']);
 
 function handleCancel() {
@@ -41,4 +47,14 @@ function handleCancel() {
 
 /** 上传成功的回调 */
 const afterUploadEvent = () => {};
+
+watch(
+  () => props.attachForm.id,
+  newV => {
+    if (newV) {
+      form.id = newV;
+      form.secretLevel = props.attachForm.secretLevel;
+    }
+  }
+);
 </script>

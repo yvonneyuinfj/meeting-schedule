@@ -210,8 +210,7 @@
             </template>
           </AvicRowEdit>
 
-
-           <AvicRowEdit
+          <AvicRowEdit
             v-else-if="column.dataIndex === 'businessStatus'"
             :record="record"
             :column="column.dataIndex"
@@ -238,7 +237,7 @@
               {{ record['businessStatusName'] }}
             </template>
           </AvicRowEdit>
-  
+
           <template v-else-if="column.dataIndex === 'attach'">
             <a @click="handleAttach(record)">
               查看
@@ -431,7 +430,7 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-   {
+  {
     title: '备注',
     dataIndex: 'note',
     key: 'note',
@@ -521,7 +520,7 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
-  }, 
+  },
   {
     title: '密级',
     dataIndex: 'secretLevelName',
@@ -577,7 +576,7 @@ const attchForm = reactive({
 const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
-  agentId: [{ required: true, message: '经办人ID列不能为空' }],
+  agentId: [{ required: true, message: '经办人ID列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const editingId = ref(''); // 正在编辑中的数据
 
@@ -613,7 +612,14 @@ function getList() {
 function handleCommit(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要提交的数据！');
+   
     return;
+  }
+  for (let item in ids) {
+    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id ===  ids[item])[0]);
+    if (!validateRecordData([target])) {
+      return;
+    }
   }
   proxy.$confirm({
     title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
@@ -848,7 +854,7 @@ function handleDelete(ids, e, type) {
 const handleAttach = record => {
   attachOpen.value = true;
   attchForm.id = record.id;
-  attchForm.secretLevel = record.secretLevel;
+  attchForm.secretLevel = record.secretLevel;  
 };
 
 /** 关闭附件 */
