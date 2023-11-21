@@ -3,19 +3,19 @@
     <div class="top-search-box">
       <!-- 高级查询 -->
       <a-form
-        v-bind="layout"
-        ref="formRef"
-        :model="queryForm"
+          v-bind="layout"
+          ref="formRef"
+          :model="queryForm"
       >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="需求部门">
               <AvicCommonSelect
-                v-model:value="queryForm.requireDeptId"
-                type="deptSelect"
-                placeholder="请选择需求部门"
-                :defaultShowValue="queryForm.requireDeptIdAlias"
-                @callback="
+                  v-model:value="queryForm.requireDeptId"
+                  type="deptSelect"
+                  placeholder="请选择需求部门"
+                  :defaultShowValue="queryForm.requireDeptIdAlias"
+                  @callback="
                   result => {
                     queryForm.requireDeptIdAlias = result.names;
                   }
@@ -26,17 +26,17 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划类别">
               <a-select
-                v-model:value="queryForm.planType"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择计划类别"
+                  v-model:value="queryForm.planType"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择计划类别"
               >
                 <a-select-option
-                  v-for="item in planTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in planTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -47,17 +47,17 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="制单状态">
               <a-select
-                v-model:value="queryForm.businessStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择制单状态"
+                  v-model:value="queryForm.businessStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择制单状态"
               >
                 <a-select-option
-                  v-for="item in businessStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in businessStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -65,24 +65,24 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button
-                  type="primary"
-                  @click="handleQuery"
+                    type="primary"
+                    @click="handleQuery"
                 >
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button
-                  type="primary"
-                  @click="resetQuery"
-                  ghost
+                    type="primary"
+                    @click="resetQuery"
+                    ghost
                 >
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
               </a-space>
@@ -94,23 +94,23 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmTempMaintModifyPlan"
-        table-key="tpmTempMaintModifyPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmTempMaintModifyPlan"
+          table-key="tpmTempMaintModifyPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        :customRow="customRow"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          :customRow="customRow"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -126,26 +126,26 @@
               添加
             </a-button> -->
             <a-button
-              v-hasPermi="['tpmTempMaintModifyPlan:save']"
-              title="保存"
-              type="primary"
-              :loading="saveLoading"
-              @click="handleSaveAll"
+                v-hasPermi="['tpmTempMaintModifyPlan:save']"
+                title="保存"
+                type="primary"
+                :loading="saveLoading"
+                @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined />
+                <save-outlined/>
               </template>
               保存
             </a-button>
             <a-button
-              v-hasPermi="['tpmTempMaintModifyPlan:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport"
+                v-hasPermi="['tpmTempMaintModifyPlan:export']"
+                title="导出"
+                type="primary"
+                ghost
+                @click="handleExport"
             >
               <template #icon>
-                <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
@@ -167,11 +167,11 @@
               删除
             </a-button> -->
             <a-button
-              v-hasPermi="['tpmTempMaintModifyPlan:commit']"
-              title="提交"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="commitLoading"
-              @click="handleCommit(selectedRowKeys, '')"
+                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+                title="提交"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="commitLoading"
+                @click="handleCommit(selectedRowKeys, '')"
             >
               提交
             </a-button>
@@ -179,26 +179,26 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入计划编号"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
+              class="opt-btn-commonsearch"
+              style="width: 200px"
+              placeholder="请输入计划编号"
+              :allow-clear="true"
+              @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-            v-if="column.dataIndex === 'agentId'"
-            :record="record"
-            :column="column.dataIndex"
+              v-if="column.dataIndex === 'agentId'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <AvicCommonSelect
-                v-model:value="record.agentId"
-                :defaultShowValue="record.agentIdAlias"
-                placeholder="请选择经办人"
-                type="userSelect"
-                @callback="
+                  v-model:value="record.agentId"
+                  :defaultShowValue="record.agentIdAlias"
+                  placeholder="请选择经办人"
+                  type="userSelect"
+                  @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value,record,'agentId')
                   }
@@ -211,23 +211,23 @@
           </AvicRowEdit>
 
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'businessStatus'"
-            :record="record"
-            :column="column.dataIndex"
+              v-else-if="column.dataIndex === 'businessStatus'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                v-model:value="record.businessStatus"
-                style="width: 100%"
-                placeholder="请选择制单状态"
-                @change="(value)=>changeControlValue(value,record,'businessStatus')"
+                  v-model:value="record.businessStatus"
+                  style="width: 100%"
+                  placeholder="请选择制单状态"
+                  @change="(value)=>changeControlValue(value,record,'businessStatus')"
               >
                 <a-select-option
-                  v-for="select in businessStatusList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
+                    v-for="select in businessStatusList"
+                    :key="select.sysLookupTlId"
+                    :value="select.lookupCode"
+                    :title="select.lookupName"
+                    :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
@@ -247,18 +247,18 @@
       </AvicTable>
     </div>
     <avic-excel-import
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="导入"
-      importUrl="/mms/tpm/tpmtempmaintmodifyplans/importData/v1"
-      downloadTemplateUrl="/mms/tpm/tpmtempmaintmodifyplans/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="导入"
+        importUrl="/mms/tpm/tpmtempmaintmodifyplans/importData/v1"
+        downloadTemplateUrl="/mms/tpm/tpmtempmaintmodifyplans/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
     ></avic-excel-import>
     <AttachModal
-      :attachOpen="attachOpen"
-      :attach-form="attchForm"
-      @closeAttach="closeAttach"
+        :attachOpen="attachOpen"
+        :attach-form="attchForm"
+        @closeAttach="closeAttach"
     />
   </div>
 </template>
@@ -270,7 +270,7 @@ import {
   saveTpmTempMaintModifyPlan,
   delTpmTempMaintModifyPlan,
   commitTpmTempMaintModifyPlan,
-  exportExcel, exportEditExcel
+  exportEditExcel
 } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
@@ -595,28 +595,29 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmTempMaintModifyPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 提交 */
 function handleCommit(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要提交的数据！');
-   
+
     return;
   }
   for (let item in ids) {
-    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id ===  ids[item])[0]);
+    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
     if (!validateRecordData([target])) {
       return;
     }
@@ -628,16 +629,16 @@ function handleCommit(ids, type) {
     onOk: () => {
       commitLoading.value = true;
       commitTpmTempMaintModifyPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('提交成功！');
-            getList();
-          }
-          commitLoading.value = false;
-        })
-        .catch(() => {
-          commitLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('提交成功！');
+              getList();
+            }
+            commitLoading.value = false;
+          })
+          .catch(() => {
+            commitLoading.value = false;
+          });
     }
   });
 }
@@ -649,12 +650,14 @@ function getLookupList() {
     businessStatusList.value = result.businessStatus;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -662,11 +665,13 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作  */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -676,6 +681,7 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   let item = {
@@ -731,6 +737,7 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -744,6 +751,7 @@ function handleEdit(record) {
   });
   list.value = newData;
 }
+
 /** 保存 */
 function handleSave(record) {
   let target = proxy.$lodash.cloneDeep(record);
@@ -768,6 +776,7 @@ function handleSave(record) {
     }
   });
 }
+
 /** 批量保存 */
 function handleSaveAll() {
   // 规避正在保存时连续点击
@@ -781,27 +790,29 @@ function handleSaveAll() {
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
     saveTpmTempMaintModifyPlan(changedData)
-      .then(res => {
-        if (res.success) {
-          getList();
-          proxy.$message.success('保存成功！');
+        .then(res => {
+          if (res.success) {
+            getList();
+            proxy.$message.success('保存成功！');
+            saveLoading.value = false;
+          } else {
+            proxy.$message.error('保存失败！');
+            saveLoading.value = false;
+          }
+        })
+        .catch(() => {
           saveLoading.value = false;
-        } else {
-          proxy.$message.error('保存失败！');
-          saveLoading.value = false;
-        }
-      })
-      .catch(() => {
-        saveLoading.value = false;
-      });
+        });
   } else {
     saveLoading.value = false;
   }
 }
+
 /** 导入 */
 function handleImport() {
   showImportModal.value = true;
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -818,6 +829,7 @@ function handleExport() {
     }
   });
 }
+
 /** 删除 */
 function handleDelete(ids, e, type) {
   if (e) {
@@ -837,12 +849,12 @@ function handleDelete(ids, e, type) {
       const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
       if (deleteIds.length > 0) {
         return delTpmTempMaintModifyPlan(deleteIds)
-          .then(() => {
-            removeRecordByIds(ids);
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
+            .then(() => {
+              removeRecordByIds(ids);
+            })
+            .catch(() => {
+              delLoading.value = false;
+            });
       } else {
         removeRecordByIds(ids);
       }
@@ -854,7 +866,7 @@ function handleDelete(ids, e, type) {
 const handleAttach = record => {
   attachOpen.value = true;
   attchForm.id = record.id;
-  attchForm.secretLevel = record.secretLevel;  
+  attchForm.secretLevel = record.secretLevel;
 };
 
 /** 关闭附件 */
@@ -872,7 +884,7 @@ function removeRecordByIds(deleteIds) {
   for (let i = 0; i < deleteIds.length; i++) {
     newData = newData.filter(item => item['id'] !== deleteIds[i]);
     delUpdateData = updateList.filter(
-      item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
+        item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
     );
   }
   // 清空表格选中项
@@ -895,6 +907,7 @@ function removeRecordByIds(deleteIds) {
     totalPage.value = totalPage.value - delUpdateData.length;
   }
 }
+
 /** 行点击事件 */
 function customRow(record) {
   return {
@@ -903,10 +916,12 @@ function customRow(record) {
     }
   };
 }
+
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
   record[column + 'Alias'] = value.names;
 }
+
 /** 控件变更事件  */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -926,19 +941,21 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
     flag = proxy.$validateRecordData(
-      records[index],
-      validateRules,
-      list.value,
-      tpmTempMaintModifyPlan
+        records[index],
+        validateRules,
+        list.value,
+        tpmTempMaintModifyPlan
     );
     if (!flag) {
       break;
@@ -946,11 +963,13 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
