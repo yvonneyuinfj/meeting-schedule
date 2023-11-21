@@ -133,9 +133,9 @@ export function commitTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBas
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportEditExcel (param: any) {
   const download = {
-    url: basePath + '/exportData/v1',
+    url: basePath + '/exportEditData/v1',
     data: param,
     method: 'post'
   } as downloadParam;
