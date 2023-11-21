@@ -3,19 +3,19 @@
     <div class="top-search-box">
       <!-- 高级查询 -->
       <a-form
-          v-bind="layout"
-          ref="formRef"
-          :model="queryForm"
+        v-bind="layout"
+        ref="formRef"
+        :model="queryForm"
       >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="需求部门">
               <AvicCommonSelect
-                  v-model:value="queryForm.requireDeptId"
-                  type="deptSelect"
-                  placeholder="请选择需求部门"
-                  :defaultShowValue="queryForm.requireDeptIdAlias"
-                  @callback="
+                v-model:value="queryForm.requireDeptId"
+                type="deptSelect"
+                placeholder="请选择需求部门"
+                :defaultShowValue="queryForm.requireDeptIdAlias"
+                @callback="
                   result => {
                     queryForm.requireDeptIdAlias = result.names;
                   }
@@ -26,17 +26,17 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划类别">
               <a-select
-                  v-model:value="queryForm.planType"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择计划类别"
+                v-model:value="queryForm.planType"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择计划类别"
               >
                 <a-select-option
-                    v-for="item in planTypeList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in planTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -47,17 +47,17 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="制单状态">
               <a-select
-                  v-model:value="queryForm.businessStatus"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择制单状态"
+                v-model:value="queryForm.businessStatus"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择制单状态"
               >
                 <a-select-option
-                    v-for="item in businessStatusList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in businessStatusList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -65,24 +65,24 @@
             </a-form-item>
           </a-col>
           <a-col
-              v-bind="colLayout.cols"
-              style="margin-left: auto"
+            v-bind="colLayout.cols"
+            style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button
-                    type="primary"
-                    @click="handleQuery"
+                  type="primary"
+                  @click="handleQuery"
                 >
-                  <search-outlined/>
+                  <search-outlined />
                   查询
                 </a-button>
                 <a-button
-                    type="primary"
-                    @click="resetQuery"
-                    ghost
+                  type="primary"
+                  @click="resetQuery"
+                  ghost
                 >
-                  <redo-outlined/>
+                  <redo-outlined />
                   重置
                 </a-button>
               </a-space>
@@ -94,23 +94,23 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="tpmTempMaintModifyPlan"
-          table-key="tpmTempMaintModifyPlan"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
+        ref="tpmTempMaintModifyPlan"
+        table-key="tpmTempMaintModifyPlan"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="customRow"
-          @change="handleTableChange"
-          @refresh="getList"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -126,26 +126,26 @@
               添加
             </a-button> -->
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:save']"
-                title="保存"
-                type="primary"
-                :loading="saveLoading"
-                @click="handleSaveAll"
+              v-hasPermi="['tpmTempMaintModifyPlan:save']"
+              title="保存"
+              type="primary"
+              :loading="saveLoading"
+              @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined/>
+                <save-outlined />
               </template>
               保存
             </a-button>
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:export']"
-                title="导出"
-                type="primary"
-                ghost
-                @click="handleExport"
+              v-hasPermi="['tpmTempMaintModifyPlan:export']"
+              title="导出"
+              type="primary"
+              ghost
+              @click="handleExport"
             >
               <template #icon>
-                <export-outlined/>
+                <export-outlined />
               </template>
               导出
             </a-button>
@@ -167,11 +167,11 @@
               删除
             </a-button> -->
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
-                title="提交"
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                :loading="commitLoading"
-                @click="handleCommit(selectedRowKeys, '')"
+              v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+              title="提交"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="commitLoading"
+              @click="handleCommit(selectedRowKeys, '')"
             >
               提交
             </a-button>
@@ -179,26 +179,26 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入计划编号"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+            class="opt-btn-commonsearch"
+            style="width: 200px"
+            placeholder="请输入计划编号"
+            :allow-clear="true"
+            @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-              v-if="column.dataIndex === 'agentId'"
-              :record="record"
-              :column="column.dataIndex"
+            v-if="column.dataIndex === 'agentId'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
               <AvicCommonSelect
-                  v-model:value="record.agentId"
-                  :defaultShowValue="record.agentIdAlias"
-                  placeholder="请选择经办人"
-                  type="userSelect"
-                  @callback="
+                v-model:value="record.agentId"
+                :defaultShowValue="record.agentIdAlias"
+                placeholder="请选择经办人"
+                type="userSelect"
+                @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value,record,'agentId')
                   }
@@ -211,23 +211,23 @@
           </AvicRowEdit>
 
           <AvicRowEdit
-              v-else-if="column.dataIndex === 'businessStatus'"
-              :record="record"
-              :column="column.dataIndex"
+            v-else-if="column.dataIndex === 'businessStatus'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                  v-model:value="record.businessStatus"
-                  style="width: 100%"
-                  placeholder="请选择制单状态"
-                  @change="(value)=>changeControlValue(value,record,'businessStatus')"
+                v-model:value="record.businessStatus"
+                style="width: 100%"
+                placeholder="请选择制单状态"
+                @change="(value)=>changeControlValue(value,record,'businessStatus')"
               >
                 <a-select-option
-                    v-for="select in businessStatusList"
-                    :key="select.sysLookupTlId"
-                    :value="select.lookupCode"
-                    :title="select.lookupName"
-                    :disabled="select.disabled === true"
+                  v-for="select in businessStatusList"
+                  :key="select.sysLookupTlId"
+                  :value="select.lookupCode"
+                  :title="select.lookupName"
+                  :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
@@ -247,18 +247,18 @@
       </AvicTable>
     </div>
     <avic-excel-import
-        v-if="showImportModal"
-        :formData="excelParams"
-        title="导入"
-        importUrl="/mms/tpm/tpmtempmaintmodifyplans/importData/v1"
-        downloadTemplateUrl="/mms/tpm/tpmtempmaintmodifyplans/downloadTemplate/v1"
-        @reloadData="getList"
-        @close="showImportModal = false"
+      v-if="showImportModal"
+      :formData="excelParams"
+      title="导入"
+      importUrl="/mms/tpm/tpmtempmaintmodifyplans/importData/v1"
+      downloadTemplateUrl="/mms/tpm/tpmtempmaintmodifyplans/downloadTemplate/v1"
+      @reloadData="getList"
+      @close="showImportModal = false"
     ></avic-excel-import>
     <AttachModal
-        :attachOpen="attachOpen"
-        :attach-form="attchForm"
-        @closeAttach="closeAttach"
+      :attachOpen="attachOpen"
+      :attach-form="attchForm"
+      @closeAttach="closeAttach"
     />
   </div>
 </template>
@@ -534,6 +534,15 @@ const columns = [
     title: '密级',
     dataIndex: 'secretLevelName',
     key: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+    {
+    title: '制单状态',
+    dataIndex: 'businessStatus',
+    key: 'businessStatus',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

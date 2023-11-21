@@ -33,7 +33,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
     maintCategory: [{ required: true, message: '维修类别不能为空', trigger: 'change' }],
     expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
-    managerDeptId: [{ required: true, message: '主管部门id不能为空', trigger: 'change' }],
+    managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
     managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
     isUsedScientificrs: [
       { required: true, message: '是否使用型号经费不能为空', trigger: 'change' }
@@ -46,9 +46,9 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     projectAmount: [{ required: true, message: '项目金额（万元）不能为空', trigger: 'change' }],
     isNeedReview: [{ required: true, message: '是否需要评审不能为空', trigger: 'change' }],
     reqSuggest: [{ required: true, message: '要求及建议不能为空', trigger: 'change' }],
-    applyDeptId: [{ required: true, message: '申请部门id不能为空', trigger: 'change' }],
+    applyDeptId: [{ required: true, message: '申请部门不能为空', trigger: 'change' }],
     applyDeptName: [{ required: true, message: '申请部门名称不能为空', trigger: 'change' }],
-    handlePersonId: [{ required: true, message: '需求申请人id不能为空', trigger: 'change' }],
+    handlePersonId: [{ required: true, message: '需求申请人不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '需求申请人名称不能为空', trigger: 'change' }],
     applyDate: [{ required: true, message: '故障时间不能为空', trigger: 'change' }],
     telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }]

@@ -2,7 +2,11 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+      <a-form
+        v-bind="layout"
+        ref="formRef"
+        :model="queryForm"
+      >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="需求部门">
@@ -60,14 +64,24 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" style="margin-left: auto">
+          <a-col
+            v-bind="colLayout.cols"
+            style="margin-left: auto"
+          >
             <div class="table-page-search-submitButtons">
               <a-space>
-                <a-button type="primary" @click="handleQuery">
+                <a-button
+                  type="primary"
+                  @click="handleQuery"
+                >
                   <search-outlined />
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
+                <a-button
+                  type="primary"
+                  @click="resetQuery"
+                  ghost
+                >
                   <redo-outlined />
                   重置
                 </a-button>
@@ -287,8 +301,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { TpmTempMaintModifyPlanDto } from "@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi"; // 引入模块DTO
-import AttachModal from "@/views/avic/mms/tpm/tpmtempmaintmodifyplan/AttachModal.vue";
+import type { TpmTempMaintModifyPlanDto } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块DTO
+import AttachModal from '@/views/avic/mms/tpm/tpmtempmaintmodifyplan/AttachModal.vue';
 import {
   listTpmTempMaintModifyPlanReleaseByPage,
   saveTpmTempMaintModifyPlan,
@@ -296,222 +310,214 @@ import {
   commitTpmTempMaintModifyPlan,
   exportReleaseExcel,
   releaseTpmTempMaintModifyPlan,
-  backTpmTempMaintModifyPlan,
-} from "@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi"; // 引入模块API
+  backTpmTempMaintModifyPlan
+} from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const commitLoading = ref(false); // 提交按钮loading状态
 const layout = {
-  labelCol: { flex: "120px" },
-  wrapperCol: { flex: "1" },
+  labelCol: { flex: '120px' },
+  wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 调用布局公共方法
 const columns = [
   {
-    title: "计划编号",
-    dataIndex: "planNo",
-    key: "planNo",
+    title: '计划编号',
+    dataIndex: 'planNo',
+    key: 'planNo',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "经办人",
-    dataIndex: "agentIdAlias",
-    key: "agentIdAlias",
+    title: '经办人',
+    dataIndex: 'agentIdAlias',
+    key: 'agentIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "退回原因",
-    dataIndex: "returnReason",
-    key: "returnReason",
+    title: '退回原因',
+    dataIndex: 'returnReason',
+    key: 'returnReason',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
-        ["class"]: "required-table-title",
+        ['class']: 'required-table-title'
       };
     },
-    align: "left",
+    align: 'left'
   },
   {
-    title: "合同预计签订时间",
-    dataIndex: "estContractSignDate",
-    key: "estContractSignDate",
+    title: '合同预计签订时间',
+    dataIndex: 'estContractSignDate',
+    key: 'estContractSignDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
-        ["class"]: "required-table-title",
+        ['class']: 'required-table-title'
       };
     },
-    align: "center",
+    align: 'center'
   },
   {
-    title: "计划验收时间",
-    dataIndex: "estAcceptanceDate",
-    key: "estAcceptanceDate",
+    title: '计划验收时间',
+    dataIndex: 'estAcceptanceDate',
+    key: 'estAcceptanceDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
-        ["class"]: "required-table-title",
+        ['class']: 'required-table-title'
       };
     },
-    align: "center",
+    align: 'center'
   },
   {
-    title: "预算项目",
-    dataIndex: "budgetItems",
-    key: "budgetItems",
+    title: '预算项目',
+    dataIndex: 'budgetItems',
+    key: 'budgetItems',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "预算分项",
-    dataIndex: "budgetBreakdownItems",
-    key: "budgetBreakdownItems",
+    title: '预算分项',
+    dataIndex: 'budgetBreakdownItems',
+    key: 'budgetBreakdownItems',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "预算组织",
-    dataIndex: "budgetOrganizationId",
-    key: "budgetOrganizationId",
+    title: '预算组织',
+    dataIndex: 'budgetOrganizationId',
+    key: 'budgetOrganizationId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "项目名称",
-    dataIndex: "projectName",
-    key: "projectName",
+    title: '项目名称',
+    dataIndex: 'projectName',
+    key: 'projectName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "计划类别",
-    dataIndex: "planType",
-    key: "planType",
+    title: '计划类别',
+    dataIndex: 'planType',
+    key: 'planType',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "center",
+    align: 'center'
   },
   {
-    title: "需求部门",
-    dataIndex: "requireDeptId",
-    key: "requireDeptId",
+    title: '需求部门',
+    dataIndex: 'requireDeptId',
+    key: 'requireDeptId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "需求时间",
-    dataIndex: "requireDate",
-    key: "requireDate",
+    title: '需求时间',
+    dataIndex: 'requireDate',
+    key: 'requireDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
 
   {
-    title: "需求申请人",
-    dataIndex: "applyUserId",
-    key: "applyUserId",
+    title: '需求申请人',
+    dataIndex: 'applyUserId',
+    key: 'applyUserId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    ttle: "联系电话",
-    dataIndex: "applyUserTel",
-    key: "applyUserTel",
+    ttle: '联系电话',
+    dataIndex: 'applyUserTel',
+    key: 'applyUserTel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "项目金额（万元）",
-    dataIndex: "projectMoney",
-    key: "projectMoney",
+    title: '项目金额（万元）',
+    dataIndex: 'projectMoney',
+    key: 'projectMoney',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "课题号",
-    dataIndex: "subjectNo",
-    key: "subjectNo",
+    title: '课题号',
+    dataIndex: 'subjectNo',
+    key: 'subjectNo',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "是否使用型号经费",
-    dataIndex: "ynUseModelFunding",
-    key: "ynUseModelFunding",
+    title: '是否使用型号经费',
+    dataIndex: 'ynUseModelFunding',
+    key: 'ynUseModelFunding',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "center",
+    align: 'center'
   },
   {
-    title: "故障时间",
-    dataIndex: "faultDate",
-    key: "faultDate",
+    title: '故障时间',
+    dataIndex: 'faultDate',
+    key: 'faultDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "center",
+    align: 'center'
   },
   {
-    title: "申请理由",
-    dataIndex: "applyReason",
-    key: "applyReason",
+    title: '申请理由',
+    dataIndex: 'applyReason',
+    key: 'applyReason',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "要求及建议",
-    dataIndex: "repairContent",
-    key: "repairContent",
+    title: '要求及建议',
+    dataIndex: 'repairContent',
+    key: 'repairContent',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
-  // {
-  //   title: '制单状态',
-  //   dataIndex: 'businessStatus',
-  //   key: 'businessStatus',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
+
   // {
   //   title: '申请单号',
   //   dataIndex: 'applyNo',
@@ -558,32 +564,41 @@ const columns = [
   //   align: 'left'
   // },
   {
-    title: "备注",
-    dataIndex: "note",
-    key: "note",
+    title: '备注',
+    dataIndex: 'note',
+    key: 'note',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
-    title: "附件",
-    dataIndex: "attach",
-    key: "attach",
+    title: '附件',
+    dataIndex: 'attach',
+    key: 'attach',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "center",
+    align: 'center'
   },
   {
-    title: "密级",
-    dataIndex: "secretLevelName",
-    key: "secretLevelName",
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    key: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "center",
+    align: 'center'
   },
+  {
+    title: '制单状态',
+    dataIndex: 'businessStatus',
+    key: 'businessStatus',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  }
   // {
   //   title: '操作',
   //   dataIndex: 'action',
@@ -597,18 +612,18 @@ const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
     page: 1, // 页数
-    rows: 20, // 每页条数
+    rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm,
+    ...queryForm
   },
-  keyWord: ref(""), // 快速查询数据
+  keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
-  sord: null, // 排序方式: desc降序 asc升序
+  sord: null // 排序方式: desc降序 asc升序
 });
 const tpmTempMaintModifyPlan = ref(null);
 const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: "tpmTempMaintModifyPlan" }); // 导入Excel数据过滤参数
+const excelParams = ref({ tableName: 'tpmTempMaintModifyPlan' }); // 导入Excel数据过滤参数
 const list = ref([]); // 表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -619,25 +634,25 @@ const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
-  { fieldName: "planType", lookUpType: "TPM_PLAN_TYPE" },
-  { fieldName: "businessStatus", lookUpType: "TPM_BUSINESS_STATUS" },
+  { fieldName: 'planType', lookUpType: 'TPM_PLAN_TYPE' },
+  { fieldName: 'businessStatus', lookUpType: 'TPM_BUSINESS_STATUS' }
 ];
 const attachOpen = ref(false); // 附件弹窗
 const attchForm = reactive({
-  id: "",
-  secretLevel: "",
+  id: '',
+  secretLevel: ''
 });
 const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
-  returnReason: [{ required: true, message: "退回原因列不能为空" }],
-  estContractSignDate: [{ required: true, message: "合同预计签约时间列不能为空" }],
-  estAcceptanceDate: [{ required: true, message: "计划验收时间列不能为空" }],
+  returnReason: [{ required: true, message: '退回原因列不能为空' }],
+  estContractSignDate: [{ required: true, message: '合同预计签约时间列不能为空' }],
+  estAcceptanceDate: [{ required: true, message: '计划验收时间列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
-const editingId = ref(""); // 正在编辑中的数据
+const editingId = ref(''); // 正在编辑中的数据
 
 onMounted(() => {
-  queryForm.value.businessStatus = "5";
+  queryForm.value.businessStatus = '5';
   queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
@@ -653,7 +668,7 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmTempMaintModifyPlanReleaseByPage(queryParam)
-    .then((response) => {
+    .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
@@ -670,19 +685,19 @@ function getList() {
 /** 提交 */
 function handleCommit(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning("请选择要提交的数据！");
+    proxy.$message.warning('请选择要提交的数据！');
     return;
   }
   proxy.$confirm({
-    title: `确认要提交${type == "row" ? "当前行的" : "选择的"}数据吗?`,
-    okText: "确定",
-    cancelText: "取消",
+    title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
     onOk: () => {
       commitLoading.value = true;
       commitTpmTempMaintModifyPlan(ids)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
-            proxy.$message.success("提交成功！");
+            proxy.$message.success('提交成功！');
             getList();
           }
           commitLoading.value = false;
@@ -690,32 +705,32 @@ function handleCommit(ids, type) {
         .catch(() => {
           commitLoading.value = false;
         });
-    },
+    }
   });
 }
 
 /** 退回 */
 function handleBack(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning("请选择要退回的数据！");
+    proxy.$message.warning('请选择要退回的数据！');
     return;
   }
   for (let item in ids) {
-    let target = proxy.$lodash.cloneDeep(list.value.filter((i) => i.id === ids[item])[0]);
+    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
     if (!validateRecordData([target])) {
       return;
     }
   }
   proxy.$confirm({
-    title: `确认要退回${type == "row" ? "当前行的" : "选择的"}数据吗?`,
-    okText: "确定",
-    cancelText: "取消",
+    title: `确认要退回${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
     onOk: () => {
       commitLoading.value = true;
       backTpmTempMaintModifyPlan(ids)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
-            proxy.$message.success("退回成功！");
+            proxy.$message.success('退回成功！');
             getList();
           }
           commitLoading.value = false;
@@ -723,32 +738,32 @@ function handleBack(ids, type) {
         .catch(() => {
           commitLoading.value = false;
         });
-    },
+    }
   });
 }
 
 /** 下达 */
 function handleRelease(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning("请选择要下达的数据！");
+    proxy.$message.warning('请选择要下达的数据！');
     return;
   }
   for (let item in ids) {
-    let target = proxy.$lodash.cloneDeep(list.value.filter((i) => i.id === ids[item])[0]);
+    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
     if (!validateRecordData([target])) {
       return;
     }
   }
   proxy.$confirm({
-    title: `确认要下达${type == "row" ? "当前行的" : "选择的"}数据吗?`,
-    okText: "确定",
-    cancelText: "取消",
+    title: `确认要下达${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
     onOk: () => {
       commitLoading.value = true;
       releaseTpmTempMaintModifyPlan(ids)
-        .then((res) => {
+        .then(res => {
           if (res.success) {
-            proxy.$message.success("下达成功！");
+            proxy.$message.success('下达成功！');
             getList();
           }
           commitLoading.value = false;
@@ -756,13 +771,13 @@ function handleRelease(ids, type) {
         .catch(() => {
           commitLoading.value = false;
         });
-    },
+    }
   });
 }
 
 /** 获取通用代码  */
 function getLookupList() {
-  proxy.$getLookupByType(lookupParams, (result) => {
+  proxy.$getLookupByType(lookupParams, result => {
     planTypeList.value = result.planType;
     businessStatusList.value = result.businessStatus;
   });
@@ -770,7 +785,7 @@ function getLookupList() {
 
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
-  proxy.$getUserFileSecretLevelList((result) => {
+  proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
@@ -778,7 +793,7 @@ function getUserFileSecretList() {
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
-  queryParam.keyWord = "";
+  queryParam.keyWord = '';
   queryParam.pageParameter.page = 1;
   getList();
 }
@@ -792,7 +807,7 @@ function resetQuery() {
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
-    planNo: value,
+    planNo: value
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
@@ -802,44 +817,44 @@ function handleKeyWordQuery(value) {
 /** 添加 */
 function handleAdd() {
   let item = {
-    id: "newLine" + proxy.$uuid(),
-    operationType_: "insert",
-    planNo: "",
-    budgetItems: "",
-    budgetBreakdownItems: "",
-    budgetOrganizationId: "",
-    budgetOrganizationCode: "",
-    budgetOrganizationName: "",
-    projectName: "",
+    id: 'newLine' + proxy.$uuid(),
+    operationType_: 'insert',
+    planNo: '',
+    budgetItems: '',
+    budgetBreakdownItems: '',
+    budgetOrganizationId: '',
+    budgetOrganizationCode: '',
+    budgetOrganizationName: '',
+    projectName: '',
     planType: undefined,
-    requireDeptId: "",
-    requireDeptCode: "",
-    requireDeptName: "",
-    applyUserId: "",
-    applyUserCode: "",
-    applyUserName: "",
-    applyUserTel: "",
-    projectMoney: "",
-    subjectNo: "",
+    requireDeptId: '',
+    requireDeptCode: '',
+    requireDeptName: '',
+    applyUserId: '',
+    applyUserCode: '',
+    applyUserName: '',
+    applyUserTel: '',
+    projectMoney: '',
+    subjectNo: '',
     ynUseModelFunding: undefined,
     faultDate: null,
-    applyReason: "",
-    repairContent: "",
+    applyReason: '',
+    repairContent: '',
     businessStatus: undefined,
     estContractSignDate: null,
     estAcceptanceDate: null,
-    agentId: "",
-    agentCode: "",
-    agentName: "",
-    applyNo: "",
-    contractNo: "",
+    agentId: '',
+    agentCode: '',
+    agentName: '',
+    applyNo: '',
+    contractNo: '',
     contractSignDate: null,
     acceptanceDate: null,
-    progressStatus: "",
-    returnReason: "",
-    note: "",
+    progressStatus: '',
+    returnReason: '',
+    note: '',
     secretLevel: undefined,
-    editable: true, // true为编辑中, false为未编辑
+    editable: true // true为编辑中, false为未编辑
   };
   editingId.value = item.id;
   let newData = [...list.value];
@@ -848,7 +863,7 @@ function handleAdd() {
     return;
   }
   // 其他列编辑状态修改为false
-  newData.forEach((item) => {
+  newData.forEach(item => {
     item.editable = false;
   });
   newData.unshift(item);
@@ -858,10 +873,10 @@ function handleAdd() {
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
-  record.operationType_ = record.operationType_ || "update";
+  record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
   editingId.value = record.id;
-  newData.forEach((item) => {
+  newData.forEach(item => {
     if (item.id !== record.id) {
       item.editable = false;
     }
@@ -880,16 +895,16 @@ function handleSave(record) {
   for (let key in target) {
     // 多选控件的数据，数组转化为字符串，
     if (Array.isArray(target[key])) {
-      target[key] = target[key].join(",");
+      target[key] = target[key].join(',');
     }
   }
-  editingId.value = "";
-  saveTpmTempMaintModifyPlan([target]).then((res) => {
+  editingId.value = '';
+  saveTpmTempMaintModifyPlan([target]).then(res => {
     if (res.success) {
       getList();
-      proxy.$message.success("保存成功！");
+      proxy.$message.success('保存成功！');
     } else {
-      proxy.$message.error("保存失败！");
+      proxy.$message.error('保存失败！');
     }
   });
 }
@@ -903,17 +918,17 @@ function handleSaveAll() {
   // 获取改变和新增的数据
   const changedData = proxy.$getChangeRecords(list, initialList);
   if (changedData && changedData.length == 0) {
-    proxy.$message.warning("请先修改数据！");
+    proxy.$message.warning('请先修改数据！');
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
     saveTpmTempMaintModifyPlan(changedData)
-      .then((res) => {
+      .then(res => {
         if (res.success) {
           getList();
-          proxy.$message.success("保存成功！");
+          proxy.$message.success('保存成功！');
           saveLoading.value = false;
         } else {
-          proxy.$message.error("保存失败！");
+          proxy.$message.error('保存失败！');
           saveLoading.value = false;
         }
       })
@@ -933,17 +948,17 @@ function handleImport() {
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
-    title: "确认导出数据吗?",
-    okText: "确定",
-    cancelText: "取消",
+    title: '确认导出数据吗?',
+    okText: '确定',
+    cancelText: '取消',
     onOk: () => {
       loading.value = true;
       queryParam.searchParams = queryForm.value;
       exportReleaseExcel(queryParam).then(() => {
         loading.value = false;
-        proxy.$message.info("导出成功！");
+        proxy.$message.info('导出成功！');
       });
-    },
+    }
   });
 }
 
@@ -953,17 +968,17 @@ function handleDelete(ids, e, type) {
     e.stopPropagation(); // 阻止冒泡
   }
   if (ids.length == 0) {
-    proxy.$message.warning("请选择要删除的数据！");
+    proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   proxy.$confirm({
-    title: `确认要删除${type == "row" ? "当前行的" : "选择的"}数据吗？`,
-    okText: "确定",
-    cancelText: "取消",
+    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
+    okText: '确定',
+    cancelText: '取消',
     onOk: () => {
       delLoading.value = true;
       // 获取所有非新增的数据，执行后台删除逻辑，新增的数据直接界面删除
-      const deleteIds = ids.filter((id) => id.indexOf("newLine") == -1);
+      const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
       if (deleteIds.length > 0) {
         return delTpmTempMaintModifyPlan(deleteIds)
           .then(() => {
@@ -975,12 +990,12 @@ function handleDelete(ids, e, type) {
       } else {
         removeRecordByIds(ids);
       }
-    },
+    }
   });
 }
 
 /** 打开附件查看 */
-const handleAttach = (record) => {
+const handleAttach = record => {
   attachOpen.value = true;
   attchForm.id = record.id;
   attchForm.secretLevel = record.secretLevel;
@@ -999,9 +1014,9 @@ function removeRecordByIds(deleteIds) {
   let updateList = [...list.value];
   let delUpdateData = [];
   for (let i = 0; i < deleteIds.length; i++) {
-    newData = newData.filter((item) => item["id"] !== deleteIds[i]);
+    newData = newData.filter(item => item['id'] !== deleteIds[i]);
     delUpdateData = updateList.filter(
-      (item) => item["id"] == deleteIds[i] && item["operationType_"] != "insert"
+      item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
     );
   }
   // 清空表格选中项
@@ -1009,7 +1024,7 @@ function removeRecordByIds(deleteIds) {
   // 前台刷新表格
   list.value = newData;
   // 提示成功
-  proxy.$message.success("删除成功！");
+  proxy.$message.success('删除成功！');
   delLoading.value = false;
   if (list.value.length == 0) {
     // 当前页数据被清空
@@ -1030,13 +1045,13 @@ function customRow(record) {
   return {
     onClick: () => {
       handleEdit(record);
-    },
+    }
   };
 }
 
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
-  record[column + "Alias"] = value.names;
+  record[column + 'Alias'] = value.names;
 }
 
 /** 控件变更事件  */
@@ -1046,16 +1061,16 @@ function changeControlValue(values, record, column) {
     // 多选处理
     for (let i = 0; i < values.length; i++) {
       // 从对应的通用代码中查询对应的label
-      const target = proxy[column + "List"].find((item) => values[i] === item.lookupCode);
+      const target = proxy[column + 'List'].find(item => values[i] === item.lookupCode);
       labels.push(target.lookupName);
     }
   } else {
     // 单选处理
-    const target = proxy[column + "List"].find((item) => values === item.lookupCode);
+    const target = proxy[column + 'List'].find(item => values === item.lookupCode);
     labels.push(target.lookupName);
   }
   if (record) {
-    record[column + "Name"] = labels.join(",");
+    record[column + 'Name'] = labels.join(',');
   }
 }
 
@@ -1093,7 +1108,7 @@ function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
     queryParam.sidx = sorter.field;
-    queryParam.sord = sorter.order === "ascend" ? "asc" : "desc"; // 排序方式: desc降序 asc升序
+    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
   }
   getList();
 }
