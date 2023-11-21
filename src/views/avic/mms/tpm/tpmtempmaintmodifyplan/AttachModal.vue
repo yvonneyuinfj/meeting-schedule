@@ -1,23 +1,31 @@
 <template>
   <a-modal
-    title="查看附件"
-    :visible="props.attachOpen"
-    @cancel="handleCancel"
-    :footer="null"
-    width="40%"
+      title="查看附件"
+      :visible="props.attachOpen"
+      @cancel="handleCancel"
+      :footer="null"
+      width="40%"
   >
+    <!--    <AvicUploader-->
+    <!--      element-id="1"-->
+    <!--      form-type="edit"-->
+    <!--      ref="uploadFile"-->
+    <!--      :allow-download="true"-->
+    <!--      :allow-preview="true"-->
+    <!--      :allow-delete="true"-->
+    <!--      :allow-update-secret-level="true"-->
+    <!--      :form-id="form.id"-->
+    <!--      :form-secret-level="form.secretLevel"-->
+    <!--      table-name="TPM_YEAR_MAINT_MODIFY_PLAN"-->
+    <!--      @afterUpload="afterUploadEvent"-->
+    <!--    />-->
     <AvicUploader
-      element-id="1"
-      form-type="edit"
-      ref="uploadFile"
-      :allow-download="true"
-      :allow-preview="true"
-      :allow-delete="true"
-      :allow-update-secret-level="true"
-      :form-id="form.id"
-      :form-secret-level="form.secretLevel"
-      table-name="TPM_YEAR_MAINT_MODIFY_PLAN"
-      @afterUpload="afterUploadEvent"
+        element-id="1"
+        form-type="detail"
+        :allow-add="false"
+        :allow-download="true"
+        :allow-preview="true"
+        :form-id="form.id"
     />
   </a-modal>
 </template>
@@ -46,15 +54,16 @@ function handleCancel() {
 }
 
 /** 上传成功的回调 */
-const afterUploadEvent = () => {};
+const afterUploadEvent = () => {
+};
 
 watch(
-  () => props.attachForm.id,
-  newV => {
-    if (newV) {
-      form.id = newV;
-      form.secretLevel = props.attachForm.secretLevel;
+    () => props.attachForm.id,
+    newV => {
+      if (newV) {
+        form.id = newV;
+        form.secretLevel = props.attachForm.secretLevel;
+      }
     }
-  }
 );
 </script>
