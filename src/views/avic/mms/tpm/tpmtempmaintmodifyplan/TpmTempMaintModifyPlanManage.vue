@@ -563,6 +563,18 @@
               删除
             </a-button>
             <a-button
+              v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+              title="提交"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="commitLoading"
+              @click="handleCommit(selectedRowKeys, '')"
+            >
+              <template #icon>
+                <delete-outlined/>
+              </template>
+              提交
+            </a-button>
+            <a-button
               v-hasPermi="['tpmTempMaintModifyPlan:export']"
               title="导出"
               type="primary"
@@ -704,6 +716,7 @@ import {
   listTpmTempMaintModifyPlanByPage,
   saveTpmTempMaintModifyPlan,
   delTpmTempMaintModifyPlan,
+  commitTpmTempMaintModifyPlan,
   exportExcel
 } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
 
@@ -1077,6 +1090,7 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false); // 表格loading状态
 const saveLoading = ref(false); // 统一保存按钮loading 状态
 const delLoading = ref(false); // 删除按钮loading状态
+const commitLoading = ref(false); // 提交按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [];
@@ -1373,6 +1387,31 @@ function removeRecordByIds(deleteIds) {
     // 当前页数据没有全部删除时分页总条数为原total-删除数据中心非添加数据个数
     totalPage.value = totalPage.value - delUpdateData.length;
   }
+}
+
+function handleCommit(ids, type) {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交的数据！');
+    return;
+  }
+  proxy.$confirm({
+    title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      commitLoading.value = true;
+      commitTpmTempMaintModifyPlan(ids)
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('提交成功！');
+            getList();
+          }
+          commitLoading.value = false;
+        }).catch(() => {
+        commitLoading.value = false;
+      });
+    }
+  });
 }
 
 /** 行点击事件 */

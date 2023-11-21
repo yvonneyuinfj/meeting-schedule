@@ -2,7 +2,9 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
+
 const basePath = '/mms/tpm/tpmtempmaintmodifyplans';
+
 /** 临时维修改造计划表 */
 export interface TpmTempMaintModifyPlanDto extends BaseBeanModel {
   /** 计划编号 */
@@ -112,24 +114,28 @@ export interface TpmTempMaintModifyPlanDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listTpmTempMaintModifyPlanByPage (
+export function listTpmTempMaintModifyPlanByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<TpmTempMaintModifyPlanDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 保存表单数据 */
-export function saveTpmTempMaintModifyPlan (form: [TpmTempMaintModifyPlanDto]): Promise<ResponseBaseData<any>> {
+export function saveTpmTempMaintModifyPlan(form: [TpmTempMaintModifyPlanDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delTpmTempMaintModifyPlan (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
+export function commitTpmTempMaintModifyPlan(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/commit-by-ids/v1', { ids: ids });
+}
+
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,
