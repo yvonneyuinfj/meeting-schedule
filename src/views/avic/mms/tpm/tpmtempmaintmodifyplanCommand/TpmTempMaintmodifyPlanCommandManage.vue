@@ -589,11 +589,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'center'
   }
   // {
@@ -643,7 +638,6 @@ const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
   returnReason: [{ required: true, message: '退回原因列不能为空' }],
-  secretLevel: [{ required: true, message: '密级列不能为空' }],
   estContractSignDate: [{ required: true, message: '合同预计签约时间列不能为空' }],
   estAcceptanceDate: [{ required: true, message: '计划验收时间列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验

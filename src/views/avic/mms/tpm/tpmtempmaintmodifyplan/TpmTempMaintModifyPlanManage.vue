@@ -529,11 +529,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'center'
   }
   // {
@@ -583,8 +578,6 @@ const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
   agentId: [{ required: true, message: '经办人ID列不能为空' }],
-  // returnReason: [{ required: true, message: '退回原因列不能为空' }],
-  secretLevel: [{ required: true, message: '密级列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const editingId = ref(''); // 正在编辑中的数据
 
