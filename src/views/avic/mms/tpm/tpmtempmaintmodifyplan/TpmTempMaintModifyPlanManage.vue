@@ -138,6 +138,18 @@
               保存
             </a-button>
             <a-button
+              v-hasPermi="['tpmTempMaintModifyPlan:export']"
+              title="导出"
+              type="primary"
+              ghost
+              @click="handleExport"
+            >
+              <template #icon>
+                <export-outlined />
+              </template>
+              导出
+            </a-button>
+            <!-- <a-button
               v-hasPermi="['tpmTempMaintModifyPlan:del']"
               title="删除"
               danger
@@ -153,13 +165,13 @@
                 <delete-outlined />
               </template>
               删除
-            </a-button>
+            </a-button> -->
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
-                title="提交"
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                :loading="commitLoading"
-                @click="handleCommit(selectedRowKeys, '')"
+              v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+              title="提交"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="commitLoading"
+              @click="handleCommit(selectedRowKeys, '')"
             >
               提交
             </a-button>
@@ -184,7 +196,7 @@
               <AvicCommonSelect
                 v-model:value="record.agentId"
                 :defaultShowValue="record.agentIdAlias"
-                placeholder="请选择经办人ID"
+                placeholder="请选择经办人"
                 type="userSelect"
                 @callback="
                   (value, _selectRows) => {
@@ -198,25 +210,21 @@
             </template>
           </AvicRowEdit>
 
-          <template v-else-if="column.dataIndex === 'attach'">
-            <a @click="handleAttach(record)">
-              查看
-            </a>
-          </template>
-          <!-- <AvicRowEdit
-            v-else-if="column.dataIndex === 'secretLevel'"
+
+           <AvicRowEdit
+            v-else-if="column.dataIndex === 'businessStatus'"
             :record="record"
             :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                v-model:value="record.secretLevel"
+                v-model:value="record.businessStatus"
                 style="width: 100%"
-                placeholder="请选择密级"
-                @change="(value)=>changeControlValue(value,record,'secretLevel')"
+                placeholder="请选择制单状态"
+                @change="(value)=>changeControlValue(value,record,'businessStatus')"
               >
                 <a-select-option
-                  v-for="select in secretLevelList"
+                  v-for="select in businessStatusList"
                   :key="select.sysLookupTlId"
                   :value="select.lookupCode"
                   :title="select.lookupName"
@@ -227,58 +235,14 @@
               </a-select>
             </template>
             <template #default>
-              {{ record['secretLevelName'] }}
+              {{ record['businessStatusName'] }}
             </template>
           </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="['returnReason'].includes(
-               column.dataIndex
-              )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="512"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit> -->
-          <template v-if="column.dataIndex === 'action'">
-            <a-button
-              v-if="record.editable"
-              type="link"
-              class="inner-btn"
-              :disable="editingId !== ''"
-              @click.stop="handleSave(record)"
-            >
-              保存
-            </a-button>
-            <a-button
-              v-else
-              type="link"
-              class="inner-btn"
-              :disable="editingId !== ''"
-              @click.stop="handleEdit(record)"
-            >
-              编辑
-            </a-button>
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click.stop="
-                event => {
-                  handleDelete([record.id], event, 'row');
-                }
-              "
-            >
-              删除
-            </a-button>
+  
+          <template v-else-if="column.dataIndex === 'attach'">
+            <a @click="handleAttach(record)">
+              查看
+            </a>
           </template>
         </template>
       </AvicTable>
@@ -467,103 +431,7 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '制单状态',
-    dataIndex: 'businessStatus',
-    key: 'businessStatus',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '合同预计签订时间',
-    dataIndex: 'estContractSignDate',
-    key: 'estContractSignDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '计划验收时间',
-    dataIndex: 'estAcceptanceDate',
-    key: 'estAcceptanceDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-
-  {
-    title: '申请单号',
-    dataIndex: 'applyNo',
-    key: 'applyNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '合同编号',
-    dataIndex: 'contractNo',
-    key: 'contractNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '合同实际签订时间',
-    dataIndex: 'contractSignDate',
-    key: 'contractSignDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '实际完成时间（完成验收）',
-    dataIndex: 'acceptanceDate',
-    key: 'acceptanceDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '进度状态',
-    dataIndex: 'progressStatus',
-    key: 'progressStatus',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '附件',
-    dataIndex: 'attach',
-    key: 'attach',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '退回原因',
-    dataIndex: 'returnReason',
-    key: 'returnReason',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
+   {
     title: '备注',
     dataIndex: 'note',
     key: 'note',
@@ -572,10 +440,92 @@ const columns = [
     resizable: true,
     align: 'left'
   },
+  // {
+  //   title: '制单状态',
+  //   dataIndex: 'businessStatus',
+  //   key: 'businessStatus',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '合同预计签订时间',
+  //   dataIndex: 'estContractSignDate',
+  //   key: 'estContractSignDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '计划验收时间',
+  //   dataIndex: 'estAcceptanceDate',
+  //   key: 'estAcceptanceDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+
+  // {
+  //   title: '申请单号',
+  //   dataIndex: 'applyNo',
+  //   key: 'applyNo',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '合同编号',
+  //   dataIndex: 'contractNo',
+  //   key: 'contractNo',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '合同实际签订时间',
+  //   dataIndex: 'contractSignDate',
+  //   key: 'contractSignDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '实际完成时间（完成验收）',
+  //   dataIndex: 'acceptanceDate',
+  //   key: 'acceptanceDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '进度状态',
+  //   dataIndex: 'progressStatus',
+  //   key: 'progressStatus',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  {
+    title: '附件',
+    dataIndex: 'attach',
+    key: 'attach',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  }, 
   {
     title: '密级',
-    dataIndex: 'secretLevel',
-    key: 'secretLevel',
+    dataIndex: 'secretLevelName',
+    key: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -633,7 +583,7 @@ const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
   agentId: [{ required: true, message: '经办人ID列不能为空' }],
-  returnReason: [{ required: true, message: '退回原因列不能为空' }],
+  // returnReason: [{ required: true, message: '退回原因列不能为空' }],
   secretLevel: [{ required: true, message: '密级列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const editingId = ref(''); // 正在编辑中的数据
@@ -679,15 +629,16 @@ function handleCommit(ids, type) {
     onOk: () => {
       commitLoading.value = true;
       commitTpmTempMaintModifyPlan(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('提交成功！');
-              getList();
-            }
-            commitLoading.value = false;
-          }).catch(() => {
-        commitLoading.value = false;
-      });
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('提交成功！');
+            getList();
+          }
+          commitLoading.value = false;
+        })
+        .catch(() => {
+          commitLoading.value = false;
+        });
     }
   });
 }
