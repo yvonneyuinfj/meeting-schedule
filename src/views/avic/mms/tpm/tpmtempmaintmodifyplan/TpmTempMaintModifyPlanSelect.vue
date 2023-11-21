@@ -327,11 +327,16 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="经办人ID">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="queryForm.agentId"
-                placeholder="请输入经办人ID"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                type="userSelect"
+                placeholder="请选择经办人ID"
+                :defaultShowValue="queryForm.agentIdAlias"
+                @callback="
+                  result => {
+                    queryForm.agentIdAlias = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
@@ -763,9 +768,8 @@ const columns = [
   },
   {
     title: '经办人ID',
-    dataIndex: 'agentId',
+    dataIndex: 'agentIdAlias',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'

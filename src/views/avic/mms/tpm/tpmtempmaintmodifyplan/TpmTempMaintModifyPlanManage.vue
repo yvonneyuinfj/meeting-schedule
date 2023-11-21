@@ -327,11 +327,16 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="经办人ID">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="queryForm.agentId"
-                placeholder="请输入经办人ID"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                type="userSelect"
+                placeholder="请选择经办人ID"
+                :defaultShowValue="queryForm.agentIdAlias"
+                @callback="
+                  result => {
+                    queryForm.agentIdAlias = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
@@ -570,22 +575,25 @@
         </template>
         <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-           v-if="['agentId','returnReason'].includes(
-               column.dataIndex
-              )"
+           v-if="column.dataIndex === 'agentId'"
             :record="record"
             :column="column.dataIndex"
           >
             <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="512"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
+              <AvicCommonSelect
+                v-model:value="record.agentId"
+                :defaultShowValue="record.agentIdAlias"
+                placeholder="请选择经办人ID"
+                type="userSelect"
+                @callback="
+                  (value, _selectRows) => {
+                    changeCommonSelect(value,record,'agentId')
+                  }
+                "
+            />
+            </template>
+            <template #default>
+              {{ record['agentIdAlias'] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
@@ -613,6 +621,25 @@
             </template>
             <template #default>
               {{ record['secretLevelName'] }}
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit
+            v-else-if="['returnReason'].includes(
+               column.dataIndex
+              )"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-input
+                v-model:value="record[column.dataIndex]"
+                :maxLength="512"
+                @input="$forceUpdate()"
+                style="width: 100%"
+                placeholder="请输入"
+                @blur="blurInput($event, record, column.dataIndex)"
+             >
+              </a-input>
             </template>
           </AvicRowEdit>
           <template v-else-if="column.dataIndex === 'action'">
@@ -1325,6 +1352,10 @@ function customRow (record) {
       handleEdit(record);
     }
   };
+}
+/** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
+function changeCommonSelect (value, record, column) {
+  record[column + 'Alias'] = value.names;
 }
 /** 控件变更事件  */
 function changeControlValue (values, record, column) {

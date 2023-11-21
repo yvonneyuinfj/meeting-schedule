@@ -64,6 +64,7 @@ export interface TpmTempMaintModifyPlanDto extends BaseBeanModel {
   estAcceptanceDateEnd?: any;
   /** 经办人ID */
   agentId?: string;
+  agentIdAlias?: string;
   /** 经办人编码 */
   agentCode?: string;
   /** 经办人姓名 */
