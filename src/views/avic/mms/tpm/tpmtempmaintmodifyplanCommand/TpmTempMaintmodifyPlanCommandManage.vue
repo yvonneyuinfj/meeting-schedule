@@ -154,7 +154,7 @@
               </template>
               删除
             </a-button> -->
-             <a-button
+            <a-button
               v-hasPermi="['tpmTempMaintModifyPlan:commit']"
               title="下达"
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
@@ -172,7 +172,7 @@
             >
               退回
             </a-button>
-              <a-button
+            <a-button
               v-hasPermi="['tpmTempMaintModifyPlan:export']"
               title="导出"
               type="primary"
@@ -564,7 +564,7 @@ const columns = [
   //   resizable: true,
   //   align: 'left'
   // },
-   {
+  {
     title: '备注',
     dataIndex: 'note',
     key: 'note',
@@ -704,6 +704,12 @@ function handleBack(ids, type) {
     proxy.$message.warning('请选择要退回的数据！');
     return;
   }
+  for (let item in ids) {
+    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
+    if (!validateRecordData([target])) {
+      return;
+    }
+  }
   proxy.$confirm({
     title: `确认要退回${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
     okText: '确定',
@@ -730,6 +736,12 @@ function handleOrder(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要下达的数据！');
     return;
+  }
+  for (let item in ids) {
+    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
+    if (!validateRecordData([target])) {
+      return;
+    }
   }
   proxy.$confirm({
     title: `确认要下达${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
