@@ -359,6 +359,15 @@ const columns = [
     align: 'left'
   },
   {
+    title: "需求时间",
+    dataIndex: "requireDate",
+    key: "requireDate",
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: "left",
+  },
+  {
     title: '需求申请人',
     dataIndex: 'applyUserId',
     key: 'applyUserId',

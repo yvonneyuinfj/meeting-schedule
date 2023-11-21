@@ -2,21 +2,17 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form
-          v-bind="layout"
-          ref="formRef"
-          :model="queryForm"
-      >
+      <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="需求部门">
               <AvicCommonSelect
-                  v-model:value="queryForm.requireDeptId"
-                  type="deptSelect"
-                  placeholder="请选择需求部门"
-                  :defaultShowValue="queryForm.requireDeptIdAlias"
-                  @callback="
-                  result => {
+                v-model:value="queryForm.requireDeptId"
+                type="deptSelect"
+                placeholder="请选择需求部门"
+                :defaultShowValue="queryForm.requireDeptIdAlias"
+                @callback="
+                  (result) => {
                     queryForm.requireDeptIdAlias = result.names;
                   }
                 "
@@ -26,17 +22,17 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划类别">
               <a-select
-                  v-model:value="queryForm.planType"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择计划类别"
+                v-model:value="queryForm.planType"
+                :get-popup-container="(triggerNode) => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择计划类别"
               >
                 <a-select-option
-                    v-for="item in planTypeList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in planTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -47,42 +43,32 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="制单状态">
               <a-select
-                  v-model:value="queryForm.businessStatus"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择制单状态"
+                v-model:value="queryForm.businessStatus"
+                :get-popup-container="(triggerNode) => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择制单状态"
               >
                 <a-select-option
-                    v-for="item in businessStatusList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in businessStatusList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col
-              v-bind="colLayout.cols"
-              style="margin-left: auto"
-          >
+          <a-col v-bind="colLayout.cols" style="margin-left: auto">
             <div class="table-page-search-submitButtons">
               <a-space>
-                <a-button
-                    type="primary"
-                    @click="handleQuery"
-                >
-                  <search-outlined/>
+                <a-button type="primary" @click="handleQuery">
+                  <search-outlined />
                   查询
                 </a-button>
-                <a-button
-                    type="primary"
-                    @click="resetQuery"
-                    ghost
-                >
-                  <redo-outlined/>
+                <a-button type="primary" @click="resetQuery" ghost>
+                  <redo-outlined />
                   重置
                 </a-button>
               </a-space>
@@ -94,23 +80,23 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="tpmTempMaintModifyPlan"
-          table-key="tpmTempMaintModifyPlan"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
+        ref="tpmTempMaintModifyPlan"
+        table-key="tpmTempMaintModifyPlan"
+        :columns="columns"
+        :row-key="(record) => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
-          fixed: true
+          fixed: true,
         }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="customRow"
-          @change="handleTableChange"
-          @refresh="getList"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -126,14 +112,14 @@
               添加
             </a-button> -->
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:save']"
-                title="保存"
-                type="primary"
-                :loading="saveLoading"
-                @click="handleSaveAll"
+              v-hasPermi="['tpmTempMaintModifyPlan:save']"
+              title="保存"
+              type="primary"
+              :loading="saveLoading"
+              @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined/>
+                <save-outlined />
               </template>
               保存
             </a-button>
@@ -155,32 +141,32 @@
               删除
             </a-button> -->
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
-                title="下达"
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                :loading="commitLoading"
-                @click="handleRelease(selectedRowKeys, '')"
+              v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+              title="下达"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="commitLoading"
+              @click="handleRelease(selectedRowKeys, '')"
             >
               下达
             </a-button>
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
-                title="退回"
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                :loading="commitLoading"
-                @click="handleBack(selectedRowKeys, '')"
+              v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+              title="退回"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="commitLoading"
+              @click="handleBack(selectedRowKeys, '')"
             >
               退回
             </a-button>
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:export']"
-                title="导出"
-                type="primary"
-                ghost
-                @click="handleExport"
+              v-hasPermi="['tpmTempMaintModifyPlan:export']"
+              title="导出"
+              type="primary"
+              ghost
+              @click="handleExport"
             >
               <template #icon>
-                <export-outlined/>
+                <export-outlined />
               </template>
               导出
             </a-button>
@@ -188,327 +174,334 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入计划编号"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+            class="opt-btn-commonsearch"
+            style="width: 200px"
+            placeholder="请输入计划编号"
+            :allow-clear="true"
+            @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-              v-if="column.dataIndex === 'returnReason'"
-              :record="record"
-              :column="column.dataIndex"
+            v-if="column.dataIndex === 'returnReason'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
               <a-input
-                  v-model:value="record[column.dataIndex]"
-                  :maxLength="512"
-                  @input="$forceUpdate()"
-                  style="width: 100%"
-                  placeholder="请输入"
-                  @blur="blurInput($event, record, column.dataIndex)"
+                v-model:value="record[column.dataIndex]"
+                :maxLength="512"
+                @input="$forceUpdate()"
+                style="width: 100%"
+                placeholder="请输入"
+                @blur="blurInput($event, record, column.dataIndex)"
               />
             </template>
             <template #default>
-              {{ record['returnReason'] }}
+              {{ record["returnReason"] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-              v-if="column.dataIndex === 'estContractSignDate'"
-              :record="record"
-              :column="column.dataIndex"
+            v-if="column.dataIndex === 'estContractSignDate'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
               <a-date-picker
-                  v-model:value="record[column.dataIndex]"
-                  format="YYYY-MM-DD"
-                  value-format="YYYY-MM-DD"
-                  placeholder="请选择"
+                v-model:value="record[column.dataIndex]"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择"
               />
             </template>
             <template #default>
-              {{ record['estContractSignDate'] }}
+              {{ record["estContractSignDate"] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-              v-if="column.dataIndex === 'estAcceptanceDate'"
-              :record="record"
-              :column="column.dataIndex"
+            v-if="column.dataIndex === 'estAcceptanceDate'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
-
               <a-date-picker
-                  v-model:value="record[column.dataIndex]"
-                  format="YYYY-MM-DD"
-                  value-format="YYYY-MM-DD"
-                  placeholder="请选择"
+                v-model:value="record[column.dataIndex]"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择"
               />
-
             </template>
             <template #default>
-              {{ record['estAcceptanceDate'] }}
+              {{ record["estAcceptanceDate"] }}
             </template>
           </AvicRowEdit>
 
           <AvicRowEdit
-              v-else-if="column.dataIndex === 'businessStatus'"
-              :record="record"
-              :column="column.dataIndex"
+            v-else-if="column.dataIndex === 'businessStatus'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                  v-model:value="record.businessStatus"
-                  style="width: 100%"
-                  placeholder="请选择制单状态"
-                  @change="(value)=>changeControlValue(value,record,'businessStatus')"
+                v-model:value="record.businessStatus"
+                style="width: 100%"
+                placeholder="请选择制单状态"
+                @change="(value) => changeControlValue(value, record, 'businessStatus')"
               >
                 <a-select-option
-                    v-for="select in businessStatusList"
-                    :key="select.sysLookupTlId"
-                    :value="select.lookupCode"
-                    :title="select.lookupName"
-                    :disabled="select.disabled === true"
+                  v-for="select in businessStatusList"
+                  :key="select.sysLookupTlId"
+                  :value="select.lookupCode"
+                  :title="select.lookupName"
+                  :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
               </a-select>
             </template>
             <template #default>
-              {{ record['businessStatusName'] }}
+              {{ record["businessStatusName"] }}
             </template>
           </AvicRowEdit>
 
           <template v-else-if="column.dataIndex === 'attach'">
-            <a @click="handleAttach(record)">
-              查看
-            </a>
+            <a @click="handleAttach(record)"> 查看 </a>
           </template>
-
         </template>
       </AvicTable>
     </div>
     <avic-excel-import
-        v-if="showImportModal"
-        :formData="excelParams"
-        title="导入"
-        importUrl="/mms/tpm/tpmtempmaintmodifyplans/importData/v1"
-        downloadTemplateUrl="/mms/tpm/tpmtempmaintmodifyplans/downloadTemplate/v1"
-        @reloadData="getList"
-        @close="showImportModal = false"
+      v-if="showImportModal"
+      :formData="excelParams"
+      title="导入"
+      importUrl="/mms/tpm/tpmtempmaintmodifyplans/importData/v1"
+      downloadTemplateUrl="/mms/tpm/tpmtempmaintmodifyplans/downloadTemplate/v1"
+      @reloadData="getList"
+      @close="showImportModal = false"
     ></avic-excel-import>
     <AttachModal
-        :attachOpen="attachOpen"
-        :attach-form="attchForm"
-        @closeAttach="closeAttach"
+      :attachOpen="attachOpen"
+      :attach-form="attchForm"
+      @closeAttach="closeAttach"
     />
   </div>
 </template>
 <script lang="ts" setup>
-import type { TpmTempMaintModifyPlanDto } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块DTO
-import AttachModal from '@/views/avic/mms/tpm/tpmtempmaintmodifyplan/AttachModal.vue';
+import type { TpmTempMaintModifyPlanDto } from "@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi"; // 引入模块DTO
+import AttachModal from "@/views/avic/mms/tpm/tpmtempmaintmodifyplan/AttachModal.vue";
 import {
-  listTpmTempMaintModifyPlanByPage,
+  listTpmTempMaintModifyPlanReleaseByPage,
   saveTpmTempMaintModifyPlan,
   delTpmTempMaintModifyPlan,
   commitTpmTempMaintModifyPlan,
-  exportReleaseExcel, releaseTpmTempMaintModifyPlan, backTpmTempMaintModifyPlan
-} from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
+  exportReleaseExcel,
+  releaseTpmTempMaintModifyPlan,
+  backTpmTempMaintModifyPlan,
+} from "@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi"; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const commitLoading = ref(false); // 提交按钮loading状态
 const layout = {
-  labelCol: { flex: '120px' },
-  wrapperCol: { flex: '1' }
+  labelCol: { flex: "120px" },
+  wrapperCol: { flex: "1" },
 };
 const colLayout = proxy.$colLayout4; // 调用布局公共方法
 const columns = [
   {
-    title: '计划编号',
-    dataIndex: 'planNo',
-    key: 'planNo',
+    title: "计划编号",
+    dataIndex: "planNo",
+    key: "planNo",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '经办人',
-    dataIndex: 'agentIdAlias',
-    key: 'agentIdAlias',
+    title: "经办人",
+    dataIndex: "agentIdAlias",
+    key: "agentIdAlias",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '退回原因',
-    dataIndex: 'returnReason',
-    key: 'returnReason',
+    title: "退回原因",
+    dataIndex: "returnReason",
+    key: "returnReason",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
-        ['class']: 'required-table-title'
+        ["class"]: "required-table-title",
       };
     },
-    align: 'left'
+    align: "left",
   },
   {
-    title: '合同预计签订时间',
-    dataIndex: 'estContractSignDate',
-    key: 'estContractSignDate',
+    title: "合同预计签订时间",
+    dataIndex: "estContractSignDate",
+    key: "estContractSignDate",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
-        ['class']: 'required-table-title'
+        ["class"]: "required-table-title",
       };
     },
-    align: 'center'
+    align: "center",
   },
   {
-    title: '计划验收时间',
-    dataIndex: 'estAcceptanceDate',
-    key: 'estAcceptanceDate',
+    title: "计划验收时间",
+    dataIndex: "estAcceptanceDate",
+    key: "estAcceptanceDate",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
-        ['class']: 'required-table-title'
+        ["class"]: "required-table-title",
       };
     },
-    align: 'center'
+    align: "center",
   },
   {
-    title: '预算项目',
-    dataIndex: 'budgetItems',
-    key: 'budgetItems',
+    title: "预算项目",
+    dataIndex: "budgetItems",
+    key: "budgetItems",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '预算分项',
-    dataIndex: 'budgetBreakdownItems',
-    key: 'budgetBreakdownItems',
+    title: "预算分项",
+    dataIndex: "budgetBreakdownItems",
+    key: "budgetBreakdownItems",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '预算组织',
-    dataIndex: 'budgetOrganizationId',
-    key: 'budgetOrganizationId',
+    title: "预算组织",
+    dataIndex: "budgetOrganizationId",
+    key: "budgetOrganizationId",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '项目名称',
-    dataIndex: 'projectName',
-    key: 'projectName',
+    title: "项目名称",
+    dataIndex: "projectName",
+    key: "projectName",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '计划类别',
-    dataIndex: 'planType',
-    key: 'planType',
+    title: "计划类别",
+    dataIndex: "planType",
+    key: "planType",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: "center",
   },
   {
-    title: '需求部门',
-    dataIndex: 'requireDeptId',
-    key: 'requireDeptId',
+    title: "需求部门",
+    dataIndex: "requireDeptId",
+    key: "requireDeptId",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '需求申请人',
-    dataIndex: 'applyUserId',
-    key: 'applyUserId',
+    title: "需求时间",
+    dataIndex: "requireDate",
+    key: "requireDate",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
+
   {
-    title: '联系电话',
-    dataIndex: 'applyUserTel',
-    key: 'applyUserTel',
+    title: "需求申请人",
+    dataIndex: "applyUserId",
+    key: "applyUserId",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '项目金额（万元）',
-    dataIndex: 'projectMoney',
-    key: 'projectMoney',
+    ttle: "联系电话",
+    dataIndex: "applyUserTel",
+    key: "applyUserTel",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '课题号',
-    dataIndex: 'subjectNo',
-    key: 'subjectNo',
+    title: "项目金额（万元）",
+    dataIndex: "projectMoney",
+    key: "projectMoney",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '是否使用型号经费',
-    dataIndex: 'ynUseModelFunding',
-    key: 'ynUseModelFunding',
+    title: "课题号",
+    dataIndex: "subjectNo",
+    key: "subjectNo",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: "left",
   },
   {
-    title: '故障时间',
-    dataIndex: 'faultDate',
-    key: 'faultDate',
+    title: "是否使用型号经费",
+    dataIndex: "ynUseModelFunding",
+    key: "ynUseModelFunding",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: "center",
   },
   {
-    title: '申请理由',
-    dataIndex: 'applyReason',
-    key: 'applyReason',
+    title: "故障时间",
+    dataIndex: "faultDate",
+    key: "faultDate",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "center",
   },
   {
-    title: '要求及建议',
-    dataIndex: 'repairContent',
-    key: 'repairContent',
+    title: "申请理由",
+    dataIndex: "applyReason",
+    key: "applyReason",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
+  },
+  {
+    title: "要求及建议",
+    dataIndex: "repairContent",
+    key: "repairContent",
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: "left",
   },
   // {
   //   title: '制单状态',
@@ -565,32 +558,32 @@ const columns = [
   //   align: 'left'
   // },
   {
-    title: '备注',
-    dataIndex: 'note',
-    key: 'note',
+    title: "备注",
+    dataIndex: "note",
+    key: "note",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: "left",
   },
   {
-    title: '附件',
-    dataIndex: 'attach',
-    key: 'attach',
+    title: "附件",
+    dataIndex: "attach",
+    key: "attach",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: "center",
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
-    key: 'secretLevelName',
+    title: "密级",
+    dataIndex: "secretLevelName",
+    key: "secretLevelName",
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
-  }
+    align: "center",
+  },
   // {
   //   title: '操作',
   //   dataIndex: 'action',
@@ -604,18 +597,18 @@ const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
     page: 1, // 页数
-    rows: 20 // 每页条数
+    rows: 20, // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm,
   },
-  keyWord: ref(''), // 快速查询数据
+  keyWord: ref(""), // 快速查询数据
   sidx: null, // 排序字段
-  sord: null // 排序方式: desc降序 asc升序
+  sord: null, // 排序方式: desc降序 asc升序
 });
 const tpmTempMaintModifyPlan = ref(null);
 const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'tpmTempMaintModifyPlan' }); // 导入Excel数据过滤参数
+const excelParams = ref({ tableName: "tpmTempMaintModifyPlan" }); // 导入Excel数据过滤参数
 const list = ref([]); // 表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -626,24 +619,26 @@ const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
-  { fieldName: 'planType', lookUpType: 'TPM_PLAN_TYPE' },
-  { fieldName: 'businessStatus', lookUpType: 'TPM_BUSINESS_STATUS' }
+  { fieldName: "planType", lookUpType: "TPM_PLAN_TYPE" },
+  { fieldName: "businessStatus", lookUpType: "TPM_BUSINESS_STATUS" },
 ];
 const attachOpen = ref(false); // 附件弹窗
 const attchForm = reactive({
-  id: '',
-  secretLevel: ''
+  id: "",
+  secretLevel: "",
 });
 const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
-  returnReason: [{ required: true, message: '退回原因列不能为空' }],
-  estContractSignDate: [{ required: true, message: '合同预计签约时间列不能为空' }],
-  estAcceptanceDate: [{ required: true, message: '计划验收时间列不能为空' }]
+  returnReason: [{ required: true, message: "退回原因列不能为空" }],
+  estContractSignDate: [{ required: true, message: "合同预计签约时间列不能为空" }],
+  estAcceptanceDate: [{ required: true, message: "计划验收时间列不能为空" }],
 }; // 必填列,便于保存和新增数据时校验
-const editingId = ref(''); // 正在编辑中的数据
+const editingId = ref(""); // 正在编辑中的数据
 
 onMounted(() => {
+  queryForm.value.businessStatus = "5";
+  queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
   // 加载查询区所需通用代码
@@ -657,117 +652,117 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  listTpmTempMaintModifyPlanByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-        // 查询的初始数据,保存时做比对
-        initialList.value = proxy.$lodash.cloneDeep(list.value);
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+  listTpmTempMaintModifyPlanReleaseByPage(queryParam)
+    .then((response) => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+      // 查询的初始数据,保存时做比对
+      initialList.value = proxy.$lodash.cloneDeep(list.value);
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 提交 */
 function handleCommit(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要提交的数据！');
+    proxy.$message.warning("请选择要提交的数据！");
     return;
   }
   proxy.$confirm({
-    title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
-    okText: '确定',
-    cancelText: '取消',
+    title: `确认要提交${type == "row" ? "当前行的" : "选择的"}数据吗?`,
+    okText: "确定",
+    cancelText: "取消",
     onOk: () => {
       commitLoading.value = true;
       commitTpmTempMaintModifyPlan(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('提交成功！');
-              getList();
-            }
-            commitLoading.value = false;
-          })
-          .catch(() => {
-            commitLoading.value = false;
-          });
-    }
+        .then((res) => {
+          if (res.success) {
+            proxy.$message.success("提交成功！");
+            getList();
+          }
+          commitLoading.value = false;
+        })
+        .catch(() => {
+          commitLoading.value = false;
+        });
+    },
   });
 }
 
 /** 退回 */
 function handleBack(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要退回的数据！');
+    proxy.$message.warning("请选择要退回的数据！");
     return;
   }
   for (let item in ids) {
-    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
+    let target = proxy.$lodash.cloneDeep(list.value.filter((i) => i.id === ids[item])[0]);
     if (!validateRecordData([target])) {
       return;
     }
   }
   proxy.$confirm({
-    title: `确认要退回${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
-    okText: '确定',
-    cancelText: '取消',
+    title: `确认要退回${type == "row" ? "当前行的" : "选择的"}数据吗?`,
+    okText: "确定",
+    cancelText: "取消",
     onOk: () => {
       commitLoading.value = true;
       backTpmTempMaintModifyPlan(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('退回成功！');
-              getList();
-            }
-            commitLoading.value = false;
-          })
-          .catch(() => {
-            commitLoading.value = false;
-          });
-    }
+        .then((res) => {
+          if (res.success) {
+            proxy.$message.success("退回成功！");
+            getList();
+          }
+          commitLoading.value = false;
+        })
+        .catch(() => {
+          commitLoading.value = false;
+        });
+    },
   });
 }
 
 /** 下达 */
 function handleRelease(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要下达的数据！');
+    proxy.$message.warning("请选择要下达的数据！");
     return;
   }
   for (let item in ids) {
-    let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
+    let target = proxy.$lodash.cloneDeep(list.value.filter((i) => i.id === ids[item])[0]);
     if (!validateRecordData([target])) {
       return;
     }
   }
   proxy.$confirm({
-    title: `确认要下达${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
-    okText: '确定',
-    cancelText: '取消',
+    title: `确认要下达${type == "row" ? "当前行的" : "选择的"}数据吗?`,
+    okText: "确定",
+    cancelText: "取消",
     onOk: () => {
       commitLoading.value = true;
       releaseTpmTempMaintModifyPlan(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('下达成功！');
-              getList();
-            }
-            commitLoading.value = false;
-          })
-          .catch(() => {
-            commitLoading.value = false;
-          });
-    }
+        .then((res) => {
+          if (res.success) {
+            proxy.$message.success("下达成功！");
+            getList();
+          }
+          commitLoading.value = false;
+        })
+        .catch(() => {
+          commitLoading.value = false;
+        });
+    },
   });
 }
 
 /** 获取通用代码  */
 function getLookupList() {
-  proxy.$getLookupByType(lookupParams, result => {
+  proxy.$getLookupByType(lookupParams, (result) => {
     planTypeList.value = result.planType;
     businessStatusList.value = result.businessStatus;
   });
@@ -775,7 +770,7 @@ function getLookupList() {
 
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
-  proxy.$getUserFileSecretLevelList(result => {
+  proxy.$getUserFileSecretLevelList((result) => {
     secretLevelList.value = result;
   });
 }
@@ -783,7 +778,7 @@ function getUserFileSecretList() {
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
-  queryParam.keyWord = '';
+  queryParam.keyWord = "";
   queryParam.pageParameter.page = 1;
   getList();
 }
@@ -797,7 +792,7 @@ function resetQuery() {
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
-    planNo: value
+    planNo: value,
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
@@ -807,44 +802,44 @@ function handleKeyWordQuery(value) {
 /** 添加 */
 function handleAdd() {
   let item = {
-    id: 'newLine' + proxy.$uuid(),
-    operationType_: 'insert',
-    planNo: '',
-    budgetItems: '',
-    budgetBreakdownItems: '',
-    budgetOrganizationId: '',
-    budgetOrganizationCode: '',
-    budgetOrganizationName: '',
-    projectName: '',
+    id: "newLine" + proxy.$uuid(),
+    operationType_: "insert",
+    planNo: "",
+    budgetItems: "",
+    budgetBreakdownItems: "",
+    budgetOrganizationId: "",
+    budgetOrganizationCode: "",
+    budgetOrganizationName: "",
+    projectName: "",
     planType: undefined,
-    requireDeptId: '',
-    requireDeptCode: '',
-    requireDeptName: '',
-    applyUserId: '',
-    applyUserCode: '',
-    applyUserName: '',
-    applyUserTel: '',
-    projectMoney: '',
-    subjectNo: '',
+    requireDeptId: "",
+    requireDeptCode: "",
+    requireDeptName: "",
+    applyUserId: "",
+    applyUserCode: "",
+    applyUserName: "",
+    applyUserTel: "",
+    projectMoney: "",
+    subjectNo: "",
     ynUseModelFunding: undefined,
     faultDate: null,
-    applyReason: '',
-    repairContent: '',
+    applyReason: "",
+    repairContent: "",
     businessStatus: undefined,
     estContractSignDate: null,
     estAcceptanceDate: null,
-    agentId: '',
-    agentCode: '',
-    agentName: '',
-    applyNo: '',
-    contractNo: '',
+    agentId: "",
+    agentCode: "",
+    agentName: "",
+    applyNo: "",
+    contractNo: "",
     contractSignDate: null,
     acceptanceDate: null,
-    progressStatus: '',
-    returnReason: '',
-    note: '',
+    progressStatus: "",
+    returnReason: "",
+    note: "",
     secretLevel: undefined,
-    editable: true // true为编辑中, false为未编辑
+    editable: true, // true为编辑中, false为未编辑
   };
   editingId.value = item.id;
   let newData = [...list.value];
@@ -853,7 +848,7 @@ function handleAdd() {
     return;
   }
   // 其他列编辑状态修改为false
-  newData.forEach(item => {
+  newData.forEach((item) => {
     item.editable = false;
   });
   newData.unshift(item);
@@ -863,10 +858,10 @@ function handleAdd() {
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
-  record.operationType_ = record.operationType_ || 'update';
+  record.operationType_ = record.operationType_ || "update";
   const newData = [...list.value];
   editingId.value = record.id;
-  newData.forEach(item => {
+  newData.forEach((item) => {
     if (item.id !== record.id) {
       item.editable = false;
     }
@@ -885,16 +880,16 @@ function handleSave(record) {
   for (let key in target) {
     // 多选控件的数据，数组转化为字符串，
     if (Array.isArray(target[key])) {
-      target[key] = target[key].join(',');
+      target[key] = target[key].join(",");
     }
   }
-  editingId.value = '';
-  saveTpmTempMaintModifyPlan([target]).then(res => {
+  editingId.value = "";
+  saveTpmTempMaintModifyPlan([target]).then((res) => {
     if (res.success) {
       getList();
-      proxy.$message.success('保存成功！');
+      proxy.$message.success("保存成功！");
     } else {
-      proxy.$message.error('保存失败！');
+      proxy.$message.error("保存失败！");
     }
   });
 }
@@ -908,23 +903,23 @@ function handleSaveAll() {
   // 获取改变和新增的数据
   const changedData = proxy.$getChangeRecords(list, initialList);
   if (changedData && changedData.length == 0) {
-    proxy.$message.warning('请先修改数据！');
+    proxy.$message.warning("请先修改数据！");
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
     saveTpmTempMaintModifyPlan(changedData)
-        .then(res => {
-          if (res.success) {
-            getList();
-            proxy.$message.success('保存成功！');
-            saveLoading.value = false;
-          } else {
-            proxy.$message.error('保存失败！');
-            saveLoading.value = false;
-          }
-        })
-        .catch(() => {
+      .then((res) => {
+        if (res.success) {
+          getList();
+          proxy.$message.success("保存成功！");
           saveLoading.value = false;
-        });
+        } else {
+          proxy.$message.error("保存失败！");
+          saveLoading.value = false;
+        }
+      })
+      .catch(() => {
+        saveLoading.value = false;
+      });
   } else {
     saveLoading.value = false;
   }
@@ -938,17 +933,17 @@ function handleImport() {
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
+    title: "确认导出数据吗?",
+    okText: "确定",
+    cancelText: "取消",
     onOk: () => {
       loading.value = true;
       queryParam.searchParams = queryForm.value;
       exportReleaseExcel(queryParam).then(() => {
         loading.value = false;
-        proxy.$message.info('导出成功！');
+        proxy.$message.info("导出成功！");
       });
-    }
+    },
   });
 }
 
@@ -958,34 +953,34 @@ function handleDelete(ids, e, type) {
     e.stopPropagation(); // 阻止冒泡
   }
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
+    proxy.$message.warning("请选择要删除的数据！");
     return;
   }
   proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
-    okText: '确定',
-    cancelText: '取消',
+    title: `确认要删除${type == "row" ? "当前行的" : "选择的"}数据吗？`,
+    okText: "确定",
+    cancelText: "取消",
     onOk: () => {
       delLoading.value = true;
       // 获取所有非新增的数据，执行后台删除逻辑，新增的数据直接界面删除
-      const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
+      const deleteIds = ids.filter((id) => id.indexOf("newLine") == -1);
       if (deleteIds.length > 0) {
         return delTpmTempMaintModifyPlan(deleteIds)
-            .then(() => {
-              removeRecordByIds(ids);
-            })
-            .catch(() => {
-              delLoading.value = false;
-            });
+          .then(() => {
+            removeRecordByIds(ids);
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
       } else {
         removeRecordByIds(ids);
       }
-    }
+    },
   });
 }
 
 /** 打开附件查看 */
-const handleAttach = record => {
+const handleAttach = (record) => {
   attachOpen.value = true;
   attchForm.id = record.id;
   attchForm.secretLevel = record.secretLevel;
@@ -1004,9 +999,9 @@ function removeRecordByIds(deleteIds) {
   let updateList = [...list.value];
   let delUpdateData = [];
   for (let i = 0; i < deleteIds.length; i++) {
-    newData = newData.filter(item => item['id'] !== deleteIds[i]);
+    newData = newData.filter((item) => item["id"] !== deleteIds[i]);
     delUpdateData = updateList.filter(
-        item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
+      (item) => item["id"] == deleteIds[i] && item["operationType_"] != "insert"
     );
   }
   // 清空表格选中项
@@ -1014,7 +1009,7 @@ function removeRecordByIds(deleteIds) {
   // 前台刷新表格
   list.value = newData;
   // 提示成功
-  proxy.$message.success('删除成功！');
+  proxy.$message.success("删除成功！");
   delLoading.value = false;
   if (list.value.length == 0) {
     // 当前页数据被清空
@@ -1035,13 +1030,13 @@ function customRow(record) {
   return {
     onClick: () => {
       handleEdit(record);
-    }
+    },
   };
 }
 
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
-  record[column + 'Alias'] = value.names;
+  record[column + "Alias"] = value.names;
 }
 
 /** 控件变更事件  */
@@ -1051,16 +1046,16 @@ function changeControlValue(values, record, column) {
     // 多选处理
     for (let i = 0; i < values.length; i++) {
       // 从对应的通用代码中查询对应的label
-      const target = proxy[column + 'List'].find(item => values[i] === item.lookupCode);
+      const target = proxy[column + "List"].find((item) => values[i] === item.lookupCode);
       labels.push(target.lookupName);
     }
   } else {
     // 单选处理
-    const target = proxy[column + 'List'].find(item => values === item.lookupCode);
+    const target = proxy[column + "List"].find((item) => values === item.lookupCode);
     labels.push(target.lookupName);
   }
   if (record) {
-    record[column + 'Name'] = labels.join(',');
+    record[column + "Name"] = labels.join(",");
   }
 }
 
@@ -1074,10 +1069,10 @@ function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
     flag = proxy.$validateRecordData(
-        records[index],
-        validateRules,
-        list.value,
-        tpmTempMaintModifyPlan
+      records[index],
+      validateRules,
+      list.value,
+      tpmTempMaintModifyPlan
     );
     if (!flag) {
       break;
@@ -1098,9 +1093,8 @@ function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
     queryParam.sidx = sorter.field;
-    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
+    queryParam.sord = sorter.order === "ascend" ? "asc" : "desc"; // 排序方式: desc降序 asc升序
   }
   getList();
 }
 </script>
-

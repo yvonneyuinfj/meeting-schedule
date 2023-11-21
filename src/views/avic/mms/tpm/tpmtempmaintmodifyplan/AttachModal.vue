@@ -6,19 +6,6 @@
       :footer="null"
       width="40%"
   >
-    <!--    <AvicUploader-->
-    <!--      element-id="1"-->
-    <!--      form-type="edit"-->
-    <!--      ref="uploadFile"-->
-    <!--      :allow-download="true"-->
-    <!--      :allow-preview="true"-->
-    <!--      :allow-delete="true"-->
-    <!--      :allow-update-secret-level="true"-->
-    <!--      :form-id="form.id"-->
-    <!--      :form-secret-level="form.secretLevel"-->
-    <!--      table-name="TPM_YEAR_MAINT_MODIFY_PLAN"-->
-    <!--      @afterUpload="afterUploadEvent"-->
-    <!--    />-->
     <AvicUploader
         element-id="1"
         form-type="detail"
