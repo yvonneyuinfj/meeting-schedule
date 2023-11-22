@@ -2,35 +2,20 @@
   <AvicModal
     :visible="true"
     title="添加"
-    width="1280px"
+    width="960px"
     height="520px"
     :centered="true"
     @cancel="closeModal"
   >
     <a-spin :spinning="loading">
-      <a-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        v-bind="layout"
-        layout="horizontal"
-      >
-        <a-row  :gutter="16">
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="attribute01" label="ATTRIBUTE_01" has-feedback>
-              <a-input
-                v-model:value="form.attribute01"
-                :maxLength="255"
-                :auto-focus="true"
-                placeholder="请输入ATTRIBUTE_01"
-              />
-            </a-form-item>
-          </a-col>
+      <a-form :model="form" ref="formRef" layout="horizontal" :rules="rules" v-bind="layout">
+        <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetsCode" label="资产编号" has-feedback>
               <a-input
                 v-model:value="form.assetsCode"
                 :maxLength="128"
+                :auto-focus="true"
                 placeholder="请输入资产编号"
               />
             </a-form-item>
@@ -172,19 +157,19 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="form.managerDeptId"
-                :maxLength="64"
-                placeholder="请输入主管部门"
+                type="userSelect"
+                placeholder="请选择主管部门"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="responseUserId" label="责任人">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="form.responseUserId"
-                :maxLength="64"
-                placeholder="请输入责任人"
+                type="userSelect"
+                placeholder="请选择责任人"
               />
             </a-form-item>
           </a-col>
@@ -345,19 +330,30 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="ynMilitaryKeyEquip" label="是否军工关键设备">
-              <a-input
+              <a-select
                 v-model:value="form.ynMilitaryKeyEquip"
-                :maxLength="2"
-                placeholder="请输入是否军工关键设备"
-              />
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否军工关键设备"
+              >
+                <a-select-option
+                  v-for="item in ynMilitaryKeyEquipList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="receiveDeptId" label="接收部门">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="form.receiveDeptId"
-                :maxLength="64"
-                placeholder="请输入接收部门"
+                type="deptSelect"
+                placeholder="请选择接收部门"
               />
             </a-form-item>
           </a-col>
@@ -390,10 +386,10 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersonId" label="经办人">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="form.handlePersonId"
-                :maxLength="64"
-                placeholder="请输入经办人"
+                type="userSelect"
+                placeholder="请选择经办人"
               />
             </a-form-item>
           </a-col>
@@ -463,11 +459,22 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="importedOrNot" label="是否为进口设备" has-feedback>
-              <a-input
+              <a-select
                 v-model:value="form.importedOrNot"
-                :maxLength="10"
-                placeholder="请输入是否为进口设备"
-              />
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否为进口设备"
+              >
+                <a-select-option
+                  v-for="item in importedOrNotList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -488,66 +495,24 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="parentId" label="父级分类">
-              <AvicTreeSelect
-                v-model:value="form.parentId"
-                ref="treeSelectRef"
-                :baseUrl="baseUrl"
-                :parentId="parentId"
-                :parentTitle="parentTitle">
-              </AvicTreeSelect>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="treeSort" label="树节点排序号（本级）" has-feedback>
-              <a-input
-                v-model:value="form.treeSort"
-                :maxLength="22"
-                placeholder="请输入树节点排序号（本级）"
-              />
-            </a-form-item>
-          </a-col>
         </a-row>
       </a-form>
+      <FamInventoryChangeListBatchEdit ref="famInventoryChangeListBatchEdit"></FamInventoryChangeListBatchEdit>
     </a-spin>
     <template #footer>
-      <a-button
-        title="保存"
-        type="primary"
-        :loading="loading"
-        @click="saveForm"
-      >
-        保存
-      </a-button>
-      <a-button
-        type="primary"
-        ghost
-        title="返回"
-        @click="closeModal">
-        返回
-      </a-button>
+      <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+      <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { useFamInventoryForm, emits } from './ts/FamInventoryForm'; //引入表单ts
+import { useFamInventoryChangeBatchForm, emits } from './ts/FamInventoryChangeBatchForm'; // 引入表单ts
+import FamInventoryChangeListBatchEdit from '@/views/avic/mms/fam/faminventorychangelistbatch/FamInventoryChangeListBatchEdit.vue'; // 引入子表组件
+
 const props = defineProps({
   formId: {
     type: String,
     default: ''
-  },
-  parentId: {
-    type: String,
-    required: true
-  },
-  parentTitle: {
-    type: String,
-    required: true
-  },
-  defaultTreeLevel: {
-    type: Number,
-    default: 1
   }
 });
 const emit = defineEmits(emits);
@@ -558,11 +523,15 @@ const {
   layout,
   colLayout,
   loading,
-  baseUrl,
+  secretLevelList,
+  ynMilitaryKeyEquipList,
+  importedOrNotList,
   saveForm,
-  closeModal
-} = useFamInventoryForm({
+  closeModal,
+  famInventoryChangeListBatchEdit
+} = useFamInventoryChangeBatchForm({
   props: props,
   emit: emit
 });
 </script>
+

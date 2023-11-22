@@ -1,14 +1,13 @@
-import type { FamInventoryDto } from '@/api/avic/mms/fam/FamInventoryTherrApi'; // 引入模块DTO
-import { getFamInventory, saveFamInventory, basePath } from '@/api/avic/mms/fam/FamInventoryTherrApi'; // 引入模块API
+import type { FamInventoryChangeBatchDto } from '@/api/avic/mms/fam/FamInventoryChangeBatchApi'; // 引入模块DTO
+import { getFamInventoryChangeBatch, saveFamInventoryChangeBatch } from '@/api/avic/mms/fam/FamInventoryChangeBatchApi'; // 引入模块API
+
 export const emits = ['reloadData', 'close'];
-export function useFamInventoryForm({ props: props, emit: emit }) {
+export function useFamInventoryChangeBatchForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<FamInventoryDto>({});
-  const formRef = ref(null);  // 表单ref
+  const form = ref<FamInventoryChangeBatchDto>({});
+  const famInventoryChangeListBatchEdit = ref();
+  const formRef = ref(null);
   const rules: Record<string, Rule[]> = {
-    attribute01: [
-      { required: true, message: 'ATTRIBUTE_01不能为空', trigger: 'change' }
-    ],
     assetsCode: [
       { required: true, message: '资产编号不能为空', trigger: 'change' }
     ],
@@ -74,38 +73,47 @@ export function useFamInventoryForm({ props: props, emit: emit }) {
     ],
     warrantyPeriod: [
       { required: true, message: '质保期不能为空', trigger: 'change' }
-    ],
-    parentId: [
-      { required: true, message: '父节点 ID不能为空', trigger: 'change' }
-    ],
-    treeSort: [
-      { required: true, message: '树节点排序号（本级）不能为空', trigger: 'change' }
     ]
   };
   const layout = {
-    labelCol: { flex: '0 0 120px' },
+    labelCol: { flex: '0 0 140px' },
     wrapperCol: { flex: '1 1 0' }
   };
-  const colLayout = proxy.$colLayout4; // 调用布局公共方法
-  const baseUrl = basePath; // 树选择组件的baseUrl
+  const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
+  const secretLevelList = ref([]); // 数据密级通用代码
+  const ynMilitaryKeyEquipList = ref([]); // 是否军工关键设备通用代码
+  const importedOrNotList = ref([]); // 是否为进口设备通用代码
+  const lookupParams = [
+    { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
+    { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+    ];
   onMounted(() => {
+    // 加载查询区所需通用代码
+    getLookupList();
     if (props.formId) {
       // 编辑、详情页面加载数据
       getFormData(props.formId);
     }
   });
+
+  /** 获取通用代码  */
+  function getLookupList () {
+    proxy.$getLookupByType(lookupParams, result => {
+    ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
+    importedOrNotList.value = result.importedOrNot;
+    });
+  }
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
    */
-  function getFormData(id) {
+  function getFormData (id) {
     loading.value = true;
-    getFamInventory(id)
-      .then(async (res) => {
+    getFamInventoryChangeBatch(id)
+      .then(async res => {
         if (res.success) {
           form.value = res.data;
-          // 处理数据
  loading.value = false;
         }
       })
@@ -114,24 +122,37 @@ export function useFamInventoryForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
-  function saveForm() {
+  function saveForm () {
     formRef.value
       .validate()
       .then(() => {
-        loading.value = true;
-        // 处理数据
-        const postData = proxy.$lodash.cloneDeep(form.value);
-        // 发送请求
-        saveFamInventory(postData)
-          .then((res) => {
-            if (res.success) {
-              successCallback();
-            } else {
-              loading.value = false;
+        famInventoryChangeListBatchEdit.value
+          .validate(async validate => {
+            if (!validate) {
+              return;
             }
+            loading.value = true;
+            const subInfoList = famInventoryChangeListBatchEdit.value.getChangedData(); // 获取子表数据
+            // 处理数据
+            const postData = proxy.$lodash.cloneDeep(form.value);
+            postData.famInventoryChangeListBatchList = subInfoList; // 挂载子表数据
+            // 发送请求
+            saveFamInventoryChangeBatch(postData)
+              .then(res => {
+                if (res.success) {
+                  successCallback();
+                } else {
+                  loading.value = false;
+                }
+              })
+              .catch(() => {
+                loading.value = false;
+              });
           })
-          .catch(() => {
+          .catch(error => {
+            console.log('error', error);
             loading.value = false;
           });
       })
@@ -141,13 +162,13 @@ export function useFamInventoryForm({ props: props, emit: emit }) {
       });
   }
   /** 数据保存成功的回调 */
-  function successCallback() {  
+  function successCallback () {
     proxy.$message.success('保存成功！');
-    emit('reloadData', props.parentId);
+    emit('reloadData');
     emit('close');
   }
   /** 返回关闭事件 */
-  function closeModal() {
+  function closeModal () {
     emit('close');
   }
   return {
@@ -157,8 +178,13 @@ export function useFamInventoryForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
-    baseUrl,
+    secretLevelList,
+    ynMilitaryKeyEquipList,
+    importedOrNotList,
     saveForm,
-    closeModal
+    closeModal,
+    famInventoryChangeListBatchEdit
   };
 }
+
+

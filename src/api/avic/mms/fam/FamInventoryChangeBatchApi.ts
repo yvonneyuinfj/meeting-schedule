@@ -1,9 +1,10 @@
 import request from '@/utils/request';
-import type { BaseTreeModel, TreeNodeModel, ResponseBaseData } from '@/api/model/baseModel';
-
-export const basePath = '/mms/fam/faminventoryTherr';
-/** FAM_INVENTORY */
-export interface FamInventoryDto extends BaseTreeModel {
+import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
+import type { downloadParam } from '@/utils/download-util';
+import { downloadSysFile } from '@/utils/download-util';
+const basePath = '/mms/fam/faminventorychangebatchs';
+/** FAM_INVENTORY_CHANGE_BATCH */
+export interface FamInventoryChangeBatchDto extends BaseBeanModel {
   /** 数据密级 */
   secretLevel?: any;
   /** 备注 */
@@ -62,10 +63,12 @@ export interface FamInventoryDto extends BaseTreeModel {
   deptName?: string;
   /** 主管部门 */
   managerDeptId?: string;
+  managerDeptIdAlias?: string;
   /** 主管部门名称 */
   managerDeptName?: string;
   /** 责任人 */
   responseUserId?: string;
+  responseUserIdAlias?: string;
   /** 责任人NAME */
   responseUserName?: string;
   /** 入账时累计折旧 */
@@ -107,9 +110,10 @@ export interface FamInventoryDto extends BaseTreeModel {
   /** 资产密级 */
   assetSecretLevel?: string;
   /** 是否军工关键设备 */
-  ynMilitaryKeyEquip?: string;
+  ynMilitaryKeyEquip?: any;
   /** 接收部门 */
   receiveDeptId?: string;
+  receiveDeptIdAlias?: string;
   /** 接收部门名称 */
   receiveDeptName?: string;
   /** 资产类别 */
@@ -120,6 +124,7 @@ export interface FamInventoryDto extends BaseTreeModel {
   projectName?: string;
   /** 经办人 */
   handlePersonId?: string;
+  handlePersonIdAlias?: string;
   /** 经办人名称 */
   handlePersonName?: string;
   /** 设备大类 */
@@ -139,50 +144,45 @@ export interface FamInventoryDto extends BaseTreeModel {
   /** 父资产编号 */
   parentAssetNo?: string;
   /** 是否为进口设备 */
-  importedOrNot?: string;
+  importedOrNot?: any;
   /** 资产分类 */
   assetType?: string;
   /** 质保期 */
   warrantyPeriod?: string;
-  /** 父节点 ID */
-  parentId?: string;
-  /** 树全路径 */
-  treePath?: string;
-  /** 树节点排序号（本级） */
-  treeSort?: string;
-  /** 树节点排序号（所有级） */
-  treeSorts?: string;
-  /** 是否叶子节点 */
-  treeLeaf?: string;
-  /** 节点层级 */
-  treeLevel?: string;
-}
-//根据parentId获取子节点
-export function getFamInventoryNode (level: number, parentId: string): Promise<ResponseBaseData<TreeNodeModel[]>> {
-  return request.get(basePath + '/get-treegrid/'+level+'/'+parentId+'/v1');
+  /** 变更表ID */
+  inventoryChangeId?: string;
+  /** 子表集合 */
+  famInventoryChangeListBatchList?: [];
 }
 
-//树列表查询
-export function searchFamInventory (params: any): Promise<ResponseBaseData<TreeNodeModel>> {
-  return request.post(basePath + '/search-treegrid/v1', params);
+/** 获取分页数据 */
+export function listFamInventoryChangeBatchByPage (
+  param: QueryParamModel
+): Promise<ResponsePageData<FamInventoryChangeBatchDto>> {
+  return request.post(basePath + '/search-by-page/v1', param);
 }
 
-//展开树
-export function expandFamInventory(treeId: string): Promise<ResponseBaseData<TreeNodeModel[]>> {
-  return request.get(basePath + '/expandTree/'+treeId+'/v1');
+/** 根据id加载数据 */
+export function getFamInventoryChangeBatch (id: string): Promise<ResponseBaseData<FamInventoryChangeBatchDto>> {
+  return request.get(basePath + '/get/' + id + '/v1');
 }
 
-//保存表单数据
-export function saveFamInventory(form: FamInventoryDto): Promise<ResponseBaseData<any>> {
+/** 保存表单数据 */
+export function saveFamInventoryChangeBatch (form: FamInventoryChangeBatchDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
-//根据id集合删除数据
-export function delFamInventory (ids: string): Promise<ResponseBaseData<any>>  {
-  return request.delete(basePath + '/delete-by-id/' + ids + '/v1', {});
+/** 根据id集合删除数据 */
+export function delFamInventoryChangeBatch (ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
-//获取表单数据
-export function getFamInventory (id: string): Promise<ResponseBaseData<FamInventoryDto>> {
-  return request.get(basePath + '/get/' + id + '/v1');
+/** 导出Excel */
+export function exportExcel (param: any) {
+  const download = {
+    url: basePath + '/exportData/v1',
+    data: param,
+    method: 'post'
+  } as downloadParam;
+  return downloadSysFile(download);
 }
