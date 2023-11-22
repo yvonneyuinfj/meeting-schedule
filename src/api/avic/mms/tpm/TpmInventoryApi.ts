@@ -262,6 +262,12 @@ export function listTpmInventoryByPage(
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
+export function standardListTpmInventorySelectByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmInventoryDto>> {
+  return request.post(basePath + '/searchStandard-by-page/v1', param);
+}
+
 /** 根据id加载数据 */
 export function getTpmInventory(id: string): Promise<ResponseBaseData<TpmInventoryDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
