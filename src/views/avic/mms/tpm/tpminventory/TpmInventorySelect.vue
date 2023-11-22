@@ -148,7 +148,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '设备规格 ^',
+    title: '设备规格',
     dataIndex: 'specs',
     ellipsis: true,
     sorter: true,
@@ -164,26 +164,39 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
-    title: '使用部门ID',
-    dataIndex: 'useDeptId',
+  }, {
+    title: '设备大类',
+    dataIndex: 'className',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
-    title: '使用部门NAME',
+  }, {
+    title: '出厂日期',
+    dataIndex: 'leaveFactoryDate',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '使用部门',
     dataIndex: 'useDeptName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
+  }, {
+    title: '地理区域',
+    dataIndex: 'areaName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
     title: '具体位置',
     dataIndex: 'storageLocation',
     ellipsis: true,
