@@ -111,7 +111,7 @@
 </template>
 <script lang="ts" setup>
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
-import { listTpmInventoryByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
+import { listTpmInventoryByPage, standardListTpmInventorySelectByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const tpmInventorySelect = ref();
 const { proxy } = getCurrentInstance();
@@ -248,7 +248,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
-  listTpmInventoryByPage(queryParam)
+  standardListTpmInventorySelectByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
