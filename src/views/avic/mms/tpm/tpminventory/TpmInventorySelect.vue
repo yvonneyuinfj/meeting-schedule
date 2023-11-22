@@ -111,7 +111,7 @@
 </template>
 <script lang="ts" setup>
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
-import { listTpmInventoryByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
+import { listTpmInventoryByPage, standardListTpmInventorySelectByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const tpmInventorySelect = ref();
 const { proxy } = getCurrentInstance();
@@ -148,7 +148,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '设备规格 ^',
+    title: '设备规格',
     dataIndex: 'specs',
     ellipsis: true,
     sorter: true,
@@ -164,26 +164,39 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
-    title: '使用部门ID',
-    dataIndex: 'useDeptId',
+  }, {
+    title: '设备大类',
+    dataIndex: 'className',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
-    title: '使用部门NAME',
+  }, {
+    title: '出厂日期',
+    dataIndex: 'leaveFactoryDate',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '使用部门',
     dataIndex: 'useDeptName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
+  }, {
+    title: '地理区域',
+    dataIndex: 'areaName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
     title: '具体位置',
     dataIndex: 'storageLocation',
     ellipsis: true,
@@ -235,7 +248,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
-  listTpmInventoryByPage(queryParam)
+  standardListTpmInventorySelectByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;

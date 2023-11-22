@@ -157,15 +157,12 @@
         :visible="open"
         title="批量新增"
         @ok="handleOk"
-        @cancel="handleOk"
+        @cancel="handleCancel"
         width="80%"
         style="top: 20px"
       >
         <div style="height: 400px;overflow: auto">
-          <tpm-inventory-select
-            :isAdd="'true'"
-            ref="TpmInventorySelect"
-          ></tpm-inventory-select>
+          <Tpm-inventory-select></Tpm-inventory-select>
         </div>
       </a-modal>
       <!-- 编辑页面弹窗 -->
@@ -227,6 +224,70 @@ const columns = [
   {
     title: '设备编号',
     dataIndex: 'equipmentCode',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '设备名称',
+    dataIndex: 'equipmentName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '设备规格',
+    dataIndex: 'specs',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '设备型号',
+    dataIndex: 'model',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '设备大类',
+    dataIndex: 'className',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '出厂日期',
+    dataIndex: 'leaveFactoryDate',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '使用单位',
+    dataIndex: 'useDeptName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '地理区域',
+    dataIndex: 'areaName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '具体位置',
+    dataIndex: 'storageLocation',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -345,19 +406,31 @@ function handleOpenAdd() {
   open.value = true;
 }
 
+const handleCancel = () => {
+  console.log('关闭')
+  open.value = false;
+}
+
+
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  const selectRow = tpmInventorySelect.value.selectedRow();
+  const selectRow = tpmInventorySelect.value.selectedRows;
+  console.log(selectRow);
   selectRow.map(item => {
-    item['assetNo'] = item.assetsName;
-    item['assetName'] = item.assetsName;
-    item['assetCode'] = item.assetsCode;
-    item['purchaseTime'] = item.purchaseDate;
-    item['factorySerialNumber'] = item.productionNo;
-    item['inventoryId'] = item.inventoryId;
+    item['tpmInventoryId'] = item.tpmInventoryId;
+    item['equipmentCode'] = item.equipmentCode;
+    item['equipmentName'] = item.equipmentName;
+    item['specs'] = item.specs;
+    item['model'] = item.model;
+    item['className'] = item.className;
+    item['leaveFactoryDate'] = item.leaveFactoryDate;
+    item['useDeptName'] = item.useDeptName;
+    item['areaName'] = item.areaName;
+    item['storageLocation'] = item.storageLocation;
   });
   list.value = [...list.value, ...selectRow];
+  console.log(list.value);
 };
 
 /** 编辑 */

@@ -2,7 +2,9 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
+
 const basePath = '/mms/tpm/tpminventorys';
+
 /** 设备台账 */
 export interface TpmInventoryDto extends BaseBeanModel {
   /** 物料表ID */
@@ -254,29 +256,35 @@ export interface TpmInventoryDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listTpmInventoryByPage (
+export function listTpmInventoryByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<TpmInventoryDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
+export function standardListTpmInventorySelectByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmInventoryDto>> {
+  return request.post(basePath + '/searchStandard-by-page/v1', param);
+}
+
 /** 根据id加载数据 */
-export function getTpmInventory (id: string): Promise<ResponseBaseData<TpmInventoryDto>> {
+export function getTpmInventory(id: string): Promise<ResponseBaseData<TpmInventoryDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveTpmInventory (form: TpmInventoryDto): Promise<ResponseBaseData<any>> {
+export function saveTpmInventory(form: TpmInventoryDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delTpmInventory (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delTpmInventory(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,
