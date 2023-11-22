@@ -162,9 +162,7 @@
         style="top: 20px"
       >
         <div style="height: 400px;overflow: auto">
-          <tpm-inventory-select
-            ref="TpmInventorySelect"
-          ></tpm-inventory-select>
+          <Tpm-inventory-select></Tpm-inventory-select>
         </div>
       </a-modal>
       <!-- 编辑页面弹窗 -->
@@ -417,7 +415,8 @@ const handleCancel = () => {
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  const selectRow = tpmInventorySelect.value.selectedRow();
+  const selectRow = tpmInventorySelect.value.selectedRows;
+  console.log(selectRow);
   selectRow.map(item => {
     item['tpmInventoryId'] = item.tpmInventoryId;
     item['equipmentCode'] = item.equipmentCode;
