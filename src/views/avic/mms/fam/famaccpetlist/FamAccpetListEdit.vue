@@ -1,7 +1,9 @@
 <template>
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px;padding-top: 10px">
+    <!-- :key="new Date().getTime()" -->
     <AvicTable
+      v-if="showTable"
       ref="famAccpetList"
       table-key="famAccpetList"
       :height="300"
@@ -75,8 +77,9 @@
         <AvicRowEdit
           v-if="['assetSource','assetsUse','fundSource','equipType'
            ,'firstDepreciationValue','installLocation','ownershipCertNo',
-           'assetModel','factoryNo','procureOrder','assetSpec','liablePerson','equipClass',
-           'assetUnit','warrantyPeriod','assetNum','assetName','producer','equipNo','invoiceNo',
+           'assetModel','factoryNo','procureOrder','assetSpec','equipClass',
+           'assetUnit','warrantyPeriod','assetName','producer','equipNo',
+           'invoiceNo','geographicalArea','assetSecretLevel','monthProposed','deviceStandby1','deviceStandby2','deviceStandby3',
            'brand','parentAssetNo'].includes(
                column.dataIndex
               ) && (props.accpetType === '1' || (props.accpetType === '2' && props.assetClass === '2' ) )"
@@ -138,6 +141,7 @@
             </div>
           </template>
         </AvicRowEdit>
+
         <AvicRowEdit
           v-else-if="column.dataIndex === 'productionDate' "
           :record="record"
@@ -218,6 +222,28 @@
             /> -->
           </template>
         </AvicRowEdit>
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'liablePerson '"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <AvicCommonSelect
+              v-model:value="record.liablePerson"
+              type="userSelect"
+              placeholder="请选择责任人名称"
+              :defaultShowValue="record.liablePersonIdAlias"
+              @callback="(value, _selectRows) => {
+                changeCommonSelect(value, record, 'liablePerson')
+              }
+                "
+            />
+          </template>
+          <template #default>
+            {{ record.liablePersonIdAlias }}
+          </template>
+        </AvicRowEdit>
+
         <AvicRowEdit
           v-else-if="column.dataIndex === 'isNewAsset'"
           :record="record"
@@ -347,10 +373,19 @@ const props = defineProps({
   readOnly: {
     type: Boolean,
     default: false
+  },
+  isLand: {
+    type: Boolean,
+    default: false
+  },
+  assetClasstObj: {
+    type: Object,
+    defalut: {}
   }
 });
+let columns = ref([]);
 
-const columns = [
+const columns1 = [
   {
     title: '是否新增资产',
     dataIndex: 'isNewAsset',
@@ -435,11 +470,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -477,11 +507,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -499,7 +524,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '安装地点',
+    title: '存放地点',
     dataIndex: 'installLocation',
     key: 'installLocation',
     ellipsis: true,
@@ -527,7 +552,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '生产商',
+    title: '厂商',
     dataIndex: 'producer',
     key: 'producer',
     ellipsis: true,
@@ -569,17 +594,12 @@ const columns = [
     align: 'left'
   },
   {
-    title: '采购合同',
+    title: '采购合同号',
     dataIndex: 'procureOrder',
     key: 'procureOrder',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -631,11 +651,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -667,9 +682,9 @@ const columns = [
     align: 'center'
   },
   {
-    title: '资产来源',
-    dataIndex: 'assetSource',
-    key: 'assetSource',
+    title: '地理区域',
+    dataIndex: 'geographicalArea',
+    key: 'geographicalArea',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -730,6 +745,29 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    align: 'center'
+  },
+  {
+    title: '已提月份',
+    dataIndex: 'monthProposed',
+    key: 'monthProposed',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '资产密级',
+    dataIndex: 'assetSecretLevel',
+    key: 'assetSecretLevel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
     customHeaderCell() {
       return {
         ['class']: 'required-table-title'
@@ -749,6 +787,36 @@ const columns = [
         ['class']: 'required-table-title'
       };
     },
+    align: 'center'
+  }
+] as any[];
+
+const columns2 = [
+  {
+    title: '设备备用字段1',
+    dataIndex: 'deviceStandby1',
+    key: 'deviceStandby1',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '设备备用字段2',
+    dataIndex: 'deviceStandby2',
+    key: 'deviceStandby2',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '设备备用字段3',
+    dataIndex: 'deviceStandby3',
+    key: 'deviceStandby3',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
     align: 'center'
   }
 ] as any[];
@@ -793,37 +861,34 @@ const lookupParams = [
 const validateRules = {
   isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
   assetClass: [{ required: true, message: '资产类别列不能为空' }],
-  // assetNo: [
-  //   { required: true, message: '资产编号列不能为空' }
-  // ],
+  assetsUse: [{ required: true, message: '资产用途列不能为空' }],
   equipNo: [{ required: true, message: '设备编号列不能为空' }],
-  equipClass: [{ required: true, message: '设备大类列不能为空' }],
-  assetName: [{ required: true, message: '资产名称列不能为空' }],
-  assetSpec: [{ required: true, message: '资产规格列不能为空' }],
-  assetModel: [{ required: true, message: '资产型号列不能为空' }],
+  equipClass: [{ required: props.isLand, message: '设备大类列不能为空' }],
+  assetName: [{ required: true, message: '资产名称不能为空' }],
+  assetModel: [{ required: true, message: '资产型号不能为空' }],
   assetUnit: [{ required: true, message: '资产单价列不能为空' }],
-  assetNum: [{ required: true, message: '资产数量列不能为空' }],
-  assetOriginalValue: [{ required: true, message: '资产原值列不能为空' }],
-  installLocation: [{ required: true, message: '安装地点列不能为空' }],
-  liablePerson: [{ required: true, message: '责任人列不能为空' }],
-  producer: [{ required: true, message: '生产商列不能为空' }],
+  assetOriginalValue: [{ required: true, message: '资产原值不能为空' }],
+  installLocation: [{ required: true, message: '存放地点列不能为空' }],
+  liablePerson: [{ required: true, message: '责任人不能为空' }],
+  producer: [{ required: true, message: '厂商不能为空' }],
   factoryNo: [{ required: true, message: '出厂号列不能为空' }],
   brand: [{ required: true, message: '品牌列不能为空' }],
-  procureOrder: [{ required: true, message: '采购合同列不能为空' }],
-  invoiceNo: [{ required: true, message: '发票号列不能为空' }],
-  ownershipCertNo: [{ required: true, message: '权属证号列不能为空' }],
+  ownershipCertNo: [{ required: true, message: '权属证号不能为空' }],
   productionDate: [{ required: true, message: '出厂日期列不能为空' }],
-  parentAssetNo: [{ required: true, message: '父资产编号列不能为空' }],
-  warrantyPeriod: [{ required: true, message: '质保期列不能为空' }],
-  importedOrNot: [{ required: true, message: '是否为进口设备列不能为空' }]
+  importedOrNot: [{ required: true, message: '是否为进口设备列不能为空' }],
+  geographicalArea: [{ required: true, message: '地理区域不能为空' }],
+  ynMilitaryKeyEquip: [{ required: true, message: '是否军工关键设备不能为空' }],
+  fundSource: [{ required: true, message: '资金来源不能为空' }],
+  assetSecretLevel: [{ required: true, message: '资产密级不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
 const treeNodeId = ref();
+const showTable = ref(true);
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
-  columns.push({
+  columns.value.push({
     title: '操作',
     dataIndex: 'action',
     key: 'action',
@@ -834,6 +899,15 @@ if (!props.readOnly) {
 }
 
 onMounted(() => {
+  showTable.value = false;
+  if (props.isLand == true) {
+    columns.value = [...columns1];
+  } else {
+    columns.value = [...columns1, ...columns2];
+  }
+  setTimeout(() => {
+    showTable.value = true;
+  }, 1000);
   // 加载表格数据
   getList();
   // 加载查询区所需通用代码
@@ -886,7 +960,10 @@ async function onLoadData(treeNode) {
     });
   });
 }
-
+/** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
+function changeCommonSelect(value, record, column) {
+  record[column + 'Alias'] = value.names;
+}
 /** 提交类别 */
 function handleSummit() {
   getFamAssetClass(treeNodeId.value)
@@ -948,8 +1025,6 @@ function getChangedData() {
   //   item['operationType_'] = 'delete';
   // });
   const changedData = proxy.$getChangeRecords(list, initialList);
-  console.log(changedData);
-
   // return deletedData.value.concat(changedData);
   return changedData;
 }
@@ -997,7 +1072,7 @@ function handleAdd() {
     assetSpec: '',
     assetModel: '',
     assetUnit: '',
-    assetNum: '',
+    assetNum: '1',
     assetOriginalValue: '',
     installLocation: '',
     liablePerson: '',
@@ -1144,15 +1219,30 @@ function validate(callback) {
   }
 }
 
-// watch(
-//   () => props.assetClass,
-//   newV => {
-//     if (newV === '1')
-//       nextTick(() => {
-//         famInventoryManage.value.getAccpetList(newV);
-//       });
-//   }
-// );
+watch(
+  () => props.assetClasstObj,
+  newV => {
+    list.value.map(item => {
+      item.assetClass = newV.classCode;
+      item.assetClassName = newV.className;
+    });
+  }
+);
+
+watch(
+  () => props.isLand,
+  newV => {
+    showTable.value = false;
+    if (props.isLand) {
+      columns.value = [...columns1];
+    } else {
+      columns.value = [...columns1, ...columns2];
+    }
+    setTimeout(() => {
+      showTable.value = true;
+    }, 500);
+  }
+);
 
 defineExpose({
   validate,

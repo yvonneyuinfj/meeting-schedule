@@ -379,6 +379,13 @@
                   {{ record.accpetApplyNo }}
                 </a>
               </template>
+              <template v-else-if="column.dataIndex === 'assetClass'">
+                {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }}
+                <!-- <AvicDictTag
+                  :value="record.assetClass"
+                  :options="assetClassList"
+                /> -->
+              </template>
             </template>
           </AvicTable>
         </div>
@@ -418,6 +425,7 @@
   </AvicSplit>
 </template>
 <script lang="ts" setup>
+import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
 import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块DTO
 import { listFamAccpetByPage, delFamAccpet, exportExcel } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
 import FamAccpetAdd from './FamAccpetAdd.vue'; // 引入添加页面组件
@@ -620,9 +628,14 @@ const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
+const assetTypeList = ref([]);
 const secretLevelList = ref([]); // 数据密级通用代码
 const accpetTypeList = ref([]); // 验收类型通用代码
-const lookupParams = [{ fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' }];
+const assetClassList = ref([]);
+const lookupParams = [
+  { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
+  { fieldName: 'assetClass', lookUpType: 'FAM_ASSET_TYPE' }
+];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
@@ -663,6 +676,7 @@ function getList() {
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     accpetTypeList.value = result.accpetType;
+    assetClassList.value = result.assetClass
   });
 }
 /** 根据流程状态及发起人查询数据 */

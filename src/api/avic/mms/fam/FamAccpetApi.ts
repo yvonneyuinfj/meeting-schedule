@@ -4,6 +4,7 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/fam/famaccpets';
+const treePath = '/mms/fam/famassetclasss';
 /** FAM_ACCPET */
 export interface FamAccpetDto extends BaseBeanModel {
   /** 数据密级 */
@@ -59,6 +60,10 @@ export interface FamAccpetDto extends BaseBeanModel {
   /** 接收部门名称 */
   receiveDeptName?: string;
   receiveDeptNameAlias?: string;
+  /** 设备类型 */
+  equipmentType?: string;
+  /** 资产类别 */
+  assetClasst?: string;
   /** 资产类别 */
   assetClass?: string;
   /** 资金来源 */
@@ -81,17 +86,19 @@ export interface FamAccpetDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listFamAccpetByPage(param: QueryParamModel): Promise<ResponsePageData<FamAccpetDto>> {
+export function listFamAccpetByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<FamAccpetDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getFamAccpet (id: string): Promise<ResponseBaseData<FamAccpetDto>> {
+export function getFamAccpet(id: string): Promise<ResponseBaseData<FamAccpetDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamAccpet (form: FamAccpetDto): Promise<ResponseBaseData<any>> {
+export function saveFamAccpet(form: FamAccpetDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
@@ -113,6 +120,10 @@ export function delFamAccpet(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
+/** 根据资产类型名称返回父节点 */
+export function getTreeParent(id: string): Promise<ResponseBaseData<FamAccpetDto>> {
+  return request.get(treePath + '/getTreeTd/' + id + '/v1');
+}
 /** 导出Excel */
 export function exportExcel(param) {
   const download = {

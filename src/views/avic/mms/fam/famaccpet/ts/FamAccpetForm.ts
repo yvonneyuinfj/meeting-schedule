@@ -2,8 +2,10 @@ import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入�
 import {
   getFamAccpet,
   saveFamAccpet,
-  saveFormAndStartProcess
+  saveFormAndStartProcess,
+  getTreeParent
 } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
+
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -27,6 +29,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
+
   const rules: Record<string, Rule[]> = {
     accpetApplyNo: [{ required: true, message: '验收申请单号不能为空', trigger: 'change' }],
     accpetType: [{ required: true, message: '验收类型不能为空', trigger: 'change' }],
@@ -42,7 +45,9 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     otherMatter: [{ required: true, message: '其他事项不能为空', trigger: 'change' }],
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
-    handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }]
+    handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
+    equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
+    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }]
   };
   const famAccpetListEdit = ref();
   const layout = {
@@ -56,9 +61,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const secretLevelList = ref([]); // 数据密级通用代码
   const accpetTypeList = ref([]); // 验收类型通用代码
   const assetTypeList = ref([]); //资产属性通用代码
+  const equipmentTypeList = ref([]); //设备类型通用代码
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
-    { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' }
+    { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
+    { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' }
   ];
   const authJson = ref(null);
 
@@ -92,6 +99,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     proxy.$getLookupByType(lookupParams, result => {
       accpetTypeList.value = result.accpetType;
       assetTypeList.value = result.assetType;
+      equipmentTypeList.value = result.equipmentType;
     });
   }
 
@@ -196,8 +204,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
         loading.value = true;
         const postData = proxy.$lodash.cloneDeep(form.value);
         if (autoCode.value) {
-          console.log('添加编码');
-
           // 获取编码码段值
           postData.accpetApplyNo = autoCode.value.getSegmentValue();
         }
@@ -448,6 +454,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     secretLevelList,
     accpetTypeList,
     assetTypeList,
+    equipmentTypeList,
     uploadFile,
     afterUploadEvent,
     attachmentRequired,
