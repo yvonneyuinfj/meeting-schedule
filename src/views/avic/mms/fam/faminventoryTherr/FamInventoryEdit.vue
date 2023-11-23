@@ -2,7 +2,7 @@
   <AvicModal
     :visible="true"
     title="编辑"
-    width="960px"
+    width="1280px"
     height="520px"
     :centered="true"
     @cancel="closeModal"
@@ -17,40 +17,11 @@
       >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="secretLevel" label="数据密级" has-feedback>
-              <a-select
-                v-model:value="form.secretLevel"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择数据密级"
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="note" label="备注">
-              <a-input
-                v-model:value="form.note"
-                :maxLength="512"
-                placeholder="请输入备注"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
             <a-form-item name="attribute01" label="ATTRIBUTE_01" has-feedback>
               <a-input
                 v-model:value="form.attribute01"
                 :maxLength="255"
+                :auto-focus="true"
                 placeholder="请输入ATTRIBUTE_01"
               />
             </a-form-item>
@@ -200,38 +171,20 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptId" label="主管部门id">
+            <a-form-item name="managerDeptId" label="主管部门">
               <a-input
                 v-model:value="form.managerDeptId"
                 :maxLength="64"
-                placeholder="请输入主管部门id"
+                placeholder="请输入主管部门"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptName" label="主管部门名称">
-              <a-input
-                v-model:value="form.managerDeptName"
-                :maxLength="32"
-                placeholder="请输入主管部门名称"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="responseUserId" label="责任人ID">
+            <a-form-item name="responseUserId" label="责任人">
               <a-input
                 v-model:value="form.responseUserId"
                 :maxLength="64"
-                placeholder="请输入责任人ID"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="responseUserName" label="责任人NAME">
-              <a-input
-                v-model:value="form.responseUserName"
-                :maxLength="64"
-                placeholder="请输入责任人NAME"
+                placeholder="请输入责任人"
               />
             </a-form-item>
           </a-col>
@@ -400,20 +353,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="receiveDeptId" label="接收部门ID">
+            <a-form-item name="receiveDeptId" label="接收部门">
               <a-input
                 v-model:value="form.receiveDeptId"
                 :maxLength="64"
-                placeholder="请输入接收部门ID"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="receiveDeptName" label="接收部门名称">
-              <a-input
-                v-model:value="form.receiveDeptName"
-                :maxLength="32"
-                placeholder="请输入接收部门名称"
+                placeholder="请输入接收部门"
               />
             </a-form-item>
           </a-col>
@@ -445,20 +389,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonId" label="经办人ID">
+            <a-form-item name="handlePersonId" label="经办人">
               <a-input
                 v-model:value="form.handlePersonId"
                 :maxLength="64"
-                placeholder="请输入经办人ID"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonName" label="经办人名称" has-feedback>
-              <a-input
-                v-model:value="form.handlePersonName"
-                :maxLength="32"
-                placeholder="请输入经办人名称"
+                placeholder="请输入经办人"
               />
             </a-form-item>
           </a-col>
@@ -518,14 +453,12 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="parentAssetNo" label="父级分类">
-              <AvicTreeSelect
+            <a-form-item name="parentAssetNo" label="父资产编号" has-feedback>
+              <a-input
                 v-model:value="form.parentAssetNo"
-                ref="treeSelectRef"
-                :baseUrl="baseUrl"
-                :parentId="parentId"
-                :parentTitle="parentTitle">
-              </AvicTreeSelect>
+                :maxLength="32"
+                placeholder="请输入父资产编号"
+              />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -552,6 +485,26 @@
                 v-model:value="form.warrantyPeriod"
                 :maxLength="64"
                 placeholder="请输入质保期"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="parentId" label="父级分类">
+              <AvicTreeSelect
+                v-model:value="form.parentId"
+                ref="treeSelectRef"
+                :baseUrl="baseUrl"
+                :parentId="parentId"
+                :parentTitle="parentTitle">
+              </AvicTreeSelect>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="treeSort" label="树节点排序号（本级）" has-feedback>
+              <a-input
+                v-model:value="form.treeSort"
+                :maxLength="22"
+                placeholder="请输入树节点排序号（本级）"
               />
             </a-form-item>
           </a-col>
@@ -606,7 +559,6 @@ const {
   layout,
   colLayout,
   loading,
-  secretLevelList,
   baseUrl,
   saveForm,
   closeModal

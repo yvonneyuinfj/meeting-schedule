@@ -166,21 +166,31 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="主管部门">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="queryForm.managerDeptId"
-                placeholder="请输入主管部门"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                type="userSelect"
+                placeholder="请选择主管部门"
+                :defaultShowValue="queryForm.managerDeptIdAlias"
+                @callback="
+                  result => {
+                    queryForm.managerDeptIdAlias = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="责任人">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="queryForm.responseUserId"
-                placeholder="请输入责任人"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                type="userSelect"
+                placeholder="请选择责任人"
+                :defaultShowValue="queryForm.responseUserIdAlias"
+                @callback="
+                  result => {
+                    queryForm.responseUserIdAlias = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
@@ -380,21 +390,36 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="是否军工关键设备">
-              <a-input
+              <a-select
                 v-model:value="queryForm.ynMilitaryKeyEquip"
-                placeholder="请输入是否军工关键设备"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
                 :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
+                placeholder="请选择是否军工关键设备"
+              >
+                <a-select-option
+                  v-for="item in ynMilitaryKeyEquipList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="接收部门">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="queryForm.receiveDeptId"
-                placeholder="请输入接收部门"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                type="deptSelect"
+                placeholder="请选择接收部门"
+                :defaultShowValue="queryForm.receiveDeptIdAlias"
+                @callback="
+                  result => {
+                    queryForm.receiveDeptIdAlias = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
@@ -430,11 +455,16 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="经办人">
-              <a-input
+              <AvicCommonSelect
                 v-model:value="queryForm.handlePersonId"
-                placeholder="请输入经办人"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                type="userSelect"
+                placeholder="请选择经办人"
+                :defaultShowValue="queryForm.handlePersonIdAlias"
+                @callback="
+                  result => {
+                    queryForm.handlePersonIdAlias = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
@@ -511,13 +541,33 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="是否为进口设备">
+            <a-form-item label="父资产编号">
               <a-input
-                v-model:value="queryForm.importedOrNot"
-                placeholder="请输入是否为进口设备"
+                v-model:value="queryForm.parentAssetNo"
+                placeholder="请输入父资产编号"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="是否为进口设备">
+              <a-select
+                v-model:value="queryForm.importedOrNot"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否为进口设备"
+              >
+                <a-select-option
+                  v-for="item in importedOrNotList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
@@ -565,134 +615,51 @@
         </a-row>
       </a-form>
     </div>
-    <!-- 树形表格 -->
+    <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="famInventory"
-        class="treegrid"
-        table-key="famInventory"
+        ref="famInventoryChangeBatchSelect"
+        table-key="famInventoryChangeBatchSelect"
         :columns="columns"
         :row-key="record => record.id"
         :data-source="list"
         :loading="loading"
-        :pagination="false"
-        :expand-row-by-click="true"
-        lineField="attribute01"
-        :indent-size="25"
-        v-model:expanded-row-keys="expandedRowKeys"
-        @handleRowSelection="handleRowSelection"
-        @expand="handleExpand"
+        :show-table-setting="false"
+        :row-selection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+          columnWidth: 40,
+          fixed: true
+        }"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
+        @refresh="getList"
       >
-        <template #toolBarLeft>
-          <a-space>
-            <a-button
-              type="primary"
-              title="添加"
-              @click="handleAdd(rootTree)"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-          </a-space>
-        </template>
         <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"
             style="width: 200px"
-            v-model:value="searchKeyWord"
-            placeholder="请输入备注或ATTRIBUTE_01"
+            placeholder="请输入"
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />
         </template>
-        <template #bodyCell="{ column, text, record }">
-          <!-- 显示字段 -->
-          <template v-if="column.dataIndex === 'assetsCode'">
-            <AvicIcon
-              v-if="!record.expanded && record.treeLeaf == 'N'"
-              svg="avic-folder-3-fill"
-              color="#ffb800"
-            />
-            <AvicIcon
-              v-if="record.expanded && record.treeLeaf == 'N'"
-              svg="avic-folder-open-fill"
-              color="#ffb800"
-            />
-            <avic-icon v-if="record.treeLeaf == 'Y'" svg="avic-file-fill" color="#3370ff" />
-            <a
-              href="javascript:;"
-              class="table-detail-link"
-              :title="record.demoTitle"
-              @click.stop="handleDetail(record)"
-            >
-              {{ record.assetsCode }}
-            </a>
-          </template>
-          <template v-else-if="column.dataIndex === 'action'">
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click.stop="handleAdd(record)">
-              添加
-            </a-button>
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click.stop="handleEdit(record)">
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['famInventory:del']"
-              v-if="record.treeLeaf == 'Y'"
-              type="link"
-              class="inner-btn"
-              @click.stop="handleDelete(record)">
-              删除
-            </a-button>
+        <template #bodyCell="{ column, text, record, index }">
+          <template v-if="column.dataIndex === 'id'">
+            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
         </template>
       </AvicTable>
     </div>
-    <!-- 添加页面弹窗 -->
-    <FamInventoryAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :default-tree-level="treeLevel"
-      :parent-id="parentNodeId"
-      :parent-title="parentTitle"
-      @reloadData="reloadData"
-      @close="showAddModal = false"
-    />
-    <!-- 编辑页面弹窗 -->
-    <FamInventoryEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :parent-id="parentNodeId"
-      :parent-title="parentTitle"
-      :form-id="formId"
-      @reloadData="reloadData"
-      @close="showEditModal = false"
-    />
-    <!-- 详情页面弹窗 -->
-    <FamInventoryDetail
-      v-if="showDetailModal"
-      ref="detailModal"
-      :parent-id="parentNodeId"
-      :parent-title="parentTitle"
-      :form-id="formId"
-      @close="showDetailModal = false"
-    />
   </div>
 </template>
 <script lang="ts" setup>
-import type { FamInventoryDto } from '@/api/avic/mms/fam/FamInventoryTherrApi'; // 引入模块DTO
-import { getFamInventoryNode, searchFamInventory, delFamInventory, expandFamInventory } from '@/api/avic/mms/fam/FamInventoryTherrApi'; // 引入模块API
-import { expendNodeForTreegrid, getAllNodeForTreegrid, findNodeForTreegrid, deleteNodeForTreegrid, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
-import FamInventoryAdd from './FamInventoryAdd.vue'; // 引入添加页面组件
-import FamInventoryEdit from './FamInventoryEdit.vue'; // 引入编辑页面组件
-import FamInventoryDetail from './FamInventoryDetail.vue'; // 引入详情页面组件
+import type { FamInventoryChangeBatchDto } from '@/api/avic/mms/fam/FamInventoryChangeBatchApi'; // 引入模块DTO
+import { listFamInventoryChangeBatchByPage } from '@/api/avic/mms/fam/FamInventoryChangeBatchApi'; // 引入模块API
+const $emit = defineEmits(['select', 'handleRowDblClick']);
+const famInventoryChangeBatchSelect = ref();
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -701,9 +668,18 @@ const layout = {
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'id',
+    ellipsis: true,
+    width: 60,
+    align: 'center',
+    fixed: 'left'
+  },
+  {
     title: '资产编号',
     dataIndex: 'assetsCode',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -712,6 +688,7 @@ const columns = [
     title: '资产名称',
     dataIndex: 'assetsName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -720,6 +697,7 @@ const columns = [
     title: '资产类别名称',
     dataIndex: 'assetClassName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -728,6 +706,7 @@ const columns = [
     title: '资产来源',
     dataIndex: 'assetSource',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -736,6 +715,7 @@ const columns = [
     title: '资产状态',
     dataIndex: 'assetsStatus',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -744,6 +724,7 @@ const columns = [
     title: '资产用途',
     dataIndex: 'assetsUse',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -752,6 +733,7 @@ const columns = [
     title: '入账日期',
     dataIndex: 'entryDate',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -760,6 +742,7 @@ const columns = [
     title: '资产原值',
     dataIndex: 'assetOriginalValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -768,6 +751,7 @@ const columns = [
     title: '累计折旧',
     dataIndex: 'depreciationValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -776,6 +760,7 @@ const columns = [
     title: '折旧方法',
     dataIndex: 'depreciationWay',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -784,6 +769,7 @@ const columns = [
     title: '资产数量',
     dataIndex: 'assetNum',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -792,6 +778,7 @@ const columns = [
     title: '使用年限',
     dataIndex: 'useTime',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -800,6 +787,7 @@ const columns = [
     title: '资产净值',
     dataIndex: 'assetNetValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -808,6 +796,7 @@ const columns = [
     title: '月折旧额',
     dataIndex: 'monDepreciation',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -816,6 +805,7 @@ const columns = [
     title: '存放地点',
     dataIndex: 'storageLocation',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -824,13 +814,14 @@ const columns = [
     title: '部门名称',
     dataIndex: 'deptName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '主管部门',
-    dataIndex: 'managerDeptId',
+    dataIndex: 'managerDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -838,7 +829,7 @@ const columns = [
   },
   {
     title: '责任人',
-    dataIndex: 'responseUserId',
+    dataIndex: 'responseUserIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -848,6 +839,7 @@ const columns = [
     title: '入账时累计折旧',
     dataIndex: 'firstDepreciationValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -864,6 +856,7 @@ const columns = [
     title: '品牌型号',
     dataIndex: 'brandModel',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -880,6 +873,7 @@ const columns = [
     title: '入账前当年折旧',
     dataIndex: 'currentYearDepreciation',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -888,6 +882,7 @@ const columns = [
     title: '新增当月计提',
     dataIndex: 'newaCurrentmProvision',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -896,6 +891,7 @@ const columns = [
     title: '其他',
     dataIndex: 'other',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -904,6 +900,7 @@ const columns = [
     title: '重置凭证号',
     dataIndex: 'resetVoucherNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -912,6 +909,7 @@ const columns = [
     title: '设备编号',
     dataIndex: 'equipNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -920,6 +918,7 @@ const columns = [
     title: '出厂编号',
     dataIndex: 'productionNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -928,6 +927,7 @@ const columns = [
     title: '凭证号',
     dataIndex: 'voucherNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -936,6 +936,7 @@ const columns = [
     title: '厂商',
     dataIndex: 'factoryOwner',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -944,6 +945,7 @@ const columns = [
     title: '建设项目',
     dataIndex: 'buildProject',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -952,6 +954,7 @@ const columns = [
     title: '品牌',
     dataIndex: 'brand',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -960,6 +963,7 @@ const columns = [
     title: '权属证号',
     dataIndex: 'ownershipCertNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -968,6 +972,7 @@ const columns = [
     title: '采购合同号',
     dataIndex: 'procureOrderNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -976,21 +981,22 @@ const columns = [
     title: '资产密级',
     dataIndex: 'assetSecretLevel',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '是否军工关键设备',
-    dataIndex: 'ynMilitaryKeyEquip',
+    dataIndex: 'ynMilitaryKeyEquipName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '接收部门',
-    dataIndex: 'receiveDeptId',
+    dataIndex: 'receiveDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1000,6 +1006,7 @@ const columns = [
     title: '资产类别',
     dataIndex: 'assetClass',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1008,6 +1015,7 @@ const columns = [
     title: '资金来源',
     dataIndex: 'fundSource',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1016,13 +1024,14 @@ const columns = [
     title: '项目名称',
     dataIndex: 'projectName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '经办人',
-    dataIndex: 'handlePersonId',
+    dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1032,6 +1041,7 @@ const columns = [
     title: '设备大类',
     dataIndex: 'equipClass',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1040,6 +1050,7 @@ const columns = [
     title: '资产规格',
     dataIndex: 'assetSpec',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1048,6 +1059,7 @@ const columns = [
     title: '资产型号',
     dataIndex: 'assetModel',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1056,6 +1068,7 @@ const columns = [
     title: '资产单价',
     dataIndex: 'assetUnit',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1064,6 +1077,7 @@ const columns = [
     title: '发票号',
     dataIndex: 'invoiceNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1080,22 +1094,24 @@ const columns = [
     title: '父资产编号',
     dataIndex: 'parentAssetNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '是否为进口设备',
-    dataIndex: 'importedOrNot',
+    dataIndex: 'importedOrNotName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '资产分类',
     dataIndex: 'assetType',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1104,6 +1120,7 @@ const columns = [
     title: '质保期',
     dataIndex: 'warrantyPeriod',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1112,11 +1129,12 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     ellipsis: true,
-    width: 150,
+    visible: false,
+    width: 120,
     fixed: 'right'
   }
 ];
-const queryForm = ref<FamInventoryDto>({}); // 高级查询对象
+const queryForm = ref<FamInventoryChangeBatchDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -1130,265 +1148,102 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const showAddModal = ref(false); // 是否展示添加弹窗
-const showEditModal = ref(false); // 是否展示编辑弹窗
-const showDetailModal = ref(false); // 是否展示详情弹窗
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
-const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
-const selectedRows = ref([]); // 选中数据行集合
+const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
-const searchKeyWord = ref(''); // keyword信息
-const isSearchByKeyWord = ref(false); // keyword查询标识
-const isAdvancedSearch = ref(false); // 高级查询标识
-const expandedRowKeys = ref([]); // 展开数据集合
-const rootTree = ref(null); // 树结构根节点
-const parentNodeId = ref(''); // 添加节点的初始父节点
-const parentTitle = ref(''); // 初始父节点名称
-const treeLevel = ref(1);
+const  totalPage = ref(0);
+const secretLevelList = ref([]); // 数据密级通用代码
+const ynMilitaryKeyEquipList = ref([]); // 是否军工关键设备通用代码
+const importedOrNotList = ref([]); // 是否为进口设备通用代码
+const lookupParams = [
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+ ];
 
 onMounted(() => {
   // 加载表格数据
-  getRootNode();
+  getList();
+  // 加载查询区所需通用代码
+  getLookupList();
 });
-
-/** 加载树表格数据  */
-function getRootNode() {
-  rootTree.value = null;
+/** 查询数据  */
+function getList() {
+  selectedRowKeys.value = []; // 清空选中
+  selectedRows.value = []; // 清空选中
   loading.value = true;
-  const expandLevel = 2;
-  list.value = [];
-  expandedRowKeys.value = [];
-  getFamInventoryNode(expandLevel, '-1')
-    .then(res => {
-      if (res.success && res.data.length === 1) {
-        rootTree.value = res.data[0];
-        list.value = res.data[0].children;
-        getExpandedKeys(list.value, expandLevel, expandedRowKeys.value);
-        loading.value = false;
-      } else {
-        proxy.$message.error('初始化根节点失败！');
-        loading.value = false;
-      }
+  listFamInventoryChangeBatchByPage(queryParam)
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
     })
     .catch(() => {
-      console.error('获取根节点失败！');
+      list.value = [];
+      totalPage.value = 0;
       loading.value = false;
     });
 }
+/** 获取通用代码  */
+function getLookupList() {
+  proxy.$getLookupByType(lookupParams, result => {
+    ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
+    importedOrNotList.value = result.importedOrNot;
+  });
+}
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
-  // 查询区内容全部为空时不进行查询操作
-  if (proxy.$checkJsonIsAllBlank(queryForm.value)) {
-    proxy.$message.warning('请输入查询条件！');
-    return;
-  }
-  loading.value = true;
-  isSearchByKeyWord.value = false;
-  isAdvancedSearch.value = true;
-  // 高级查询数据处理
   queryParam.searchParams = queryForm.value;
   queryParam.keyWord = '';
-  searchTreegrid(null);
+  queryParam.pageParameter.page = 1;
+  getList();
 }
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {};
-  getRootNode();
+  handleQuery();
 }
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
-/** 快速查询逻辑  */
-function handleKeyWordQuery() {
-  loading.value = true;
-  isSearchByKeyWord.value = true;
-  isAdvancedSearch.value = false;
-  let value = searchKeyWord.value.trim();
-  if (value.length) {
-    const keyWord = {
-      note: value,
-      attribute01: value
-    };
-    queryParam.keyWord = JSON.stringify(keyWord);
-    searchTreegrid(null);
-  } else {
-    isSearchByKeyWord.value = false;
-    getRootNode();
-  }
+/** 快速查询逻辑 */
+function handleKeyWordQuery(value) {
+  const keyWord = {
+  };
+  queryParam.keyWord = JSON.stringify(keyWord);
+  queryParam.pageParameter.page = 1;
+  getList();
 }
-/** 添加 */
-function handleAdd(parentTree) {
-  treeLevel.value = parentTree.treeLevel;
-  parentTitle.value = parentTree.attribute01;
-  parentNodeId.value = parentTree.id;
-  showAddModal.value = true;
-}
-/** 编辑 */
-function handleEdit(row) {
-  // 编辑节点
-  parentNodeId.value = row.parentId;
-  const parentNodes = findNodeForTreegrid(list.value, 'id', row.parentId);
-  const parentNode = parentNodes.length == 1 ? parentNodes[0] : null;
-  if (parentNode == null || parentNode.length == 0) {
-    parentTitle.value = '根节点';
-  } else {
-    parentTitle.value = parentNode.attribute01;
-  }
-  formId.value = row.id;
-  showEditModal.value = true;
-}
-/** 详情 */
-function handleDetail(row) {
-  parentNodeId.value = row.parentId;
-  const parentNodes = findNodeForTreegrid(list.value, 'id', row.parentId);
-  const parentNode = parentNodes.length == 1 ? parentNodes[0] : null;
 
-  if (parentNode == null || parentNode.length == 0) {
-    parentTitle.value = '根节点';
-  } else {
-    parentTitle.value = parentNode.attribute01;
+/** 勾选复选框时触发 */
+function onSelectChange(rowKeys, rows) {
+  selectedRowKeys.value = rowKeys;
+  selectedRows.value = rows;
+  // 传出选中项
+  $emit('select', selectedRows.value);
+}
+/** 表格排序 */
+function handleTableChange(pagination, _filters, sorter) {
+  queryParam.pageParameter.page = pagination.current;
+  queryParam.pageParameter.rows = pagination.pageSize;
+  if (proxy.$objIsNotBlank(sorter.field)) {
+    queryParam.sidx = sorter.field;
+    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
   }
-  formId.value = row.id;
-  showDetailModal.value = true;
+  getList();
 }
-/** 删除 */
-function handleDelete(treeNode) {
-  proxy.$confirm({
-    title: '确认要删除选择的数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      delFamInventory(treeNode.id)
-        .then(res => {
-          if (res.success) {
-            // 匹配第一层节点并删除
-            if (treeNode.treeLevel == 2) {
-              let beforeLength = list.value.length;
-              list.value = list.value.filter(item => item.id !== treeNode.id);
-              if (beforeLength != list.value.length) {
-                loading.value = false;
-                return;
-              }
-            } else {
-              // 递归删除
-              deleteNodeForTreegrid(list.value, treeNode);
-            }
-            proxy.$message.success('删除成功！'); // 提示成功
-          }
-          loading.value = false;
-        })
-        .catch(() => {
-          loading.value = false;
-        });
-    }
-  });
-}
-/** 添加、编辑、删除、配置权限后默认展开至已修改项 */
-function setExpandedRowKeys(treeId) {
-  const nodes = findNodeForTreegrid(list.value, 'id', treeId);
-  const node = nodes.length == 1 ? nodes[0] : null;
-  if (!node) {
-    expandedRowKeys.value = [];
-  } else {
-    let rowKeys = node.treePath.split('/');
-    'Y' == node.treeLeaf || !node.children ? rowKeys.pop() : rowKeys;
-    expandedRowKeys.value = rowKeys;
-  }
-}
-/** 搜索树 */
-function searchTreegrid(expandTreeId) {
-  list.value = [];
-  expandedRowKeys.value = [];
-
-  searchFamInventory(queryParam)
-    .then(res => {
-      if (res.success) {
-        list.value = res.data[0].children || [];
-        //查询后展开全部节点
-        expandedRowKeys.value = getAllNodeForTreegrid(list.value, 'id');
-        if (proxy.$objIsNotBlank(expandTreeId)) {
-          setExpandedRowKeys(expandTreeId);
-        }
-      } else {
-        list.value = [];
+/** 行双击事件 */
+function customRow (record) {
+  return {
+    on: {
+      dblclick: (event, record, index) => {
+        $emit('handleRowDblClick', [record]);
       }
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      loading.value = false;
-    });
-}
-/** 重载数据 */
-function reloadData(expandTreeId) {
-  loading.value = true;
-  if (isSearchByKeyWord.value) {
-    let value = searchKeyWord.value.trim();
-    const keyWord = {
-      note: value,
-      attribute01: value
-    };
-    queryParam.keyWord = JSON.stringify(keyWord);
-    searchTreegrid(expandTreeId);
-  } else if (isAdvancedSearch.value) {
-    // 高级查询数据处理
-    queryParam.searchParams = queryForm.value;
-    queryParam.keyWord = '';
-    searchTreegrid(expandTreeId);
-  } else {
-    expandFamInventory(expandTreeId)
-      .then(res => {
-        if (res.success && res.data && res.data.length) {
-          rootTree.value = res.data[0];
-          list.value = res.data[0].children || [];
-          setExpandedRowKeys(expandTreeId);
-        } else {
-          list.value = [];
-        }
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        loading.value = false;
-      });
-  }
-}
-/** 展开父级 */
-function handleExpand(expanded, record) {
-  record.expanded = expanded;
-  if (expanded) {
-    if (record.treeLeaf == 'N' && (!record.children || !record.children.length)) {
-      loading.value = true;
-
-      getFamInventoryNode(1, `${record.id}`)
-        .then(res => {
-          if (res.success) {
-            expendNodeForTreegrid(list.value, record.id, res.data);
-            expandedRowKeys.value.push(record.id);
-          }
-          loading.value = false;
-        })
-        .catch(() => {
-          list.value = [];
-        });
-    } else {
-      expandedRowKeys.value.push(record.id);
     }
-  } else {
-    expandedRowKeys.value = expandedRowKeys.value.filter(item => item != record.id);
-  }
-}
-/** 记录选中项 */
-function handleRowSelection(obj) {
-  if (obj.selectedRowKeys) {
-    selectedRowKeys.value = obj.selectedRowKeys;
-  }
-  if (obj.selectedRows) {
-    selectedRows.value = obj.selectedRows;
-  }
+  };
 }
 </script>
+
+

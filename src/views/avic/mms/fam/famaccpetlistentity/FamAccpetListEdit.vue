@@ -223,7 +223,7 @@
           </template>
         </AvicRowEdit>
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'liablePerson'"
+          v-else-if="column.dataIndex === 'liablePerson '"
           :record="record"
           :column="column.dataIndex"
         >

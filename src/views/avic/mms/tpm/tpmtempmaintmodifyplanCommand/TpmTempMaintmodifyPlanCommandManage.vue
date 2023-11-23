@@ -249,7 +249,6 @@
               {{ record["estAcceptanceDate"] }}
             </template>
           </AvicRowEdit>
-
           <AvicRowEdit
             v-else-if="column.dataIndex === 'businessStatus'"
             :record="record"

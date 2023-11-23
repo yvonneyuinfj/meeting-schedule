@@ -38,6 +38,29 @@
               />
             </a-form-item>
           </a-col>
+            <a-col
+            v-bind="colLayout.cols"
+            v-show="advanced"
+          >
+            <a-form-item label="资产属性">
+              <a-select
+                v-model:value="queryForm.assetType"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择资产属性"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col
             v-bind="colLayout.cols"
             v-show="advanced"
@@ -713,29 +736,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col
-            v-bind="colLayout.cols"
-            v-show="advanced"
-          >
-            <a-form-item label="资产属性">
-              <a-select
-                v-model:value="queryForm.assetType"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择资产属性"
-              >
-                <a-select-option
-                  v-for="item in assetTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+        
           <a-col
             v-bind="colLayout.cols"
             v-show="advanced"
