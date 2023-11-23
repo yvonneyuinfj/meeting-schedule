@@ -86,6 +86,10 @@ export function delTpmStandard(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
+export function saveTpmStandardByTpmInventoryIds(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-by-ids/v1', { ids: ids });
+}
+
 /** 导出Excel */
 export function exportExcel(param: any) {
   const download = {

@@ -3,19 +3,19 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmStandardMaintenance"
-        table-key="tpmStandardMaintenance"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmStandardMaintenance"
+          table-key="tpmStandardMaintenance"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :customRow="
+          :customRow="
           record => {
             return {
               onClick: () => {
@@ -24,68 +24,68 @@
             };
           }
         "
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['tpmStandardMaintenance:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmStandardMaintenance:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
             <a-button
-              v-hasPermi="['tpmStandardMaintenance:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
+                v-hasPermi="['tpmStandardMaintenance:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRowKeys, '')"
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
             <a-button
-              v-hasPermi="['tpmStandardMaintenance:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
+                v-hasPermi="['tpmStandardMaintenance:import']"
+                title="导入"
+                type="primary"
+                ghost
+                @click="handleImport">
               <template #icon>
-                 <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
-            <a-button
-              v-hasPermi="['tpmStandardMaintenance:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
+            <!--            <a-button-->
+            <!--                v-hasPermi="['tpmStandardMaintenance:export']"-->
+            <!--                title="导出"-->
+            <!--                type="primary"-->
+            <!--                ghost-->
+            <!--                @click="handleExport">-->
+            <!--              <template #icon>-->
+            <!--                <export-outlined/>-->
+            <!--              </template>-->
+            <!--              导出-->
+            <!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>
           <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入保养部位或保养项目"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
+              class="opt-btn-commonsearch"
+              style="width: 200px"
+              placeholder="请输入保养部位或保养项目"
+              :allow-clear="true"
+              @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -94,17 +94,17 @@
           </template>
           <template v-else-if="column.dataIndex  === 'action'">
             <a-button
-              type="link"
-              class="inner-btn"
-              @click.stop="handleEdit(record.id)"
+                type="link"
+                class="inner-btn"
+                @click.stop="handleEdit(record.id)"
             >
               编辑
             </a-button>
             <a-button
-              v-hasPermi="['tpmStandardMaintenance:del']"
-              type="link"
-              class="inner-btn"
-              @click.stop="handleDelete([record.id], 'row')"
+                v-hasPermi="['tpmStandardMaintenance:del']"
+                type="link"
+                class="inner-btn"
+                @click.stop="handleDelete([record.id], 'row')"
             >
               删除
             </a-button>
@@ -114,34 +114,38 @@
     </div>
     <!-- 添加页面弹窗 -->
     <tpm-standard-maintenance-add
-      v-if="showAddModal"
-      ref="addModal"
-      :mainId="mainId"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :mainId="mainId"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <tpm-standard-maintenance-edit
-      v-if="showEditModal"
-      ref="editModal"
-      :mainId="mainId"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :mainId="mainId"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
     <AvicExcelImport
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="单表模板导入"
-      importUrl="/mms/tpm/tpmstandardmaintenances/importData/v1"
-      downloadTemplateUrl="/mms/tpm/tpmstandardmaintenances/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="单表模板导入"
+        importUrl="/mms/tpm/tpmstandardmaintenances/importData/v1"
+        downloadTemplateUrl="/mms/tpm/tpmstandardmaintenances/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
     />
   </div>
 </template>
 <script lang="ts" setup>
-import { listTpmStandardMaintenanceByPage, delTpmStandardMaintenance, exportExcel } from '@/api/avic/mms/tpm/TpmStandardMaintenanceApi'; // 引入模块API
+import {
+  listTpmStandardMaintenanceByPage,
+  delTpmStandardMaintenance,
+  exportExcel
+} from '@/api/avic/mms/tpm/TpmStandardMaintenanceApi'; // 引入模块API
 import TpmStandardMaintenanceAdd from './TpmStandardMaintenanceAdd.vue'; // 引入添加页面组件
 import TpmStandardMaintenanceEdit from './TpmStandardMaintenanceEdit.vue'; // 引入编辑页面组件
 const { proxy } = getCurrentInstance();
@@ -162,16 +166,8 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '序号',
-    dataIndex: 'serialNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
-    title: '保养部位',
-    dataIndex: 'maintenancePosition',
+    title: '保养项目',
+    dataIndex: 'maintenanceItems',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -179,8 +175,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '保养项目',
-    dataIndex: 'maintenanceItems',
+    title: '保养部位',
+    dataIndex: 'maintenancePosition',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -215,40 +211,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '申请日期',
-    dataIndex: 'applyDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '申请人ID',
-    dataIndex: 'applyUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '申请人姓名',
-    dataIndex: 'applyUserName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养周期',
-    dataIndex: 'maintenanceCycle',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
-    title: '主管技术员ID',
+    title: '主管技术员',
     dataIndex: 'techUserIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -256,13 +219,20 @@ const columns = [
     align: 'left'
   },
   {
-    title: '主管计划员姓名',
-    dataIndex: 'techUserName',
+    title: '上次保养日期',
+    dataIndex: 'lastMaintenDate',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '保养周期(月)',
+    dataIndex: 'maintenanceCycle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
   },
   {
     title: '小时数',
@@ -281,15 +251,6 @@ const columns = [
     align: 'center'
   },
   {
-    title: '备注',
-    dataIndex: 'note',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
@@ -298,30 +259,20 @@ const columns = [
     align: 'center'
   },
   {
-    title: '上次保养日期',
-    dataIndex: 'lastMaintenDate',
+    title: '创建人',
+    dataIndex: 'applyUserName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   },
   {
-    title: '主管计划员编码',
-    dataIndex: 'techUserCode',
+    title: '创建日期',
+    dataIndex: 'applyDate',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  },
-  {
-    title: '申请人编码',
-    dataIndex: 'applyUserCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '操作',
@@ -364,44 +315,47 @@ const lookupParams = [
 onMounted(() => {
   //重载子表数据
   getList();
- // 加载查询区所需通用代码
- getLookupList();
- // 获取当前用户对应的文档密级
- getUserFileSecretList();
+  // 加载查询区所需通用代码
+  getLookupList();
+  // 获取当前用户对应的文档密级
+  getUserFileSecretList();
 });
 
 /** 查询数据  */
-function getList () {
+function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   queryParam.searchParams.tpmStandardId = props.mainId ? props.mainId : '-1';
   listTpmStandardMaintenanceByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     ynSelfMaintenanceList.value = result.ynSelfMaintenance;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
-function getUserFileSecretList () {
+function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 快速查询逻辑 */
-function handleKeyWordQuery (value) {
+function handleKeyWordQuery(value) {
   const keyWord = {
     maintenancePosition: value,
     maintenanceItems: value
@@ -410,21 +364,24 @@ function handleKeyWordQuery (value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
-function handleAdd () {
+function handleAdd() {
   if (props.mainId == '') {
     proxy.$message.warning('请选择一条主数据');
     return;
   }
   showAddModal.value = true;
 }
+
 /** 编辑 */
-function handleEdit (id) {
+function handleEdit(id) {
   formId.value = id;
   showEditModal.value = true;
 }
+
 /* 子表删除 */
-function handleDelete (ids, type) {
+function handleDelete(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
@@ -436,24 +393,25 @@ function handleDelete (ids, type) {
     onOk: () => {
       delLoading.value = true;
       delTpmStandardMaintenance(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
 /** 导入 */
-function handleImport () {
+function handleImport() {
   if (props.mainId == '') {
     proxy.$message.warning('请选择一条主数据');
     return;
@@ -461,8 +419,9 @@ function handleImport () {
   excelParams.value.tpmStandardId = props.mainId;
   showImportModal.value = true;
 }
+
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -476,13 +435,15 @@ function handleExport () {
     }
   });
 }
+
 /** 勾选复选框时触发 */
-function onSelectChange (rowKeys, rows) {
+function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
-function handleTableChange (pagination, filters, sorter) {
+function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
@@ -491,8 +452,9 @@ function handleTableChange (pagination, filters, sorter) {
   }
   getList();
 }
+
 /** 表格行选中 */
-function handleRowSelection (record) {
+function handleRowSelection(record) {
   let selectIds = [...selectedRowKeys.value];
   // 多选
   if (!selectIds.includes(record.id)) {
@@ -505,17 +467,17 @@ function handleRowSelection (record) {
 }
 
 watch(
-  () => props.mainId,
-  newVal => {
-    if (newVal) {
-      getList(); // 查询表格数据
-    } else {
-      selectedRowKeys.value = []; // 清空选中
-      selectedRows.value = [];
-      list.value = [];
-      totalPage.value = 0;
-    }
-  },
-  { immediate: true }
+    () => props.mainId,
+    newVal => {
+      if (newVal) {
+        getList(); // 查询表格数据
+      } else {
+        selectedRowKeys.value = []; // 清空选中
+        selectedRows.value = [];
+        list.value = [];
+        totalPage.value = 0;
+      }
+    },
+    { immediate: true }
 );
 </script>
