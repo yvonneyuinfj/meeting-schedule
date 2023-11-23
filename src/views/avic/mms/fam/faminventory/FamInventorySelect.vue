@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->

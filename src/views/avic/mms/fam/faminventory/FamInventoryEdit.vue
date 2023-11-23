@@ -259,12 +259,12 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="responseUserName"
-              label="责任人NAME"
+              label="责任人"
             >
               <AvicCommonSelect
                 v-model:value="form.responseUserName"
                 type="userSelect"
-                placeholder="请选择责任人NAME"
+                placeholder="请选择责任人"
                 :defaultShowValue="form.responseUserNameAlias"
               />
             </a-form-item>

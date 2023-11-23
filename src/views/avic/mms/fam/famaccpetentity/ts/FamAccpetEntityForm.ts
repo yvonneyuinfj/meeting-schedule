@@ -1,10 +1,10 @@
-import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块DTO
+import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块DTO
 import {
   getFamAccpet,
   saveFamAccpet,
   saveFormAndStartProcess,
   getTreeParent
-} from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
+} from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块API
 
 import {
   default as flowUtils,
@@ -23,7 +23,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<FamAccpetDto>({});
   const formRef = ref(null);
-  const formCode = 'FamAccpet';
+  const formCode = 'FamAccpetEntity';
   // const accpetType = ref();
   const openType = ref('add'); // 流程表单的打开方式，add: 流程中心打开, edit: 待办打开
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
@@ -49,7 +49,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
     assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }]
   };
-  const famAccpetListEdit = ref();
+  const famAccpetListEntityEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
@@ -134,7 +134,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(async () => {
-        famAccpetListEdit.value
+        famAccpetListEntityEdit.value
           .validate(async validate => {
             if (!validate) {
               return;
@@ -146,8 +146,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
             }
             loading.value = true;
             const postData = proxy.$lodash.cloneDeep(form.value);
-            if (famAccpetListEdit.value) {
-              const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
+            if (famAccpetListEntityEdit.value) {
+              const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famAccpetListList = subInfoList; // 挂载子表数据
             }
@@ -208,8 +208,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
           postData.accpetApplyNo = autoCode.value.getSegmentValue();
         }
 
-        if (famAccpetListEdit.value) {
-          const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
+        if (famAccpetListEntityEdit.value) {
+          const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
           // 处理数据
           postData.famAccpetListList = subInfoList; // 挂载子表数据
         }
@@ -261,7 +261,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(() => {
-        famAccpetListEdit.value
+        famAccpetListEntityEdit.value
           .validate(validate => {
             if (!validate) {
               return;
@@ -303,11 +303,12 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       if (!validateResult) {
         return;
       }
-      const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
+      const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
+      console.log(subInfoList)
       loading.value = true;
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
-      postData.famAccpetListList = subInfoList; // 挂载子表数据
+      postData.famAccpetListEntityList = subInfoList; // 挂载子表数据
       // if (autoCode.value) {
       //   // 获取编码码段值
       //   postData.accpetApplyNo = autoCode.value.getSegmentValue();
@@ -468,6 +469,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     fieldRequired,
     beforeClickBpmButtons,
     afterClickBpmButtons,
-    famAccpetListEdit
+    famAccpetListEntityEdit
   };
 }

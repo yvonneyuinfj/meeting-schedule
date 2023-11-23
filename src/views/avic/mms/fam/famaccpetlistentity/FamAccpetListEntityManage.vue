@@ -3,8 +3,8 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="famAccpetList"
-          table-key="famAccpetList"
+          ref="famAccpetEntityList"
+          table-key="famAccpetEntityList"
           :columns="columns"
           :row-key="record => record.id"
           :data-source="list"
@@ -93,7 +93,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
+import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamAccpetListEntityApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -121,7 +121,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '资产属性',
+    title: '资产类别',
     dataIndex: 'assetClass',
     ellipsis: true,
     sorter: true,
@@ -211,7 +211,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '安装地点',
+    title: '存放地点',
     dataIndex: 'installLocation',
     ellipsis: true,
     sorter: true,
@@ -220,16 +220,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '生产商',
+    title: '厂商',
     dataIndex: 'producer',
     ellipsis: true,
     sorter: true,
@@ -362,6 +353,7 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  debugger
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
@@ -476,4 +468,3 @@ watch(
     { immediate: true }
 );
 </script>
-

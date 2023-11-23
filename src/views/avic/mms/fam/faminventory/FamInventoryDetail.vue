@@ -231,7 +231,7 @@
             <a-col v-bind="colLayout.cols">
               <a-form-item
                 name="responseUserName"
-                label="责任人NAME"
+                label="责任人"
               >
                 <AvicCommonSelect
                   v-model:value="form.responseUserName"

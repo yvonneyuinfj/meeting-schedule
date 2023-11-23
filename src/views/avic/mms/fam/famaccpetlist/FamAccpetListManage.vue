@@ -121,7 +121,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '资产属性',
+    title: '资产类别',
     dataIndex: 'assetClass',
     ellipsis: true,
     sorter: true,
@@ -211,7 +211,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '安装地点',
+    title: '存放地点',
     dataIndex: 'installLocation',
     ellipsis: true,
     sorter: true,
@@ -220,16 +220,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '生产商',
+    title: '厂商',
     dataIndex: 'producer',
     ellipsis: true,
     sorter: true,
@@ -476,4 +467,3 @@ watch(
     { immediate: true }
 );
 </script>
-

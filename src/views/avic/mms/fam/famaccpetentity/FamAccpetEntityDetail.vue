@@ -317,9 +317,9 @@
         </a-col>
       </a-row>
     </a-form>
-    <FamAccpetListEdit
+    <FamAccpetListEntityEdit
       v-if="fieldVisible('FAM_ACCPET_LIST')"
-      ref="famAccpetListEdit"
+      ref="famAccpetListEntityEdit"
       :mainId="formId || form.id"
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"
@@ -346,8 +346,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
-import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入子表组件
+import { useFamAccpetForm, emits } from './ts/FamAccpetEntityForm'; // 引入表单ts
+import FamAccpetListEntityEdit from '@/views/avic/mms/fam/famaccpetlistentity/FamAccpetListEntityEdit.vue'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -382,7 +382,7 @@ const {
   afterUploadEvent,
   attachmentRequired,
   autoCode,
-  famAccpetListEdit,
+  famAccpetListEntityEdit,
   fieldVisible,
   fieldDisabled,
   fieldRequired,
@@ -401,5 +401,3 @@ defineExpose({
   afterClickBpmButtons
 });
 </script>
-
-

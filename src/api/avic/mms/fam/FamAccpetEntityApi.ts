@@ -3,7 +3,7 @@ import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
-const basePath = '/mms/fam/famaccpets';
+const basePath = '/mms/fam/famaccpetentitys';
 const treePath = '/mms/fam/famassetclasss';
 /** FAM_ACCPET */
 export interface FamAccpetDto extends BaseBeanModel {

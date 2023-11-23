@@ -45,6 +45,28 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
+                  v-model:value="form.assetClass"
+                  :auto-focus="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择验收类型"
+                  disabled
+              >
+                <a-select-option
+                    v-for="item in assetTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="orderName" label="合同名称" has-feedback>
               <a-input
                   v-model:value="form.orderName"
@@ -106,27 +128,6 @@
                   type="deptSelect"
                   placeholder="请选择接收部门名称"
               />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产属性" has-feedback>
-              <a-select
-                  v-model:value="form.assetClass"
-                  :auto-focus="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择验收类型"
-              >
-                <a-select-option
-                    v-for="item in assetTypeList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -202,7 +203,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
+import { useFamAccpetForm, emits } from './ts/FamAccpetEntityForm.ts'; // 引入表单ts
 
 
 const props = defineProps({
@@ -224,6 +225,9 @@ const props = defineProps({
     type: Function
   }
 });
+onMounted(()=>{
+  form.value.assetClass = '2'
+})
 
 const emit = defineEmits(emits);
 const {
@@ -241,7 +245,7 @@ const {
   autoCode,
   closeModal,
   addForm,
-  famAccpetListEdit
+  famAccpetListEntityEdit
 } = useFamAccpetForm({
   props: props,
   emit: emit

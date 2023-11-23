@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
-const basePath = '/mms/fam/famaccpetlists';
+const basePath = '/mms/fam/famaccpetlistentitys';
 /** FAM_ACCPET_LIST */
 export interface FamAccpetListDto extends BaseBeanModel {
   /** 数据密级 */
@@ -100,6 +100,3 @@ export function saveFamAccpetList (form: FamAccpetListDto): Promise<ResponseBase
 export function delFamAccpetList (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
-
-
-
