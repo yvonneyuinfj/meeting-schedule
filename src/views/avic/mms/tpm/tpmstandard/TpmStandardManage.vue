@@ -9,16 +9,16 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="设备编号">
                   <a-input
-                    v-model:value="queryForm.equipmentCode"
-                    placeholder="请输入设备编号"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
+                      v-model:value="queryForm.equipmentCode"
+                      placeholder="请输入设备编号"
+                      :allow-clear="true"
+                      @pressEnter="handleQuery"
                   />
                 </a-form-item>
               </a-col>
               <a-col
-                v-bind="colLayout.cols"
-                style="margin-left: auto"
+                  v-bind="colLayout.cols"
+                  style="margin-left: auto"
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
@@ -44,92 +44,92 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable
-            ref="tpmStandard"
-            table-key="tpmStandard"
-            :columns="columns"
-            :row-key="record => record.id"
-            :data-source="list"
-            :loading="loading"
-            :row-selection="{
+              ref="tpmStandard"
+              table-key="tpmStandard"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="list"
+              :loading="loading"
+              :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }"
-            :pageParameter="queryParam.pageParameter"
-            :total="totalPage"
-            rowClickSelectionType="radio"
-            @change="handleTableChange"
-            @refresh="getList"
+              :pageParameter="queryParam.pageParameter"
+              :total="totalPage"
+              rowClickSelectionType="radio"
+              @change="handleTableChange"
+              @refresh="getList"
           >
             <template #toolBarLeft>
               <a-space>
+                <!--                <a-button-->
+                <!--                  v-hasPermi="['tpmStandard:add']"-->
+                <!--                  title="添加"-->
+                <!--                  type="primary"-->
+                <!--                  @click="handleAdd"-->
+                <!--                >-->
+                <!--                  <template #icon>-->
+                <!--                    <plus-outlined/>-->
+                <!--                  </template>-->
+                <!--                  添加-->
+                <!--                </a-button>-->
                 <a-button
-                  v-hasPermi="['tpmStandard:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleAdd"
+                    v-hasPermi="['tpmInventory:add']"
+                    title="批量添加"
+                    type="primary"
+                    @click="handleOpenAdd"
                 >
                   <template #icon>
                     <plus-outlined/>
                   </template>
-                  添加
+                  批量添加
                 </a-button>
                 <a-button
-                  v-hasPermi="['tpmInventory:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleOpenAdd"
-                >
-                  <template #icon>
-                    <plus-outlined/>
-                  </template>
-                  添加
-                </a-button>
-                <a-button
-                  v-hasPermi="['tpmStandard:del']"
-                  title="删除"
-                  danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  :loading="delLoading"
-                  @click="handleDelete(selectedRowKeys, '')"
+                    v-hasPermi="['tpmStandard:del']"
+                    title="删除"
+                    danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleDelete(selectedRowKeys, '')"
                 >
                   <template #icon>
                     <delete-outlined/>
                   </template>
                   删除
                 </a-button>
-                <a-button
-                  v-hasPermi="['tpmStandard:import']"
-                  title="导入"
-                  type="primary"
-                  ghost
-                  @click="handleImport">
-                  <template #icon>
-                    <import-outlined/>
-                  </template>
-                  导入
-                </a-button>
-                <a-button
-                  v-hasPermi="['tpmStandard:export']"
-                  title="导出"
-                  type="primary"
-                  ghost
-                  @click="handleExport">
-                  <template #icon>
-                    <export-outlined/>
-                  </template>
-                  导出
-                </a-button>
+                <!--                <a-button-->
+                <!--                    v-hasPermi="['tpmStandard:import']"-->
+                <!--                    title="导入"-->
+                <!--                    type="primary"-->
+                <!--                    ghost-->
+                <!--                    @click="handleImport">-->
+                <!--                  <template #icon>-->
+                <!--                    <import-outlined/>-->
+                <!--                  </template>-->
+                <!--                  导入-->
+                <!--                </a-button>-->
+                <!--                <a-button-->
+                <!--                    v-hasPermi="['tpmStandard:export']"-->
+                <!--                    title="导出"-->
+                <!--                    type="primary"-->
+                <!--                    ghost-->
+                <!--                    @click="handleExport">-->
+                <!--                  <template #icon>-->
+                <!--                    <export-outlined/>-->
+                <!--                  </template>-->
+                <!--                  导出-->
+                <!--                </a-button>-->
               </a-space>
             </template>
             <template #toolBarRight>
               <a-input-search
-                class="opt-btn-commonsearch"
-                style="width: 200px"
-                placeholder="或设备编号"
-                :allow-clear="true"
-                @search="handleKeyWordQuery"
+                  class="opt-btn-commonsearch"
+                  style="width: 200px"
+                  placeholder="或设备编号"
+                  :allow-clear="true"
+                  @search="handleKeyWordQuery"
               />
             </template>
             <template #bodyCell="{ column, text, record, index }">
@@ -147,47 +147,49 @@
       </div>
       <!-- 添加页面弹窗 -->
       <tpm-standard-add
-        v-if="showAddModal"
-        ref="addModal"
-        @reloadData="getList"
-        @close="showAddModal = false"
+          v-if="showAddModal"
+          ref="addModal"
+          @reloadData="getList"
+          @close="showAddModal = false"
       />
       <!--批量添加弹窗-->
       <a-modal
-        :visible="open"
-        title="批量新增"
-        @ok="handleOk"
-        @cancel="handleCancel"
-        width="80%"
-        style="top: 20px"
+          :visible="open"
+          title="批量添加"
+          @ok="handleOk"
+          @cancel="handleCancel"
+          width="80%"
+          style="top: 20px"
       >
         <div style="height: 400px;overflow: auto">
-          <Tpm-inventory-select></Tpm-inventory-select>
+          <Tpm-inventory-standard-select
+              ref="tpmInventoryStandardSelect">
+          </Tpm-inventory-standard-select>
         </div>
       </a-modal>
       <!-- 编辑页面弹窗 -->
       <tpm-standard-edit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
+          v-if="showEditModal"
+          ref="editModal"
+          :form-id="formId"
+          @reloadData="getList"
+          @close="showEditModal = false"
       />
       <!-- 详情页面弹窗 -->
       <tpm-standard-detail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
+          v-if="showDetailModal"
+          ref="detailModal"
+          :form-id="formId"
+          @close="showDetailModal = false"
       />
       <AvicExcelImport
-        v-if="showImportModal"
-        :formData="excelParams"
-        title="模板导入"
-        importUrl="/mms/tpm/tpmstandards/importData/v1"
-        downloadTemplateUrl="/mms/tpm/tpmstandards/downloadTemplate/v1"
-        @reloadData="getList"
-        @close="showImportModal = false"
+          v-if="showImportModal"
+          :formData="excelParams"
+          title="模板导入"
+          importUrl="/mms/tpm/tpmstandards/importData/v1"
+          downloadTemplateUrl="/mms/tpm/tpmstandards/downloadTemplate/v1"
+          @reloadData="getList"
+          @close="showImportModal = false"
       />
     </AvicPane>
     <AvicPane>
@@ -200,12 +202,18 @@
 
 <script lang="ts" setup>
 import type { TpmStandardDto } from '@/api/avic/mms/tpm/TpmStandardApi'; // 引入模块DTO
-import { listTpmStandardByPage, delTpmStandard, exportExcel } from '@/api/avic/mms/tpm/TpmStandardApi'; // 引入模块API
+import {
+  listTpmStandardByPage,
+  delTpmStandard,
+  exportExcel,
+  saveTpmStandardByTpmInventoryIds
+} from '@/api/avic/mms/tpm/TpmStandardApi'; // 引入模块API
 import TpmStandardAdd from './TpmStandardAdd.vue'; // 引入添加页面组件
 import TpmStandardEdit from './TpmStandardEdit.vue'; // 引入编辑页面组件
 import TpmStandardDetail from './TpmStandardDetail.vue'; // 引入详情页面组件
 import TpmStandardMaintenanceManage from '../tpmstandardmaintenance/TpmStandardMaintenanceManage.vue';
-import TpmInventorySelect from '@/views/avic/mms/tpm/tpminventory/TpmInventorySelect.vue'; // 引入子表页面组件
+import TpmInventoryStandardSelect from './TpmInventoryStandardSelect.vue';
+
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '120px' },
@@ -331,7 +339,7 @@ const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const open = ref<boolean>(false);
-const tpmInventorySelect = ref(null);
+const tpmInventoryStandardSelect = ref(null);
 
 // 主表传入子表的id
 const mainId = computed(() => {
@@ -349,22 +357,22 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmStandardByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      // 设置表格初始选中项
-      if (list.value.length > 0) {
-        selectedRowKeys.value = [list.value[0]['id']];
-      } else {
-        selectedRowKeys.value = [];
-      }
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        // 设置表格初始选中项
+        if (list.value.length > 0) {
+          selectedRowKeys.value = [list.value[0]['id']];
+        } else {
+          selectedRowKeys.value = [];
+        }
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 高级搜索按钮操作 */
@@ -407,30 +415,27 @@ function handleOpenAdd() {
 }
 
 const handleCancel = () => {
-  console.log('关闭')
   open.value = false;
-}
-
+};
 
 /** 批量新增确认  */
 const handleOk = () => {
+  const selectedKeys = tpmInventoryStandardSelect.value.selectedRowKeys;
+  if (selectedKeys.length == 0) {
+    proxy.$message.warning('请选择要操作的数据！');
+    return;
+  }
   open.value = false;
-  const selectRow = tpmInventorySelect.value.selectedRows;
-  console.log(selectRow);
-  selectRow.map(item => {
-    item['tpmInventoryId'] = item.tpmInventoryId;
-    item['equipmentCode'] = item.equipmentCode;
-    item['equipmentName'] = item.equipmentName;
-    item['specs'] = item.specs;
-    item['model'] = item.model;
-    item['className'] = item.className;
-    item['leaveFactoryDate'] = item.leaveFactoryDate;
-    item['useDeptName'] = item.useDeptName;
-    item['areaName'] = item.areaName;
-    item['storageLocation'] = item.storageLocation;
+  saveTpmStandardByTpmInventoryIds(selectedKeys).then(res => {
+    if (res.success) {
+      proxy.$message.success('添加成功！');
+      // 清空选中
+      selectedRowKeys.value = [];
+      selectedRows.value = [];
+      getList();
+    }
+  }).catch(() => {
   });
-  list.value = [...list.value, ...selectRow];
-  console.log(list.value);
 };
 
 /** 编辑 */
@@ -480,19 +485,19 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delTpmStandard(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
