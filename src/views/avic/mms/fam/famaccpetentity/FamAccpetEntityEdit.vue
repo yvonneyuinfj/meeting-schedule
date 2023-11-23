@@ -300,8 +300,8 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <FamAccpetListEdit
-          ref="famAccpetListEdit"
+        <FamAccpetListEntityEdit
+          ref="famAccpetListEntityEdit"
           :isLand="isLand"
           :assetClasstObj="assetClasstObj"
           :accpetType="accpetType"
@@ -372,8 +372,8 @@
   </a-modal>
 </template>
 <script lang="ts" setup>
-import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
-import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入子表组件
+import { useFamAccpetForm, emits } from './ts/FamAccpetEntityForm'; // 引入表单ts
+import FamAccpetListEntityEdit from '@/views/avic/mms/fam/famaccpetlistentity/FamAccpetListEntityEdit.vue'; // 引入子表组件
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
 import { getTreeParent } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
@@ -524,7 +524,7 @@ const {
   saveForm,
   saveAndStartProcess,
   closeModal,
-  famAccpetListEdit
+  famAccpetListEntityEdit
 } = useFamAccpetForm({
   props: props,
   emit: emit

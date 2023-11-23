@@ -244,11 +244,11 @@
             v-bind="colLayout.cols"
             v-show="advanced"
           >
-            <a-form-item label="责任人NAME">
+            <a-form-item label="责任人">
               <AvicCommonSelect
                 v-model:value="queryForm.responseUserName"
                 type="userSelect"
-                placeholder="请选择责任人NAME"
+                placeholder="请选择责任人"
                 :defaultShowValue="queryForm.responseUserNameAlias"
                 @callback="
                   result => {
@@ -1036,6 +1036,14 @@ const columns = [
     align: 'center'
   },
   {
+    title: '资产属性',
+    dataIndex: 'assetTypeName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '资产用途',
     dataIndex: 'assetsUse',
     ellipsis: true,
@@ -1135,7 +1143,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '责任人NAME',
+    title: '责任人',
     dataIndex: 'responseUserNameAlias',
     ellipsis: true,
     minWidth: 120,
@@ -1415,14 +1423,6 @@ const columns = [
     align: 'center'
   },
   {
-    title: '资产分类',
-    dataIndex: 'assetTypeName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '质保期',
     dataIndex: 'warrantyPeriod',
     ellipsis: true,
@@ -1653,4 +1653,3 @@ defineExpose({
   selectedRow
 });
 </script>
-

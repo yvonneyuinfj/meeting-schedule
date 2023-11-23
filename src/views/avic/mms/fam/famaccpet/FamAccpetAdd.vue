@@ -193,6 +193,14 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <FamAccpetListEdit
+          ref="famAccpetListEdit"
+          :isLand="isLand"
+          :assetClasstObj="assetClasstObj"
+          :accpetType="accpetType"
+          :asset-class="assetClass"
+          :mainId="formId || form.id"
+        />
       </a-form>
     </a-spin>
     <template #footer>
@@ -203,7 +211,7 @@
 </template>
 <script lang="ts" setup>
 import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
-
+import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入子表组件
 
 const props = defineProps({
   formId: {

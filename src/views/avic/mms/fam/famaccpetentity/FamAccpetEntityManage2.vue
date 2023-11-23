@@ -380,7 +380,7 @@
                 </a>
               </template>
               <template v-else-if="column.dataIndex === 'assetClass'">
-                {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }}
+                <!-- {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }} -->
                 <!-- <AvicDictTag
                   :value="record.assetClass"
                   :options="assetClassList"
@@ -391,7 +391,7 @@
         </div>
       </div>
       <!-- 添加页面弹窗 -->
-      <FamAccpetAdd
+      <FamAccpetEntityAdd
         v-if="showAddModal"
         ref="addModal"
         :bpmOperatorRefresh="getList"
@@ -399,7 +399,7 @@
         @close="showAddModal = false"
       />
       <!-- 编辑页面弹窗 -->
-      <FamAccpetEdit
+      <FamAccpetEntityEdit
         v-if="showEditModal"
         ref="editModal"
         :form-id="formId"
@@ -407,7 +407,7 @@
         @close="showEditModal = false"
       />
       <!-- 详情页面弹窗 -->
-      <FamAccpetDetail
+      <FamAccpetEntityDetail
         v-if="showDetailModal"
         ref="detailModal"
         :form-id="formId"
@@ -416,22 +416,22 @@
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
-      <FamAccpetListManage
-        key="famAccpetListManage"
-        ref="famAccpetListManage"
+      <FamAccpetListEntityManage
+        key="famAccpetListEntityManage"
+        ref="famAccpetListEntityManage"
         :mainId="mainId"
       />
     </AvicPane>
   </AvicSplit>
 </template>
 <script lang="ts" setup>
-import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
-import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块DTO
-import { listFamAccpetByPage, delFamAccpet, exportExcel } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
-import FamAccpetAdd from './FamAccpetAdd.vue'; // 引入添加页面组件
-import FamAccpetEdit from './FamAccpetEdit.vue'; // 引入编辑页面组件
-import FamAccpetDetail from './FamAccpetDetail.vue'; // 引入详情页面组件
-import FamAccpetListManage from '../famaccpetlist/FamAccpetListManage.vue'; // 引入子表页面组件
+import { useFamAccpetForm, emits } from './ts/FamAccpetEntityForm'; // 引入表单ts
+import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块DTO
+import { listFamAccpetByPage, delFamAccpet, exportExcel } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块API
+import FamAccpetEntityAdd from './FamAccpetEntityAdd.vue'; // 引入添加页面组件
+import FamAccpetEntityEdit from './FamAccpetEntityEdit.vue'; // 引入编辑页面组件
+import FamAccpetEntityDetail from './FamAccpetEntityDetail.vue'; // 引入详情页面组件
+import FamAccpetListEntityManage from '../famaccpetlistentity/FamAccpetListEntityManage.vue'; // 引入子表页面组件
 import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 const { proxy } = getCurrentInstance();
@@ -526,7 +526,7 @@ const columns = [
   },
   {
     title: '资产属性',
-    dataIndex: 'assetClass',
+    dataIndex: 'assetClassName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -804,4 +804,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

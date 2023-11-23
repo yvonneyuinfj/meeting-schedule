@@ -223,7 +223,7 @@
           </template>
         </AvicRowEdit>
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'liablePerson '"
+          v-else-if="column.dataIndex === 'liablePerson'"
           :record="record"
           :column="column.dataIndex"
         >
@@ -347,8 +347,8 @@
 
 </template>
 <script lang="ts" setup>
-import type { FamAccpetListDto } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块DTO
-import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
+import type { FamAccpetListEntityDto } from '@/api/avic/mms/fam/FamAccpetListEntityApi'; // 引入模块DTO
+import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListEntityApi'; // 引入模块API
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
@@ -821,7 +821,7 @@ const columns2 = [
   }
 ] as any[];
 
-const queryForm = ref<FamAccpetListDto>({});
+const queryForm = ref<FamAccpetListEntityDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
