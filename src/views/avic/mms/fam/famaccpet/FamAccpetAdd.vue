@@ -182,6 +182,7 @@
                   element-id="1"
                   form-type="add"
                   ref="uploadFile"
+                  save-type="Disk"
                   :allow-download="true"
                   :allow-preview="true"
                   :allow-delete="true"
