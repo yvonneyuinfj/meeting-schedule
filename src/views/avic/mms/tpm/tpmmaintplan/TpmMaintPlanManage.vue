@@ -5,392 +5,402 @@
       <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="设备标准主表ID">
+            <a-form-item label="设备编号">
               <a-input
-                v-model:value="queryForm.tpmStandardId"
-                placeholder="请输入设备标准主表ID"
+                v-model:value="queryForm.equipmentCode"
+                placeholder="请输入设备编号"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="TPM_STANDARD_MAINTENANCE_ID">
-              <a-input
-                v-model:value="queryForm.tpmStandardMaintenanceId"
-                placeholder="请输入TPM_STANDARD_MAINTENANCE_ID"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="设备台账ID">
-              <a-input
-                v-model:value="queryForm.tpmInventoryId"
-                placeholder="请输入设备台账ID"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="编制日期(起)">
-              <a-date-picker
-                v-model:value="queryForm.editDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择编制日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.editDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="编制日期(止)">
-              <a-date-picker
-                v-model:value="queryForm.editDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择编制日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.editDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="计划保养日期(起)">
-              <a-date-picker
-                v-model:value="queryForm.planMaintenanceDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择计划保养日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.planMaintenanceDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="计划保养日期(止)">
-              <a-date-picker
-                v-model:value="queryForm.planMaintenanceDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择计划保养日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.planMaintenanceDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养状态">
-              <a-select
-                v-model:value="queryForm.maintenanceStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择保养状态"
-              >
-                <a-select-option
-                  v-for="item in maintenanceStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养完成日期(起)">
-              <a-date-picker
-                v-model:value="queryForm.maintenanceFinishDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择保养完成日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.maintenanceFinishDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养完成日期(止)">
-              <a-date-picker
-                v-model:value="queryForm.maintenanceFinishDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择保养完成日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.maintenanceFinishDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养负责人ID">
-              <AvicCommonSelect
-                v-model:value="queryForm.maintUserId"
-                type="userSelect"
-                placeholder="请选择保养负责人ID"
-                :defaultShowValue="queryForm.maintUserIdAlias"
-                @callback="
-                  result => {
-                    queryForm.maintUserIdAlias = result.names;
-                  }
-                "
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养负责人编码">
-              <a-input
-                v-model:value="queryForm.maintUserCode"
-                placeholder="请输入保养负责人编码"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养负责人姓名">
-              <a-input
-                v-model:value="queryForm.maintUserName"
-                placeholder="请输入保养负责人姓名"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="实际保养人ID">
-              <AvicCommonSelect
-                v-model:value="queryForm.actrualMaintUserId"
-                type="userSelect"
-                placeholder="请选择实际保养人ID"
-                :defaultShowValue="queryForm.actrualMaintUserIdAlias"
-                @callback="
-                  result => {
-                    queryForm.actrualMaintUserIdAlias = result.names;
-                  }
-                "
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="实际保养人编码">
-              <a-input
-                v-model:value="queryForm.actrualMaintUserCode"
-                placeholder="请输入实际保养人编码"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="实际保养人姓名">
-              <a-input
-                v-model:value="queryForm.actrualMaintUserName"
-                placeholder="请输入实际保养人姓名"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="下达日期(起)">
-              <a-date-picker
-                v-model:value="queryForm.dispatchDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择下达日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.dispatchDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="下达日期(止)">
-              <a-date-picker
-                v-model:value="queryForm.dispatchDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择下达日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.dispatchDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="下达人ID">
-              <AvicCommonSelect
-                v-model:value="queryForm.dispatchUserId"
-                type="userSelect"
-                placeholder="请选择下达人ID"
-                :defaultShowValue="queryForm.dispatchUserIdAlias"
-                @callback="
-                  result => {
-                    queryForm.dispatchUserIdAlias = result.names;
-                  }
-                "
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="下达人编码">
-              <a-input
-                v-model:value="queryForm.dispatchUserCode"
-                placeholder="请输入下达人编码"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="下达人姓名">
-              <a-input
-                v-model:value="queryForm.dispatchUserName"
-                placeholder="请输入下达人姓名"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="完好标识">
-              <a-select
-                v-model:value="queryForm.goodConditionFlag"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择完好标识"
-              >
-                <a-select-option
-                  v-for="item in goodConditionFlagList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养计划流程状态">
-              <a-input
-                v-model:value="queryForm.billStatus"
-                placeholder="请输入保养计划流程状态"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养反馈流程状态">
-              <a-input
-                v-model:value="queryForm.feedbackBillStatus"
-                placeholder="请输入保养反馈流程状态"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(起)">
-              <a-date-picker
-                v-model:value="queryForm.oldLastMaintenPlanDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.oldLastMaintenPlanDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(止)">
-              <a-date-picker
-                v-model:value="queryForm.oldLastMaintenPlanDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.oldLastMaintenPlanDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="计划编号">
-              <a-input
-                v-model:value="queryForm.billNo"
-                placeholder="请输入计划编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="保养计划类型">
-              <a-input
-                v-model:value="queryForm.maintenPlanType"
-                placeholder="请输入保养计划类型"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="驳回原因">
-              <a-input
-                v-model:value="queryForm.backReason"
-                placeholder="请输入驳回原因"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="完工日期(起)">
-              <a-date-picker
-                v-model:value="queryForm.completeDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择完工日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.completeDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="完工日期(止)">
-              <a-date-picker
-                v-model:value="queryForm.completeDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择完工日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.completeDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="备注">
-              <a-input
-                v-model:value="queryForm.note"
-                placeholder="请输入备注"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="密级">
-              <a-select
-                v-model:value="queryForm.secretLevel"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择密级"
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="设备标准主表ID">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.tpmStandardId"-->
+          <!--                placeholder="请输入设备标准主表ID"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="TPM_STANDARD_MAINTENANCE_ID">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.tpmStandardMaintenanceId"-->
+          <!--                placeholder="请输入TPM_STANDARD_MAINTENANCE_ID"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="设备台账ID">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.tpmInventoryId"-->
+          <!--                placeholder="请输入设备台账ID"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="编制日期(起)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.editDateBegin"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择编制日期(起)"-->
+          <!--                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.editDateEnd)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="编制日期(止)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.editDateEnd"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择编制日期(止)"-->
+          <!--                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.editDateBegin)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="计划保养日期(起)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.planMaintenanceDateBegin"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择计划保养日期(起)"-->
+          <!--                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.planMaintenanceDateEnd)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="计划保养日期(止)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.planMaintenanceDateEnd"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择计划保养日期(止)"-->
+          <!--                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.planMaintenanceDateBegin)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养状态">-->
+          <!--              <a-select-->
+          <!--                v-model:value="queryForm.maintenanceStatus"-->
+          <!--                :get-popup-container="triggerNode => triggerNode.parentNode"-->
+          <!--                option-filter-prop="children"-->
+          <!--                :show-search="true"-->
+          <!--                :allow-clear="true"-->
+          <!--                placeholder="请选择保养状态"-->
+          <!--              >-->
+          <!--                <a-select-option-->
+          <!--                  v-for="item in maintenanceStatusList"-->
+          <!--                  :key="item.sysLookupTlId"-->
+          <!--                  :value="item.lookupCode"-->
+          <!--                >-->
+          <!--                  {{ item.lookupName }}-->
+          <!--                </a-select-option>-->
+          <!--              </a-select>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养完成日期(起)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.maintenanceFinishDateBegin"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择保养完成日期(起)"-->
+          <!--                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.maintenanceFinishDateEnd)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养完成日期(止)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.maintenanceFinishDateEnd"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择保养完成日期(止)"-->
+          <!--                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.maintenanceFinishDateBegin)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养负责人ID">-->
+          <!--              <AvicCommonSelect-->
+          <!--                v-model:value="queryForm.maintUserId"-->
+          <!--                type="userSelect"-->
+          <!--                placeholder="请选择保养负责人ID"-->
+          <!--                :defaultShowValue="queryForm.maintUserIdAlias"-->
+          <!--                @callback="-->
+          <!--                  result => {-->
+          <!--                    queryForm.maintUserIdAlias = result.names;-->
+          <!--                  }-->
+          <!--                "-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养负责人编码">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.maintUserCode"-->
+          <!--                placeholder="请输入保养负责人编码"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养负责人姓名">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.maintUserName"-->
+          <!--                placeholder="请输入保养负责人姓名"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="实际保养人ID">-->
+          <!--              <AvicCommonSelect-->
+          <!--                v-model:value="queryForm.actrualMaintUserId"-->
+          <!--                type="userSelect"-->
+          <!--                placeholder="请选择实际保养人ID"-->
+          <!--                :defaultShowValue="queryForm.actrualMaintUserIdAlias"-->
+          <!--                @callback="-->
+          <!--                  result => {-->
+          <!--                    queryForm.actrualMaintUserIdAlias = result.names;-->
+          <!--                  }-->
+          <!--                "-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="实际保养人编码">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.actrualMaintUserCode"-->
+          <!--                placeholder="请输入实际保养人编码"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="实际保养人姓名">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.actrualMaintUserName"-->
+          <!--                placeholder="请输入实际保养人姓名"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="下达日期(起)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.dispatchDateBegin"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择下达日期(起)"-->
+          <!--                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.dispatchDateEnd)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="下达日期(止)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.dispatchDateEnd"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择下达日期(止)"-->
+          <!--                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.dispatchDateBegin)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="下达人ID">-->
+          <!--              <AvicCommonSelect-->
+          <!--                v-model:value="queryForm.dispatchUserId"-->
+          <!--                type="userSelect"-->
+          <!--                placeholder="请选择下达人ID"-->
+          <!--                :defaultShowValue="queryForm.dispatchUserIdAlias"-->
+          <!--                @callback="-->
+          <!--                  result => {-->
+          <!--                    queryForm.dispatchUserIdAlias = result.names;-->
+          <!--                  }-->
+          <!--                "-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="下达人编码">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.dispatchUserCode"-->
+          <!--                placeholder="请输入下达人编码"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="下达人姓名">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.dispatchUserName"-->
+          <!--                placeholder="请输入下达人姓名"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="完好标识">-->
+          <!--              <a-select-->
+          <!--                v-model:value="queryForm.goodConditionFlag"-->
+          <!--                :get-popup-container="triggerNode => triggerNode.parentNode"-->
+          <!--                option-filter-prop="children"-->
+          <!--                :show-search="true"-->
+          <!--                :allow-clear="true"-->
+          <!--                placeholder="请选择完好标识"-->
+          <!--              >-->
+          <!--                <a-select-option-->
+          <!--                  v-for="item in goodConditionFlagList"-->
+          <!--                  :key="item.sysLookupTlId"-->
+          <!--                  :value="item.lookupCode"-->
+          <!--                >-->
+          <!--                  {{ item.lookupName }}-->
+          <!--                </a-select-option>-->
+          <!--              </a-select>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养计划流程状态">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.billStatus"-->
+          <!--                placeholder="请输入保养计划流程状态"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养反馈流程状态">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.feedbackBillStatus"-->
+          <!--                placeholder="请输入保养反馈流程状态"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(起)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.oldLastMaintenPlanDateBegin"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(起)"-->
+          <!--                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.oldLastMaintenPlanDateEnd)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(止)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.oldLastMaintenPlanDateEnd"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）(止)"-->
+          <!--                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.oldLastMaintenPlanDateBegin)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="计划编号">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.billNo"-->
+          <!--                placeholder="请输入计划编号"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="保养计划类型">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.maintenPlanType"-->
+          <!--                placeholder="请输入保养计划类型"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="驳回原因">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.backReason"-->
+          <!--                placeholder="请输入驳回原因"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="完工日期(起)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.completeDateBegin"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择完工日期(起)"-->
+          <!--                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.completeDateEnd)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="完工日期(止)">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="queryForm.completeDateEnd"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择完工日期(止)"-->
+          <!--                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.completeDateBegin)"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="备注">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.note"-->
+          <!--                placeholder="请输入备注"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="密级">-->
+          <!--              <a-select-->
+          <!--                v-model:value="queryForm.secretLevel"-->
+          <!--                :get-popup-container="triggerNode => triggerNode.parentNode"-->
+          <!--                option-filter-prop="children"-->
+          <!--                :show-search="true"-->
+          <!--                :allow-clear="true"-->
+          <!--                placeholder="请选择密级"-->
+          <!--              >-->
+          <!--                <a-select-option-->
+          <!--                  v-for="item in secretLevelList"-->
+          <!--                  :key="item.sysLookupTlId"-->
+          <!--                  :value="item.lookupCode"-->
+          <!--                >-->
+          <!--                  {{ item.lookupName }}-->
+          <!--                </a-select-option>-->
+          <!--              </a-select>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col
             v-bind="colLayout.cols"
             style="margin-left: auto"
@@ -398,17 +408,17 @@
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -438,29 +448,42 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button
-              v-hasPermi="['tpmMaintPlan:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
+            <div style="width: 80px">
+              保养时间(从)
+            </div>
+            <a-date-picker style="width: 125px"
+                           v-model:value="barForm.startDate"
+                           :disabled-date="disabledStartDate"
+                           placeholder="请选择开始时间"
+                           format="YYYY-MM-DD"
+            />
+            <div style="width: 80px">
+              保养时间(至)
+            </div>
+            <a-date-picker style="width: 125px"
+                           v-model:value="barForm.endDate"
+                           format="YYYY-MM-DD"
+                           :disabled-date="disabledEndDate"
+                           placeholder="请选择结束时间"
+            />
+            <a-button type="primary" @click="handleCreative">
+              生成
             </a-button>
-            <a-button
-              v-hasPermi="['tpmMaintPlan:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
-            >
-              <template #icon>
-                <edit-outlined />
-              </template>
-              编辑
+            <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)">
+              提交审批
             </a-button>
+            <!--            <a-button-->
+            <!--              v-hasPermi="['tpmMaintPlan:edit']"-->
+            <!--              title="编辑"-->
+            <!--              type="primary"-->
+            <!--              ghost-->
+            <!--              @click="handleEdit"-->
+            <!--            >-->
+            <!--              <template #icon>-->
+            <!--                <edit-outlined/>-->
+            <!--              </template>-->
+            <!--              编辑-->
+            <!--            </a-button>-->
             <a-button
               v-hasPermi="['tpmMaintPlan:del']"
               title="删除"
@@ -470,21 +493,35 @@
               @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
-            <a-button
-              v-hasPermi="['tpmMaintPlan:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
+            <a-button @click="handleCancelPlans(selectedRows, selectedRowKeys)">
+              取消计划
             </a-button>
+            <a-button
+              v-hasPermi="['tpmMaintPlan:add']"
+              title="添加"
+              type="primary"
+              @click="handleAdd"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              添加
+            </a-button>
+            <!--            <a-button-->
+            <!--              v-hasPermi="['tpmMaintPlan:export']"-->
+            <!--              title="导出"-->
+            <!--              type="primary"-->
+            <!--              ghost-->
+            <!--              @click="handleExport">-->
+            <!--              <template #icon>-->
+            <!--                <export-outlined/>-->
+            <!--              </template>-->
+            <!--              导出-->
+            <!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>
@@ -492,8 +529,8 @@
             <AvicBpmFilter
               :allFileAuth="['tpmMaintPlan:all']"
               :myFileAuth="['tpmMaintPlan:my']"
-              :defaultBpmType = 'queryForm.bpmType'
-              :defaultBpmState = 'queryForm.bpmState'
+              :defaultBpmType='queryForm.bpmType'
+              :defaultBpmState='queryForm.bpmState'
               @change="changeBpmFilter"
             />
             <a-input-search
@@ -541,6 +578,7 @@ import { listTpmMaintPlanByPage, delTpmMaintPlan, exportExcel } from '@/api/avic
 import TpmMaintPlanAdd from './TpmMaintPlanAdd.vue'; // 引入添加页面组件
 import TpmMaintPlanEdit from './TpmMaintPlanEdit.vue'; // 引入编辑页面组件
 import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -557,191 +595,18 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '设备标准主表ID',
-    dataIndex: 'tpmStandardId',
+    title: '流程状态',
+    dataIndex: 'businessstate_',
     ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
+    width: 120,
+    align: 'center',
+    fixed: 'right'
   },
   {
-    title: 'TPM_STANDARD_MAINTENANCE_ID',
-    dataIndex: 'tpmStandardMaintenanceId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备台账ID',
-    dataIndex: 'tpmInventoryId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养周期(月)',
-    dataIndex: 'maintenanceCycle',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
-    title: '编制日期',
-    dataIndex: 'editDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '计划保养日期',
-    dataIndex: 'planMaintenanceDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '保养状态',
-    dataIndex: 'maintenanceStatusName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '保养完成日期',
-    dataIndex: 'maintenanceFinishDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '保养负责人ID',
-    dataIndex: 'maintUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养负责人编码',
-    dataIndex: 'maintUserCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养负责人姓名',
-    dataIndex: 'maintUserName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '实际保养人ID',
-    dataIndex: 'actrualMaintUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '实际保养人编码',
-    dataIndex: 'actrualMaintUserCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '实际保养人姓名',
-    dataIndex: 'actrualMaintUserName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '下达日期',
-    dataIndex: 'dispatchDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '下达人ID',
-    dataIndex: 'dispatchUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '下达人编码',
-    dataIndex: 'dispatchUserCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '下达人姓名',
-    dataIndex: 'dispatchUserName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '完好标识',
-    dataIndex: 'goodConditionFlagName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '保养计划流程状态',
-    dataIndex: 'billStatus',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养反馈流程状态',
-    dataIndex: 'feedbackBillStatus',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）',
-    dataIndex: 'oldLastMaintenPlanDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
+    title: '流程当前步骤',
+    dataIndex: 'activityalias_',
+    width: 120,
+    fixed: 'right'
   },
   {
     title: '计划编号',
@@ -753,8 +618,89 @@ const columns = [
     align: 'left'
   },
   {
-    title: '保养计划类型',
-    dataIndex: 'maintenPlanType',
+    title: '设备编号',
+    dataIndex: 'equipmentCode',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '设备名称',
+    dataIndex: 'equipmentName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '型号',
+    dataIndex: 'model',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '设备规格',
+    dataIndex: 'specs',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
+    title: '使用部门',
+    dataIndex: 'useDeptName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '编制时间',
+    dataIndex: 'editDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '当前处理人',
+    dataIndex: 'assigneenames_',
+    ellipsis: true,
+    width: 130,
+    align: 'left',
+    fixed: 'right'
+  },
+  {
+    title: '计划保养日期',
+    dataIndex: 'planMaintenanceDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养周期(月)',
+    dataIndex: 'maintenanceCycle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
+  },
+  {
+    title: '保养负责人',
+    dataIndex: 'maintUserIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '备注',
+    dataIndex: 'note',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -771,52 +717,186 @@ const columns = [
     align: 'left'
   },
   {
-    title: '完工日期',
-    dataIndex: 'completeDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '备注',
-    dataIndex: 'note',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
-  },
-  {
-    title: '流程状态',
-    dataIndex: 'businessstate_',
-    ellipsis: true,
-    width: 120,
-    align: 'center',
-    fixed: 'right'
-  },
-  {
-    title: '流程当前步骤',
-    dataIndex: 'activityalias_',
-    width: 120,
-    fixed: 'right'
-  },
-  {
-    title: '当前处理人',
-    dataIndex: 'assigneenames_',
-    ellipsis: true,
-    width: 130,
-    align: 'left',
-    fixed: 'right'
   }
+  // {
+  //   title: '设备标准主表ID',
+  //   dataIndex: 'tpmStandardId',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: 'TPM_STANDARD_MAINTENANCE_ID',
+  //   dataIndex: 'tpmStandardMaintenanceId',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '设备台账ID',
+  //   dataIndex: 'tpmInventoryId',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '保养状态',
+  //   dataIndex: 'maintenanceStatusName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '保养完成日期',
+  //   dataIndex: 'maintenanceFinishDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '保养负责人编码',
+  //   dataIndex: 'maintUserCode',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '保养负责人姓名',
+  //   dataIndex: 'maintUserName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '实际保养人ID',
+  //   dataIndex: 'actrualMaintUserIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '实际保养人编码',
+  //   dataIndex: 'actrualMaintUserCode',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '实际保养人姓名',
+  //   dataIndex: 'actrualMaintUserName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '下达日期',
+  //   dataIndex: 'dispatchDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '下达人ID',
+  //   dataIndex: 'dispatchUserIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '下达人编码',
+  //   dataIndex: 'dispatchUserCode',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '下达人姓名',
+  //   dataIndex: 'dispatchUserName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '完好标识',
+  //   dataIndex: 'goodConditionFlagName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  //
+  // {
+  //   title: '保养反馈流程状态',
+  //   dataIndex: 'feedbackBillStatus',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）',
+  //   dataIndex: 'oldLastMaintenPlanDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '保养计划类型',
+  //   dataIndex: 'maintenPlanType',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '完工日期',
+  //   dataIndex: 'completeDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '保养计划流程状态',
+  //   dataIndex: 'billStatus',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
 ];
 const queryForm = ref<TpmMaintPlanDto>({
   bpmState: 'all',
@@ -835,6 +915,9 @@ const queryParam = reactive({
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
+});
+const barForm = ref({
+  endDate: '', startDate: ''
 });
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
@@ -863,6 +946,28 @@ onMounted(() => {
   getUserFileSecretList();
 });
 
+/** 开始时间禁选 */
+const disabledStartDate = (current) => {
+  if (barForm.value.endDate) {
+    return current && current > barForm.value.endDate;
+  }
+};
+
+/** 结束时间禁选 */
+const disabledEndDate = (current) => {
+  if (barForm.value.startDate) {
+    return current && current < barForm.value.startDate;
+  }
+};
+
+/** 生成 */
+const handleCreative = () => {
+  if (!barForm.value.startDate || !barForm.value.endDate) {
+    proxy.$message.warning('请选择保养时间的开始时间与结束时间!');
+  }
+  //生成逻辑
+};
+
 /** 查询数据 */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -880,6 +985,7 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取通用代码 */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -887,12 +993,14 @@ function getLookupList() {
     goodConditionFlagList.value = result.goodConditionFlag;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -900,6 +1008,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -907,6 +1016,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -915,10 +1025,12 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -929,10 +1041,12 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
@@ -942,6 +1056,7 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -951,6 +1066,37 @@ function handleFlowDetail(record) {
     });
   }
 }
+
+/** 提交审批 */
+const handleApproval = (rows, ids) => {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交审批的数据！');
+    return;
+  }
+  proxy.$confirm({
+    title: '确认要提交审批选择的数据吗?',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+    }
+  });
+};
+
+/** 取消计划 */
+const handleCancelPlans = (rows, ids) => {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要取消的计划！');
+    return;
+  }
+  proxy.$confirm({
+    title: '确认要取消选择的计划吗?',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+    }
+  });
+};
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
@@ -981,6 +1127,7 @@ function handleDelete(rows, ids) {
     }
   });
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -997,11 +1144,13 @@ function handleExport() {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
