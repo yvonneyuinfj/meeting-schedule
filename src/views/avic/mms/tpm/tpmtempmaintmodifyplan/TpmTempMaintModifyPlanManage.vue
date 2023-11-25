@@ -74,7 +74,7 @@
                   type="primary"
                   @click="handleQuery"
                 >
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button
@@ -82,7 +82,7 @@
                   @click="resetQuery"
                   ghost
                 >
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
               </a-space>
@@ -133,7 +133,7 @@
               @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined />
+                <save-outlined/>
               </template>
               保存
             </a-button>
@@ -145,7 +145,7 @@
               @click="handleExport"
             >
               <template #icon>
-                <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
@@ -359,13 +359,13 @@ const columns = [
     align: 'left'
   },
   {
-    title: "需求时间",
-    dataIndex: "requireDate",
-    key: "requireDate",
+    title: '需求时间',
+    dataIndex: 'requireDate',
+    key: 'requireDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: "left",
+    align: 'left'
   },
   {
     title: '需求申请人',
@@ -475,16 +475,15 @@ const columns = [
   //   resizable: true,
   //   align: 'center'
   // },
-
-  // {
-  //   title: '申请单号',
-  //   dataIndex: 'applyNo',
-  //   key: 'applyNo',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
+  {
+    title: '申请单号',
+    dataIndex: 'applyNo',
+    key: 'applyNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   // {
   //   title: '合同编号',
   //   dataIndex: 'contractNo',
@@ -539,7 +538,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-    {
+  {
     title: '制单状态',
     dataIndex: 'businessStatus',
     key: 'businessStatus',
@@ -613,18 +612,18 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmTempMaintModifyPlanByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-        // 查询的初始数据,保存时做比对
-        initialList.value = proxy.$lodash.cloneDeep(list.value);
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+      // 查询的初始数据,保存时做比对
+      initialList.value = proxy.$lodash.cloneDeep(list.value);
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 提交 */
@@ -647,16 +646,16 @@ function handleCommit(ids, type) {
     onOk: () => {
       commitLoading.value = true;
       commitTpmTempMaintModifyPlan(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('提交成功！');
-              getList();
-            }
-            commitLoading.value = false;
-          })
-          .catch(() => {
-            commitLoading.value = false;
-          });
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('提交成功！');
+            getList();
+          }
+          commitLoading.value = false;
+        })
+        .catch(() => {
+          commitLoading.value = false;
+        });
     }
   });
 }
@@ -808,19 +807,19 @@ function handleSaveAll() {
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
     saveTpmTempMaintModifyPlan(changedData)
-        .then(res => {
-          if (res.success) {
-            getList();
-            proxy.$message.success('保存成功！');
-            saveLoading.value = false;
-          } else {
-            proxy.$message.error('保存失败！');
-            saveLoading.value = false;
-          }
-        })
-        .catch(() => {
+      .then(res => {
+        if (res.success) {
+          getList();
+          proxy.$message.success('保存成功！');
           saveLoading.value = false;
-        });
+        } else {
+          proxy.$message.error('保存失败！');
+          saveLoading.value = false;
+        }
+      })
+      .catch(() => {
+        saveLoading.value = false;
+      });
   } else {
     saveLoading.value = false;
   }
@@ -867,12 +866,12 @@ function handleDelete(ids, e, type) {
       const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
       if (deleteIds.length > 0) {
         return delTpmTempMaintModifyPlan(deleteIds)
-            .then(() => {
-              removeRecordByIds(ids);
-            })
-            .catch(() => {
-              delLoading.value = false;
-            });
+          .then(() => {
+            removeRecordByIds(ids);
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
       } else {
         removeRecordByIds(ids);
       }
@@ -902,7 +901,7 @@ function removeRecordByIds(deleteIds) {
   for (let i = 0; i < deleteIds.length; i++) {
     newData = newData.filter(item => item['id'] !== deleteIds[i]);
     delUpdateData = updateList.filter(
-        item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
+      item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
     );
   }
   // 清空表格选中项
@@ -970,10 +969,10 @@ function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
     flag = proxy.$validateRecordData(
-        records[index],
-        validateRules,
-        list.value,
-        tpmTempMaintModifyPlan
+      records[index],
+      validateRules,
+      list.value,
+      tpmTempMaintModifyPlan
     );
     if (!flag) {
       break;
