@@ -116,6 +116,10 @@ export function saveTpmMaintPlan (form: TpmMaintPlanDto): Promise<ResponseBaseDa
   return request.post(basePath + '/save/v1', form);
 }
 
+export function creativeMaintPlan (data){
+  return request.post(basePath+ '/create-maint-plan/v1',data);
+}
+
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
   processDefId,

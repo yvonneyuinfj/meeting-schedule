@@ -7,10 +7,10 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="设备编号">
               <a-input
-                v-model:value="queryForm.equipmentCode"
-                placeholder="请输入设备编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.equipmentCode"
+                  placeholder="请输入设备编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
@@ -402,8 +402,8 @@
           <!--            </a-form-item>-->
           <!--          </a-col>-->
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
@@ -429,22 +429,22 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmMaintPlan"
-        table-key="tpmMaintPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmMaintPlan"
+          table-key="tpmMaintPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -454,6 +454,7 @@
             <a-date-picker style="width: 125px"
                            v-model:value="barForm.startDate"
                            :disabled-date="disabledStartDate"
+                           value-format="YYYY-MM-DD"
                            placeholder="请选择开始时间"
                            format="YYYY-MM-DD"
             />
@@ -463,6 +464,7 @@
             <a-date-picker style="width: 125px"
                            v-model:value="barForm.endDate"
                            format="YYYY-MM-DD"
+                           value-format="YYYY-MM-DD"
                            :disabled-date="disabledEndDate"
                            placeholder="请选择结束时间"
             />
@@ -485,12 +487,12 @@
             <!--              编辑-->
             <!--            </a-button>-->
             <a-button
-              v-hasPermi="['tpmMaintPlan:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['tpmMaintPlan:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
                 <delete-outlined/>
@@ -501,10 +503,10 @@
               取消计划
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmMaintPlan:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
                 <plus-outlined/>
@@ -527,18 +529,18 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpmMaintPlan:all']"
-              :myFileAuth="['tpmMaintPlan:my']"
-              :defaultBpmType='queryForm.bpmType'
-              :defaultBpmState='queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['tpmMaintPlan:all']"
+                :myFileAuth="['tpmMaintPlan:my']"
+                :defaultBpmType='queryForm.bpmType'
+                :defaultBpmState='queryForm.bpmState'
+                @change="changeBpmFilter"
             />
             <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入设备标准主表ID或TPM_STANDARD_MAINTENANCE_ID"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+                class="opt-btn-commonsearch"
+                style="width: 200px"
+                placeholder="请输入设备标准主表ID或TPM_STANDARD_MAINTENANCE_ID"
+                :allow-clear="true"
+                @search="handleKeyWordQuery"
             />
           </a-space>
         </template>
@@ -556,28 +558,34 @@
     </div>
     <!-- 添加页面弹窗 -->
     <TpmMaintPlanAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <TpmMaintPlanEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
-import { listTpmMaintPlanByPage, delTpmMaintPlan, exportExcel } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
+import {
+  listTpmMaintPlanByPage,
+  delTpmMaintPlan,
+  exportExcel,
+  creativeMaintPlan
+} from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
 import TpmMaintPlanAdd from './TpmMaintPlanAdd.vue'; // 引入添加页面组件
 import TpmMaintPlanEdit from './TpmMaintPlanEdit.vue'; // 引入编辑页面组件
 import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import dayjs from 'dayjs'
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -938,6 +946,8 @@ const lookupParams = [
 ];
 
 onMounted(() => {
+  barForm.value.startDate = dayjs(new Date()).startOf("year").format("YYYY-MM-DD");
+  barForm.value.endDate = dayjs(new Date()).endOf("year").format("YYYY-MM-DD");
   // 加载表格数据
   getList();
   // 获取通用代码
@@ -965,7 +975,18 @@ const handleCreative = () => {
   if (!barForm.value.startDate || !barForm.value.endDate) {
     proxy.$message.warning('请选择保养时间的开始时间与结束时间!');
   }
+  const data = {
+    planMaintenanceDateBegin: barForm.value.startDate,
+    planMaintenanceDateEnd: barForm.value.endDate
+  };
   //生成逻辑
+  creativeMaintPlan(data).then(res => {
+    if (res.success){
+      proxy.$message.info('生成成功！');
+      getList()
+    }
+
+  });
 };
 
 /** 查询数据 */
@@ -974,16 +995,16 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmMaintPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码 */
@@ -1114,16 +1135,16 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
