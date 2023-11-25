@@ -477,8 +477,8 @@
                   v-model:value="form.managerDeptName"
                   type="deptSelect"
                   placeholder="请选择管理部门"
-                   :defaultShowValue="form.managerDeptNameAlias"
-                   disabled
+                  :defaultShowValue="form.managerDeptNameAlias"
+                  disabled
                 />
               </a-form-item>
             </a-col>
@@ -675,9 +675,12 @@
         style="margin:0 20px 10px 0"
         @click="famTabsClick(item.id)"
       >{{
-          item.label }}</div>
+          item.label
+        }}
+      </div>
     </div>
     <AvicTable
+      v-if="show"
       ref="famInventory"
       table-key="famInventory"
       :columns="columns"
@@ -701,7 +704,8 @@
         type="primary"
         ghost
         @click="closeModal"
-      >返回</a-button>
+      >返回
+      </a-button>
     </template>
   </AvicModal>
 </template>
@@ -717,30 +721,32 @@ const tab = ref(0);
 const famTabs = ref([
   {
     label: '资产变更记录',
-    id: 0
-  },
-  {
-    label: '资产改造信息',
     id: 1
   },
   {
-    label: '资产出租/出借信息',
+    label: '资产改造信息',
     id: 2
   },
   {
-    label: '资产调配信息',
+    label: '资产出租/出借信息',
     id: 3
   },
   {
-    label: '资产封存/启封信息',
+    label: '资产调配信息',
     id: 4
   },
   {
-    label: '附属台账信息',
+    label: '资产封存/启封信息',
     id: 5
+  },
+  {
+    label: '附属台账信息',
+    id: 6
   }
 ]);
-const columns = [
+const columns = ref([]);
+
+const columns1 = [
   {
     name: '流程状态',
     dataIndex: 'name',
@@ -778,6 +784,201 @@ const columns = [
     key: 'action'
   }
 ];
+
+const columns2 = [
+  {
+    name: '流程状态',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '单据号',
+    dataIndex: 'age',
+    key: 'age'
+  },
+  {
+    title: '维修内容',
+    dataIndex: 'address',
+    key: 'address'
+  },
+  {
+    title: '新增原值',
+    key: 'tags',
+    dataIndex: 'tags'
+  },
+  {
+    title: '申请人',
+    key: 'action'
+  },
+  {
+    title: '申请日期',
+    key: 'action'
+  },
+  {
+    title: '联系电话',
+    key: 'action'
+  },
+  {
+    title: '密级',
+    key: 'action'
+  }
+];
+
+const columns3 = [
+  {
+    name: '流程状态',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '单据号',
+    dataIndex: 'age',
+    key: 'age'
+  },
+  {
+    title: '起租日期',
+    dataIndex: 'address',
+    key: 'address'
+  },
+  {
+    title: '承租人',
+    key: 'tags',
+    dataIndex: 'tags'
+  },
+  {
+    title: '申请人',
+    key: 'action'
+  },
+  {
+    title: '租凭期限',
+    key: 'action'
+  },
+  {
+    title: '租金',
+    key: 'action'
+  },
+  {
+    title: '密级',
+    key: 'action'
+  }
+];
+
+const columns4 = [
+  {
+    name: '流程状态',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '调拨编号',
+    dataIndex: 'age',
+    key: 'age'
+  },
+  {
+    title: '调入部门',
+    dataIndex: 'address',
+    key: 'address'
+  },
+  {
+    title: '调拨原因',
+    key: 'tags',
+    dataIndex: 'tags'
+  },
+  {
+    title: '申请人',
+    key: 'action'
+  },
+  {
+    title: '申请日期',
+    key: 'action'
+  },
+  {
+    title: '调拨日期',
+    key: 'action'
+  },
+  {
+    title: '密级',
+    key: 'action'
+  }
+];
+
+const columns5 = [
+  {
+    name: '流程状态',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '单据号',
+    dataIndex: 'age',
+    key: 'age'
+  },
+  {
+    title: '业务类型',
+    dataIndex: 'address',
+    key: 'address'
+  },
+  {
+    title: '封存/启封原因',
+    key: 'tags',
+    dataIndex: 'tags'
+  },
+  {
+    title: '申请人',
+    key: 'action'
+  },
+  {
+    title: '申请日期',
+    key: 'action'
+  },
+  {
+    title: '封存地点',
+    key: 'action'
+  },
+  {
+    title: '密级',
+    key: 'action'
+  }
+];
+
+const columns6 = [
+  {
+    name: '单项工程名称',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: '资产描述',
+    dataIndex: 'age',
+    key: 'age'
+  },
+  {
+    title: '资产类别',
+    dataIndex: 'address',
+    key: 'address'
+  },
+  {
+    title: '规格型号',
+    key: 'tags',
+    dataIndex: 'tags'
+  },
+  {
+    title: '单位',
+    key: 'action'
+  },
+  {
+    title: '面积',
+    key: 'action'
+  },
+  {
+    title: '购置价值',
+    key: 'action'
+  },
+  {
+    title: '密级',
+    key: 'action'
+  }
+];
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -793,19 +994,53 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const totalPage = ref(0);
 
 onMounted(() => {
-  getList();
+  columns.value = [...columns1];
+  getList(1);
 });
+const show = ref(true)
 
 const emit = defineEmits(emits);
 
 /** 资产列表tab点击 */
 function famTabsClick(id) {
   tab.value = id;
-  getList();
+  switch (id) {
+    case 1:
+      columns.value = [...columns1];
+      break;
+    case 2:
+      columns.value = [...columns2];
+      break;
+    case 3:
+      columns.value = [...columns3];
+      break;
+    case 4:
+      columns.value = [...columns4];
+      break;
+    case 5:
+      columns.value = [...columns5];
+      break;
+    case 6:
+      columns.value = [...columns6];
+      break;
+  }
+  getList(id);
 }
 
 /** 获取列表 */
-function getList() {}
+function getList(id) {
+  show.value = false
+  setTimeout(()=>{
+    show.value = true
+  },300)
+}
+
+
+/** 勾选复选框时触发 */
+function onSelectChange(rowKeys) {
+  selectedRowKeys.value = rowKeys;
+}
+
 
 const {
   form,

@@ -174,6 +174,50 @@
               />
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="assetClasst"
+              label="资产类别"
+              has-feedback
+            >
+              <a-input
+                v-model:value="form.assetClasst"
+                placeholder="请输入资产类别"
+                @click="assetClasstClick"
+              >
+                <template #suffix>
+                  <a-tooltip title="Extra information">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                  </a-tooltip>
+                </template>
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="equipmentType"
+              label="设备类型"
+              has-feedback
+            >
+              <a-select
+                v-model:value="form.equipmentType"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择设备类型"
+              >
+                <a-select-option
+                  v-for="item in equipmentTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item
                 label="附件"
@@ -205,14 +249,55 @@
       </a-form>
     </a-spin>
     <template #footer>
-      <a-button title="保存并启动流程" type="primary" :loading="loading" @click="addForm">保存</a-button>
+      <a-button title="保存" type="primary" :loading="loading" @click="addForm">保存</a-button>
+      <a-button title="启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">启动流程</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
+  <!-- 树节点 -->
+  <a-modal
+    :visible="assetClasstOpen"
+    @cancel="handleCancel"
+    @ok="handleSummit"
+  >
+    <a-spin :spinning="treeLoading">
+      <a-tree
+        v-if="treeData && treeData.length > 0"
+        v-model:expanded-keys="expandedKeys"
+        :tree-data="treeData"
+        :load-data="onLoadData"
+        :show-icon="true"
+        :show-line="true && { showLeafIcon: false }"
+        :default-expand-all="true"
+        @expand="handleExpand"
+        @select="handleSelect"
+      >
+        <template #icon="{ expanded, dataRef }">
+          <AvicIcon
+            v-if="dataRef.isLeaf"
+            svg="avic-file-fill"
+            color="#3370ff"
+          />
+          <AvicIcon
+            v-if="!expanded && !dataRef.isLeaf"
+            svg="avic-folder-3-fill"
+            color="#ffb800"
+          />
+          <AvicIcon
+            v-if="expanded && !dataRef.isLeaf"
+            svg="avic-folder-open-fill"
+            color="#ffb800"
+          />
+        </template>
+      </a-tree>
+    </a-spin>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
-import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入子表组件
+import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue';
+import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
+import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -234,6 +319,24 @@ const props = defineProps({
   }
 });
 
+onMounted(() => {
+  getTreeList();
+  setTimeout(() => {
+    getParent();
+  }, 300);
+});
+
+const { proxy } = getCurrentInstance();
+const accpetType = ref();
+const assetClass = ref();
+const assetClasstOpen = ref<boolean>(false);
+const treeLoading = ref(false);
+const treeData = ref(null);
+const expandedKeys = ref([]); //树节点validateRules
+const defaultRootParentId = ref('-1');
+const treeNodeId = ref();
+const isLand = ref(false); //是否为土地及房屋
+const assetClasstObj = ref();
 const emit = defineEmits(emits);
 const {
   form,
@@ -243,10 +346,12 @@ const {
   colLayout,
   loading,
   secretLevelList,
+  saveAndStartProcess,
   assetTypeList,
   accpetTypeList,
   uploadFile,
   afterUploadEvent,
+  equipmentTypeList,
   autoCode,
   closeModal,
   addForm,
@@ -255,4 +360,100 @@ const {
   props: props,
   emit: emit
 });
+
+/** 异步加载树节点 */
+async function onLoadData(treeNode) {
+  return new Promise<void>(resolve => {
+    if (treeNode.dataRef.children) {
+      resolve();
+      return;
+    }
+    getTreeData(1, treeNode.dataRef.id).then(response => {
+      setNodeSlots(response.data);
+      treeNode.dataRef.children = response.data;
+      treeData.value = [...treeData.value];
+      resolve();
+    });
+  });
+}
+
+/** 关闭类别树弹窗 */
+function handleCancel() {
+  assetClasstOpen.value = false;
+}
+
+/** 提交类别 */
+function handleSummit() {
+  getFamAssetClass(treeNodeId.value)
+    .then(async res => {
+      if (res.success) {
+        const parentId = getParentId();
+        isLand.value = res.data.treePath.split('/').includes(parentId);
+        assetClasstObj.value = res.data;
+        form.value.assetClasst = res.data.classCode;
+        assetClasstOpen.value = false;
+      }
+    })
+    .catch(error => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
+}
+
+
+/** 树节点展开事件 */
+function handleExpand(keys) {
+  expandedKeys.value = keys;
+}
+
+/** 树选中事件 */
+function handleSelect(keys: string[], node) {
+  treeNodeId.value = node.node.id;
+}
+
+
+/** 查询数据 */
+function getTreeList() {
+  treeLoading.value = true;
+  const expandLevel = 2;
+  treeData.value = [];
+  expandedKeys.value = [];
+  getTreeData(expandLevel, defaultRootParentId.value).then(response => {
+    setNodeSlots(response.data);
+    getExpandedKeys(response.data, expandLevel, expandedKeys.value);
+    treeData.value = response.data;
+    treeLoading.value = false;
+  });
+}
+
+/** 获取土地及房屋的id */
+function getParentId() {
+  let id = '';
+  treeData.value[0].children.map(item => {
+    if (item.title === '土地及房屋') {
+      id = item.id;
+    }
+  });
+  return id;
+}
+
+
+/** 资产类别弹窗 */
+const assetClasstClick = () => {
+  assetClasstOpen.value = true;
+};
+
+watch(
+  () => form.value.accpetType,
+  newV => {
+    accpetType.value = newV;
+  }
+);
+
+watch(
+  () => form.value.assetClass,
+  newV => {
+    assetClass.value = newV;
+  }
+);
 </script>

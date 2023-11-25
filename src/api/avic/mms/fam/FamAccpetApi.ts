@@ -120,6 +120,7 @@ export function delFamAccpet(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
+
 /** 根据资产类型名称返回父节点 */
 export function getTreeParent(id: string): Promise<ResponseBaseData<FamAccpetDto>> {
   return request.get(treePath + '/getTreeTd/' + id + '/v1');

@@ -350,12 +350,6 @@ const {
   emit: emit
 });
 
-/** 勾选复选框时触发 */
-function onSelectChange(rowKeys) {
-  selectedRowKeys.value = rowKeys;
-}
-
-
 
 </script>
 

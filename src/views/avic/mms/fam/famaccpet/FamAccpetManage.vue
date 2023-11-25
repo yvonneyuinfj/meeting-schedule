@@ -380,11 +380,11 @@
                 </a>
               </template>
               <template v-else-if="column.dataIndex === 'assetClass'">
-                <!-- {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }} -->
-               <!-- <AvicDictTag
-                  :value="record.assetClass"
-                  :options="assetClassList"
-                /> -->
+                 {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }}
+<!--                <AvicDictTag-->
+<!--                  :value="record.assetClass"-->
+<!--                  :options="assetClassList"-->
+<!--                />-->
               </template>
             </template>
           </AvicTable>
@@ -526,7 +526,7 @@ const columns = [
   },
   {
     title: '资产属性',
-    dataIndex: 'assetClassName',
+    dataIndex: 'assetClass',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -643,10 +643,9 @@ const mainId = computed(() => {
 onMounted(() => {
   // 加载表格数据
   getList();
-  // 加载查询区所需通用代码
-  getLookupList();
 });
-
+// 加载查询区所需通用代码
+getLookupList();
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中

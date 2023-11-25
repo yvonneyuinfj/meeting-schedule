@@ -51,7 +51,7 @@ export const settings: Settings = {
     /** 文件存储方式 */
     saveType: window.$config.uploader.saveType,
     /** 是否支持预览 */
-    allowPreview: false,
+    allowPreview: true,
     /** 预览服务地址 */
     previewDomain: ''
   },

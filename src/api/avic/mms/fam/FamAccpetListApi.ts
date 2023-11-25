@@ -1,6 +1,9 @@
 import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
+
 const basePath = '/mms/fam/famaccpetlists';
+const uploadPath = 'appsys/common/uploader/downloadForPreview/v1/';
+
 /** FAM_ACCPET_LIST */
 export interface FamAccpetListDto extends BaseBeanModel {
   /** 数据密级 */
@@ -80,24 +83,28 @@ export interface FamAccpetListDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listFamAccpetListByPage (
+export function listFamAccpetListByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<FamAccpetListDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getFamAccpetList (id: string): Promise<ResponseBaseData<FamAccpetListDto>> {
+export function getFamAccpetList(id: string): Promise<ResponseBaseData<FamAccpetListDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamAccpetList (form: FamAccpetListDto): Promise<ResponseBaseData<any>> {
+export function saveFamAccpetList(form: FamAccpetListDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
+export function previewImage(id: string, result: boolean): Promise<ResponseBaseData<any>> {
+  return request.get(uploadPath + id + '/' + result);
+}
+
 /** 根据id集合删除数据 */
-export function delFamAccpetList (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delFamAccpetList(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 

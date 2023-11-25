@@ -1,7 +1,6 @@
 <template>
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px;padding-top: 10px">
-    <!-- :key="new Date().getTime()" -->
     <AvicTable
       v-if="showTable"
       ref="famAccpetList"

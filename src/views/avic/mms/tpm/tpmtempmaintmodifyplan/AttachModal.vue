@@ -40,9 +40,6 @@ function handleCancel() {
   emit('closeAttach');
 }
 
-/** 上传成功的回调 */
-const afterUploadEvent = () => {
-};
 
 watch(
     () => props.attachForm.id,

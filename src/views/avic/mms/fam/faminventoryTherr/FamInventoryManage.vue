@@ -1162,6 +1162,7 @@ function getRootNode() {
   expandedRowKeys.value = [];
   getFamInventoryNode(expandLevel, '-1')
     .then(res => {
+      console.log(res);
       if (res.success && res.data.length === 1) {
         rootTree.value = res.data[0];
         list.value = res.data[0].children;

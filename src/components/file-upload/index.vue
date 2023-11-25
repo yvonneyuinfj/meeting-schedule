@@ -968,6 +968,8 @@ defineExpose({
   validateUploaderFileSecret,
   // 上传附件
   upload,
+  //删除附件
+  removeFile,
   // 删除所有附件
   removeAll
 });

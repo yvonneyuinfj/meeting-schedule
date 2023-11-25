@@ -341,7 +341,6 @@
       <a-tree
         v-if="treeData && treeData.length > 0"
         v-model:expanded-keys="expandedKeys"
-        v-model:selectedKeys="selectedKeys"
         :tree-data="treeData"
         :load-data="onLoadData"
         :show-icon="true"
@@ -402,7 +401,7 @@ onMounted(() => {
   getTreeList();
   setTimeout(() => {
     getParent();
-  }, 1000);
+  }, 300);
 });
 
 const { proxy } = getCurrentInstance();
@@ -411,7 +410,6 @@ const assetClass = ref();
 const assetClasstOpen = ref<boolean>(false);
 const treeLoading = ref(false);
 const treeData = ref(null);
-const selectedKeys = ref([]);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
@@ -469,7 +467,6 @@ function getTreeList() {
 
 /** 树节点展开事件 */
 function handleExpand(keys) {
-  console.log('走了====>' + keys);
   expandedKeys.value = keys;
 }
 
