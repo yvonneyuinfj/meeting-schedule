@@ -120,6 +120,10 @@ export function creativeMaintPlan (data){
   return request.post(basePath+ '/create-maint-plan/v1',data);
 }
 
+/** 提交审批 */
+export function approvalMaintPlan(data){
+  return request.post(basePath+ '/start-create-process/v1',data);
+}
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
   processDefId,
