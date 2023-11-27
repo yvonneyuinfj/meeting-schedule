@@ -43,26 +43,6 @@
               </template>
               删除
             </a-button>
-            <a-button
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
-              <template #icon>
-                <import-outlined />
-              </template>
-              导入
-            </a-button>
-            <a-button
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -90,19 +70,10 @@
         </template>
       </AvicTable>
     </div>
-    <AvicExcelImport
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="单表模板导入"
-      importUrl="/mms/fam/faminventorychangelistbatchs/importData/v1"
-      downloadTemplateUrl="/mms/fam/faminventorychangelistbatchs/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
-    />
   </div>
 </template>
 <script lang="ts" setup>
-import { listFamInventoryChangeListBatchByPage, delFamInventoryChangeListBatch, exportExcel } from '@/api/avic/mms/fam/FamInventoryChangeListBatchApi'; // 引入模块API
+import { listFamInventoryChangeListBatchByPage, delFamInventoryChangeListBatch } from '@/api/avic/mms/fam/FamInventoryChangeListBatchApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -122,17 +93,8 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '资产台账表ID',
-    dataIndex: 'inventoryId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产变更表ID',
-    dataIndex: 'inventoryChangeId',
+    title: '资产原值',
+    dataIndex: 'assetOriginalValue',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -160,8 +122,6 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'famInventoryChangeListBatch', inventoryChangeBatchId: '' });
 const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -226,25 +186,6 @@ function handleDelete (ids, type) {
         .catch(() => {
           delLoading.value = false;
         });
-    }
-  });
-}
-/** 导入 */
-function handleImport () {
-  showImportModal.value = true;
-}
-/** 导出 */
-function handleExport () {
-  proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      exportExcel(queryParam).then(() => {
-        loading.value = false;
-        proxy.$message.info('导出成功！');
-      });
     }
   });
 }

@@ -1,7 +1,5 @@
 import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
-import type { downloadParam } from '@/utils/download-util';
-import { downloadSysFile } from '@/utils/download-util';
 const basePath = '/mms/fam/faminventorychangelistbatchs';
 /** FAM_INVENTORY_CHANGE_LIST_BATCH */
 export interface FamInventoryChangeListBatchDto extends BaseBeanModel {
@@ -35,6 +33,8 @@ export interface FamInventoryChangeListBatchDto extends BaseBeanModel {
   inventoryId?: string;
   /** 资产变更表ID */
   inventoryChangeId?: string;
+  /** 资产原值 */
+  assetOriginalValue?: string;
 }
 
 /** 获取分页数据 */
@@ -59,12 +59,5 @@ export function delFamInventoryChangeListBatch (ids: [string]): Promise<Response
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
-/** 导出Excel */
-export function exportExcel (param: any) {
-  const download = {
-    url: basePath + '/exportData/v1',
-    data: param,
-    method: 'post'
-  } as downloadParam;
-  return downloadSysFile(download);
-}
+
+

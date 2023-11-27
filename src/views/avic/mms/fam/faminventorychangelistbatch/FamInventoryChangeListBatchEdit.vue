@@ -57,7 +57,7 @@
       </template>
       <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-           v-if="['inventoryId','inventoryChangeId'].includes(
+           v-if="['assetOriginalValue'].includes(
                column.dataIndex
               )"
             :record="record"
@@ -111,23 +111,9 @@ const props = defineProps({
 });
 const columns = [
   {
-    title: '资产台账表ID',
-    dataIndex: 'inventoryId',
-    key: 'inventoryId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '资产变更表ID',
-    dataIndex: 'inventoryChangeId',
-    key: 'inventoryChangeId',
+    title: '资产原值',
+    dataIndex: 'assetOriginalValue',
+    key: 'assetOriginalValue',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -155,9 +141,6 @@ const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const validateRules = {
-  inventoryId: [
-    { required:true, message: '资产台账表ID列不能为空' }
-  ]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
@@ -212,8 +195,7 @@ function handleAdd() {
   let item = {
     id: 'newLine' + proxy.$uuid(),
     operationType_: 'insert',
-    inventoryId: '',
-    inventoryChangeId: '',
+    assetOriginalValue: '',
     editable: true // true为编辑中, false为未编辑
   };
   const newData = [...list.value];
@@ -325,5 +307,6 @@ defineExpose({
   getChangedData
 });
 </script>
+
 
 

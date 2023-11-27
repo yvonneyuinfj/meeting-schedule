@@ -2,6 +2,7 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
+
 const basePath = '/mms/fam/faminventorychangebatchs';
 /** FAM_INVENTORY_CHANGE_BATCH */
 export interface FamInventoryChangeBatchDto extends BaseBeanModel {
@@ -61,14 +62,12 @@ export interface FamInventoryChangeBatchDto extends BaseBeanModel {
   storageLocation?: string;
   /** 部门名称 */
   deptName?: string;
-  /** 主管部门 */
+  /** 主管部门id */
   managerDeptId?: string;
-  managerDeptIdAlias?: string;
   /** 主管部门名称 */
   managerDeptName?: string;
-  /** 责任人 */
+  /** 责任人ID */
   responseUserId?: string;
-  responseUserIdAlias?: string;
   /** 责任人NAME */
   responseUserName?: string;
   /** 入账时累计折旧 */
@@ -110,10 +109,9 @@ export interface FamInventoryChangeBatchDto extends BaseBeanModel {
   /** 资产密级 */
   assetSecretLevel?: string;
   /** 是否军工关键设备 */
-  ynMilitaryKeyEquip?: any;
-  /** 接收部门 */
+  ynMilitaryKeyEquip?: string;
+  /** 接收部门ID */
   receiveDeptId?: string;
-  receiveDeptIdAlias?: string;
   /** 接收部门名称 */
   receiveDeptName?: string;
   /** 资产类别 */
@@ -122,9 +120,8 @@ export interface FamInventoryChangeBatchDto extends BaseBeanModel {
   fundSource?: string;
   /** 项目名称 */
   projectName?: string;
-  /** 经办人 */
+  /** 经办人ID */
   handlePersonId?: string;
-  handlePersonIdAlias?: string;
   /** 经办人名称 */
   handlePersonName?: string;
   /** 设备大类 */
@@ -144,21 +141,39 @@ export interface FamInventoryChangeBatchDto extends BaseBeanModel {
   /** 父资产编号 */
   parentAssetNo?: string;
   /** 是否为进口设备 */
-  importedOrNot?: any;
+  importedOrNot?: string;
   /** 资产分类 */
   assetType?: string;
   /** 质保期 */
   warrantyPeriod?: string;
   /** 变更表ID */
   inventoryChangeId?: string;
+  /** 申请单编号 */
+  applyNo?: any;
+  /** 申请人ID */
+  applyPersonId?: string;
+  applyPersonIdAlias?: string;
+  /** 申请人NAME */
+  applyPersonName?: string;
+  /** 主管部门ID */
+  applyDeptId?: string;
+  applyDeptIdAlias?: string;
+  /** 主管部门名称 */
+  applyDeptName?: string;
+  /** 申请人联系方式 */
+  applyPersonIp?: string;
+  /** 变更理由 */
+  changeNote?: string;
+  /** 分期金额 */
+  fenqi?: string;
+  bpmState?: string;
+  bpmType?: string;
   /** 子表集合 */
   famInventoryChangeListBatchList?: [];
 }
 
 /** 获取分页数据 */
-export function listFamInventoryChangeBatchByPage (
-  param: QueryParamModel
-): Promise<ResponsePageData<FamInventoryChangeBatchDto>> {
+export function listFamInventoryChangeBatchByPage(param: QueryParamModel): Promise<ResponsePageData<FamInventoryChangeBatchDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
@@ -172,13 +187,26 @@ export function saveFamInventoryChangeBatch (form: FamInventoryChangeBatchDto): 
   return request.post(basePath + '/save/v1', form);
 }
 
+/** 保存并启动流程 */
+export function saveFormAndStartProcess({
+  processDefId,
+  formCode,
+  postData
+}): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-and-start-process/v1', {
+    processDefId,
+    formCode,
+    bean: postData
+  });
+}
+
 /** 根据id集合删除数据 */
-export function delFamInventoryChangeBatch (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delFamInventoryChangeBatch(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,
