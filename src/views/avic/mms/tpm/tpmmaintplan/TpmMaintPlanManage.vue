@@ -549,9 +549,9 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'tpmStandardId'">
+          <template v-else-if="column.dataIndex === 'billNo'">
             <a @click="handleFlowDetail(record)">
-              {{ record.tpmStandardId }}
+              {{ record.billNo }}
             </a>
           </template>
         </template>
