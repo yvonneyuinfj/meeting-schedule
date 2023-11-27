@@ -95,6 +95,12 @@ export function listTpmYearMaintModifyPlanLByPage (
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
+export function selectlistTpmYearMaintModifyPlanLByPage (
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmYearMaintModifyPlanLDto>> {
+  return request.post(basePath + '/search-select-by-page/v1', param);
+}
+
 /** 根据id加载数据 */
 export function getTpmYearMaintModifyPlanL (id: string): Promise<ResponseBaseData<TpmYearMaintModifyPlanLDto>> {
   return request.get(basePath + '/get/' + id + '/v1');

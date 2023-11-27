@@ -62,12 +62,16 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="maintPlan" label="维修计划" has-feedback>
-              <a-input
-                v-model:value="form.maintPlan"
-                :maxLength="32"
-                placeholder="请输入维修计划"
-              />
+            <a-form-item name="annualProvisional" label="年度/临时">
+              <a-radio-group v-model:value="form.annualProvisional">
+                <a-radio
+                  v-for="item in annualProvisionalList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-radio>
+              </a-radio-group>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -88,6 +92,27 @@
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="maintPlan" label="维修计划" has-feedback>
+              <a-input v-if="annual === '2'"
+                       v-model:value="form.maintPlan"
+                       :maxLength="32"
+                       placeholder="请输入维修计划"
+              />
+              <a-input
+                v-if="annual === '1' "
+                v-model:value="form.maintPlan"
+                @click="maintPlanClick"
+                placeholder="请选择维修计划"
+              >
+                <template #suffix>
+                  <a-tooltip title="Extra information">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                  </a-tooltip>
+                </template>
+              </a-input>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -166,19 +191,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="annualProvisional" label="年度/临时">
-              <a-radio-group v-model:value="form.annualProvisional">
-                <a-radio
-                  v-for="item in annualProvisionalList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-radio>
-              </a-radio-group>
-            </a-form-item>
-          </a-col>
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="projectNumber" label="课题号" has-feedback>
               <a-input
@@ -337,7 +350,9 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <FamOverhaulRequireListEdit ref="famOverhaulRequireListEdit" :mainId="formId || form.id" />
+        <FamOverhaulRequireListEdit ref="famOverhaulRequireListEdit" :mainId="formId || form.id"/>
+        <AnnualMaintPlan v-if="maintPlanModal" ref="annualMaintPlan" :visible="maintPlanModal"
+                         @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
       </a-form>
     </a-spin>
     <template #footer>
@@ -348,6 +363,7 @@
 </template>
 <script lang="ts" setup>
 import { useFamOverhaulRequireForm, emits } from './ts/FamOverhaulRequireForm'; // 引入表单ts
+import AnnualMaintPlan from '@/views/avic/mms/fam/components/AnnualMaintPlan.vue';
 import FamOverhaulRequireListEdit from '@/views/avic/mms/fam/famoverhaulrequirelist/FamOverhaulRequireListEdit.vue'; // 引入子表组件
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
@@ -371,6 +387,9 @@ const props = defineProps({
     type: Function
   }
 });
+const annualMaintPlan = ref(null);
+const annual = ref();
+const maintPlanModal = ref<boolean>(false);
 const emit = defineEmits(emits);
 const {
   form,
@@ -398,4 +417,22 @@ const {
   props: props,
   emit: emit
 });
+
+watch(()=> form.value.annualProvisional , newV => {
+  annual.value = newV
+})
+
+/** 点击维修计划 */
+const maintPlanClick = () => {
+  maintPlanModal.value = true;
+};
+/** 关闭年度弹窗 */
+const closeMaintPlan = () => {
+  maintPlanModal.value = false;
+};
+
+const getPlanNo = (v) => {
+  form.value.maintPlan = v;
+  maintPlanModal.value = false;
+};
 </script>

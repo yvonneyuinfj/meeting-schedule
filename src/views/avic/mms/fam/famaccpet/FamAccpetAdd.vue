@@ -387,11 +387,15 @@ function handleSummit() {
   getFamAssetClass(treeNodeId.value)
     .then(async res => {
       if (res.success) {
-        const parentId = getParentId();
-        isLand.value = res.data.treePath.split('/').includes(parentId);
-        assetClasstObj.value = res.data;
-        form.value.assetClasst = res.data.classCode;
-        assetClasstOpen.value = false;
+        if(res.data.treeLeaf === 'Y'){
+          const parentId = getParentId();
+          isLand.value = res.data.treePath.split('/').includes(parentId);
+          assetClasstObj.value = res.data;
+          form.value.assetClasst = res.data.classCode;
+          assetClasstOpen.value = false;
+        }else{
+          proxy.$message.warning('该数据不属于末级节点请重新选择！');
+        }
       }
     })
     .catch(error => {

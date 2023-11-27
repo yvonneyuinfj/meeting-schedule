@@ -144,10 +144,9 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
           // 处理富文本
           await dealRichText(form.value.applyReason);
           // 详情表单 富文本是否可编辑
-          if (fieldDisabled('applyReason')) {
+          if ( props.bpmInstanceObject &&  fieldDisabled('applyReason')) {
             editorRef.value.disable();
           }
-
           loading.value = false;
         } else {
           initForm();
