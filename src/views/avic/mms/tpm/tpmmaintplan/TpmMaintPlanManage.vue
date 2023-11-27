@@ -1092,16 +1092,23 @@ function handleFlowDetail(record) {
 
 /** 提交审批 */
 const handleApproval = (rows, ids) => {
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要提交审批的数据！');
-    return;
-  }
-  if (ids.length > 1) {
-    proxy.$message.warning('请选择一条要提交审批的数据！');
-    return;
-  }
-  approvalLoading.value = true;
-  getBpmDefine(rows[0]);
+  // if (ids.length == 0) {
+  //   proxy.$message.warning('请选择要提交审批的数据！');
+  //   return;
+  // }
+  // if (ids.length > 1) {
+  //   proxy.$message.warning('请选择一条要提交审批的数据！');
+  //   return;
+  // }
+  proxy.$confirm({
+    title: '确认要提交审批选择的数据吗?',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      approvalLoading.value = true;
+      getBpmDefine(rows[0]);
+    }
+  });
 };
 
 function getBpmDefine(row) {
