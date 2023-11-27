@@ -479,17 +479,17 @@
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -517,7 +517,7 @@
         @change="handleTableChange"
         @refresh="getList"
       >
-        <template #toolBarLeft>
+        <template #toolBarLeft v-if="!isAdd">
           <a-space>
             <a-button
               v-hasPermi="['famScrapLedger:add']"
@@ -526,7 +526,7 @@
               @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
@@ -539,7 +539,7 @@
               @click="handleDelete(selectedRowKeys, '')"
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -550,7 +550,7 @@
               ghost
               @click="handleImport">
               <template #icon>
-                 <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
@@ -561,7 +561,7 @@
               ghost
               @click="handleExport">
               <template #icon>
-                 <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
@@ -647,6 +647,12 @@ const layout = {
   labelCol: { flex: '0 0 120px' },
   wrapperCol: { flex: '1 1 0' }
 };
+const props = defineProps({
+  isAdd: {
+    type: Boolean,
+    default: false
+  }
+});
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
   {
@@ -1021,7 +1027,7 @@ onMounted(() => {
 });
 
 /** 查询数据  */
-function getList () {
+function getList() {
   selectedRowKeys.value = []; // 清空选中
   loading.value = true;
   listFamScrapLedgerByPage(queryParam)
@@ -1036,8 +1042,9 @@ function getList () {
       loading.value = false;
     });
 }
+
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     isAttendList.value = result.isAttend;
     reportToGroupList.value = result.reportToGroup;
@@ -1048,50 +1055,58 @@ function getLookupList () {
     completedOrNotList.value = result.completedOrNot;
   });
 }
+
 /** 高级查询 查询按钮操作 */
-function handleQuery () {
+function handleQuery() {
   queryParam.searchParams = queryForm.value;
   queryParam.keyWord = '';
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
-function resetQuery () {
+function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
-function toggleAdvanced () {
+function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
-function handleKeyWordQuery (value) {
-  const keyWord = {
-  };
+function handleKeyWordQuery(value) {
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
-function handleAdd () {
+function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
-function handleEdit (id) {
+function handleEdit(id) {
   formId.value = id;
   showEditModal.value = true;
 }
+
 /** 详细 */
-function handleDetail (record) {
+function handleDetail(record) {
   formId.value = record.id;
   showDetailModal.value = true;
 }
+
 /** 导入 */
-function handleImport () {
+function handleImport() {
   showImportModal.value = true;
 }
+
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -1106,8 +1121,9 @@ function handleExport () {
     }
   });
 }
+
 /** 删除 */
-function handleDelete (ids, type) {
+function handleDelete(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
@@ -1132,12 +1148,25 @@ function handleDelete (ids, type) {
     }
   });
 }
+
 /** 勾选复选框时触发 */
-function onSelectChange (rowKeys) {
+function onSelectChange(rowKeys) {
   selectedRowKeys.value = rowKeys;
 }
+
+const selectedRow = () => {
+  let rows = [];
+  selectedRowKeys.value.map(item => {
+    rows.push({
+      ...list.value.filter(i => item === i.id)[0],
+      operationType_: 'inside'
+    });
+  });
+  return rows;
+};
+
 /** 表格排序 */
-function handleTableChange (pagination, filters, sorter) {
+function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
@@ -1146,6 +1175,10 @@ function handleTableChange (pagination, filters, sorter) {
   }
   getList();
 }
+
+defineExpose({
+  selectedRow
+});
 
 </script>
 

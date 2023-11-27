@@ -117,7 +117,7 @@
     </AvicTable>
     <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
       <div style="height: 600px;overflow: auto">
-        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
+        <fam-scrap-ledger-manage :isAdd="'true'" ref="famScrapLedgerManage"></fam-scrap-ledger-manage>
       </div>
     </a-modal>
   </div>
@@ -125,7 +125,7 @@
 <script lang="ts" setup>
 import type { FamHandleListDto } from '@/api/avic/mms/fam/FamHandleListApi'; // 引入模块DTO
 import { listFamHandleListByPage } from '@/api/avic/mms/fam/FamHandleListApi';
-import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue'; // 引入模块API
+import FamScrapLedgerManage from '@/views/avic/mms/fam/famscrapledger/FamScrapLedgerManage.vue'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -297,7 +297,7 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const open = ref<boolean>(false);
-const famInventoryManage = ref(null);
+const famScrapLedgerManage = ref(null);
 const totalPage = ref(0);
 const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
@@ -358,15 +358,11 @@ function handleMostAdd() {
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  const selectRow = famInventoryManage.value.selectedRow();
-  selectRow.map(item => {
-    item['assetNo'] = item.assetsName;
-    item['assetName'] = item.assetsName;
-    item['assetCode'] = item.assetsCode;
-    item['purchaseTime'] = item.purchaseDate;
-    item['factorySerialNumber'] = item.productionNo;
-    item['inventoryId'] = item.id;
-  });
+  const selectRow = famScrapLedgerManage.value.selectedRow();
+  // selectRow.map(item => {
+  //   console.log(item.inventoryId)
+  //   item['inventoryId'] = item.id;
+  // });
   list.value = [...list.value, ...selectRow];
 };
 
