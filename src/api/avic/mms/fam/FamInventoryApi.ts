@@ -3,6 +3,7 @@ import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 const basePath = '/mms/fam/faminventorys';
+const assetsPath = '/mms/fam/famassettransfers'
 /** FAM_INVENTORY */
 export interface FamInventoryDto extends BaseBeanModel {
   /** 数据密级 */
@@ -171,6 +172,11 @@ export function saveFamInventory (form: FamInventoryDto): Promise<ResponseBaseDa
 /** 根据id集合删除数据 */
 export function delFamInventory (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
+}
+
+/** 资产调配信息列表 */
+export function assetAllocation(id) {
+  return request.get(assetsPath + '/getInventoryChange/'+id+'/v1')
 }
 
 /** 导出Excel */

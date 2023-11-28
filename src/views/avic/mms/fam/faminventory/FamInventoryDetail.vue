@@ -711,6 +711,8 @@
 </template>
 <script lang="ts" setup>
 import { useFamInventoryForm, emits } from './ts/FamInventoryForm'; // 引入表单ts
+import { assetAllocation } from '@/api/avic/mms/fam/FamInventoryApi.ts';
+
 const props = defineProps({
   formId: {
     type: String,
@@ -827,8 +829,8 @@ const columns2 = [
 const columns3 = [
   {
     name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    dataIndex: 'statues',
+    key: 'statues'
   },
   {
     title: '单据号',
@@ -866,40 +868,44 @@ const columns3 = [
 const columns4 = [
   {
     name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    key: 'name',
+    dataIndex: 'name'
   },
   {
     title: '调拨编号',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'applyNo',
+    key: 'applyNo'
   },
   {
     title: '调入部门',
-    dataIndex: 'address',
-    key: 'address'
+    dataIndex: 'inTransferDeptIdAlias',
+    key: 'inTransferDeptIdAlias'
   },
   {
     title: '调拨原因',
-    key: 'tags',
-    dataIndex: 'tags'
+    key: 'borrowReason',
+    dataIndex: 'borrowReason'
   },
   {
     title: '申请人',
-    key: 'action'
+    key: 'handlePersonIdAlias',
+    dataIndex: 'handlePersonIdAlias'
   },
   {
     title: '申请日期',
-    key: 'action'
-  },
-  {
-    title: '调拨日期',
-    key: 'action'
-  },
-  {
-    title: '密级',
-    key: 'action'
+    key: 'applyDate',
+    dataIndex: 'applyDate'
   }
+  // {
+  //   title: '调拨日期',
+  //   key: 'action',
+  //   dataIndex: ''
+  // },
+  // {
+  //   title: '密级',
+  //   key: 'secretLevelName',
+  //   dataIndex:'secretLevelName'
+  // }
 ];
 
 const columns5 = [
@@ -997,7 +1003,7 @@ onMounted(() => {
   columns.value = [...columns1];
   getList(1);
 });
-const show = ref(true)
+const show = ref(true);
 
 const emit = defineEmits(emits);
 
@@ -1016,6 +1022,11 @@ function famTabsClick(id) {
       break;
     case 4:
       columns.value = [...columns4];
+      show.value = false;
+      assetAllocation(props.formId).then(res => {
+        show.value = true;
+        data.value = res.data;
+      });
       break;
     case 5:
       columns.value = [...columns5];
@@ -1024,15 +1035,15 @@ function famTabsClick(id) {
       columns.value = [...columns6];
       break;
   }
-  getList(id);
+  // getList(id);
 }
 
 /** 获取列表 */
 function getList(id) {
-  show.value = false
-  setTimeout(()=>{
-    show.value = true
-  },300)
+  show.value = false;
+  setTimeout(() => {
+    show.value = true;
+  }, 300);
 }
 
 

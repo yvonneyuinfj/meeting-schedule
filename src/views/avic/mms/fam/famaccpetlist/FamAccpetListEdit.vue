@@ -1232,6 +1232,7 @@ watch(
   () => props.isLand,
   newV => {
     showTable.value = false;
+    console.log(props.isLand);
     if (props.isLand) {
       columns.value = [...columns1];
     } else {

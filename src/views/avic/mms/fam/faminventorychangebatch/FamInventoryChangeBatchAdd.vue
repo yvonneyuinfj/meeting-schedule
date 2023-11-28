@@ -66,15 +66,15 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="fenqi" label="分期金额">
-              <a-input
-                v-model:value="form.fenqi"
-                :maxLength="64"
-                placeholder="请输入分期金额"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="fenqi" label="分期金额">-->
+<!--              <a-input-->
+<!--                v-model:value="form.fenqi"-->
+<!--                :maxLength="64"-->
+<!--                placeholder="请输入分期金额"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols4">
             <a-form-item
               label="附件"
