@@ -6,7 +6,7 @@
           <!-- 高级查询 -->
           <a-form v-bind="layout" ref="formRef" :model="queryForm">
             <a-row :gutter="16">
-              <a-col v-bind="colLayout.cols">
+<!--              <a-col v-bind="colLayout.cols">
                 <a-form-item label="资产编号">
                   <a-input
                     v-model:value="queryForm.assetsCode"
@@ -35,8 +35,8 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              </a-col> -->
+              <a-col v-bind="colLayout.cols">
                 <a-form-item label="资产来源">
                   <a-input
                     v-model:value="queryForm.assetSource"
@@ -46,7 +46,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col v-bind="colLayout.cols">
                 <a-form-item label="资产状态">
                   <a-select
                     v-model:value="queryForm.assetsStatus"
@@ -66,7 +66,7 @@
                   </a-select>
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-col v-bind="colLayout.cols" >
                 <a-form-item label="资产用途">
                   <a-input
                     v-model:value="queryForm.assetsUse"
@@ -310,7 +310,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="设备编号">
                   <a-input
                     v-model:value="queryForm.equipNo"
@@ -319,7 +319,7 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="出厂编号">
                   <a-input
@@ -480,7 +480,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="设备大类">
                   <a-input
                     v-model:value="queryForm.equipClass"
@@ -489,7 +489,7 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="资产规格">
                   <a-input
@@ -552,7 +552,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="父资产编号">
                   <a-input
                     v-model:value="queryForm.parentAssetNo"
@@ -561,7 +561,7 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="是否为进口设备">
                   <a-select
@@ -733,9 +733,9 @@
                   index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
                 }}
               </template>
-              <template v-else-if="column.dataIndex === 'secretLevelName'">
+              <template v-else-if="column.dataIndex === 'changeApplyNo'">
                 <a @click="handleFlowDetail(record)">
-                  {{ record.secretLevelName }}
+                  {{ record.changeApplyNo }}
                 </a>
               </template>
             </template>
@@ -801,16 +801,61 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
+    title: '申请编号',
+    dataIndex: 'changeApplyNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
+  // {
+  //   title: '数据密级',
+  //   dataIndex: 'secretLevelName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '资产编号',
+  //   dataIndex: 'assetsCode',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产名称',
+  //   dataIndex: 'assetsName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产类别名称',
+  //   dataIndex: 'assetClassName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产来源',
+  //   dataIndex: 'assetSource',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '资产编号',
-    dataIndex: 'assetsCode',
+    title: '申请人',
+    dataIndex: 'createdBy',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -818,8 +863,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资产名称',
-    dataIndex: 'assetsName',
+    title: '申请时间',
+    dataIndex: 'creationDate',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -827,435 +872,435 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资产类别名称',
-    dataIndex: 'assetClassName',
+    title: '更改内容',
+    dataIndex: 'changeNote',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 500,
     resizable: true,
     align: 'left'
   },
   {
-    title: '资产来源',
-    dataIndex: 'assetSource',
+    title: '更改原因',
+    dataIndex: 'changeReason',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 500,
     resizable: true,
     align: 'left'
   },
-  {
-    title: '资产状态',
-    dataIndex: 'assetsStatusName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产用途',
-    dataIndex: 'assetsUse',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '入账日期',
-    dataIndex: 'entryDate',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '累计折旧',
-    dataIndex: 'depreciationValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '折旧方法',
-    dataIndex: 'depreciationWay',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '使用年限',
-    dataIndex: 'useTime',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产净值',
-    dataIndex: 'assetNetValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '月折旧额',
-    dataIndex: 'monDepreciation',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'storageLocation',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '部门名称',
-    dataIndex: 'deptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '主管部门',
-    dataIndex: 'managerDeptIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '责任人',
-    dataIndex: 'responseUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '入账时累计折旧',
-    dataIndex: 'firstDepreciationValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '已提月份',
-    dataIndex: 'monthProposed',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '品牌型号',
-    dataIndex: 'brandModel',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '购置日期',
-    dataIndex: 'purchaseDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '入账前当年折旧',
-    dataIndex: 'currentYearDepreciation',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '新增当月计提',
-    dataIndex: 'newaCurrentmProvision',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '其他',
-    dataIndex: 'other',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '重置凭证号',
-    dataIndex: 'resetVoucherNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备编号',
-    dataIndex: 'equipNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂编号',
-    dataIndex: 'productionNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '凭证号',
-    dataIndex: 'voucherNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'factoryOwner',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '建设项目',
-    dataIndex: 'buildProject',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '品牌',
-    dataIndex: 'brand',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '权属证号',
-    dataIndex: 'ownershipCertNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购合同号',
-    dataIndex: 'procureOrderNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产密级',
-    dataIndex: 'assetSecretLevel',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否军工关键设备',
-    dataIndex: 'ynMilitaryKeyEquipName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '接收部门',
-    dataIndex: 'receiveDeptIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资金来源',
-    dataIndex: 'fundSource',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '项目名称',
-    dataIndex: 'projectName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '经办人',
-    dataIndex: 'handlePersonIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备大类',
-    dataIndex: 'equipClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否为进口设备',
-    dataIndex: 'importedOrNotName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产分类',
-    dataIndex: 'assetTypeName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '资产状态',
+  //   dataIndex: 'assetsStatusName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '资产用途',
+  //   dataIndex: 'assetsUse',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '入账日期',
+  //   dataIndex: 'entryDate',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产原值',
+  //   dataIndex: 'assetOriginalValue',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '累计折旧',
+  //   dataIndex: 'depreciationValue',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '折旧方法',
+  //   dataIndex: 'depreciationWay',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产数量',
+  //   dataIndex: 'assetNum',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '使用年限',
+  //   dataIndex: 'useTime',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产净值',
+  //   dataIndex: 'assetNetValue',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '月折旧额',
+  //   dataIndex: 'monDepreciation',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '存放地点',
+  //   dataIndex: 'storageLocation',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '部门名称',
+  //   dataIndex: 'deptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '主管部门',
+  //   dataIndex: 'managerDeptIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '责任人',
+  //   dataIndex: 'responseUserIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '入账时累计折旧',
+  //   dataIndex: 'firstDepreciationValue',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '已提月份',
+  //   dataIndex: 'monthProposed',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '品牌型号',
+  //   dataIndex: 'brandModel',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '购置日期',
+  //   dataIndex: 'purchaseDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '入账前当年折旧',
+  //   dataIndex: 'currentYearDepreciation',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '新增当月计提',
+  //   dataIndex: 'newaCurrentmProvision',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '其他',
+  //   dataIndex: 'other',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '重置凭证号',
+  //   dataIndex: 'resetVoucherNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '设备编号',
+  //   dataIndex: 'equipNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '出厂编号',
+  //   dataIndex: 'productionNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '凭证号',
+  //   dataIndex: 'voucherNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '厂商',
+  //   dataIndex: 'factoryOwner',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '建设项目',
+  //   dataIndex: 'buildProject',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '品牌',
+  //   dataIndex: 'brand',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '权属证号',
+  //   dataIndex: 'ownershipCertNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '采购合同号',
+  //   dataIndex: 'procureOrderNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产密级',
+  //   dataIndex: 'assetSecretLevel',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '是否军工关键设备',
+  //   dataIndex: 'ynMilitaryKeyEquipName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '接收部门',
+  //   dataIndex: 'receiveDeptIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资金来源',
+  //   dataIndex: 'fundSource',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '项目名称',
+  //   dataIndex: 'projectName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '经办人',
+  //   dataIndex: 'handlePersonIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '设备大类',
+  //   dataIndex: 'equipClass',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产规格',
+  //   dataIndex: 'assetSpec',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产型号',
+  //   dataIndex: 'assetModel',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '资产单价',
+  //   dataIndex: 'assetUnit',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '发票号',
+  //   dataIndex: 'invoiceNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '出厂日期',
+  //   dataIndex: 'productionDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '父资产编号',
+  //   dataIndex: 'parentAssetNo',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '是否为进口设备',
+  //   dataIndex: 'importedOrNotName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '资产分类',
+  //   dataIndex: 'assetTypeName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '质保期',
+  //   dataIndex: 'warrantyPeriod',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '流程状态',
     dataIndex: 'businessstate_',
@@ -1486,4 +1531,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

@@ -88,7 +88,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门id">
                   <a-input
                     v-model:value="queryForm.managerDeptId"
@@ -97,8 +97,8 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              </a-col> -->
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptName"
@@ -112,7 +112,7 @@
                     "
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="是否使用型号经费">
                   <a-select
@@ -554,23 +554,23 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '主管部门id',
-    dataIndex: 'managerDeptId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '主管部门名称',
-    dataIndex: 'managerDeptNameAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '主管部门id',
+  //   dataIndex: 'managerDeptId',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '主管部门名称',
+  //   dataIndex: 'managerDeptNameAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '是否使用型号经费',
     dataIndex: 'isUsedScientificrsName',
@@ -948,4 +948,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-
