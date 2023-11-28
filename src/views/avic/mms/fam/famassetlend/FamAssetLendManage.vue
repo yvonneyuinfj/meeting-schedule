@@ -315,8 +315,12 @@
                   导出
                 </a-button>
                 <a-button
+                  v-hasPermi="['famAssetLend:export']"
                   title="归还"
                   type="primary"
+                  ghost
+                  :loading="returnLoading"
+                  @click="handleReturn(selectedRows, selectedRowKeys)"
                 >
                   <template #icon>
                     <import-outlined />
@@ -397,7 +401,7 @@ import type { FamAssetLendDto } from '@/api/avic/mms/fam/FamAssetLendApi'; // �
 import {
   listFamAssetLendByPage,
   delFamAssetLend,
-  exportExcel
+  exportExcel, returnFamAssetLend
 } from '@/api/avic/mms/fam/FamAssetLendApi'; // 引入模块API
 import FamAssetLendAdd from './FamAssetLendAdd.vue'; // 引入添加页面组件
 import FamAssetLendEdit from './FamAssetLendEdit.vue'; // 引入编辑页面组件
@@ -568,6 +572,7 @@ const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); //表格数据集合
 const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); //选中数据主键集合
+const returnLoading = ref(false)
 const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
@@ -677,6 +682,38 @@ function handleExport() {
     }
   });
 }
+
+function handleReturn(rows, ids){
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要归还的数据！');
+    return;
+  }
+  const returnids = ids.join(',')
+  console.log(returnids)
+  proxy.$confirm({
+    title: '确定归还已选数据及关联的子表数据吗？',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      returnLoading.value = true;
+      returnFamAssetLend(returnids)
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('归还成功！');
+            // 清空选中
+            selectedRowKeys.value = [];
+            selectedRows.value = [];
+            getList();
+          }
+          returnLoading.value = false;
+        })
+        .catch(() => {
+          returnLoading.value = false;
+        });
+    }
+  });
+}
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {

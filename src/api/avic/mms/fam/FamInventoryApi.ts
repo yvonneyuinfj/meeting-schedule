@@ -4,6 +4,12 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 const basePath = '/mms/fam/faminventorys';
 const assetsPath = '/mms/fam/famassettransfers'
+const faminventorychangesPath = '/mms/fam/faminventorychanges'
+const famoverhaulrequiresPath='/mms/fam/famoverhaulrequires'
+const famassetlendsPath = '/mms/fam/famassetlends'
+const famsealandunsealsPath = '/mms/fam/famsealandunseals'
+const famassetborrowapplysPath = '/mms/fam/famassetborrowapplys'
+
 /** FAM_INVENTORY */
 export interface FamInventoryDto extends BaseBeanModel {
   /** 数据密级 */
@@ -175,8 +181,21 @@ export function delFamInventory (ids: [string]): Promise<ResponseBaseData<any>> 
 }
 
 /** 资产调配信息列表 */
-export function assetAllocation(id) {
-  return request.get(assetsPath + '/getInventoryChange/'+id+'/v1')
+export function getFormList(selectId,id) {
+  switch (selectId) {
+    case 1:
+      return request.get(faminventorychangesPath + '/getInventoryChange/'+id+'/v1')
+    case 2:
+      return request.get(famoverhaulrequiresPath + '/getInventoryChange/'+id+'/v1')
+    case 3:
+      return request.get(famassetlendsPath + '/getInventoryChange/'+id+'/v1')
+    case 4:
+      return request.get(assetsPath + '/getInventoryChange/'+id+'/v1')
+    case 5:
+      return request.get(famsealandunsealsPath + '/getInventoryChange/'+id+'/v1')
+    case 6:
+      return request.get(famassetborrowapplysPath + '/getInventoryChange/'+id+'/v1')
+  }
 }
 
 /** 导出Excel */

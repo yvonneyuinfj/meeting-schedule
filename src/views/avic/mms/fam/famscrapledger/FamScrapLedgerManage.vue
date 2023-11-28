@@ -521,39 +521,39 @@
           <a-space>
             <a-button
               v-hasPermi="['famScrapLedger:add']"
-              title="添加"
+              title="批量录入批复文号"
               type="primary"
-              @click="handleAdd"
+              @click="handleAdd(selectedRowKeys, '')"
             >
               <template #icon>
                 <plus-outlined/>
               </template>
-              添加
+              批量录入批复文号
             </a-button>
-            <a-button
-              v-hasPermi="['famScrapLedger:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined/>
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['famScrapLedger:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
-              <template #icon>
-                <import-outlined/>
-              </template>
-              导入
-            </a-button>
+<!--            <a-button-->
+<!--              v-hasPermi="['famScrapLedger:del']"-->
+<!--              title="删除"-->
+<!--              danger-->
+<!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+<!--              :loading="delLoading"-->
+<!--              @click="handleDelete(selectedRowKeys, '')"-->
+<!--            >-->
+<!--              <template #icon>-->
+<!--                <delete-outlined/>-->
+<!--              </template>-->
+<!--              删除-->
+<!--            </a-button>-->
+<!--            <a-button-->
+<!--              v-hasPermi="['famScrapLedger:import']"-->
+<!--              title="导入"-->
+<!--              type="primary"-->
+<!--              ghost-->
+<!--              @click="handleImport">-->
+<!--              <template #icon>-->
+<!--                <import-outlined/>-->
+<!--              </template>-->
+<!--              导入-->
+<!--            </a-button>-->
             <a-button
               v-hasPermi="['famScrapLedger:export']"
               title="导出"
@@ -607,6 +607,7 @@
     <fam-scrap-ledger-add
       v-if="showAddModal"
       ref="addModal"
+      :select-ids="selectIds"
       @reloadData="getList"
       @close="showAddModal = false"
     />
@@ -997,6 +998,7 @@ const excelParams = ref({ tableName: 'famScrapLedger' }); // 导入Excel数据�
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
+const selectIds = ref<String>('')
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
@@ -1084,7 +1086,13 @@ function handleKeyWordQuery(value) {
 }
 
 /** 添加 */
-function handleAdd() {
+function handleAdd(ids) {
+  console.log(ids);
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要批量录入批复文号的数据！');
+    return;
+  }
+  selectIds.value = ids.join(',')
   showAddModal.value = true;
 }
 

@@ -1,5 +1,5 @@
 import type { FamScrapLedgerDto } from '@/api/avic/mms/fam/FamScrapLedgerApi'; // 引入模块DTO
-import { getFamScrapLedger, saveFamScrapLedger } from '@/api/avic/mms/fam/FamScrapLedgerApi'; // 引入模块API
+import { getFamScrapLedger, saveFamScrapLedger,saveEnterFamScrapLedger } from '@/api/avic/mms/fam/FamScrapLedgerApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 export function useFamScrapLedgerForm({
   props: props,
@@ -100,6 +100,35 @@ export function useFamScrapLedgerForm({
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
+  /** 保存批量录入批复文号 */
+  function saveEnter(){
+    formRef.value
+      .validate()
+      .then( () => {
+        loading.value = true;
+        // 处理数据
+        const postData = proxy.$lodash.cloneDeep(form.value);
+        postData['note'] = props.selectIds
+        // 发送请求
+        saveEnterFamScrapLedger(postData)
+          .then((res) => {
+            if (res.success) {
+              successCallback();
+            } else {
+              loading.value = false;
+            }
+          })
+          .catch(() => {
+            loading.value = false;
+          });
+      })
+      .catch(error => {
+        // 定位校验失败元素
+        proxy.$scrollToFirstErrorField(formRef, error);
+      });
+  }
+
   /** 数据保存成功的回调 */
   function successCallback () {
     proxy.$message.success('保存成功！');
@@ -126,6 +155,7 @@ export function useFamScrapLedgerForm({
     approvedOrNotList,
     completedOrNotList,
     saveForm,
+    saveEnter,
     closeModal
   };
 }
