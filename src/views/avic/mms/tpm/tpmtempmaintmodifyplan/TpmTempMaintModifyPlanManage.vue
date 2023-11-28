@@ -630,7 +630,6 @@ function getList() {
 function handleCommit(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要提交的数据！');
-
     return;
   }
   for (let item in ids) {
@@ -652,10 +651,9 @@ function handleCommit(ids, type) {
             getList();
           }
           commitLoading.value = false;
-        })
-        .catch(() => {
-          commitLoading.value = false;
-        });
+        }).catch(() => {
+        commitLoading.value = false;
+      });
     }
   });
 }

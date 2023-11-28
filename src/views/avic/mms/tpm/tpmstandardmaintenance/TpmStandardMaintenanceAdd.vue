@@ -62,7 +62,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="techUserId" label="主管技术员">
+            <a-form-item name="techUserId" label="保养负责人">
               <AvicCommonSelect
                   v-model:value="form.techUserId"
                   type="userSelect"

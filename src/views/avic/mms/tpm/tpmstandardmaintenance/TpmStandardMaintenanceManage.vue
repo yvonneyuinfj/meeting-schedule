@@ -211,7 +211,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '主管技术员',
+    title: '保养负责人',
     dataIndex: 'techUserIdAlias',
     ellipsis: true,
     minWidth: 120,

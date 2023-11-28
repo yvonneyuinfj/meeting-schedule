@@ -471,7 +471,6 @@
             <a-button type="primary" @click="handleCreative">
               生成
             </a-button>
-
             <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)" :loading="approvalLoading">
               提交审批
             </a-button>
@@ -549,7 +548,7 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'billNo'">
+          <template v-else-if="column.dataIndex === 'billNo' && record.bpmState !== null">
             <a @click="handleFlowDetail(record)">
               {{ record.billNo }}
             </a>
@@ -580,6 +579,7 @@ import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // �
 import {
   listTpmMaintPlanByPage,
   delTpmMaintPlan,
+  cancelTpmMaintPlan,
   exportExcel,
   creativeMaintPlan, approvalMaintPlan
 } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
@@ -668,6 +668,91 @@ const columns = [
     align: 'left'
   },
   {
+    title: '保养项目',
+    dataIndex: 'maintenanceItems',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养部位',
+    dataIndex: 'maintenancePosition',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养依据',
+    dataIndex: 'maintenanceBasis',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养内容',
+    dataIndex: 'maintenanceContent',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养要求',
+    dataIndex: 'maintenanceRequirement',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养负责人',
+    dataIndex: 'maintUserIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '上次保养日期',
+    dataIndex: 'lastMaintenDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养周期(月)',
+    dataIndex: 'maintenanceCycle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
+  },
+  {
+    title: '小时数',
+    dataIndex: 'maintenanceHours',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
+  },
+  {
+    title: '是否自主维护',
+    dataIndex: 'ynSelfMaintenanceName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '编制时间',
     dataIndex: 'editDate',
     ellipsis: true,
@@ -700,14 +785,6 @@ const columns = [
     align: 'right'
   },
   {
-    title: '保养负责人',
-    dataIndex: 'maintUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '备注',
     dataIndex: 'note',
     ellipsis: true,
@@ -733,179 +810,6 @@ const columns = [
     resizable: true,
     align: 'center'
   }
-  // {
-  //   title: '设备标准主表ID',
-  //   dataIndex: 'tpmStandardId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: 'TPM_STANDARD_MAINTENANCE_ID',
-  //   dataIndex: 'tpmStandardMaintenanceId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '设备台账ID',
-  //   dataIndex: 'tpmInventoryId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '保养状态',
-  //   dataIndex: 'maintenanceStatusName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '保养完成日期',
-  //   dataIndex: 'maintenanceFinishDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '保养负责人编码',
-  //   dataIndex: 'maintUserCode',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '保养负责人姓名',
-  //   dataIndex: 'maintUserName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '实际保养人ID',
-  //   dataIndex: 'actrualMaintUserIdAlias',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '实际保养人编码',
-  //   dataIndex: 'actrualMaintUserCode',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '实际保养人姓名',
-  //   dataIndex: 'actrualMaintUserName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '下达日期',
-  //   dataIndex: 'dispatchDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '下达人ID',
-  //   dataIndex: 'dispatchUserIdAlias',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '下达人编码',
-  //   dataIndex: 'dispatchUserCode',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '下达人姓名',
-  //   dataIndex: 'dispatchUserName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '完好标识',
-  //   dataIndex: 'goodConditionFlagName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  //
-  // {
-  //   title: '保养反馈流程状态',
-  //   dataIndex: 'feedbackBillStatus',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '最后一次保养计划时间（保养计划生成时对应设备标准保养规程表里的值）',
-  //   dataIndex: 'oldLastMaintenPlanDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '保养计划类型',
-  //   dataIndex: 'maintenPlanType',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '完工日期',
-  //   dataIndex: 'completeDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '保养计划流程状态',
-  //   dataIndex: 'billStatus',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
 ];
 const queryForm = ref<TpmMaintPlanDto>({
   bpmState: 'all',
@@ -1082,9 +986,10 @@ function handleEdit() {
 
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
-  if (record.id) {
+  console.log(record.tpmWorkflowId);
+  if (record.tpmWorkflowId) {
     flowUtils.detailByOptions({
-      formId: record.id,
+      formId: record.tpmWorkflowId,
       bpmOperatorRefresh: getList
     });
   }
@@ -1101,7 +1006,7 @@ const handleApproval = (rows, ids) => {
   //   return;
   // }
   proxy.$confirm({
-    title: '确认要提交审批选择的数据吗?',
+    title: '确认要提交审批查询出的数据吗?',
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
@@ -1130,6 +1035,7 @@ const approval = (bpmDefinedInfo) => {
     if (res.success) {
       approvalLoading.value = false;
       proxy.$message.success('提交成功!');
+      getList();
     } else {
       approvalLoading.value = false;
     }
@@ -1149,6 +1055,15 @@ const handleCancelPlans = (rows, ids) => {
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
+      cancelTpmMaintPlan(ids)
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('取消成功！');
+            getList();
+          }
+        })
+        .catch(() => {
+        });
     }
   });
 };
@@ -1159,7 +1074,7 @@ function handleDelete(rows, ids) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
-  if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
+  if (rows.filter(row => row.bpmState !== 'start' && row.bpmState !== null)?.length > 0) {
     proxy.$message.warning('只有拟稿中的数据才可以删除！');
     return;
   }
@@ -1169,17 +1084,15 @@ function handleDelete(rows, ids) {
     cancelText: '取消',
     onOk: () => {
       delLoading.value = true;
-      delTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+      delTpmMaintPlan(ids).then(res => {
+        if (res.success) {
+          proxy.$message.success('删除成功！');
+          getList();
+        }
+        delLoading.value = false;
+      }).catch(() => {
+        delLoading.value = false;
+      });
     }
   });
 }

@@ -9,7 +9,9 @@ import {
   getFieldDisabled,
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+
 export const emits = ['reloadData', 'close'];
+
 export function useTpmMaintPlanForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<TpmMaintPlanDto>({});
@@ -68,16 +70,18 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
   /** 获取通用代码 */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-    maintenanceStatusList.value = result.maintenanceStatus;
-    goodConditionFlagList.value = result.goodConditionFlag;
+      maintenanceStatusList.value = result.maintenanceStatus;
+      goodConditionFlagList.value = result.goodConditionFlag;
     });
   }
+
   /** 获取当前用户对应的文档密级 */
   function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
@@ -93,21 +97,53 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
           if (res.data) {
             form.value = res.data;
             // 处理数据
-           loading.value = false;
+            loading.value = false;
           } else {
             initForm();
             loading.value = false;
           }
           closeFlowLoading(props.bpmInstanceObject);
         }
-      })
-      .catch(() => {
-        proxy.$message.warning('获取表单数据失败！');
-        loading.value = false;
-      });
+      }).catch(() => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
   }
+
   /** 保存 */
   function saveForm(params) {
+    formRef.value.validate().then(() => {
+      loading.value = true;
+      // 处理数据
+      const postData = proxy.$lodash.cloneDeep(form.value);
+      // 发送请求
+      saveTpmMaintPlan(postData)
+        .then(res => {
+          if (res.success) {
+            if (props.bpmInstanceObject) {
+              bpmButtonParams.value = { params, result: res.data };
+            }
+            if (!form.value.id) {
+              form.value.id = res.data;
+            }
+            successCallback();
+          } else {
+            errorCallback();
+          }
+        })
+        .catch(() => {
+          errorCallback();
+        });
+    }).catch(error => {
+      if (props.bpmInstanceObject) {
+        closeFlowLoading(props.bpmInstanceObject);
+      }
+      // 定位校验失败元素
+      proxy.$scrollToFirstErrorField(formRef, error);
+    });
+  }
+
+  function saveFormBak(params) {
     formRef.value
       .validate()
       .then(() => {
@@ -141,6 +177,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -148,6 +185,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     startFlowByFormCode({
@@ -158,6 +196,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
       }
     });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     formRef.value
@@ -205,6 +244,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -226,6 +266,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -237,43 +278,51 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   /** 校验权限JSON */
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
     }
   }
+
   return {
     form,
     formRef,

@@ -4,6 +4,7 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/tpm/tpmmaintplans';
+
 /** 保养计划表 */
 export interface TpmMaintPlanDto extends BaseBeanModel {
   /** 设备标准主表ID */
@@ -99,6 +100,8 @@ export interface TpmMaintPlanDto extends BaseBeanModel {
   attribute10?: string;
   bpmState?: string;
   bpmType?: string;
+  /** 流程id */
+  tpmWorkflowId?: string;
 }
 
 /** 获取分页数据 */
@@ -107,29 +110,30 @@ export function listTpmMaintPlanByPage(param: QueryParamModel): Promise<Response
 }
 
 /** 根据id加载数据 */
-export function getTpmMaintPlan (id: string): Promise<ResponseBaseData<TpmMaintPlanDto>> {
+export function getTpmMaintPlan(id: string): Promise<ResponseBaseData<TpmMaintPlanDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveTpmMaintPlan (form: TpmMaintPlanDto): Promise<ResponseBaseData<any>> {
+export function saveTpmMaintPlan(form: TpmMaintPlanDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
-export function creativeMaintPlan (data){
-  return request.post(basePath+ '/create-maint-plan/v1',data);
+export function creativeMaintPlan(data) {
+  return request.post(basePath + '/create-maint-plan/v1', data);
 }
 
 /** 提交审批 */
-export function approvalMaintPlan(data){
-  return request.post(basePath+ '/start-create-process/v1',data);
+export function approvalMaintPlan(data) {
+  return request.post(basePath + '/start-create-process/v1', data);
 }
+
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,
@@ -150,4 +154,12 @@ export function exportExcel(param) {
     method: 'post'
   } as downloadParam;
   return downloadSysFile(download);
+}
+
+export function backTpmMaintPlan(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/back-maint-plan/v1', { ids: ids });
+}
+
+export function cancelTpmMaintPlan(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/cancel-maint-plan/v1', { ids: ids });
 }
