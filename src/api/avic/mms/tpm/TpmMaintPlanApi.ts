@@ -13,6 +13,7 @@ export interface TpmMaintPlanDto extends BaseBeanModel {
   tpmStandardMaintenanceId?: string;
   /** 设备台账ID */
   tpmInventoryId?: string;
+  tpmInventoryCode?: string;
   /** 保养周期(月) */
   maintenanceCycle?: number;
   /** 编制日期 */

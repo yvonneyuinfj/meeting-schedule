@@ -143,7 +143,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     });
   }
 
-  function saveFormBak(params) {
+  function saveFormAdd(params) {
     formRef.value
       .validate()
       .then(() => {
@@ -334,6 +334,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     goodConditionFlagList,
     secretLevelList,
     saveForm,
+    saveFormAdd,
     saveAndStartProcess,
     closeModal,
     fieldVisible,
