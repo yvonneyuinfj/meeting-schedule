@@ -230,22 +230,22 @@
             />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('otherMatter')"
-        >
-          <a-form-item
-            name="otherMatter"
-            label="其他事项"
-            :rules="fieldRequired('otherMatter')"
-            has-feedback
-          >
-            <a-input
-              v-model:value="form.otherMatter"
-              :disabled="fieldDisabled('otherMatter')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col-->
+<!--          v-bind="colLayout.cols"-->
+<!--          v-if="fieldVisible('otherMatter')"-->
+<!--        >-->
+<!--          <a-form-item-->
+<!--            name="otherMatter"-->
+<!--            label="其他事项"-->
+<!--            :rules="fieldRequired('otherMatter')"-->
+<!--            has-feedback-->
+<!--          >-->
+<!--            <a-input-->
+<!--              v-model:value="form.otherMatter"-->
+<!--              :disabled="fieldDisabled('otherMatter')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col
           v-bind="colLayout.cols"
           v-if="fieldVisible('purchWay')"

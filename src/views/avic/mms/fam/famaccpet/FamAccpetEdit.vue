@@ -188,19 +188,19 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item
-              name="otherMatter"
-              label="其他事项"
-              has-feedback
-            >
-              <a-input
-                v-model:value="form.otherMatter"
-                :maxLength="32"
-                placeholder="请输入其他事项"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item-->
+<!--              name="otherMatter"-->
+<!--              label="其他事项"-->
+<!--              has-feedback-->
+<!--            >-->
+<!--              <a-input-->
+<!--                v-model:value="form.otherMatter"-->
+<!--                :maxLength="32"-->
+<!--                placeholder="请输入其他事项"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="purchWay"

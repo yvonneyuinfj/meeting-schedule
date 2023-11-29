@@ -4,11 +4,7 @@
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
-          <a-form
-            v-bind="layout"
-            ref="formRef"
-            :model="queryForm"
-          >
+          <a-form v-bind="layout" ref="formRef" :model="queryForm">
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="验收申请单号">
@@ -50,10 +46,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="合同编号">
                   <a-input
                     v-model:value="queryForm.orderNo"
@@ -63,10 +56,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="合同金额">
                   <a-input
                     v-model:value="queryForm.orderValue"
@@ -76,10 +66,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="采购部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.procureDeptName"
@@ -94,38 +81,33 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="验收日期(起)">
                   <a-date-picker
                     v-model:value="queryForm.accpetDateBegin"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     placeholder="请选择验收日期(起)"
-                    :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.accpetDateEnd)"
+                    :disabled-date="
+                      startValue => proxy.$disabledStartDate(startValue, queryForm.accpetDateEnd)
+                    "
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="验收日期(止)">
                   <a-date-picker
                     v-model:value="queryForm.accpetDateEnd"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     placeholder="请选择验收日期(止)"
-                    :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.accpetDateBegin)"
+                    :disabled-date="
+                      endValue => proxy.$disabledEndDate(endValue, queryForm.accpetDateBegin)
+                    "
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptName"
@@ -140,10 +122,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="接收部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.receiveDeptName"
@@ -158,10 +137,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="资产属性">
                   <a-input
                     v-model:value="queryForm.assetClass"
@@ -171,10 +147,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="资金来源">
                   <a-input
                     v-model:value="queryForm.fundSource"
@@ -184,10 +157,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="其他事项">
                   <a-input
                     v-model:value="queryForm.otherMatter"
@@ -197,10 +167,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="购置方式">
                   <a-input
                     v-model:value="queryForm.purchWay"
@@ -210,10 +177,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="项目名称">
                   <a-input
                     v-model:value="queryForm.projectName"
@@ -223,10 +187,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="经办人名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonName"
@@ -241,32 +202,18 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                style="margin-left: auto"
-              >
+              <a-col v-bind="colLayout.cols" style="margin-left: auto">
                 <div class="table-page-search-submitButtons">
                   <a-space>
-                    <a-button
-                      type="primary"
-                      @click="handleQuery"
-                    >
+                    <a-button type="primary" @click="handleQuery">
                       <search-outlined />
                       查询
                     </a-button>
-                    <a-button
-                      type="primary"
-                      @click="resetQuery"
-                      ghost
-                    >
+                    <a-button type="primary" @click="resetQuery" ghost>
                       <redo-outlined />
                       重置
                     </a-button>
-                    <a-button
-                      type="link"
-                      @click="toggleAdvanced"
-                      style="margin: 0"
-                    >
+                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                       {{ advanced ? '收起' : '展开' }}
                       <up-outlined v-if="advanced" />
                       <down-outlined v-else />
@@ -355,8 +302,8 @@
                 <AvicBpmFilter
                   :allFileAuth="['famAccpet:all']"
                   :myFileAuth="['famAccpet:my']"
-                  :defaultBpmType='queryForm.bpmType'
-                  :defaultBpmState='queryForm.bpmState'
+                  :defaultBpmType="queryForm.bpmType"
+                  :defaultBpmState="queryForm.bpmState"
                   @change="changeBpmFilter"
                 />
                 <a-input-search
@@ -380,11 +327,13 @@
                 </a>
               </template>
               <template v-else-if="column.dataIndex === 'assetClass'">
-                 {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }}
-<!--                <AvicDictTag-->
-<!--                  :value="record.assetClass"-->
-<!--                  :options="assetClassList"-->
-<!--                />-->
+                {{
+                  assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName
+                }}
+                <!--                <AvicDictTag-->
+                <!--                  :value="record.assetClass"-->
+                <!--                  :options="assetClassList"-->
+                <!--                />-->
               </template>
             </template>
           </AvicTable>
@@ -416,11 +365,7 @@
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
-      <FamAccpetListManage
-        key="famAccpetListManage"
-        ref="famAccpetListManage"
-        :mainId="mainId"
-      />
+      <FamAccpetListManage key="famAccpetListManage" ref="famAccpetListManage" :mainId="mainId" />
     </AvicPane>
   </AvicSplit>
 </template>
@@ -675,7 +620,7 @@ function getList() {
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     accpetTypeList.value = result.accpetType;
-    assetClassList.value = result.assetClass
+    assetClassList.value = result.assetClass;
   });
 }
 /** 根据流程状态及发起人查询数据 */
@@ -803,4 +748,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

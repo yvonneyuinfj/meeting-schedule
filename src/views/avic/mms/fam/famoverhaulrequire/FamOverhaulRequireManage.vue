@@ -630,7 +630,7 @@ const columns = [
     minWidth: 120,
     resizable: true,
     customRender: text => {
-      return proxy.$formatZero(text.value, 2);
+      return text.value ? proxy.$formatZero(Number(text.value), 2) : '';
     },
     align: 'right'
   },
