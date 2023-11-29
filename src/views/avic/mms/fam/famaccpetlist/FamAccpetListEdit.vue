@@ -1,95 +1,56 @@
 <template>
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px; padding-top: 10px">
-    <AvicTable
-      v-if="showTable"
-      ref="famAccpetList"
-      table-key="famAccpetList"
-      :height="300"
-      :columns="columns"
-      :row-key="(record) => record.id"
-      :data-source="list"
-      :loading="loading"
-      :row-selection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange,
-        columnWidth: 40,
-        fixed: true,
-      }"
-      :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
-      :total="totalPage"
-      :customRow="customRow"
-      @change="handleTableChange"
-    >
-      <template
-        v-if="!props.readOnly"
-        #toolBarLeft
-      >
-        <a-space>
+      <AvicTable v-if="showTable" ref="famAccpetList" table-key="famAccpetList" :height="300" :columns="columns"
+        :row-key="(record) => record.id" :data-source="list" :loading="loading" :row-selection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+          columnWidth: 40,
+          fixed: true,
+        }" :showTableSetting="false" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="customRow"
+        @change="handleTableChange">
+        <template v-if="!props.readOnly" #toolBarLeft>
           <a-space>
-            <a-button
-              v-if="props.accpetType === '1'"
-              v-hasPermi="['famAccpetList:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined/>
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-if="props.accpetType === '2'"
-              v-hasPermi="['famAccpetList:add']"
-              title="添加"
-              type="primary"
-              @click="handleMostAdd"
-            >
-              <template #icon>
-                <plus-outlined/>
-              </template>
-              批量添加
-            </a-button>
-            <a-button
-              v-if="props.accpetType === '1'"
-              v-hasPermi="['famAccpetList:add']"
-              title="复制"
-              type="primary"
-              @click="(event) => handleCopy(selectedRowKeys, event)"
-            >
-              <template #icon>
-                <plus-outlined/>
-              </template>
-              复制
-            </a-button>
-            <a-button
-              v-hasPermi="['famAccpetList:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
-                (event) => {
-                  handleDelete(selectedRowKeys, event);
-                }
-              "
-            >
-              <template #icon>
-                <delete-outlined/>
-              </template>
-              删除
-            </a-button>
+            <a-space>
+              <a-button v-if="props.accpetType === '1'" v-hasPermi="['famAccpetList:add']" title="添加" type="primary"
+                @click="handleAdd">
+                <template #icon>
+                  <plus-outlined />
+                </template>
+                添加
+              </a-button>
+              <a-button v-if="props.accpetType === '2'" v-hasPermi="['famAccpetList:add']" title="添加" type="primary"
+                @click="handleMostAdd">
+                <template #icon>
+                  <plus-outlined />
+                </template>
+                批量添加
+              </a-button>
+              <a-button v-if="props.accpetType === '1'" v-hasPermi="['famAccpetList:add']" title="复制" type="primary"
+                @click="(event) => handleCopy(selectedRowKeys, event)">
+                <template #icon>
+                  <plus-outlined />
+                </template>
+                复制
+              </a-button>
+              <a-button v-hasPermi="['famAccpetList:del']" title="删除" danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="
+                  (event) => {
+                    handleDelete(selectedRowKeys, event);
+                  }
+                ">
+                <template #icon>
+                  <delete-outlined />
+                </template>
+                删除
+              </a-button>
+            </a-space>
           </a-space>
-        </a-space>
-      </template>
-      <template #bodyCell="{ column, text, record }">
-        <AvicRowEdit
-          v-if="
+        </template>
+        <template #bodyCell="{ column, text, record }">
+          <AvicRowEdit v-if="
             [
               'assetSource',
-              'assetsUse',
               'fundSource',
               'equipType',
               'firstDepreciationValue',
@@ -106,7 +67,6 @@
               'producer',
               'equipNo',
               'invoiceNo',
-              'geographicalArea',
               'assetSecretLevel',
               'monthProposed',
               'deviceStandby1',
@@ -117,283 +77,165 @@
             ].includes(column.dataIndex) &&
             (props.accpetType === '1' ||
               (props.accpetType === '2' && props.assetClass === '2'))
-          "
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-model:value="record[column.dataIndex]"
-              :maxLength="32"
-              @input="$forceUpdate()"
-              style="width: 100%"
-              placeholder="请输入"
-              @blur="blurInput($event, record, column.dataIndex)"
-            ></a-input>
+          " :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-input v-model:value="record[column.dataIndex]" :maxLength="32" @input="$forceUpdate()" style="width: 100%"
+                placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)"></a-input>
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit v-else-if="column.dataIndex === 'assetOriginalValue'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-input v-model:value="record[column.dataIndex]" :maxLength="32" @input="$forceUpdate()" style="width: 100%"
+                placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)"></a-input>
+            </template>
+          </AvicRowEdit>
+          <template v-else-if="column.dataIndex === 'assetNo'">
+            {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
           </template>
-        </AvicRowEdit>
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetOriginalValue'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-model:value="record[column.dataIndex]"
-              :maxLength="32"
-              @input="$forceUpdate()"
-              style="width: 100%"
-              placeholder="请输入"
-              @blur="blurInput($event, record, column.dataIndex)"
-            ></a-input>
-          </template>
-        </AvicRowEdit>
-        <template v-else-if="column.dataIndex === 'assetNo'">
-          {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
-        </template>
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetClass'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-if="props.accpetType === '1'"
-              v-model:value="record.assetClass"
-              @click="assetClassClick(record)"
-              placeholder="请选择资产类别"
-            >
-              <template #suffix>
-                <a-tooltip title="Extra information">
-                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
-                </a-tooltip>
-              </template>
-            </a-input>
-            <div v-else>
-              {{ record.assetClass }}
-            </div>
-          </template>
-        </AvicRowEdit>
+          <AvicRowEdit v-else-if="column.dataIndex === 'assetClass'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-input v-if="props.accpetType === '1'" v-model:value="record.assetClass" @click="assetClassClick(record)"
+                placeholder="请选择资产类别">
+                <template #suffix>
+                  <a-tooltip title="Extra information">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                  </a-tooltip>
+                </template>
+              </a-input>
+              <div v-else>
+                {{ record.assetClass }}
+              </div>
+            </template>
+          </AvicRowEdit>
 
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'productionDate'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-date-picker
-              v-model:value="record.productionDate"
-              value-format="YYYY-MM-DD"
-              placeholder="请选择出厂日期"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-            ></a-date-picker>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'importedOrNot'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record.importedOrNot"
-              style="width: 100%"
-              placeholder="请选择是否为进口设备"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-              @change="(value) => changeControlValue(value, record, 'importedOrNot')"
-            >
-              <a-select-option
-                v-for="select in importedOrNotList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag
-              :value="record.importedOrNotName"
-              :options="importedOrNotList"
-            />
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'ynMilitaryKeyEquip'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record.ynMilitaryKeyEquip"
-              style="width: 100%"
-              placeholder="请选择是否为军工关键设备"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-              @change="(value) => changeControlValue(value, record, 'ynMilitaryKeyEquip')"
-            >
-              <a-select-option
-                v-for="select in ynMilitaryKeyEquipList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <div>
-              {{
-                record.ynMilitaryKeyEquip
+          <AvicRowEdit v-else-if="column.dataIndex === 'productionDate'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-date-picker v-model:value="record.productionDate" value-format="YYYY-MM-DD" placeholder="请选择出厂日期"
+                :disabled="props.accpetType === '2' && props.assetClass === '1'"></a-date-picker>
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit v-else-if="column.dataIndex === 'importedOrNot'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-select v-model:value="record.importedOrNot" style="width: 100%" placeholder="请选择是否为进口设备"
+                :disabled="props.accpetType === '2' && props.assetClass === '1'"
+                @change="(value) => changeControlValue(value, record, 'importedOrNot')">
+                <a-select-option v-for="select in importedOrNotList" :key="select.sysLookupTlId" :value="select.lookupCode"
+                  :title="select.lookupName" :disabled="select.disabled === true">
+                  {{ select.lookupName }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <template #default>
+              <AvicDictTag :value="record.importedOrNotName" :options="importedOrNotList" />
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit v-else-if="column.dataIndex === 'ynMilitaryKeyEquip'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-select v-model:value="record.ynMilitaryKeyEquip" style="width: 100%" placeholder="请选择是否为军工关键设备"
+                :disabled="props.accpetType === '2' && props.assetClass === '1'"
+                @change="(value) => changeControlValue(value, record, 'ynMilitaryKeyEquip')">
+                <a-select-option v-for="select in ynMilitaryKeyEquipList" :key="select.sysLookupTlId"
+                  :value="select.lookupCode" :title="select.lookupName" :disabled="select.disabled === true">
+                  {{ select.lookupName }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <template #default>
+              <div>
+                {{
+                  record.ynMilitaryKeyEquip
                   ? record.ynMilitaryKeyEquip === '1'
                     ? '是'
                     : '否'
                   : ''
-              }}
-            </div>
-            <!-- <AvicDictTag
+                }}
+              </div>
+              <!-- <AvicDictTag
               :value="record.ynMilitaryKeyEquip"
               :options="ynMilitaryKeyEquipList"
             /> -->
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'liablePerson'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <AvicCommonSelect
-              v-model:value="record.liablePerson"
-              type="userSelect"
-              placeholder="请选择责任人名称"
-              :defaultShowValue="record.liablePersonIdAlias"
-              @callback="
-                (value, _selectRows) => {
-                  changeCommonSelect(value, record, 'liablePerson');
-                }
-              "
-            />
-          </template>
-          <template #default>
-            {{ record.liablePersonIdAlias }}
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'note'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-model:value="record.note"
-              @input="$forceUpdate()"
-              style="width: 100%"
-              placeholder="请输入"
-              @blur="blurInput($event, record, column.dataIndex)"
-            />
-          </template>
-        </AvicRowEdit>
-        <!-- <AvicRowEdit
-          v-else-if="column.dataIndex === 'isNewAsset'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record.isNewAsset"
-              style="width: 100%"
-              placeholder="请选择是否新增资产"
-              @change="(value)=>changeControlValue(value,record,'isNewAsset')"
-            >
-              <a-select-option
-                v-for="select in isNewAssetList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag
-              :value="record.isNewAssetName"
-              :options="isNewAssetList"
-            />
-          </template>
-        </AvicRowEdit> -->
-        <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
-          <a-button
-            class="inner-btn"
-            type="link"
-            @click="
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit v-else-if="column.dataIndex === 'liablePerson'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <AvicCommonSelect v-model:value="record.liablePerson" type="userSelect" placeholder="请选择责任人名称"
+                :defaultShowValue="record.liablePersonIdAlias" @callback="
+                  (value, _selectRows) => {
+                    changeCommonSelect(value, record, 'liablePerson');
+                  }
+                " />
+            </template>
+            <template #default>
+              {{ record.liablePersonIdAlias }}
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit v-else-if="column.dataIndex === 'note'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-input v-model:value="record.note" @input="$forceUpdate()" style="width: 100%" placeholder="请输入"
+                @blur="blurInput($event, record, column.dataIndex)" />
+            </template>
+          </AvicRowEdit>
+
+          <AvicRowEdit v-else-if="column.dataIndex === 'geographicalArea'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-select v-model:value="record.geographicalArea" style="width: 100%" placeholder="请选择地理区域"
+                @change="(value) => changeControlValue(value, record, 'geographicalArea')">
+                <a-select-option v-for="select in geographicalAreaList" :key="select.sysLookupTlId" :value="select.lookupCode"
+                  :title="select.lookupName" :disabled="select.disabled === true">
+                  {{ select.lookupName }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <template #default>
+              <AvicDictTag :value="record.geographicalAreaName" :options="geographicalAreaList" />
+            </template>
+          </AvicRowEdit>
+
+          <AvicRowEdit v-else-if="column.dataIndex === 'assetsUse'" :record="record" :column="column.dataIndex">
+            <template #edit>
+              <a-select v-model:value="record.assetsUse" style="width: 100%" placeholder="请选择资产用途"
+                @change="(value) => changeControlValue(value, record, 'assetsUse')">
+                <a-select-option v-for="select in assetsUseList" :key="select.sysLookupTlId" :value="select.lookupCode"
+                  :title="select.lookupName" :disabled="select.disabled === true">
+                  {{ select.lookupName }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <template #default>
+              <AvicDictTag :value="record.assetsUseName" :options="assetsUseList" />
+            </template>
+          </AvicRowEdit>
+
+
+          <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
+            <a-button class="inner-btn" type="link" @click="
               (event) => {
                 handleDelete([record.id], event);
               }
-            "
-          >
-            删除
-          </a-button>
-        </template>
-      </template>
-    </AvicTable>
-    <a-modal
-      :visible="assetClassOpen"
-      @cancel="handleCancel"
-      @ok="handleSummit"
-    >
-      <a-spin :spinning="treeLoading">
-        <a-tree
-          v-if="treeData && treeData.length > 0"
-          v-model:expanded-keys="expandedKeys"
-          v-model:selectedKeys="selectedKeys"
-          :tree-data="treeData"
-          :load-data="onLoadData"
-          :show-icon="true"
-          :show-line="true && { showLeafIcon: false }"
-          :default-expand-all="true"
-          @expand="handleExpand"
-          @select="handleSelect"
-        >
-          <template #icon="{ expanded, dataRef }">
-            <AvicIcon
-              v-if="dataRef.isLeaf"
-              svg="avic-file-fill"
-              color="#3370ff"
-            />
-            <AvicIcon
-              v-if="!expanded && !dataRef.isLeaf"
-              svg="avic-folder-3-fill"
-              color="#ffb800"
-            />
-            <AvicIcon
-              v-if="expanded && !dataRef.isLeaf"
-              svg="avic-folder-open-fill"
-              color="#ffb800"
-            />
+            ">
+              删除
+            </a-button>
           </template>
-        </a-tree>
-      </a-spin>
-    </a-modal>
-    <a-modal
-      :visible="open"
-      title="批量新增"
-      @ok="handleOk"
-      @cancel="handleOk"
-      width="80%"
-      style="top: 20px"
-    >
-      <div style="height: 600px; overflow: auto">
-        <fam-inventory-manage
-          :isAdd="true"
-          :assetClass="props.assetClass"
-          ref="famInventoryManage"
-        ></fam-inventory-manage>
+        </template>
+      </AvicTable>
+      <a-modal :visible="assetClassOpen" @cancel="handleCancel" @ok="handleSummit">
+        <a-spin :spinning="treeLoading">
+          <a-tree v-if="treeData && treeData.length > 0" v-model:expanded-keys="expandedKeys"
+            v-model:selectedKeys="selectedKeys" :tree-data="treeData" :load-data="onLoadData" :show-icon="true"
+            :show-line="true && { showLeafIcon: false }" :default-expand-all="true" @expand="handleExpand"
+            @select="handleSelect">
+            <template #icon="{ expanded, dataRef }">
+              <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff" />
+              <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800" />
+              <AvicIcon v-if="expanded && !dataRef.isLeaf" svg="avic-folder-open-fill" color="#ffb800" />
+            </template>
+          </a-tree>
+        </a-spin>
+      </a-modal>
+      <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
+        <div style="height: 600px; overflow: auto">
+          <fam-inventory-manage :isAdd="true" :assetClass="props.assetClass"
+            ref="famInventoryManage"></fam-inventory-manage>
       </div>
     </a-modal>
   </div>
@@ -914,10 +756,14 @@ const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const assetClassRecord = ref();
 const ynMilitaryKeyEquipList = ref([]);
+const assetsUseList = ref([]);
+const geographicalAreaList = ref([]);
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'assetsUse', lookUpType: 'FAM_ASSETS_USE' },
+  { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' }
 ];
 const validateRules = {
   isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
@@ -1082,6 +928,8 @@ function getLookupList() {
     isNewAssetList.value = result.isNewAsset;
     importedOrNotList.value = result.importedOrNot;
     ynMilitaryKeyEquipList.value = result.importedOrNot;
+    assetsUseList.value = result.assetsUse;
+    geographicalAreaList.value = result.geographicalArea;
   });
 }
 

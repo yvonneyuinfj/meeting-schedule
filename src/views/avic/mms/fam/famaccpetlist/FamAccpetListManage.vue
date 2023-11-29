@@ -152,14 +152,6 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '是否新增资产',
-    dataIndex: 'isNewAssetName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '资产类别',
     dataIndex: 'assetClass',
     ellipsis: true,
@@ -339,10 +331,28 @@ const columns = [
     align: 'left'
   },
   {
+    title: '供应商',
+    dataIndex: 'fundSource',
+    key: 'fundSource',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '是否为进口设备',
     dataIndex: 'importedOrNotName',
     ellipsis: true,
     minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '备注',
+    key: 'note',
+    dataIndex: 'note',
+    ellipsis: true,
+    minWidth: 220,
     resizable: true,
     align: 'center'
   },

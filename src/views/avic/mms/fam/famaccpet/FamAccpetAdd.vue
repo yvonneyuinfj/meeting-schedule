@@ -69,7 +69,13 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="fundSource" label="资金来源" has-feedback>
-              <a-input v-model:value="form.fundSource" :maxLength="32" placeholder="请输入资金来源" />
+              <a-select v-model:value="form.fundSource" :auto-focus="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                  :show-search="true" :allow-clear="true" placeholder="请选择资金来源">
+                  <a-select-option v-for="item in fundSourceList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
             </a-form-item>
           </a-col>
           <!--          <a-col v-bind="colLayout.cols">-->
@@ -83,7 +89,13 @@
           <!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="purchWay" label="购置方式" has-feedback>
-              <a-input v-model:value="form.purchWay" :maxLength="32" placeholder="请输入购置方式" />
+               <a-select v-model:value="form.purchWay" :auto-focus="true"
+                    :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                    :show-search="true" :allow-clear="true" placeholder="请选择购置方式">
+                    <a-select-option v-for="item in purchWayList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                      {{ item.lookupName }}
+                    </a-select-option>
+                  </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -209,6 +221,8 @@ const {
   saveAndStartProcess,
   assetTypeList,
   accpetTypeList,
+  purchWayList,
+  fundSourceList,
   uploadFile,
   afterUploadEvent,
   equipmentTypeList,

@@ -62,9 +62,13 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const accpetTypeList = ref([]); // 验收类型通用代码
   const assetTypeList = ref([]); //资产属性通用代码
   const equipmentTypeList = ref([]); //设备类型通用代码
+  const purchWayList = ref([]); //购置方式通用代码
+  const fundSourceList = ref([]); // 资产来源通用代码
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
+    { fieldName: 'purchWay', lookUpType: 'FAM_PURCH_WAY' },
+    { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' },
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' }
   ];
   const authJson = ref(null);
@@ -100,6 +104,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       accpetTypeList.value = result.accpetType;
       assetTypeList.value = result.assetType;
       equipmentTypeList.value = result.equipmentType;
+      purchWayList.value = result.purchWay;
+      fundSourceList.value = result.fundSource;
     });
   }
 
@@ -454,6 +460,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     secretLevelList,
     accpetTypeList,
     assetTypeList,
+    purchWayList,
+    fundSourceList,
     equipmentTypeList,
     uploadFile,
     afterUploadEvent,
