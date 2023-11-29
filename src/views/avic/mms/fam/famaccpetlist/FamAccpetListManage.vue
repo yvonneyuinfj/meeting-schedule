@@ -121,12 +121,16 @@
         <a-image-preview-group style="display: flex;flex-wrap: wrap">
           <a-image v-for="item in fileImgList" :src="item" :width="150" style="margin-right: 20px"></a-image>
         </a-image-preview-group>
+        <template #footer>
+          <a-button key="back" @click="()=>attachOpen = false">关闭</a-button>
+          <a-button key="submit" type="primary" :loading="uploadLoading" @click="handleOk">保存</a-button>
+        </template>
       </a-modal>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { listFamAccpetListByPage, delFamAccpetList,previewImage } from '@/api/avic/mms/fam/FamAccpetListApi';
+import { listFamAccpetListByPage, delFamAccpetList, previewImage } from '@/api/avic/mms/fam/FamAccpetListApi';
 import { validPreview } from '@/api/avic/system/FileUploadApi.ts';
 import { closeFlowLoading } from '@/views/avic/bpm/bpmutils/FlowUtils'; // 引入模块API
 
@@ -365,6 +369,7 @@ const queryParam = reactive({
 });
 const fileImg = ref();
 const attachId = ref<string>('');
+const uploadLoading = ref<boolean>(false);
 const attachOpen = ref<boolean>(false);
 const list = ref([]); // 表格数据集合
 const uploadFile = ref(null);
@@ -439,36 +444,39 @@ const handleOk = () => {
     return;
   }
   uploadFile.value.upload(attachId);
+  proxy.$message.success('保存成功!');
+  attachOpen.value = false;
 };
 
 // 浏览图片验证
 const fileValidPreview = (id) => {
-  return new Promise((resolve,reject)=>{
+  return new Promise((resolve, reject) => {
     const data = {
-      fileId : id,
-      _entryId:'',
-      _taskName:'',
-    }
+      fileId: id,
+      _entryId: '',
+      _taskName: ''
+    };
     validPreview(data).then(res => {
-      resolve(res.data)
+      resolve(res.data);
     });
-  })
+  });
 };
 
 // 获取图片列表
-async function getFileImageList(id){
-  const result =  await fileValidPreview(id)
-  await getFileView(id,'false')
+async function getFileImageList(id) {
+  const result = await fileValidPreview(id);
+  await getFileView(id, 'false');
 }
+
 // 获取图片
-const getFileView = (id,result) => {
-  return new Promise((resolve,reject)=>{
-    previewImage(id,result).then(res =>{
-      console.log(res)
-      fileImgList.value.push(res)
-    })
-  })
-}
+const getFileView = (id, result) => {
+  return new Promise((resolve, reject) => {
+    previewImage(id, result).then(res => {
+      console.log(res);
+      fileImgList.value.push(res);
+    });
+  });
+};
 
 /** 校验表单附件密级 */
 function validateUploaderFileSecret() {

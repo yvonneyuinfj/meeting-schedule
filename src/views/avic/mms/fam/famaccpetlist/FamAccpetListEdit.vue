@@ -36,7 +36,7 @@
               @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
@@ -48,9 +48,21 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
+            </a-button>
+            <a-button
+              v-if="props.accpetType === '1'"
+              v-hasPermi="['famAccpetList:add']"
+              title="复制"
+              type="primary"
+              @click="event => handleCopy(selectedRowKeys, event)"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              复制
             </a-button>
             <a-button
               v-hasPermi="['famAccpetList:del']"
@@ -65,7 +77,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -115,7 +127,7 @@
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'assetNo'">
-          {{props.accpetType === '1' ? '提交后自动生成' : record.assetNo}}
+          {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
         </template>
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetClass'"
@@ -131,12 +143,12 @@
             >
               <template #suffix>
                 <a-tooltip title="Extra information">
-                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                 </a-tooltip>
               </template>
             </a-input>
             <div v-else>
-              {{ record. assetClass}}
+              {{ record.assetClass }}
             </div>
           </template>
         </AvicRowEdit>
@@ -213,7 +225,7 @@
           </template>
           <template #default>
             <div>
-              {{ record.ynMilitaryKeyEquip ?  record.ynMilitaryKeyEquip === '1' ? '是' : '否' : '' }}
+              {{ record.ynMilitaryKeyEquip ? record.ynMilitaryKeyEquip === '1' ? '是' : '否' : '' }}
             </div>
             <!-- <AvicDictTag
               :value="record.ynMilitaryKeyEquip"
@@ -403,7 +415,12 @@ const columns1 = [
     title: '资产类别',
     dataIndex: 'assetClass',
     key: 'assetClass',
-    minWidth: 120
+    minWidth: 120,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    }
   },
   {
     title: '资产类别名称',
@@ -858,28 +875,35 @@ const lookupParams = [
   { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' }
 ];
 const validateRules = {
-  isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
-  assetClass: [{ required: true, message: '资产类别列不能为空' }],
-  assetsUse: [{ required: true, message: '资产用途列不能为空' }],
-  equipNo: [{ required: true, message: '设备编号列不能为空' }],
-  equipClass: [{ required: props.isLand, message: '设备大类列不能为空' }],
-  assetName: [{ required: true, message: '资产名称不能为空' }],
-  assetModel: [{ required: true, message: '资产型号不能为空' }],
-  assetUnit: [{ required: true, message: '资产单价列不能为空' }],
-  assetOriginalValue: [{ required: true, message: '资产原值不能为空' }],
-  installLocation: [{ required: true, message: '存放地点列不能为空' }],
-  liablePerson: [{ required: true, message: '责任人不能为空' }],
-  producer: [{ required: true, message: '厂商不能为空' }],
-  factoryNo: [{ required: true, message: '出厂号列不能为空' }],
-  brand: [{ required: true, message: '品牌列不能为空' }],
-  ownershipCertNo: [{ required: true, message: '权属证号不能为空' }],
-  productionDate: [{ required: true, message: '出厂日期列不能为空' }],
-  importedOrNot: [{ required: true, message: '是否为进口设备列不能为空' }],
-  geographicalArea: [{ required: true, message: '地理区域不能为空' }],
-  ynMilitaryKeyEquip: [{ required: true, message: '是否军工关键设备不能为空' }],
-  fundSource: [{ required: true, message: '资金来源不能为空' }],
-  assetSecretLevel: [{ required: true, message: '资产密级不能为空' }]
-}; // 必填列,便于保存和新增数据时校验
+    isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
+    assetClass: [{ required: true, message: '资产类别列不能为空' }],
+    equipNo: [{ required: true, message: '设备编号列不能为空' }],
+    equipClass: [{ required: props.isLand, message: '设备大类列不能为空' }],
+    assetName: [{ required: true, message: '资产名称不能为空' }],
+    assetModel: [{ required: true, message: '资产型号不能为空' }],
+    assetUnit: [{ required: true, message: '资产单价列不能为空' }],
+    assetOriginalValue: [{ required: true, message: '资产原值不能为空' }],
+    installLocation: [{ required: true, message: '存放地点列不能为空' }],
+    liablePerson: [{ required: true, message: '责任人不能为空' }],
+    invoiceNo: [{ required: true, message: '发票号不能为空' }],
+    ownershipCertNo: [{ required: true, message: '权属证号不能为空' }],
+    producer: [{ required: true, message: '厂商不能为空' }],
+    factoryNo: [{ required: true, message: '出厂号列不能为空' }],
+    brand: [{ required: true, message: '品牌列不能为空' }],
+    productionDate: [{ required: true, message: '出厂日期列不能为空' }],
+    warrantyPeriod: [{ required: true, message: '质保期不能为空' }],
+    importedOrNot: [{ required: true, message: '是否为进口设备列不能为空' }],
+    geographicalArea: [{ required: true, message: '地理区域不能为空' }],
+    assetsUse: [{ required: true, message: '资产用途列不能为空' }],
+    fundSource: [{ required: true, message: '资金来源不能为空' }],
+    equipType: [{ required: true, message: '设备类型不能为空' }],
+    monthProposed: [{ required: true, message: '已提月份不能为空' }],
+    assetSecretLevel: [{ required: true, message: '资产密级不能为空' }],
+    ynMilitaryKeyEquip: [{ required: true, message: '是否军工关键设备不能为空' }]
+
+
+  }
+; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
 const treeNodeId = ref();
@@ -959,10 +983,12 @@ async function onLoadData(treeNode) {
     });
   });
 }
+
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
   record[column + 'Alias'] = value.names;
 }
+
 /** 提交类别 */
 function handleSummit() {
   getFamAssetClass(treeNodeId.value)
@@ -1085,7 +1111,14 @@ function handleAdd() {
     parentAssetNo: '',
     warrantyPeriod: '',
     importedOrNot: undefined,
-    editable: true // true为编辑中, false为未编辑
+    editable: true, // true为编辑中, false为未编辑
+    geographicalArea: '',
+    assetsUse: '',
+    fundSource: '',
+    equipType: '',
+    monthProposed: '',
+    assetSecretLevel: '',
+    ynMilitaryKeyEquip: '',
   };
   const newData = [...list.value];
   // 数据校验
@@ -1097,6 +1130,35 @@ function handleAdd() {
     item.editable = false;
   });
   newData.unshift(item);
+  list.value = newData;
+}
+
+/** 复制 */
+function handleCopy(ids, e) {
+  if (e) {
+    e.stopPropagation(); // 阻止冒泡
+  }
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要复制的数据！');
+    return;
+  }
+  // 校验所选复制信息是否编辑完成 ， 没有编辑完不能复制
+  // 数据校验
+  let newData = [...list.value];
+  if (!validateRecordData(selectedRows.value)) {
+    return;
+  }
+  let itemList = [];
+  selectedRows.value.map(rows => {
+    let item = {
+      ...rows,
+      id: 'newLine' + proxy.$uuid(),
+      operationType_: 'insert',
+      editable: false// true为编辑中, false为未编辑
+    };
+    itemList.unshift(item);
+  });
+  newData = [...itemList, ...newData];
   list.value = newData;
 }
 
@@ -1218,6 +1280,12 @@ function validate(callback) {
   }
 }
 
+watch(() => props.accpetType, (newV, oldV) => {
+  if (oldV) {
+    list.value = [];
+  }
+});
+
 watch(
   () => props.assetClasstObj,
   newV => {
@@ -1232,7 +1300,6 @@ watch(
   () => props.isLand,
   newV => {
     showTable.value = false;
-    console.log(props.isLand);
     if (props.isLand) {
       columns.value = [...columns1];
     } else {
