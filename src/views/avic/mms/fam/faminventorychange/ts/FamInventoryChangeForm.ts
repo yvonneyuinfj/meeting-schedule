@@ -22,75 +22,6 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    secretLevel: [
-      { required: true, message: '数据密级不能为空', trigger: 'change' }
-    ],
-    assetsCode: [
-      { required: true, message: '资产编号不能为空', trigger: 'change' }
-    ],
-    assetsName: [
-      { required: true, message: '资产名称不能为空', trigger: 'change' }
-    ],
-    assetClassName: [
-      { required: true, message: '资产类别名称不能为空', trigger: 'change' }
-    ],
-    assetSource: [
-      { required: true, message: '资产来源不能为空', trigger: 'change' }
-    ],
-    assetsUse: [
-      { required: true, message: '资产用途不能为空', trigger: 'change' }
-    ],
-    entryDate: [
-      { required: true, message: '入账日期不能为空', trigger: 'change' }
-    ],
-    assetOriginalValue: [
-      { required: true, message: '资产原值不能为空', trigger: 'change' }
-    ],
-    assetNum: [
-      { required: true, message: '资产数量不能为空', trigger: 'change' }
-    ],
-    assetNetValue: [
-      { required: true, message: '资产净值不能为空', trigger: 'change' }
-    ],
-    monDepreciation: [
-      { required: true, message: '月折旧额不能为空', trigger: 'change' }
-    ],
-    storageLocation: [
-      { required: true, message: '存放地点不能为空', trigger: 'change' }
-    ],
-    deptName: [
-      { required: true, message: '部门名称不能为空', trigger: 'change' }
-    ],
-    equipClass: [
-      { required: true, message: '设备大类不能为空', trigger: 'change' }
-    ],
-    assetSpec: [
-      { required: true, message: '资产规格不能为空', trigger: 'change' }
-    ],
-    assetModel: [
-      { required: true, message: '资产型号不能为空', trigger: 'change' }
-    ],
-    assetUnit: [
-      { required: true, message: '资产单价不能为空', trigger: 'change' }
-    ],
-    invoiceNo: [
-      { required: true, message: '发票号不能为空', trigger: 'change' }
-    ],
-    productionDate: [
-      { required: true, message: '出厂日期不能为空', trigger: 'change' }
-    ],
-    parentAssetNo: [
-      { required: true, message: '父资产编号不能为空', trigger: 'change' }
-    ],
-    importedOrNot: [
-      { required: true, message: '是否为进口设备不能为空', trigger: 'change' }
-    ],
-    assetType: [
-      { required: true, message: '资产分类不能为空', trigger: 'change' }
-    ],
-    warrantyPeriod: [
-      { required: true, message: '质保期不能为空', trigger: 'change' }
-    ]
   };
   const famInventoryChangeListEdit = ref();
   const layout = {
@@ -104,6 +35,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   const ynMilitaryKeyEquipList = ref([]); // 是否军工关键设备通用代码
   const importedOrNotList = ref([]); // 是否为进口设备通用代码
   const assetTypeList = ref([]); // 资产分类通用代码
+  const autoCode = ref(null); // 自动编码ref
   const lookupParams = [
     { fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS' },
     { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
@@ -270,6 +202,11 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famInventoryChangeListList = subInfoList; // 挂载子表数据
+      if (autoCode.value) {
+        // 获取编码码段值
+        postData.changeApplyNo = autoCode.value.getSegmentValue();
+      }
+      
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
@@ -371,6 +308,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     bpmParams,
     rules,
     layout,
+    autoCode,
     colLayout,
     loading,
     secretLevelList,
@@ -389,4 +327,3 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     famInventoryChangeListEdit
   };
 }
-
