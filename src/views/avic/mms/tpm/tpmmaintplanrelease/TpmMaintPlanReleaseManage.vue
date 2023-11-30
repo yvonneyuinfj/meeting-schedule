@@ -683,7 +683,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  queryParam.searchParams.maintenanceStatus = '10';
+  // queryParam.searchParams.maintenanceStatus = '10';
   listTpmMaintPlanByPage(queryParam)
       .then(response => {
         list.value = response.data.result;
