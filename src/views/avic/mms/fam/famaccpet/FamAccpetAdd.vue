@@ -182,6 +182,7 @@
               <AvicCommonSelect
                 v-model:value="form.handlePersonName"
                 type="userSelect"
+                :defaultShowValue="form.handlePersonNameAlias"
                 placeholder="请选择经办人名称"
               />
             </a-form-item>
@@ -313,9 +314,8 @@ const props = defineProps({
 
 onMounted(() => {
   getTreeList();
-  // setTimeout(() => {
-  //   getParent();
-  // }, 300);
+  form.value.handlePersonName = proxy.$getLoginUser().id;
+  form.value.handlePersonNameAlias = proxy.$getLoginUser().name;
 });
 
 const { proxy } = getCurrentInstance();
@@ -441,6 +441,7 @@ const assetClasstClick = () => {
 watch(
   () => form.value.accpetType,
   newV => {
+    console.log(form.value);
     accpetType.value = newV;
   }
 );
