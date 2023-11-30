@@ -226,84 +226,84 @@
                 <div class="table-page-search-submitButtons">
                   <a-space>
                     <a-button type="primary" @click="handleQuery">
-                      <search-outlined/>
-                      查询
-                    </a-button>
-                    <a-button type="primary" @click="resetQuery" ghost>
-                      <redo-outlined/>
-                      重置
-                    </a-button>
-                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
-                      {{ advanced ? '收起' : '展开' }}
-                      <up-outlined v-if="advanced"/>
-                      <down-outlined v-else/>
-                    </a-button>
-                  </a-space>
-                </div>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
-        <!-- 表格组件 -->
-        <div class="table-wrapper">
-          <AvicTable
-            ref="famAccpet"
-            table-key="famAccpet"
-            :columns="columns"
-            :row-key="record => record.id"
-            :data-source="list"
-            :loading="loading"
-            :row-selection="{
-              selectedRowKeys: selectedRowKeys,
-              onChange: onSelectChange,
-              columnWidth: 40,
-              fixed: true
-            }"
-            rowClickSelectionType="radio"
-            :pageParameter="queryParam.pageParameter"
-            :total="totalPage"
-            @change="handleTableChange"
-            @refresh="getList"
-          >
-            <template #toolBarLeft>
-              <a-space>
-                <a-button
-                  v-hasPermi="['famAccpet:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleAdd"
-                >
-                  <template #icon>
-                    <plus-outlined/>
-                  </template>
-                  添加
-                </a-button>
-                <a-button
-                  v-hasPermi="['famAccpet:edit']"
-                  title="编辑"
-                  type="primary"
-                  ghost
-                  @click="handleEdit"
-                >
-                  <template #icon>
-                    <edit-outlined/>
-                  </template>
-                  编辑
-                </a-button>
-                <a-button
-                  v-hasPermi="['famAccpet:del']"
-                  title="删除"
-                  danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  :loading="delLoading"
-                  @click="handleDelete(selectedRows, selectedRowKeys)"
-                >
-                  <template #icon>
-                    <delete-outlined/>
-                  </template>
-                  删除
-                </a-button>
-                <!-- <a-button
+                        <search-outlined />
+                        查询
+                      </a-button>
+                      <a-button type="primary" @click="resetQuery" ghost>
+                        <redo-outlined />
+                        重置
+                      </a-button>
+                      <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                        {{ advanced ? '收起' : '展开' }}
+                        <up-outlined v-if="advanced" />
+                        <down-outlined v-else />
+                      </a-button>
+                    </a-space>
+                  </div>
+                </a-col>
+              </a-row>
+            </a-form>
+          </div>
+          <!-- 表格组件 -->
+          <div class="table-wrapper">
+            <AvicTable
+              ref="famAccpet"
+              table-key="famAccpet"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="list"
+              :loading="loading"
+              :row-selection="{
+                selectedRowKeys: selectedRowKeys,
+                onChange: onSelectChange,
+                columnWidth: 40,
+                fixed: true
+              }"
+              rowClickSelectionType="radio"
+              :pageParameter="queryParam.pageParameter"
+              :total="totalPage"
+              @change="handleTableChange"
+              @refresh="getList"
+            >
+              <template #toolBarLeft>
+                <a-space>
+                  <a-button
+                    v-hasPermi="['famAccpet:add']"
+                    title="添加"
+                    type="primary"
+                    @click="handleAdd"
+                  >
+                    <template #icon>
+                      <plus-outlined />
+                    </template>
+                    添加
+                  </a-button>
+                  <a-button
+                    v-hasPermi="['famAccpet:edit']"
+                    title="编辑"
+                    type="primary"
+                    ghost
+                    @click="handleEdit"
+                  >
+                    <template #icon>
+                      <edit-outlined />
+                    </template>
+                    编辑
+                  </a-button>
+                  <a-button
+                    v-hasPermi="['famAccpet:del']"
+                    title="删除"
+                    danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleDelete(selectedRows, selectedRowKeys)"
+                  >
+                    <template #icon>
+                      <delete-outlined />
+                    </template>
+                    删除
+                  </a-button>
+                  <!-- <a-button
                   v-hasPermi="['famAccpet:export']"
                   title="导出"
                   type="primary"
@@ -315,77 +315,77 @@
                   </template>
                   导出
                 </a-button> -->
-              </a-space>
-            </template>
-            <template #toolBarRight>
-              <a-space>
-                <AvicBpmFilter
-                  :allFileAuth="['famAccpet:all']"
-                  :myFileAuth="['famAccpet:my']"
-                  :defaultBpmType="queryForm.bpmType"
-                  :defaultBpmState="queryForm.bpmState"
-                  @change="changeBpmFilter"
-                />
-                <a-input-search
-                  class="opt-btn-commonsearch"
-                  style="width: 200px"
-                  placeholder="请输入"
-                  :allow-clear="true"
-                  @search="handleKeyWordQuery"
-                />
-              </a-space>
-            </template>
-            <template #bodyCell="{ column, text, record, index }">
-              <template v-if="column.dataIndex === 'id'">
-                {{
-                  index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
-                }}
+                </a-space>
               </template>
-              <template v-else-if="column.dataIndex === 'accpetApplyNo'">
-                <a @click="handleFlowDetail(record)">
-                  {{ record.accpetApplyNo }}
-                </a>
+              <template #toolBarRight>
+                <a-space>
+                  <AvicBpmFilter
+                    :allFileAuth="['famAccpet:all']"
+                    :myFileAuth="['famAccpet:my']"
+                    :defaultBpmType="queryForm.bpmType"
+                    :defaultBpmState="queryForm.bpmState"
+                    @change="changeBpmFilter"
+                  />
+                  <a-input-search
+                    class="opt-btn-commonsearch"
+                    style="width: 200px"
+                    placeholder="请输入"
+                    :allow-clear="true"
+                    @search="handleKeyWordQuery"
+                  />
+                </a-space>
               </template>
-              <template v-else-if="column.dataIndex === 'assetClass'">
-                {{
-                  assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName
-                }}
-                <!--                <AvicDictTag-->
-                <!--                  :value="record.assetClass"-->
-                <!--                  :options="assetClassList"-->
-                <!--                />-->
+              <template #bodyCell="{ column, text, record, index }">
+                <template v-if="column.dataIndex === 'id'">
+                  {{
+                    index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
+                  }}
+                </template>
+                <template v-else-if="column.dataIndex === 'accpetApplyNo'">
+                  <a @click="handleFlowDetail(record)">
+                    {{ record.accpetApplyNo }}
+                  </a>
+                </template>
+                <template v-else-if="column.dataIndex === 'assetClass'">
+                  {{
+                    assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName
+                  }}
+                  <!--                <AvicDictTag-->
+                  <!--                  :value="record.assetClass"-->
+                  <!--                  :options="assetClassList"-->
+                  <!--                />-->
+                </template>
               </template>
-            </template>
-          </AvicTable>
+            </AvicTable>
+          </div>
         </div>
-      </div>
-      <!-- 添加页面弹窗 -->
-      <FamAccpetAdd
-        v-if="showAddModal"
-        ref="addModal"
-        :bpmOperatorRefresh="getList"
-        @reloadData="getList"
-        @close="showAddModal = false"
-      />
-      <!-- 编辑页面弹窗 -->
-      <FamAccpetEdit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
-      />
-      <!-- 详情页面弹窗 -->
-      <FamAccpetDetail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
-      />
-    </AvicPane>
-    <AvicPane>
-      <!--子表组件-->
-      <FamAccpetListManage key="famAccpetListManage" ref="famAccpetListManage" :mainId="mainId"/>
+        <!-- 添加页面弹窗 -->
+        <FamAccpetAdd
+          v-if="showAddModal"
+          ref="addModal"
+          :bpmOperatorRefresh="getList"
+          @reloadData="getList"
+          @close="showAddModal = false"
+        />
+        <!-- 编辑页面弹窗 -->
+        <FamAccpetEdit
+          v-if="showEditModal"
+          ref="editModal"
+          :form-id="formId"
+          @reloadData="getList"
+          @close="showEditModal = false"
+        />
+        <!-- 详情页面弹窗 -->
+        <FamAccpetDetail
+          v-if="showDetailModal"
+          ref="detailModal"
+          :form-id="formId"
+          @close="showDetailModal = false"
+        />
+      </AvicPane>
+      <AvicPane>
+        <!--子表组件-->
+        <FamAccpetListManage key="famAccpetListManage" ref="famAccpetListManage" :mainId="mainId" />
     </AvicPane>
   </AvicSplit>
 </template>

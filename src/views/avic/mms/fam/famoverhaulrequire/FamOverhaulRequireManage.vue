@@ -652,34 +652,16 @@ const columns = [
     align: 'left'
   },
   {
-    title: '申请部门id',
-    dataIndex: 'applyDeptId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '申请部门名称',
-    dataIndex: 'applyDeptNameAlias',
+    title: '申请部门',
+    dataIndex: 'applyDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
-    title: '需求申请人id',
-    dataIndex: 'handlePersonId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '需求申请人名称',
-    dataIndex: 'handlePersonNameAlias',
+    title: '需求申请人',
+    dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
