@@ -800,6 +800,7 @@ function handleQuery() {
 /** 高级查询 重置按钮操作  */
 function resetQuery() {
   queryForm.value = {};
+  queryForm.value.businessStatus = '5';
   handleQuery();
 }
 

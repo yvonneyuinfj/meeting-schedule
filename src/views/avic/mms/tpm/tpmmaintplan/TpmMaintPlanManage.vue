@@ -856,6 +856,8 @@ const lookupParams = [
 onMounted(() => {
   barForm.value.startDate = dayjs(new Date()).startOf('year').format('YYYY-MM-DD');
   barForm.value.endDate = dayjs(new Date()).endOf('year').format('YYYY-MM-DD');
+  queryForm.value.maintenanceStatus = '0';
+  queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
   // 获取通用代码
@@ -952,6 +954,7 @@ function resetQuery() {
     bpmType: queryForm.value.bpmType,
     bpmState: queryForm.value.bpmState
   };
+  queryForm.value.maintenanceStatus = '0';
   handleQuery();
 }
 
