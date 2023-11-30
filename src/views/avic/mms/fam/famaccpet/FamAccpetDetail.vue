@@ -8,10 +8,7 @@
       class="form-excel-style"
     >
       <a-row>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('accpetApplyNo')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('accpetApplyNo')">
           <a-form-item
             name="accpetApplyNo"
             label="验收申请单号"
@@ -33,10 +30,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('accpetType')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('accpetType')">
           <a-form-item
             name="accpetType"
             label="验收类型"
@@ -62,58 +56,37 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('orderName')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderName')">
           <a-form-item
             name="orderName"
             label="合同名称"
             :rules="fieldRequired('orderName')"
             has-feedback
           >
-            <a-input
-              v-model:value="form.orderName"
-              :disabled="fieldDisabled('orderName')"
-            />
+            <a-input v-model:value="form.orderName" :disabled="fieldDisabled('orderName')" />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('orderNo')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderNo')">
           <a-form-item
             name="orderNo"
             label="合同编号"
             :rules="fieldRequired('orderNo')"
             has-feedback
           >
-            <a-input
-              v-model:value="form.orderNo"
-              :disabled="fieldDisabled('orderNo')"
-            />
+            <a-input v-model:value="form.orderNo" :disabled="fieldDisabled('orderNo')" />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('orderValue')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderValue')">
           <a-form-item
             name="orderValue"
             label="合同金额"
             :rules="fieldRequired('orderValue')"
             has-feedback
           >
-            <a-input
-              v-model:value="form.orderValue"
-              :disabled="fieldDisabled('orderValue')"
-            />
+            <a-input v-model:value="form.orderValue" :disabled="fieldDisabled('orderValue')" />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('procureDeptName')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('procureDeptName')">
           <a-form-item
             name="procureDeptName"
             label="采购部门名称"
@@ -128,10 +101,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('accpetDate')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('accpetDate')">
           <a-form-item
             name="accpetDate"
             label="验收日期"
@@ -146,53 +116,25 @@
             />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('managerDeptName')"
-        >
-          <a-form-item
-            name="managerDeptName"
-            label="主管部门名称"
-            :rules="fieldRequired('managerDeptName')"
-            has-feedback
-          >
-            <AvicCommonSelect
-              v-model:value="form.managerDeptName"
-              type="deptSelect"
-              :defaultShowValue="form.managerDeptNameAlias"
-              :disabled="fieldDisabled('managerDeptName')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('receiveDeptName')"
-        >
-          <a-form-item
-            name="receiveDeptName"
-            label="接收部门名称"
-            :rules="fieldRequired('receiveDeptName')"
-            has-feedback
-          >
-            <AvicCommonSelect
-              v-model:value="form.receiveDeptName"
-              type="deptSelect"
-              :defaultShowValue="form.receiveDeptNameAlias"
-              :disabled="fieldDisabled('receiveDeptName')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('assetClass')"
-        >
+        <!-- <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptName')">
+            <a-form-item name="managerDeptName" label="主管部门名称" :rules="fieldRequired('managerDeptName')" has-feedback>
+              <AvicCommonSelect v-model:value="form.managerDeptName" type="deptSelect"
+                :defaultShowValue="form.managerDeptNameAlias" :disabled="fieldDisabled('managerDeptName')" />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="fieldVisible('receiveDeptName')">
+            <a-form-item name="receiveDeptName" label="接收部门名称" :rules="fieldRequired('receiveDeptName')" has-feedback>
+              <AvicCommonSelect v-model:value="form.receiveDeptName" type="deptSelect"
+                :defaultShowValue="form.receiveDeptNameAlias" :disabled="fieldDisabled('receiveDeptName')" />
+            </a-form-item>
+          </a-col> -->
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetClass')">
           <a-form-item
             name="assetClass"
-            label="资产类别"
+            label="资产属性"
             :rules="fieldRequired('assetClass')"
             has-feedback
           >
-
             <a-select
               v-model:value="form.assetClass"
               :auto-focus="true"
@@ -211,77 +153,89 @@
                 {{ item.lookupName }}
               </a-select-option>
             </a-select>
-
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('fundSource')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('fundSource')">
           <a-form-item
             name="fundSource"
             label="资金来源"
             :rules="fieldRequired('fundSource')"
             has-feedback
           >
-            <a-input
+            <a-select
               v-model:value="form.fundSource"
+              :auto-focus="true"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              placeholder="请选择验收类型"
               :disabled="fieldDisabled('fundSource')"
-            />
+            >
+              <a-select-option
+                v-for="item in fundSourceList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('otherMatter')"
-        >
-          <a-form-item
-            name="otherMatter"
-            label="其他事项"
-            :rules="fieldRequired('otherMatter')"
-            has-feedback
-          >
-            <a-input
-              v-model:value="form.otherMatter"
-              :disabled="fieldDisabled('otherMatter')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('purchWay')"
-        >
+        <!--        <a-col-->
+        <!--          v-bind="colLayout.cols"-->
+        <!--          v-if="fieldVisible('otherMatter')"-->
+        <!--        >-->
+        <!--          <a-form-item-->
+        <!--            name="otherMatter"-->
+        <!--            label="其他事项"-->
+        <!--            :rules="fieldRequired('otherMatter')"-->
+        <!--            has-feedback-->
+        <!--          >-->
+        <!--            <a-input-->
+        <!--              v-model:value="form.otherMatter"-->
+        <!--              :disabled="fieldDisabled('otherMatter')"-->
+        <!--            />-->
+        <!--          </a-form-item>-->
+        <!--        </a-col>-->
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('purchWay')">
           <a-form-item
             name="purchWay"
             label="购置方式"
             :rules="fieldRequired('purchWay')"
             has-feedback
           >
-            <a-input
+            <a-select
               v-model:value="form.purchWay"
+              :auto-focus="true"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              placeholder="请选择验收类型"
               :disabled="fieldDisabled('purchWay')"
-            />
+            >
+              <a-select-option
+                v-for="item in purchWayList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('projectName')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('projectName')">
           <a-form-item
             name="projectName"
             label="项目名称"
             :rules="fieldRequired('projectName')"
             has-feedback
           >
-            <a-input
-              v-model:value="form.projectName"
-              :disabled="fieldDisabled('projectName')"
-            />
+            <a-input v-model:value="form.projectName" :disabled="fieldDisabled('projectName')" />
           </a-form-item>
         </a-col>
-        <a-col
-          v-bind="colLayout.cols"
-          v-if="fieldVisible('handlePersonName')"
-        >
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonName')">
           <a-form-item
             name="handlePersonName"
             label="经办人名称"
@@ -297,11 +251,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols2">
-          <a-form-item
-            label="上传附件"
-            type="attachment"
-            :rules="attachmentRequired('uploadFile')"
-          >
+          <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
             <AvicUploader
               element-id="1"
               ref="uploadFile"
@@ -382,6 +332,8 @@ const {
   afterUploadEvent,
   attachmentRequired,
   autoCode,
+  purchWayList,
+  fundSourceList,
   famAccpetListEdit,
   fieldVisible,
   fieldDisabled,
@@ -401,5 +353,3 @@ defineExpose({
   afterClickBpmButtons
 });
 </script>
-
-

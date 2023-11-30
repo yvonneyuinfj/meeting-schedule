@@ -697,7 +697,13 @@
       :total="totalPage"
       @refresh="getList"
     >
+      <template #bodyCell="{ column, text, record, index }">
+        <template v-if="column.dataIndex === 'creationDate'">
+          {{ dayjs(record.creationDate).format('YYYY-MM-DD')}}
+        </template>
+      </template>
     </AvicTable>
+
     <template #footer>
       <a-button
         title="返回"
@@ -711,6 +717,9 @@
 </template>
 <script lang="ts" setup>
 import { useFamInventoryForm, emits } from './ts/FamInventoryForm'; // 引入表单ts
+import { getFormList } from '@/api/avic/mms/fam/FamInventoryApi.ts';
+import dayjs from 'dayjs';
+
 const props = defineProps({
   formId: {
     type: String,
@@ -718,6 +727,7 @@ const props = defineProps({
   }
 });
 const tab = ref(0);
+const loading = ref(false)
 const famTabs = ref([
   {
     label: '资产变更记录',
@@ -732,7 +742,7 @@ const famTabs = ref([
     id: 3
   },
   {
-    label: '资产调配信息',
+    label: '资产调拨信息',
     id: 4
   },
   {
@@ -740,210 +750,275 @@ const famTabs = ref([
     id: 5
   },
   {
-    label: '附属台账信息',
+    label: '内部借用信息',
     id: 6
-  }
+  },
+  {
+    label: '附属台账信息',
+    id: 7
+  },
 ]);
 const columns = ref([]);
 
 const columns1 = [
   {
-    name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    minWidth:80,
+    key: 'businessstate_'
   },
   {
     title: '更改单号',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'changeApplyNo',
+    minWidth:180,
+    key: 'changeApplyNo'
   },
   {
     title: '更改内容',
-    dataIndex: 'address',
-    key: 'address'
+    dataIndex: 'changeNote',
+    minWidth:320,
+    key: 'changeNote'
   },
   {
     title: '更改原因',
-    key: 'tags',
-    dataIndex: 'tags'
+    key: 'changeReason',
+    minWidth:180,
+    dataIndex: 'changeReason'
   },
   {
     title: '申请人',
-    key: 'action'
+    key: 'createdBy',
+    minWidth:80,
+    dataIndex:'createdBy'
   },
   {
     title: '申请日期',
-    key: 'action'
+    key: 'creationDate',
+    minWidth:100,
+    dataIndex:'creationDate'
   },
   {
     title: '联系电话',
-    key: 'action'
+    key: 'changePhone',
+    minWidth:100,
+    dataIndex:'changePhone'
   },
-  {
-    title: '密级',
-    key: 'action'
-  }
 ];
 
 const columns2 = [
   {
-    name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    key: 'businessstate_'
   },
   {
     title: '单据号',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'billNo',
+    key: 'billNo'
   },
-  {
-    title: '维修内容',
-    dataIndex: 'address',
-    key: 'address'
-  },
-  {
-    title: '新增原值',
-    key: 'tags',
-    dataIndex: 'tags'
-  },
+  // {
+  //   title: '维修内容',
+  //   dataIndex: 'address',
+  //   key: 'address'
+  // },
+  // {
+  //   title: '新增原值',
+  //   key: 'tags',
+  //   dataIndex: 'tags'
+  // },
   {
     title: '申请人',
-    key: 'action'
+    key: 'createdBy',
+    dataIndex: 'createdBy'
   },
   {
     title: '申请日期',
-    key: 'action'
+    key: 'creationDate',
+    dataIndex: 'creationDate'
   },
   {
     title: '联系电话',
-    key: 'action'
+    key: 'telephone',
+    dataIndex: 'telephone'
   },
-  {
-    title: '密级',
-    key: 'action'
-  }
+  // {
+  //   title: '密级',
+  //   key: 'action'
+  // }
 ];
 
 const columns3 = [
   {
-    name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    key: 'businessstate_'
   },
   {
     title: '单据号',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'applyNo',
+    key: 'applyNo'
   },
   {
     title: '起租日期',
-    dataIndex: 'address',
-    key: 'address'
+    dataIndex: 'startLeaseDate',
+    key: 'startLeaseDate'
   },
   {
-    title: '承租人',
-    key: 'tags',
-    dataIndex: 'tags'
+    title: '经办人',
+    key: 'handlePersonIdAlias',
+    dataIndex: 'handlePersonIdAlias'
   },
   {
     title: '申请人',
-    key: 'action'
+    key: 'createdBy',
+    dataIndex:'createdBy'
   },
   {
     title: '租凭期限',
-    key: 'action'
+    key: 'leaseTerm',
+    dataIndex: 'leaseTerm'
   },
   {
     title: '租金',
-    key: 'action'
+    key: 'rent',
+    dataIndex: 'rent'
   },
-  {
-    title: '密级',
-    key: 'action'
-  }
+  // {
+  //   title: '密级',
+  //   key: 'action'
+  // }
 ];
 
 const columns4 = [
   {
-    name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    title: '流程状态',
+    key: 'businessstate_',
+    dataIndex: 'businessstate_'
   },
   {
     title: '调拨编号',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'applyNo',
+    key: 'applyNo'
   },
   {
     title: '调入部门',
-    dataIndex: 'address',
-    key: 'address'
+    dataIndex: 'inTransferDeptIdAlias',
+    key: 'inTransferDeptIdAlias'
   },
   {
     title: '调拨原因',
-    key: 'tags',
-    dataIndex: 'tags'
+    key: 'borrowReason',
+    dataIndex: 'borrowReason'
   },
   {
     title: '申请人',
-    key: 'action'
+    key: 'handlePersonIdAlias',
+    dataIndex: 'handlePersonIdAlias'
   },
   {
     title: '申请日期',
-    key: 'action'
-  },
-  {
-    title: '调拨日期',
-    key: 'action'
-  },
-  {
-    title: '密级',
-    key: 'action'
+    key: 'applyDate',
+    dataIndex: 'applyDate'
   }
+  // {
+  //   title: '调拨日期',
+  //   key: 'action',
+  //   dataIndex: ''
+  // },
+  // {
+  //   title: '密级',
+  //   key: 'secretLevelName',
+  //   dataIndex:'secretLevelName'
+  // }
 ];
 
 const columns5 = [
   {
-    name: '流程状态',
-    dataIndex: 'name',
-    key: 'name'
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    key: 'businessstate_'
   },
   {
     title: '单据号',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'applyNo',
+    key: 'applyNo'
   },
-  {
-    title: '业务类型',
-    dataIndex: 'address',
-    key: 'address'
-  },
-  {
-    title: '封存/启封原因',
-    key: 'tags',
-    dataIndex: 'tags'
-  },
+  // {
+  //   title: '业务类型',
+  //   dataIndex: 'address',
+  //   key: 'address'
+  // },
+  // {
+  //   title: '封存/启封原因',
+  //   key: 'tags',
+  //   dataIndex: 'tags'
+  // },
   {
     title: '申请人',
-    key: 'action'
+    key: 'createdBy',
+    dataIndex: 'createdBy'
   },
   {
     title: '申请日期',
-    key: 'action'
+    key: 'creationDate',
+    dataIndex: 'creationDate'
   },
-  {
-    title: '封存地点',
-    key: 'action'
-  },
-  {
-    title: '密级',
-    key: 'action'
-  }
+  // {
+  //   title: '封存地点',
+  //   key: 'action',
+  //   dataIndex:''
+  // },
+  // // {
+  //   title: '密级',
+  //   key: 'action'
+  // }
 ];
 
 const columns6 = [
   {
-    name: '单项工程名称',
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    key: 'businessstate_'
+  },
+  {
+    title: '单据号',
+    dataIndex: 'applyNo',
+    key: 'applyNo'
+  },
+  {
+    title: '借用理由',
+    dataIndex: 'borrowReson',
+    key: 'borrowReson'
+  },
+  // {
+  //   title: '封存/启封原因',
+  //   key: 'tags',
+  //   dataIndex: 'tags'
+  // },
+  {
+    title: '经办人',
+    key: 'handlePersonIdAlias',
+    dataIndex: 'handlePersonIdAlias'
+  },
+  {
+    title: '申请日期',
+    key: 'applyDate',
+    dataIndex: 'applyDate'
+  },
+  // {
+  //   title: '封存地点',
+  //   key: 'action',
+  //   dataIndex:''
+  // },
+  // // {
+  //   title: '密级',
+  //   key: 'action'
+  // }
+];
+
+const columns7 = [
+  {
+    title: '单项工程名称',
     dataIndex: 'name',
     key: 'name'
   },
@@ -994,10 +1069,11 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const totalPage = ref(0);
 
 onMounted(() => {
+  tab.value = 1
   columns.value = [...columns1];
   getList(1);
 });
-const show = ref(true)
+const show = ref(true);
 
 const emit = defineEmits(emits);
 
@@ -1007,34 +1083,59 @@ function famTabsClick(id) {
   switch (id) {
     case 1:
       columns.value = [...columns1];
+      getList(1)
       break;
     case 2:
       columns.value = [...columns2];
+      getList(2)
       break;
     case 3:
       columns.value = [...columns3];
+      getList(3)
       break;
     case 4:
       columns.value = [...columns4];
+      getList(4)
       break;
     case 5:
       columns.value = [...columns5];
+      getList(5)
       break;
     case 6:
       columns.value = [...columns6];
+      getList(6)
+      break;
+    case 7:
+      columns.value = [...columns7];
+      // getList(7)
+      show.value = true;
+      data.value = [];
+      loading.value = false
       break;
   }
-  getList(id);
+  // getList(id);
 }
 
 /** 获取列表 */
 function getList(id) {
-  show.value = false
-  setTimeout(()=>{
-    show.value = true
-  },300)
+  show.value = false;
+  loading.value = true
+  getFormList(id,props.formId).then(res =>{
+    if(res.success){
+      show.value = true;
+      data.value = res.data;
+      loading.value = false
+    }else{
+      show.value = true;
+      data.value = [];
+      loading.value = false
+    }
+  }).catch(()=>{
+    show.value = true;
+    data.value = [];
+    loading.value = false
+  })
 }
-
 
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys) {
@@ -1047,7 +1148,6 @@ const {
   formRef,
   layout,
   colLayout,
-  loading,
   secretLevelList,
   assetsStatusList,
   ynMilitaryKeyEquipList,

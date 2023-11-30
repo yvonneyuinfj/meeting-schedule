@@ -404,7 +404,7 @@ const handleOk = () => {
     item['assetCode'] = item.assetsCode;
     item['purchaseTime'] = item.purchaseDate;
     item['factorySerialNumber'] = item.productionNo;
-    item['inventoryId'] = item.inventoryId;
+    item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow];
 };

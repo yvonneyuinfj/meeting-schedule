@@ -88,7 +88,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门id">
                   <a-input
                     v-model:value="queryForm.managerDeptId"
@@ -97,8 +97,8 @@
                     @pressEnter="handleQuery"
                   />
                 </a-form-item>
-              </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
+              </a-col> -->
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptName"
@@ -112,7 +112,7 @@
                     "
                   />
                 </a-form-item>
-              </a-col>
+              </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="是否使用型号经费">
                   <a-select
@@ -554,23 +554,23 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '主管部门id',
-    dataIndex: 'managerDeptId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '主管部门名称',
-    dataIndex: 'managerDeptNameAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '主管部门id',
+  //   dataIndex: 'managerDeptId',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '主管部门名称',
+  //   dataIndex: 'managerDeptNameAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '是否使用型号经费',
     dataIndex: 'isUsedScientificrsName',
@@ -630,7 +630,7 @@ const columns = [
     minWidth: 120,
     resizable: true,
     customRender: text => {
-      return proxy.$formatZero(text.value, 2);
+      return text.value ? proxy.$formatZero(Number(text.value), 2) : '';
     },
     align: 'right'
   },
@@ -652,34 +652,16 @@ const columns = [
     align: 'left'
   },
   {
-    title: '申请部门id',
-    dataIndex: 'applyDeptId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '申请部门名称',
-    dataIndex: 'applyDeptNameAlias',
+    title: '申请部门',
+    dataIndex: 'applyDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
-    title: '需求申请人id',
-    dataIndex: 'handlePersonId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '需求申请人名称',
-    dataIndex: 'handlePersonNameAlias',
+    title: '需求申请人',
+    dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -948,4 +930,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

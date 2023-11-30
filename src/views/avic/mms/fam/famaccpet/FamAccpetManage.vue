@@ -4,11 +4,7 @@
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
-          <a-form
-            v-bind="layout"
-            ref="formRef"
-            :model="queryForm"
-          >
+          <a-form v-bind="layout" ref="formRef" :model="queryForm">
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="验收申请单号">
@@ -50,10 +46,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="合同编号">
                   <a-input
                     v-model:value="queryForm.orderNo"
@@ -63,10 +56,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="合同金额">
                   <a-input
                     v-model:value="queryForm.orderValue"
@@ -76,10 +66,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="采购部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.procureDeptName"
@@ -94,38 +81,33 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="验收日期(起)">
                   <a-date-picker
                     v-model:value="queryForm.accpetDateBegin"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     placeholder="请选择验收日期(起)"
-                    :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.accpetDateEnd)"
+                    :disabled-date="
+                      startValue => proxy.$disabledStartDate(startValue, queryForm.accpetDateEnd)
+                    "
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="验收日期(止)">
                   <a-date-picker
                     v-model:value="queryForm.accpetDateEnd"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     placeholder="请选择验收日期(止)"
-                    :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.accpetDateBegin)"
+                    :disabled-date="
+                      endValue => proxy.$disabledEndDate(endValue, queryForm.accpetDateBegin)
+                    "
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="主管部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.managerDeptName"
@@ -140,10 +122,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="接收部门名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.receiveDeptName"
@@ -158,62 +137,67 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="资产属性">
-                  <a-input
+                  <a-select
                     v-model:value="queryForm.assetClass"
-                    placeholder="请输入资产属性"
+                    :get-popup-container="triggerNode => triggerNode.parentNode"
+                    option-filter-prop="children"
+                    :show-search="true"
                     :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
+                    placeholder="请选择资产属性"
+                  >
+                    <a-select-option
+                      v-for="item in assetClassList"
+                      :key="item.sysLookupTlId"
+                      :value="item.lookupCode"
+                    >
+                      {{ item.lookupName }}
+                    </a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="资金来源">
-                  <a-input
+                  <a-select
                     v-model:value="queryForm.fundSource"
-                    placeholder="请输入资金来源"
+                    :get-popup-container="triggerNode => triggerNode.parentNode"
+                    option-filter-prop="children"
+                    :show-search="true"
                     :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
+                    placeholder="请选择资金来源"
+                  >
+                    <a-select-option
+                      v-for="item in fundSourceList"
+                      :key="item.sysLookupTlId"
+                      :value="item.lookupCode"
+                    >
+                      {{ item.lookupName }}
+                    </a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
-                <a-form-item label="其他事项">
-                  <a-input
-                    v-model:value="queryForm.otherMatter"
-                    placeholder="请输入其他事项"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="购置方式">
-                  <a-input
+                  <a-select
                     v-model:value="queryForm.purchWay"
-                    placeholder="请输入购置方式"
+                    :get-popup-container="triggerNode => triggerNode.parentNode"
+                    option-filter-prop="children"
+                    :show-search="true"
                     :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
+                    placeholder="请选择验收类型"
+                  >
+                    <a-select-option
+                      v-for="item in purchWayList"
+                      :key="item.sysLookupTlId"
+                      :value="item.lookupCode"
+                    >
+                      {{ item.lookupName }}
+                    </a-select-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="项目名称">
                   <a-input
                     v-model:value="queryForm.projectName"
@@ -223,10 +207,7 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                v-show="advanced"
-              >
+              <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="经办人名称">
                   <AvicCommonSelect
                     v-model:value="queryForm.handlePersonName"
@@ -241,102 +222,88 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col
-                v-bind="colLayout.cols"
-                style="margin-left: auto"
-              >
+              <a-col v-bind="colLayout.cols" style="margin-left: auto">
                 <div class="table-page-search-submitButtons">
                   <a-space>
-                    <a-button
-                      type="primary"
-                      @click="handleQuery"
-                    >
-                      <search-outlined />
-                      查询
-                    </a-button>
-                    <a-button
-                      type="primary"
-                      @click="resetQuery"
-                      ghost
-                    >
-                      <redo-outlined />
-                      重置
-                    </a-button>
-                    <a-button
-                      type="link"
-                      @click="toggleAdvanced"
-                      style="margin: 0"
-                    >
-                      {{ advanced ? '收起' : '展开' }}
-                      <up-outlined v-if="advanced" />
-                      <down-outlined v-else />
-                    </a-button>
-                  </a-space>
-                </div>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
-        <!-- 表格组件 -->
-        <div class="table-wrapper">
-          <AvicTable
-            ref="famAccpet"
-            table-key="famAccpet"
-            :columns="columns"
-            :row-key="record => record.id"
-            :data-source="list"
-            :loading="loading"
-            :row-selection="{
-              selectedRowKeys: selectedRowKeys,
-              onChange: onSelectChange,
-              columnWidth: 40,
-              fixed: true
-            }"
-            rowClickSelectionType="radio"
-            :pageParameter="queryParam.pageParameter"
-            :total="totalPage"
-            @change="handleTableChange"
-            @refresh="getList"
-          >
-            <template #toolBarLeft>
-              <a-space>
-                <a-button
-                  v-hasPermi="['famAccpet:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleAdd"
-                >
-                  <template #icon>
-                    <plus-outlined />
-                  </template>
-                  添加
-                </a-button>
-                <a-button
-                  v-hasPermi="['famAccpet:edit']"
-                  title="编辑"
-                  type="primary"
-                  ghost
-                  @click="handleEdit"
-                >
-                  <template #icon>
-                    <edit-outlined />
-                  </template>
-                  编辑
-                </a-button>
-                <a-button
-                  v-hasPermi="['famAccpet:del']"
-                  title="删除"
-                  danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  :loading="delLoading"
-                  @click="handleDelete(selectedRows, selectedRowKeys)"
-                >
-                  <template #icon>
-                    <delete-outlined />
-                  </template>
-                  删除
-                </a-button>
-                <!-- <a-button
+                    <a-button type="primary" @click="handleQuery">
+                        <search-outlined />
+                        查询
+                      </a-button>
+                      <a-button type="primary" @click="resetQuery" ghost>
+                        <redo-outlined />
+                        重置
+                      </a-button>
+                      <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                        {{ advanced ? '收起' : '展开' }}
+                        <up-outlined v-if="advanced" />
+                        <down-outlined v-else />
+                      </a-button>
+                    </a-space>
+                  </div>
+                </a-col>
+              </a-row>
+            </a-form>
+          </div>
+          <!-- 表格组件 -->
+          <div class="table-wrapper">
+            <AvicTable
+              ref="famAccpet"
+              table-key="famAccpet"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="list"
+              :loading="loading"
+              :row-selection="{
+                selectedRowKeys: selectedRowKeys,
+                onChange: onSelectChange,
+                columnWidth: 40,
+                fixed: true
+              }"
+              rowClickSelectionType="radio"
+              :pageParameter="queryParam.pageParameter"
+              :total="totalPage"
+              @change="handleTableChange"
+              @refresh="getList"
+            >
+              <template #toolBarLeft>
+                <a-space>
+                  <a-button
+                    v-hasPermi="['famAccpet:add']"
+                    title="添加"
+                    type="primary"
+                    @click="handleAdd"
+                  >
+                    <template #icon>
+                      <plus-outlined />
+                    </template>
+                    添加
+                  </a-button>
+                  <a-button
+                    v-hasPermi="['famAccpet:edit']"
+                    title="编辑"
+                    type="primary"
+                    ghost
+                    @click="handleEdit"
+                  >
+                    <template #icon>
+                      <edit-outlined />
+                    </template>
+                    编辑
+                  </a-button>
+                  <a-button
+                    v-hasPermi="['famAccpet:del']"
+                    title="删除"
+                    danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleDelete(selectedRows, selectedRowKeys)"
+                  >
+                    <template #icon>
+                      <delete-outlined />
+                    </template>
+                    删除
+                  </a-button>
+                  <!-- <a-button
                   v-hasPermi="['famAccpet:export']"
                   title="导出"
                   type="primary"
@@ -348,79 +315,77 @@
                   </template>
                   导出
                 </a-button> -->
-              </a-space>
-            </template>
-            <template #toolBarRight>
-              <a-space>
-                <AvicBpmFilter
-                  :allFileAuth="['famAccpet:all']"
-                  :myFileAuth="['famAccpet:my']"
-                  :defaultBpmType='queryForm.bpmType'
-                  :defaultBpmState='queryForm.bpmState'
-                  @change="changeBpmFilter"
-                />
-                <a-input-search
-                  class="opt-btn-commonsearch"
-                  style="width: 200px"
-                  placeholder="请输入"
-                  :allow-clear="true"
-                  @search="handleKeyWordQuery"
-                />
-              </a-space>
-            </template>
-            <template #bodyCell="{ column, text, record, index }">
-              <template v-if="column.dataIndex === 'id'">
-                {{
-                  index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
-                }}
+                </a-space>
               </template>
-              <template v-else-if="column.dataIndex === 'accpetApplyNo'">
-                <a @click="handleFlowDetail(record)">
-                  {{ record.accpetApplyNo }}
-                </a>
+              <template #toolBarRight>
+                <a-space>
+                  <AvicBpmFilter
+                    :allFileAuth="['famAccpet:all']"
+                    :myFileAuth="['famAccpet:my']"
+                    :defaultBpmType="queryForm.bpmType"
+                    :defaultBpmState="queryForm.bpmState"
+                    @change="changeBpmFilter"
+                  />
+                  <a-input-search
+                    class="opt-btn-commonsearch"
+                    style="width: 200px"
+                    placeholder="请输入"
+                    :allow-clear="true"
+                    @search="handleKeyWordQuery"
+                  />
+                </a-space>
               </template>
-              <template v-else-if="column.dataIndex === 'assetClass'">
-                 {{ assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName }}
-<!--                <AvicDictTag-->
-<!--                  :value="record.assetClass"-->
-<!--                  :options="assetClassList"-->
-<!--                />-->
+              <template #bodyCell="{ column, text, record, index }">
+                <template v-if="column.dataIndex === 'id'">
+                  {{
+                    index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
+                  }}
+                </template>
+                <template v-else-if="column.dataIndex === 'accpetApplyNo'">
+                  <a @click="handleFlowDetail(record)">
+                    {{ record.accpetApplyNo }}
+                  </a>
+                </template>
+                <template v-else-if="column.dataIndex === 'assetClass'">
+                  {{
+                    assetClassList.filter(item => item.lookupCode === record.assetClass)[0].lookupName
+                  }}
+                  <!--                <AvicDictTag-->
+                  <!--                  :value="record.assetClass"-->
+                  <!--                  :options="assetClassList"-->
+                  <!--                />-->
+                </template>
               </template>
-            </template>
-          </AvicTable>
+            </AvicTable>
+          </div>
         </div>
-      </div>
-      <!-- 添加页面弹窗 -->
-      <FamAccpetAdd
-        v-if="showAddModal"
-        ref="addModal"
-        :bpmOperatorRefresh="getList"
-        @reloadData="getList"
-        @close="showAddModal = false"
-      />
-      <!-- 编辑页面弹窗 -->
-      <FamAccpetEdit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
-      />
-      <!-- 详情页面弹窗 -->
-      <FamAccpetDetail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
-      />
-    </AvicPane>
-    <AvicPane>
-      <!--子表组件-->
-      <FamAccpetListManage
-        key="famAccpetListManage"
-        ref="famAccpetListManage"
-        :mainId="mainId"
-      />
+        <!-- 添加页面弹窗 -->
+        <FamAccpetAdd
+          v-if="showAddModal"
+          ref="addModal"
+          :bpmOperatorRefresh="getList"
+          @reloadData="getList"
+          @close="showAddModal = false"
+        />
+        <!-- 编辑页面弹窗 -->
+        <FamAccpetEdit
+          v-if="showEditModal"
+          ref="editModal"
+          :form-id="formId"
+          @reloadData="getList"
+          @close="showEditModal = false"
+        />
+        <!-- 详情页面弹窗 -->
+        <FamAccpetDetail
+          v-if="showDetailModal"
+          ref="detailModal"
+          :form-id="formId"
+          @close="showDetailModal = false"
+        />
+      </AvicPane>
+      <AvicPane>
+        <!--子表组件-->
+        <FamAccpetListManage key="famAccpetListManage" ref="famAccpetListManage" :mainId="mainId" />
     </AvicPane>
   </AvicSplit>
 </template>
@@ -535,7 +500,7 @@ const columns = [
   },
   {
     title: '资金来源',
-    dataIndex: 'fundSource',
+    dataIndex: 'fundSourceName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -553,7 +518,7 @@ const columns = [
   },
   {
     title: '购置方式',
-    dataIndex: 'purchWay',
+    dataIndex: 'purchWayName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -628,13 +593,16 @@ const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
-const assetTypeList = ref([]);
-const secretLevelList = ref([]); // 数据密级通用代码
 const accpetTypeList = ref([]); // 验收类型通用代码
 const assetClassList = ref([]);
+const purchWayList = ref([]);
+const fundSourceList = ref([]);
+
 const lookupParams = [
   { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
-  { fieldName: 'assetClass', lookUpType: 'FAM_ASSET_TYPE' }
+  { fieldName: 'assetClass', lookUpType: 'FAM_ASSET_TYPE' },
+  { fieldName: 'purchWay', lookUpType: 'FAM_PURCH_WAY' },
+  { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' }
 ];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
@@ -646,6 +614,7 @@ onMounted(() => {
 });
 // 加载查询区所需通用代码
 getLookupList();
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -671,13 +640,17 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     accpetTypeList.value = result.accpetType;
-    assetClassList.value = result.assetClass
+    assetClassList.value = result.assetClass;
+    purchWayList.value = result.purchWay;
+    fundSourceList.value = result.fundSource;
   });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -685,6 +658,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -692,6 +666,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -700,21 +675,25 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
-function handleKeyWordQuery(value) {
+function handleKeyWordQuery() {
   const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
@@ -729,6 +708,7 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -738,6 +718,7 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -754,6 +735,7 @@ function handleExport() {
     }
   });
 }
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
@@ -787,11 +769,13 @@ function handleDelete(rows, ids) {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -803,4 +787,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

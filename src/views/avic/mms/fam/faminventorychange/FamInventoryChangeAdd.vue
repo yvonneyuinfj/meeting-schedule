@@ -10,7 +10,7 @@
     <a-spin :spinning="loading">
       <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" class="form-excel-style">
         <a-row :gutter="0">
-          <a-col v-bind="colLayout.cols">
+ <!--         <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="数据密级" has-feedback>
               <a-select
                 v-model:value="form.secretLevel"
@@ -30,8 +30,8 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
+          </a-col> -->
+ <!--         <a-col v-bind="colLayout.cols">
             <a-form-item name="assetsCode" label="资产编号" has-feedback>
               <a-input
                 v-model:value="form.assetsCode"
@@ -64,6 +64,19 @@
                 v-model:value="form.assetSource"
                 :maxLength="64"
                 placeholder="请输入资产来源"
+              />
+            </a-form-item>
+          </a-col> -->
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="changeApplyNo" label="申请单编号" has-feedback>
+              <avic-auto-code
+                v-model:value="form.changeApplyNo"
+                ref="autoCode"
+                code-type="FAM_BILL_NO"
+                code-param="FAM_INVENTORY_CHANGE"
+                :allow-clear="true"
+                :disabled="false"
+                placeholder="请输入申请单编号"
               />
             </a-form-item>
           </a-col>
@@ -278,7 +291,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+<!--          <a-col v-bind="colLayout.cols">
             <a-form-item name="equipNo" label="设备编号">
               <a-input
                 v-model:value="form.equipNo"
@@ -286,7 +299,7 @@
                 placeholder="请输入设备编号"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="productionNo" label="出厂编号">
               <a-input
@@ -424,7 +437,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+<!--          <a-col v-bind="colLayout.cols">
             <a-form-item name="equipClass" label="设备大类" has-feedback>
               <a-input
                 v-model:value="form.equipClass"
@@ -432,7 +445,7 @@
                 placeholder="请输入设备大类"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetSpec" label="资产规格" has-feedback>
               <a-input
@@ -479,7 +492,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+<!--          <a-col v-bind="colLayout.cols">
             <a-form-item name="parentAssetNo" label="父资产编号" has-feedback>
               <a-input
                 v-model:value="form.parentAssetNo"
@@ -487,7 +500,7 @@
                 placeholder="请输入父资产编号"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="importedOrNot" label="是否为进口设备" has-feedback>
               <a-select
@@ -538,6 +551,21 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <a-row>
+          <a-col v-bind="colLayout.cols3">
+            <a-form-item
+              name="changeReason"
+              label="更改原因"
+            >
+              <a-textarea
+                v-model:value="form.changeReason"
+                :rows="2"
+                :maxLength="4000"
+                placeholder="请输入更改原因"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
       </a-form>
       <FamInventoryChangeListEdit ref="famInventoryChangeListEdit" />
     </a-spin>
@@ -576,6 +604,7 @@ const {
   formRef,
   rules,
   layout,
+  autoCode,
   colLayout,
   loading,
   secretLevelList,

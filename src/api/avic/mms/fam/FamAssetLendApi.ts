@@ -101,6 +101,10 @@ export function saveFormAndStartProcess({
     bean: postData
   });
 }
+/** 根据id归还数据 */
+export function returnFamAssetLend(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.get(basePath + '/update-type-ids/'+ids+'/v1');
+}
 
 /** 根据id集合删除数据 */
 export function delFamAssetLend(ids: [string]): Promise<ResponseBaseData<any>> {

@@ -130,6 +130,11 @@ export function saveFamScrapLedger (form: FamScrapLedgerDto): Promise<ResponseBa
   return request.post(basePath + '/save/v1', form);
 }
 
+/** 保存批量录入批复文号 */
+export function saveEnterFamScrapLedger (form: FamScrapLedgerDto): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/update-sensitiveList/v1', form);
+}
+
 /** 根据id集合删除数据 */
 export function delFamScrapLedger (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
