@@ -537,5 +537,10 @@ function customRow(record) {
     }
   };
 }
+
+
+defineExpose({
+  selectedRows
+});
 </script>
 
