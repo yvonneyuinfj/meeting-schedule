@@ -1,5 +1,10 @@
 import request from '@/utils/request';
-import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
+import type {
+  BaseBeanModel,
+  ResponsePageData,
+  ResponseBaseData,
+  QueryParamModel
+} from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
@@ -130,7 +135,9 @@ export interface TpmMaintPlanDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listTpmMaintPlanByPage(param: QueryParamModel): Promise<ResponsePageData<TpmMaintPlanDto>> {
+export function listTpmMaintPlanByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmMaintPlanDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
@@ -144,6 +151,10 @@ export function saveTpmMaintPlan(form: TpmMaintPlanDto): Promise<ResponseBaseDat
   return request.post(basePath + '/save/v1', form);
 }
 
+/** 保存新增表单 */
+export function saveAddTpmMaintPlan(form: TpmMaintPlanDto): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-ls/v1', form);
+}
 /** 保存表单数据 */
 export function saveTpmMaintPlanBad(form: TpmMaintPlanDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-bad/v1', form);
@@ -160,10 +171,10 @@ export function approvalMaintPlan(data) {
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-                                          processDefId,
-                                          formCode,
-                                          postData
-                                        }): Promise<ResponseBaseData<any>> {
+  processDefId,
+  formCode,
+  postData
+}): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,

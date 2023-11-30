@@ -2,6 +2,7 @@ import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // �
 import {
   getTpmMaintPlan,
   saveTpmMaintPlan,
+  saveAddTpmMaintPlan,
   saveFormAndStartProcess,
   saveTpmMaintPlanBad
 } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
@@ -27,9 +28,8 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); //提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    secretLevel: [
-      { required: true, message: '密级不能为空', trigger: 'change' }
-    ]
+    tpmInventoryCode: [{ required: true, message: '设备编号不能为空', trigger: 'change' }],
+    planMaintenanceDate: [{ required: true, message: '保养日期不能为空', trigger: 'change' }]
   };
   const layout = {
     labelCol: { flex: '0 0 140px' },
@@ -109,43 +109,47 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
           }
           closeFlowLoading(props.bpmInstanceObject);
         }
-      }).catch(() => {
-      proxy.$message.warning('获取表单数据失败！');
-      loading.value = false;
-    });
+      })
+      .catch(() => {
+        proxy.$message.warning('获取表单数据失败！');
+        loading.value = false;
+      });
   }
 
   /** 保存 */
   function saveForm(params) {
-    formRef.value.validate().then(() => {
-      loading.value = true;
-      // 处理数据
-      const postData = proxy.$lodash.cloneDeep(form.value);
-      // 发送请求
-      saveTpmMaintPlanBad(postData)
-        .then(res => {
-          if (res.success) {
-            if (props.bpmInstanceObject) {
-              bpmButtonParams.value = { params, result: res.data };
+    formRef.value
+      .validate()
+      .then(() => {
+        loading.value = true;
+        // 处理数据
+        const postData = proxy.$lodash.cloneDeep(form.value);
+        // 发送请求
+        saveTpmMaintPlanBad(postData)
+          .then(res => {
+            if (res.success) {
+              if (props.bpmInstanceObject) {
+                bpmButtonParams.value = { params, result: res.data };
+              }
+              if (!form.value.id) {
+                form.value.id = res.data;
+              }
+              successCallback();
+            } else {
+              errorCallback();
             }
-            if (!form.value.id) {
-              form.value.id = res.data;
-            }
-            successCallback();
-          } else {
+          })
+          .catch(() => {
             errorCallback();
-          }
-        })
-        .catch(() => {
-          errorCallback();
-        });
-    }).catch(error => {
-      if (props.bpmInstanceObject) {
-        closeFlowLoading(props.bpmInstanceObject);
-      }
-      // 定位校验失败元素
-      proxy.$scrollToFirstErrorField(formRef, error);
-    });
+          });
+      })
+      .catch(error => {
+        if (props.bpmInstanceObject) {
+          closeFlowLoading(props.bpmInstanceObject);
+        }
+        // 定位校验失败元素
+        proxy.$scrollToFirstErrorField(formRef, error);
+      });
   }
 
   function saveFormAdd(params) {
@@ -156,7 +160,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        saveTpmMaintPlan(postData)
+        saveAddTpmMaintPlan(postData)
           .then(res => {
             if (res.success) {
               if (props.bpmInstanceObject) {
