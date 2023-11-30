@@ -167,3 +167,13 @@ export function exportReleaseExcel(param: any) {
     } as downloadParam;
     return downloadSysFile(download);
 }
+
+/** 下达页查询结果导出Excel */
+export function exportReleaseQueryExcel(param: any) {
+    const download = {
+        url: basePath + '/exportReleaseQueryData/v1',
+        data: param,
+        method: 'post'
+    } as downloadParam;
+    return downloadSysFile(download);
+}
