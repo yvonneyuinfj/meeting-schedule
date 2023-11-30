@@ -27,7 +27,8 @@
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               :loading="backLoading"
               @click="handleBack(selectedRowKeys, '')"
-            >驳回
+            >
+              驳回
             </a-button>
           </a-space>
         </template>
@@ -37,17 +38,24 @@
           </template>
         </template>
       </AvicTable>
+      <a-modal :visible="backModal" @cancel="closeBack" @ok="handleBackModal" title="驳回原因">
+        <a-textarea
+          v-model:value="backReason"
+          placeholder="请输入驳回原因"
+          :auto-size="{ minRows: 2, maxRows: 5 }"
+        />
+      </a-modal>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
 import TpmMaintPlanManage from '@/views/avic/mms/tpm/tpmmaintplan/TpmMaintPlanManage.vue';
-import {
-  listTpmMaintPlanByPage,
-  backTpmMaintPlan
-} from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
+import { listTpmMaintPlanByPage, backTpmMaintPlan } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
+import bpmUtils from '@/views/avic/bpm/bpmutils/FlowUtils';
+import { useRouter } from 'vue-router';
 const backLoading = ref(false); // 提交按钮loading状态
+const router = useRouter();
 
 const props = defineProps({
   // 流程主表id
@@ -61,6 +69,7 @@ const layout = {
   labelCol: { flex: '0 0 120px' },
   wrapperCol: { flex: '1 1 0' }
 };
+const backModal = ref(false);
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
   {
@@ -88,7 +97,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '设备名称',
     dataIndex: 'equipmentName',
     ellipsis: true,
@@ -96,7 +106,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '型号',
     dataIndex: 'model',
     ellipsis: true,
@@ -104,7 +115,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '设备规格',
     dataIndex: 'specs',
     ellipsis: true,
@@ -112,7 +124,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '使用部门',
     dataIndex: 'useDeptName',
     ellipsis: true,
@@ -180,6 +193,7 @@ const columns = [
     align: 'center'
   }
 ];
+const backReason = ref<string>('');
 const queryForm = ref<TpmMaintPlanDto>({});
 // 高级查询对象
 const queryParam = reactive({
@@ -219,32 +233,52 @@ onMounted(() => {
   getUserFileSecretList();
 });
 
+// 保存驳回原因
+const handleBackModal = () => {
+  if(!backReason.value){
+    proxy.$message.warning('请输入驳回原因');
+    return;
+  }
+  backTpmMaintPlan(selectedRowKeys.value, backReason.value)
+    .then(res => {
+      if (res.success) {
+        proxy.$message.success('驳回成功！');
+        if (verificationBackReason()) {
+          window.close();
+          backReason.value = '';
+          backModal.value = false;
+          bpmUtils.refreshBack(router.currentRoute.value.query.entryId,undefined);
+        } else {
+          backReason.value = '';
+          backModal.value = false;
+          getList();
+        }
+      }
+      backLoading.value = false;
+    })
+    .catch(() => {
+      backLoading.value = false;
+    });
+};
+
+/** 校验是否全部驳回 */
+const verificationBackReason = () => {
+  return selectedRowKeys.value.length === list.value.length;
+};
+
+/** 关闭驳回窗口 */
+const closeBack = () => {
+  backReason.value = '';
+  backModal.value = false;
+};
+
 /** 驳回 */
-function handleBack(ids, type) {
+function handleBack(ids) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要驳回的数据！');
     return;
   }
-  proxy.$confirm({
-    title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      backLoading.value = true;
-      backTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('驳回成功！');
-            // TpmMaintPlanManage.methods.getList();
-            window.close();
-            // getList();
-          }
-          backLoading.value = false;
-        }).catch(() => {
-        backLoading.value = false;
-      });
-    }
-  });
+  backModal.value = true;
 }
 
 /** 查询数据 */
@@ -259,11 +293,12 @@ function getList() {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
-    }).catch(() => {
-    list.value = [];
-    totalPage.value = 0;
-    loading.value = false;
-  });
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 获取通用代码 */
