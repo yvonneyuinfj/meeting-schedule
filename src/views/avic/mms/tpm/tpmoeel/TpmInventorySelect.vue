@@ -56,6 +56,7 @@
                 :row-key="record => record.id" :data-source="list" :loading="loading" :show-table-setting="false"
                 :row-selection="{
                     selectedRowKeys: selectedRowKeys,
+                    type: 'radio',
                     onChange: onSelectChange,
                     columnWidth: 40,
                     fixed: true
@@ -197,8 +198,8 @@ const queryParam = reactive({
 });
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
-const selectedRowKeys = ref([]); // 选中数据主键集合
-const selectedRows = ref([]); // 选中行集合
+const selectedRowKeys = ref(); // 选中数据主键集合
+const selectedRows = ref(); // 选中行集合
 const loading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
@@ -213,8 +214,8 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
-    selectedRowKeys.value = []; // 清空选中
-    selectedRows.value = []; // 清空选中
+    selectedRowKeys.value = null; // 清空选中
+    selectedRows.value = null; // 清空选中
     loading.value = true;
     listTpmInventoryByPage(queryParam)
         .then(response => {
@@ -267,11 +268,9 @@ function handleKeyWordQuery(value) {
 
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
-    selectedRowKeys.value = [];
-    selectedRows.value = [];
     selectedRowKeys.value = rowKeys;
     selectedRows.value = rows;
-    info.value = rows[0];
+    info.value = rows;
     // 传出选中项
     $emit('select', selectedRows.value);
 }

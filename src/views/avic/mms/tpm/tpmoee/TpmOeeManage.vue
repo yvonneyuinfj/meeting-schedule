@@ -115,7 +115,7 @@
         </AvicPane>
         <AvicPane>
             <!-- 子表组件 -->
-            <tpm-oee-l-manage key="tpmOeeLManage" ref="tpmOeeLManage" :mainId="mainId" />
+            <tpm-oee-l-manage key="tpmOeeLManage" ref="tpmOeeLManage" :mainId="mainId" :reportDate="reportDate" />
         </AvicPane>
     </AvicSplit>
 </template>
@@ -224,6 +224,9 @@ const totalPage = ref(0);
 // 主表传入子表的id
 const mainId = computed(() => {
     return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : '';
+});
+const reportDate = computed(() => {
+    return selectedRows.value.length === 1 ? selectedRows.value[0].reportDate : '';
 });
 
 onMounted(() => {

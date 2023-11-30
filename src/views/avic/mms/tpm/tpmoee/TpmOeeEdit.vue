@@ -6,25 +6,28 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDate" label="申报月份" has-feedback>
               <a-date-picker v-model:value="form.reportDate" :auto-focus="true" format="YYYY-MM" value-format="YYYY-MM"
-                disabled placeholder="请选择申报月份" />
+                :disabled="true" placeholder="请选择申报月份" />
             </a-form-item>
+          </a-col>
+          <a-col>
+            <a-form-item label="关键瓶颈设备运行数据上报" :colon="false" :label-col="{ flex: '0 0 200px' }"></a-form-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDeptId" label="申报部门" has-feedback>
-              <AvicCommonSelect v-model:value="form.reportDeptId" type="deptSelect" placeholder="请选择申报部门" disabled
+              <AvicCommonSelect v-model:value="form.reportDeptId" type="deptSelect" placeholder="请选择申报部门" :disabled="true"
                 :defaultShowValue="form.reportDeptIdAlias" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyUserName" label="申请人名称">
-              <a-input v-model:value="form.applyUserName" :maxLength="64" placeholder="请输入申请人名称" disabled />
+              <a-input v-model:value="form.applyUserName" :maxLength="64" placeholder="请输入申请人名称" :disabled="true" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyDate" label="申请日期">
-              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" disabled
+              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :disabled="true"
                 placeholder="请选择申请日期" />
             </a-form-item>
           </a-col>

@@ -28,6 +28,7 @@ export function useTpmOeeForm({
     const colLayout = proxy.$colLayout2; // 调用布局公共方法
     const loading = ref(false);
     const secretLevelList = ref([]); // 密级通用代码
+    const userStore = useUserStore();
 
     onMounted(() => {
         // 获取当前用户对应的文档密级
@@ -36,8 +37,8 @@ export function useTpmOeeForm({
             // 编辑、详情页面加载数据
             getFormData(props.formId);
         } else {
-            const userStore = useUserStore();
             form.value.applyDate = dayjs(new Date())
+            form.value.applyUserId = userStore.userInfo.id;
             form.value.applyUserName = userStore.userInfo.name
             form.value.reportDeptId = userStore.userInfo.deptId
             form.value.reportDeptIdAlias = userStore.userInfo.deptName
@@ -79,7 +80,8 @@ export function useTpmOeeForm({
             .then(() => {
                 loading.value = true;
                 // 处理数据
-                const reportDate = form.value.reportDate.toString() + '-15';
+                const days = new Date(new Date(form.value.reportDate).getFullYear(), new Date(form.value.reportDate).getMonth() + 1, 0).getDate() + 1;
+                const reportDate = form.value.reportDate.toString() + "-" + days.toString();
                 form.value.reportDate = dayjs(reportDate)
                 const postData = proxy.$lodash.cloneDeep(form.value);
                 saveTpmOee(postData)

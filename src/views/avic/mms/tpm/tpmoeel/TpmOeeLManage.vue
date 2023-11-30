@@ -64,10 +64,10 @@
             </AvicTable>
         </div>
         <!-- 添加页面弹窗 -->
-        <tpm-oee-l-add v-if="showAddModal" ref="addModal" :mainId="mainId" @reloadData="getList"
+        <tpm-oee-l-add v-if="showAddModal" ref="addModal" :mainId="mainId" :reportDate="props.reportDate" @reloadData="getList"
             @close="showAddModal = false" />
         <!-- 编辑页面弹窗 -->
-        <tpm-oee-l-edit v-if="showEditModal" ref="editModal" :mainId="mainId" :form-id="formId" @reloadData="getList"
+        <tpm-oee-l-edit v-if="showEditModal" ref="editModal" :mainId="mainId" :reportDate="props.reportDate" :form-id="formId" @reloadData="getList"
             @close="showEditModal = false" />
         <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="单表模板导入"
             importUrl="/mms/tpm/tpmoeels/importData/v1" downloadTemplateUrl="/mms/tpm/tpmoeels/downloadTemplate/v1"
@@ -76,13 +76,16 @@
 </template>
 <script lang="ts" setup>
 import { listTpmOeeLByPage, delTpmOeeL } from '@/api/avic/mms/tpm/TpmOeeLApi'; // 引入模块API
-// import { listTpmOeeLByPage, delTpmOeeL, exportExcel } from '@/api/avic/mms/tpm/TpmOeeLApi'; // 引入模块API
 import TpmOeeLAdd from './TpmOeeLAdd.vue'; // 引入添加页面组件
 import TpmOeeLEdit from './TpmOeeLEdit.vue'; // 引入编辑页面组件
 const { proxy } = getCurrentInstance();
 const props = defineProps({
     // 主表选中项的keys集合
     mainId: {
+        type: String,
+        default: ''
+    },
+    reportDate: {
         type: String,
         default: ''
     }

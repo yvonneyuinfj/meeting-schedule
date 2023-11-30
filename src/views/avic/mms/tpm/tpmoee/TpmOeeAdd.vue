@@ -2,7 +2,7 @@
   <AvicModal :visible="true" title="添加" width="960px" height="520px" :centered="true" @cancel="closeModal">
     <a-spin :spinning="loading">
       <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" layout="horizontal">
-        <a-row>
+        <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDate" label="申报月份" has-feedback>
               <a-date-picker v-model:value="form.reportDate" :auto-focus="true" format="YYYY-MM" value-format="YYYY-MM"
@@ -10,24 +10,24 @@
             </a-form-item>
           </a-col>
           <a-col>
-            <a-form-item label="关键瓶颈设备运行数据上报" :gutter="8" :colon="false"></a-form-item>
+            <a-form-item label="关键瓶颈设备运行数据上报" :colon="false" :label-col="{ flex: '0 0 200px' }"></a-form-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDeptId" label="申报部门" has-feedback>
-              <AvicCommonSelect v-model:value="form.reportDeptId" :defaultShowValue="form.reportDeptIdAlias" disabled
+              <AvicCommonSelect v-model:value="form.reportDeptId" :defaultShowValue="form.reportDeptIdAlias" :disabled="true"
                 disabledtype="deptSelect" placeholder="请选择申报部门" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyUserName" label="申请人名称">
-              <a-input v-model:value="form.applyUserName" :maxLength="64" disabled placeholder="请输入申请人名称" />
+              <a-input v-model:value="form.applyUserName" :maxLength="64" :disabled="true" placeholder="请输入申请人名称" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyDate" label="申请日期">
-              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" disabled
+              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :disabled="true"
                 placeholder="请选择申请日期" />
             </a-form-item>
           </a-col>

@@ -118,8 +118,9 @@ export function useTpmOeeLForm({
             loading.value = false;
           }
          })
-        .catch(() => {
-          loading.value = false;
+          .catch((error) => {
+            proxy.$message.warning(error.message)
+            loading.value = false;
         });
       })
       .catch(error => {
