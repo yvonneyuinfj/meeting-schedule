@@ -7,11 +7,31 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="设备编号">
               <a-input
-                v-model:value="queryForm.equipmentCode"
-                placeholder="请输入设备编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.equipmentCode"
+                  placeholder="请输入设备编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item label="保养状态">
+              <a-select
+                  v-model:value="queryForm.maintenanceStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择保养状态"
+              >
+                <a-select-option
+                    v-for="item in maintenanceStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <!--          <a-col v-bind="colLayout.cols">-->
@@ -88,26 +108,7 @@
           <!--              />-->
           <!--            </a-form-item>-->
           <!--          </a-col>-->
-          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
-          <!--            <a-form-item label="保养状态">-->
-          <!--              <a-select-->
-          <!--                v-model:value="queryForm.maintenanceStatus"-->
-          <!--                :get-popup-container="triggerNode => triggerNode.parentNode"-->
-          <!--                option-filter-prop="children"-->
-          <!--                :show-search="true"-->
-          <!--                :allow-clear="true"-->
-          <!--                placeholder="请选择保养状态"-->
-          <!--              >-->
-          <!--                <a-select-option-->
-          <!--                  v-for="item in maintenanceStatusList"-->
-          <!--                  :key="item.sysLookupTlId"-->
-          <!--                  :value="item.lookupCode"-->
-          <!--                >-->
-          <!--                  {{ item.lookupName }}-->
-          <!--                </a-select-option>-->
-          <!--              </a-select>-->
-          <!--            </a-form-item>-->
-          <!--          </a-col>-->
+
           <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
           <!--            <a-form-item label="保养完成日期(起)">-->
           <!--              <a-date-picker-->
@@ -402,8 +403,8 @@
           <!--            </a-form-item>-->
           <!--          </a-col>-->
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
@@ -429,22 +430,22 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmMaintPlan"
-        table-key="tpmMaintPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmMaintPlan"
+          table-key="tpmMaintPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -487,12 +488,12 @@
             <!--              编辑-->
             <!--            </a-button>-->
             <a-button
-              v-hasPermi="['tpmMaintPlan:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['tpmMaintPlan:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
                 <delete-outlined/>
@@ -503,10 +504,10 @@
               取消计划
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmMaintPlan:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
                 <plus-outlined/>
@@ -529,19 +530,19 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpmMaintPlan:all']"
-              :myFileAuth="['tpmMaintPlan:my']"
-              :defaultBpmType='queryForm.bpmType'
-              :defaultBpmState='queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['tpmMaintPlan:all']"
+                :myFileAuth="['tpmMaintPlan:my']"
+                :defaultBpmType='queryForm.bpmType'
+                :defaultBpmState='queryForm.bpmState'
+                @change="changeBpmFilter"
             />
-            <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入设备标准主表ID或TPM_STANDARD_MAINTENANCE_ID"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
-            />
+            <!--            <a-input-search-->
+            <!--                class="opt-btn-commonsearch"-->
+            <!--                style="width: 200px"-->
+            <!--                placeholder="请输入设备标准主表ID或TPM_STANDARD_MAINTENANCE_ID"-->
+            <!--                :allow-clear="true"-->
+            <!--                @search="handleKeyWordQuery"-->
+            <!--            />-->
           </a-space>
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -558,19 +559,19 @@
     </div>
     <!-- 添加页面弹窗 -->
     <TpmMaintPlanAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <TpmMaintPlanEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
   </div>
 </template>
@@ -603,20 +604,7 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  {
-    title: '流程状态',
-    dataIndex: 'businessstate_',
-    ellipsis: true,
-    width: 120,
-    align: 'center',
-    fixed: 'right'
-  },
-  {
-    title: '流程当前步骤',
-    dataIndex: 'activityalias_',
-    width: 120,
-    fixed: 'right'
-  },
+
   {
     title: '计划编号',
     dataIndex: 'billNo',
@@ -722,7 +710,7 @@ const columns = [
   },
   {
     title: '上次保养日期',
-    dataIndex: 'lastMaintenDate',
+    dataIndex: 'oldLastMaintenPlanDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -753,22 +741,6 @@ const columns = [
     align: 'center'
   },
   {
-    title: '编制时间',
-    dataIndex: 'editDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '当前处理人',
-    dataIndex: 'assigneenames_',
-    ellipsis: true,
-    width: 130,
-    align: 'left',
-    fixed: 'right'
-  },
-  {
     title: '计划保养日期',
     dataIndex: 'planMaintenanceDate',
     ellipsis: true,
@@ -777,22 +749,30 @@ const columns = [
     align: 'center'
   },
   {
-    title: '保养周期(月)',
-    dataIndex: 'maintenanceCycle',
+    title: '编制时间',
+    dataIndex: 'editDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
-    title: '备注',
-    dataIndex: 'note',
+    title: '保养状态',
+    dataIndex: 'maintenanceStatusName',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
+  // {
+  //   title: '备注',
+  //   dataIndex: 'note',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '驳回原因',
     dataIndex: 'backReason',
@@ -809,6 +789,28 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
+  },
+  {
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    ellipsis: true,
+    width: 120,
+    align: 'center',
+    fixed: 'right'
+  },
+  {
+    title: '流程当前步骤',
+    dataIndex: 'activityalias_',
+    width: 120,
+    fixed: 'right'
+  },
+  {
+    title: '当前处理人',
+    dataIndex: 'assigneenames_',
+    ellipsis: true,
+    width: 130,
+    align: 'left',
+    fixed: 'right'
   }
 ];
 const queryForm = ref<TpmMaintPlanDto>({
@@ -901,16 +903,16 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmMaintPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码 */
@@ -1056,14 +1058,14 @@ const handleCancelPlans = (rows, ids) => {
     cancelText: '取消',
     onOk: () => {
       cancelTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('取消成功！');
-            getList();
-          }
-        })
-        .catch(() => {
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('取消成功！');
+              getList();
+            }
+          })
+          .catch(() => {
+          });
     }
   });
 };

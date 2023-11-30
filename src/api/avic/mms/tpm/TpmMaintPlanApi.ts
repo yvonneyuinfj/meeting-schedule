@@ -99,6 +99,30 @@ export interface TpmMaintPlanDto extends BaseBeanModel {
   attribute09?: string;
   /** 预留字段 */
   attribute10?: string;
+  /** 外委专业厂家ID */
+  vendorId?: string;
+  /** 外委专业厂家编码 */
+  vendorCode?: string;
+  /** 外委专业厂家名称 */
+  vendorName?: string;
+  /** 保养结论 */
+  maintConclusion?: any;
+  /** 问题说明 */
+  problemDescription?: string;
+  /** 保养部位 */
+  maintenancePosition?: string;
+  /** 保养项目 */
+  maintenanceItems?: string;
+  /** 保养依据 */
+  maintenanceBasis?: string;
+  /** 保养内容 */
+  maintenanceContent?: string;
+  /** 保养要求 */
+  maintenanceRequirement?: string;
+  /** 小时数 */
+  maintenanceHours?: number;
+  /** 是否自主维护 */
+  ynSelfMaintenance?: string;
   bpmState?: string;
   bpmType?: string;
   /** 流程id */
@@ -118,6 +142,11 @@ export function getTpmMaintPlan(id: string): Promise<ResponseBaseData<TpmMaintPl
 /** 保存表单数据 */
 export function saveTpmMaintPlan(form: TpmMaintPlanDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
+}
+
+/** 保存表单数据 */
+export function saveTpmMaintPlanBad(form: TpmMaintPlanDto): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-bad/v1', form);
 }
 
 export function creativeMaintPlan(data) {

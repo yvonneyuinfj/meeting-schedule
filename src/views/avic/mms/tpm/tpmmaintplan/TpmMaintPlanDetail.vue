@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-form
-      ref="formRef"
-      :model="form"
-      v-bind="layout"
-      class="form-excel-style"
+        ref="formRef"
+        :model="form"
+        v-bind="layout"
+        class="form-excel-style"
     >
       <a-row></a-row>
     </a-form>
@@ -38,7 +38,6 @@ const {
   layout,
   colLayout,
   secretLevelList,
-  tpmMaintPlanManageDetail,
   fieldVisible,
   fieldDisabled,
   fieldRequired,

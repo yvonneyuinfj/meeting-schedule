@@ -1,5 +1,10 @@
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
-import { getTpmMaintPlan, saveTpmMaintPlan, saveFormAndStartProcess } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
+import {
+  getTpmMaintPlan,
+  saveTpmMaintPlan,
+  saveFormAndStartProcess,
+  saveTpmMaintPlanBad
+} from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
 import {
   startFlowByFormCode,
   closeFlowLoading,
@@ -117,7 +122,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       // 发送请求
-      saveTpmMaintPlan(postData)
+      saveTpmMaintPlanBad(postData)
         .then(res => {
           if (res.success) {
             if (props.bpmInstanceObject) {
