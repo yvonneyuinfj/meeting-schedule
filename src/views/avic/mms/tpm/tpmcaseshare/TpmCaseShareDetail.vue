@@ -23,8 +23,8 @@
 
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('shareDate')">
           <a-form-item name="shareDate" label="分享时间" :rules="fieldRequired('shareDate')" has-feedback>
-            <a-date-picker v-model:value="form.shareDate" format="YYYY-MM-DD HH:mm:ss" value-format="YYYY-MM-DD HH:mm:ss"
-              show-time :disabled="fieldDisabled('shareDate')" />
+              <a-date-picker v-model:value="form.shareDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" show-time
+              :disabled="fieldDisabled('shareDate')" />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('shareDeptId')">
