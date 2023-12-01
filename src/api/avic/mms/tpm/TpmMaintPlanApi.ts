@@ -198,8 +198,9 @@ export function exportExcel(param) {
     return downloadSysFile(download);
 }
 
-export function backTpmMaintPlan(ids: [string]): Promise<ResponseBaseData<any>> {
-    return request.post(basePath + '/back-maint-plan/v1', { ids: ids, reason: '' });
+/** 驳回 */
+export function backTpmMaintPlan(ids: [string], reason: string): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/back-maint-plan/v1', { ids: ids, reason });
 }
 
 export function cancelTpmMaintPlan(ids: [string]): Promise<ResponseBaseData<any>> {
