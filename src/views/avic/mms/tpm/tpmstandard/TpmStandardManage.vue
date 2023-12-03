@@ -99,6 +99,9 @@
                   </template>
                   删除
                 </a-button>
+                <a-button type="primary" @click="handleCopy(selectedRows, selectedRowKeys)">
+                  复制
+                </a-button>
                 <!--                <a-button-->
                 <!--                    v-hasPermi="['tpmStandard:import']"-->
                 <!--                    title="导入"-->
@@ -192,6 +195,9 @@
           @close="showImportModal = false"
       />
     </AvicPane>
+    <a-modal :visible="copyMoadl" @ok="handleCopyModal" @cancel="copyMoadl = false" title="复制">
+
+    </a-modal>
     <AvicPane>
       <!-- 子表组件 -->
       <tpm-standard-maintenance-manage key="tpmStandardMaintenanceManage" ref="tpmStandardMaintenanceManage"
@@ -325,6 +331,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
+const copyMoadl = ref<boolean>(false)
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
@@ -413,6 +420,17 @@ function handleAdd() {
 function handleOpenAdd() {
   open.value = true;
 }
+
+/** 复制 */
+function handleCopy(rows, ids) {
+  copyMoadl.value = true
+}
+
+/** 提交复制 */
+function handleCopyModal () {
+  copyMoadl.value = false
+}
+
 
 const handleCancel = () => {
   open.value = false;
