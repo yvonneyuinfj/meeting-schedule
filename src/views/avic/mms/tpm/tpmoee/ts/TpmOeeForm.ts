@@ -2,11 +2,13 @@ import type { TpmOeeDto } from '@/api/avic/mms/tpm/TpmOeeApi'; // 引入模块DT
 import { getTpmOee, saveTpmOee } from '@/api/avic/mms/tpm/TpmOeeApi'; // 引入模块API
 import dayjs from 'dayjs';
 import { useUserStore } from '@/store/user';
+
 export const emits = ['reloadData', 'close'];
+
 export function useTpmOeeForm({
-    props: props,
-    emit: emit
-}) {
+                                  props: props,
+                                  emit: emit
+                              }) {
     const { proxy } = getCurrentInstance();
     const form = ref<TpmOeeDto>({});
     const formRef = ref(null);
@@ -37,11 +39,11 @@ export function useTpmOeeForm({
             // 编辑、详情页面加载数据
             getFormData(props.formId);
         } else {
-            form.value.applyDate = dayjs(new Date())
+            form.value.applyDate = dayjs(new Date());
             form.value.applyUserId = userStore.userInfo.id;
-            form.value.applyUserName = userStore.userInfo.name
-            form.value.reportDeptId = userStore.userInfo.deptId
-            form.value.reportDeptIdAlias = userStore.userInfo.deptName
+            form.value.applyUserName = userStore.userInfo.name;
+            form.value.reportDeptId = userStore.userInfo.deptId;
+            form.value.reportDeptIdAlias = userStore.userInfo.deptName;
         }
     });
 
@@ -52,6 +54,7 @@ export function useTpmOeeForm({
             secretLevelList.value = result;
         });
     }
+
     /**
      * 编辑、详情页面加载数据
      * @param {String} id 行数据的id
@@ -65,7 +68,7 @@ export function useTpmOeeForm({
                     // 处理数据
                     loading.value = false;
                     const reportDate = form.value.reportDate.toString();
-                    form.value.reportDate = dayjs(reportDate).format("YYYY-MM")
+                    form.value.reportDate = dayjs(reportDate).format('YYYY-MM');
                 }
             })
             .catch(() => {
@@ -73,6 +76,7 @@ export function useTpmOeeForm({
                 loading.value = false;
             });
     }
+
     /** 保存 */
     function saveForm() {
         formRef.value
@@ -80,9 +84,8 @@ export function useTpmOeeForm({
             .then(() => {
                 loading.value = true;
                 // 处理数据
-                const days = new Date(new Date(form.value.reportDate).getFullYear(), new Date(form.value.reportDate).getMonth() + 1, 0).getDate() + 1;
-                const reportDate = form.value.reportDate.toString() + "-" + days.toString();
-                form.value.reportDate = dayjs(reportDate)
+                const reportDate = dayjs(form.value.reportDate);
+                form.value.reportDate = dayjs().year(reportDate.year()).month(reportDate.month()).endOf('month').format('YYYY-MM-DD');
                 const postData = proxy.$lodash.cloneDeep(form.value);
                 saveTpmOee(postData)
                     .then(res => {
@@ -93,7 +96,7 @@ export function useTpmOeeForm({
                         }
                     })
                     .catch((error) => {
-                        proxy.$message.warning(error.message)
+                        proxy.$message.warning(error.message);
                         loading.value = false;
                     });
             })
@@ -102,16 +105,19 @@ export function useTpmOeeForm({
                 proxy.$scrollToFirstErrorField(formRef, error);
             });
     }
+
     /** 数据保存成功的回调 */
     function successCallback() {
         proxy.$message.success('保存成功！');
         emit('reloadData');
         emit('close');
     }
+
     /** 返回关闭事件 */
     function closeModal() {
         emit('close');
     }
+
     return {
         form,
         formRef,

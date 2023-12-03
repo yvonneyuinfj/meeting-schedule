@@ -5,8 +5,9 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable ref="tpmMaintainReminder" table-key="tpmMaintainReminder" :columns="columns"
-            :row-key="record => record.id" :data-source="list" :loading="loading"
-            :pageParameter="queryParam.pageParameter" :total="totalPage" @refresh="getList" :rowClassName="rowClassName">
+                     :row-key="record => record.id" :data-source="list" :loading="loading"
+                     :pageParameter="queryParam.pageParameter" :total="totalPage" @refresh="getList"
+                     :rowClassName="rowClassName">
             <template #bodyCell="{ column, text, record, index }">
               <template v-if="column.dataIndex === 'id'">
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
@@ -24,6 +25,7 @@ import type { TpmMaintainReminderDto } from '@/api/avic/mms/tpm/TpmMaintainRemin
 import { listTpmStandardByPage } from '@/api/avic/mms/tpm/TpmMaintainReminderApi.js'; // 引入模块API
 import dayjs from 'dayjs';
 import { useUserStore } from '@/store/user';
+
 const columns = [
   {
     title: '序号',
@@ -119,27 +121,27 @@ onMounted(() => {
 function getList() {
   loading.value = true;
   listTpmStandardByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 const rowClassName = (record: any) => {
   const newDate = dayjs(new Date());
   const timeDifference = newDate.diff(record.planMaintenDate, 'day');
   if (record.maintenanceHours > 0 || timeDifference >= 7) {
-    return 'row-color'
+    return 'row-color';
   } else {
-    return ''
+    return '';
   }
-}
+};
 </script>
 <style scoped lang="less">
 :deep(.row-color) {

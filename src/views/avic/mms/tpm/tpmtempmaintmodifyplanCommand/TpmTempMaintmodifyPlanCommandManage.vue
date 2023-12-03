@@ -74,7 +74,7 @@
                   type="primary"
                   @click="handleQuery"
                 >
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button
@@ -82,7 +82,7 @@
                   @click="resetQuery"
                   ghost
                 >
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
               </a-space>
@@ -133,7 +133,7 @@
               @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined />
+                <save-outlined/>
               </template>
               保存
             </a-button>
@@ -180,7 +180,7 @@
               @click="handleExport"
             >
               <template #icon>
-                <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
@@ -212,7 +212,7 @@
               />
             </template>
             <template #default>
-              {{ record["returnReason"] }}
+              {{ record['returnReason'] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
@@ -229,7 +229,7 @@
               />
             </template>
             <template #default>
-              {{ record["estContractSignDate"] }}
+              {{ record['estContractSignDate'] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
@@ -246,7 +246,7 @@
               />
             </template>
             <template #default>
-              {{ record["estAcceptanceDate"] }}
+              {{ record['estAcceptanceDate'] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
@@ -273,7 +273,7 @@
               </a-select>
             </template>
             <template #default>
-              {{ record["businessStatusName"] }}
+              {{ record['businessStatusName'] }}
             </template>
           </AvicRowEdit>
 
@@ -454,7 +454,7 @@ const columns = [
     align: 'left'
   },
   {
-    ttle: '联系电话',
+    title: '联系电话',
     dataIndex: 'applyUserTel',
     key: 'applyUserTel',
     ellipsis: true,
@@ -644,10 +644,13 @@ const attchForm = reactive({
 const planTypeList = ref([]); // 计划类别列表
 const businessStatusList = ref([]); // 制单状态列表
 const validateRules = {
-  returnReason: [{ required: true, message: '退回原因列不能为空' }],
+  // returnReason: [{ required: true, message: '退回原因列不能为空' }]
   estContractSignDate: [{ required: true, message: '合同预计签约时间列不能为空' }],
   estAcceptanceDate: [{ required: true, message: '计划验收时间列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
+const returnRules = {
+  returnReason: [{ required: true, message: '退回原因列不能为空' }]
+};
 const editingId = ref(''); // 正在编辑中的数据
 
 onMounted(() => {
@@ -708,6 +711,7 @@ function handleCommit(ids, type) {
   });
 }
 
+
 /** 退回 */
 function handleBack(ids, type) {
   if (ids.length == 0) {
@@ -716,7 +720,7 @@ function handleBack(ids, type) {
   }
   for (let item in ids) {
     let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
-    if (!validateRecordData([target])) {
+    if (!validateRecordData([target], 'return')) {
       return;
     }
   }
@@ -1080,15 +1084,24 @@ function blurInput(e, record, column) {
 }
 
 /** 批量数据校验 */
-function validateRecordData(records) {
+function validateRecordData(records, type) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(
-      records[index],
-      validateRules,
-      list.value,
-      tpmTempMaintModifyPlan
-    );
+    if (type) {
+      flag = proxy.$validateRecordData(
+        records[index],
+        returnRules,
+        list.value,
+        tpmTempMaintModifyPlan
+      );
+    } else {
+      flag = proxy.$validateRecordData(
+        records[index],
+        validateRules,
+        list.value,
+        tpmTempMaintModifyPlan
+      );
+    }
     if (!flag) {
       break;
     }

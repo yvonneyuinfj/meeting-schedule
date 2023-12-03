@@ -7,27 +7,27 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划编号">
               <a-input
-                  v-model:value="queryForm.billNo"
-                  placeholder="请输入计划编号"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.billNo"
+                placeholder="请输入计划编号"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="保养状态">
               <a-select
-                  v-model:value="queryForm.maintenanceStatus"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择保养状态"
+                v-model:value="queryForm.maintenanceStatus"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择保养状态"
               >
                 <a-select-option
-                    v-for="item in maintenanceStatusList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in maintenanceStatusList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -59,32 +59,32 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="tpmMaintPlan"
-          table-key="tpmMaintPlan"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
+        ref="tpmMaintPlan"
+        table-key="tpmMaintPlan"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="customRow"
-          @change="handleTableChange"
-          @refresh="getList"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-                v-hasPermi="['tpmMaintPlan:save']"
-                title="保存"
-                type="primary"
-                :loading="saveLoading"
-                @click="handleSaveAll"
+              v-hasPermi="['tpmMaintPlan:save']"
+              title="保存"
+              type="primary"
+              :loading="saveLoading"
+              @click="handleSaveAll"
             >
               <template #icon>
                 <save-outlined/>
@@ -93,6 +93,9 @@
             </a-button>
             <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)" :loading="approvalLoading">
               提交审批
+            </a-button>
+            <a-button type="primary" @click="handleCopy(selectedRows, selectedRowKeys)">
+              复制
             </a-button>
           </a-space>
         </template>
@@ -114,15 +117,15 @@
             </a>
           </template>
           <AvicRowEdit
-              v-if="column.dataIndex === 'completeDate'"
-              :record="record"
-              :column="column.dataIndex"
+            v-if="column.dataIndex === 'completeDate'"
+            :record="record"
+            :column="column.dataIndex"
           >
             <template #edit>
               <a-date-picker
-                  v-model:value="record.completeDate"
-                  value-format="YYYY-MM-DD"
-                  placeholder="请选择完工日期"
+                v-model:value="record.completeDate"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择完工日期"
               >
               </a-date-picker>
             </template>
@@ -206,6 +209,9 @@
           </AvicRowEdit>
         </template>
       </AvicTable>
+      <a-modal :visible="copyMoadl" @ok="handleOk" @cancel="copyMoadl = false" title="复制">
+
+      </a-modal>
     </div>
   </div>
 </template>
@@ -535,6 +541,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
+const copyMoadl = ref<boolean>(false)
 const tpmMaintPlan = ref(null);
 const showImportModal = ref(false); // 是否展示导入弹窗
 const excelParams = ref({ tableName: 'tpmMaintPlan' }); // 导入Excel数据过滤参数
@@ -595,11 +602,12 @@ function getList() {
         loading.value = false;
         // 查询的初始数据,保存时做比对
         initialList.value = proxy.$lodash.cloneDeep(list.value);
-      }).catch(() => {
-    list.value = [];
-    totalPage.value = 0;
-    loading.value = false;
-  });
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 根据流程状态及发起人查询数据 */
@@ -653,6 +661,17 @@ const handleApproval = (rows, ids) => {
     });
   }
 };
+
+/** 复制 */
+function handleCopy(rows, ids) {
+  copyMoadl.value = true
+}
+
+/** 提交复制 */
+function handleOk () {
+  copyMoadl.value = false
+}
+
 
 function getBpmDefine(rows, ids) {
   startFlowByFormCode({

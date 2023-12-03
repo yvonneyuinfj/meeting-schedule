@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, QueryParamModel } from '@/api/model/baseModel';
+
 const basePath = '/mms/tpm/tpmmaintainreminder';
 
 /** 设备保养提醒 */

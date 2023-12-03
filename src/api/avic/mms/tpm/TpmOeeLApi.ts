@@ -2,7 +2,9 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
+
 const basePath = '/mms/tpm/tpmoeels';
+
 /** OEE设备综合效率子表 */
 export interface TpmOeeLDto extends BaseBeanModel {
   /** OEE设备综合效率主表ID */
@@ -49,29 +51,29 @@ export interface TpmOeeLDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listTpmOeeLByPage (
+export function listTpmOeeLByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<TpmOeeLDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getTpmOeeL (id: string): Promise<ResponseBaseData<TpmOeeLDto>> {
+export function getTpmOeeL(id: string): Promise<ResponseBaseData<TpmOeeLDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveTpmOeeL (form: TpmOeeLDto): Promise<ResponseBaseData<any>> {
+export function saveTpmOeeL(form: TpmOeeLDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delTpmOeeL (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delTpmOeeL(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,

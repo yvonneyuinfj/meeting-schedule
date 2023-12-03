@@ -6,98 +6,106 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetsCode" label="资产编号" has-feedback>
               <a-input v-model:value="form.assetsCode" :maxLength="64" :auto-focus="true" placeholder="请输入资产编号"
-                :disabled="true" />
+                       :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="equipmentCode" label="设备编号" has-feedback>
-              <AvicModalSelect v-model:value="form.equipmentCode" title="选择设备编号" placeholder="请选择设备编号" @click="handleOpen" :defaultShowValue="form.equipmentCode"
-                :disabled="true" :allow-clear="true" />
+              <AvicModalSelect v-model:value="form.equipmentCode" title="选择设备编号" placeholder="请选择设备编号"
+                               @click="handleOpen" :defaultShowValue="form.equipmentCode"
+                               :disabled="true" :allow-clear="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="equipmentName" label="设备名称" has-feedback>
-              <a-input v-model:value="form.equipmentName" :maxLength="64" placeholder="请输入设备名称" :disabled="true" />
+              <a-input v-model:value="form.equipmentName" :maxLength="64" placeholder="请输入设备名称"
+                       :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="testMission" label="试验任务/件号" has-feedback>
-              <a-input v-model:value="form.testMission" :maxLength="64" placeholder="请输入试验任务/件号" />
+              <a-input v-model:value="form.testMission" :maxLength="64" placeholder="请输入试验任务/件号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="theoreticalExperimentTime" label="理论试验/加工时间">
-              <a-input v-model:value="form.theoreticalExperimentTime" :maxLength="16" placeholder="请输入理论试验/加工时间" />
+              <a-input v-model:value="form.theoreticalExperimentTime" :maxLength="16"
+                       placeholder="请输入理论试验/加工时间"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="totalTime" label="总时间（h）" has-feedback>
-              <a-input v-model:value="form.totalTime" :maxLength="16" placeholder="请输入总时间（h）" @change="calculateOEE" />
+              <a-input v-model:value="form.totalTime" :maxLength="16" placeholder="请输入总时间（h）"
+                       @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="planStopDurationTime" label="计划停机时间（h）" has-feedback>
               <a-input v-model:value="form.planStopDurationTime" :maxLength="16" placeholder="请输入计划停机时间（h）"
-                @change="calculateOEE" />
+                       @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="workDurationTime" label="开动时间（h）" has-feedback>
               <a-input v-model:value="form.workDurationTime" :maxLength="16" placeholder="请输入开动时间（h）"
-                @change="calculateTestSuccessRateOrQualifiedProductRate" />
+                       @change="calculateTestSuccessRateOrQualifiedProductRate"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="freeTime" label="空闲待工时间（h）" has-feedback>
-              <a-input v-model:value="form.freeTime" :maxLength="16" placeholder="请输入空闲待工时间（h）" @change="calculateOEE" />
+              <a-input v-model:value="form.freeTime" :maxLength="16" placeholder="请输入空闲待工时间（h）"
+                       @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="adjustTime" label="准备调整时间（h）" has-feedback>
               <a-input v-model:value="form.adjustTime" :maxLength="16" placeholder="请输入准备调整时间（h）"
-                @change="calculateOEE" />
+                       @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="stopDurationTime" label="故障停机时间（h）" has-feedback>
               <a-input v-model:value="form.stopDurationTime" :maxLength="16" placeholder="请输入故障停机时间（h）"
-                @change="calculateOEE" />
+                       @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="stopDurationNumber" label="故障停机次数" has-feedback>
-              <a-input v-model:value="form.stopDurationNumber" :maxLength="16" placeholder="请输入故障停机次数" />
+              <a-input v-model:value="form.stopDurationNumber" :maxLength="16" placeholder="请输入故障停机次数"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="mtbf" label="平均故障间隔时间MTBF(h)" has-feedback>
-              <a-input v-model:value="form.mtbf" :maxLength="16" placeholder="请输入平均故障间隔时间MTBF(h)" :disabled="true" />
+              <a-input v-model:value="form.mtbf" :maxLength="16" placeholder="请输入平均故障间隔时间MTBF(h)"
+                       :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="mttr" label="平均故障停机时间MTTR(h)" has-feedback>
-              <a-input v-model:value="form.mttr" :maxLength="16" placeholder="请输入平均故障停机时间MTTR(h)" :disabled="true" />
+              <a-input v-model:value="form.mttr" :maxLength="16" placeholder="请输入平均故障停机时间MTTR(h)"
+                       :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="passRate" label="试验成功率/合格品率" has-feedback>
-              <a-input v-model:value="form.passRate" :maxLength="16" placeholder="请输入试验成功率/合格品率" :disabled="true" />
+              <a-input v-model:value="form.passRate" :maxLength="16" placeholder="请输入试验成功率/合格品率"
+                       :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="oee" label="OEE" has-feedback>
-              <a-input v-model:value="form.oee" :maxLength="16" placeholder="请输入OEE" :disabled="true" />
+              <a-input v-model:value="form.oee" :maxLength="16" placeholder="请输入OEE" :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="note" label="备注">
-              <a-input v-model:value="form.note" :maxLength="512" placeholder="请输入备注" />
+              <a-input v-model:value="form.note" :maxLength="512" placeholder="请输入备注"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="密级" has-feedback>
               <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级">
+                        option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级">
                 <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
                   {{ item.lookupName }}
                 </a-select-option>
@@ -111,13 +119,13 @@
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
-      <!--选择设备弹窗-->
-      <a-modal :visible="open" title="选择设备" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
-        <div style="height: 400px;overflow: auto">
-          <Tpm-inventory-oee-l-select ref="tpmInventoryOeeLSelect">
-          </Tpm-inventory-oee-l-select>
-        </div>
-      </a-modal>
+    <!--选择设备弹窗-->
+    <a-modal :visible="open" title="选择设备" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
+      <div style="height: 400px;overflow: auto">
+        <Tpm-inventory-oee-l-select ref="tpmInventoryOeeLSelect">
+        </Tpm-inventory-oee-l-select>
+      </div>
+    </a-modal>
   </AvicModal>
 </template>
 <script lang="ts" setup>
@@ -165,6 +173,7 @@ const {
   props: props,
   emit: emit
 });
+
 /** 计算试验成功率/合格品率 */
 function calculateTestSuccessRateOrQualifiedProductRate() {
   const workDurationTime = parseFloat(form.value.workDurationTime);
@@ -178,6 +187,7 @@ function calculateTestSuccessRateOrQualifiedProductRate() {
   }
   calculateOEE();
 }
+
 /** 计算OEE */
 function calculateOEE() {
   // 开动时间
@@ -196,7 +206,7 @@ function calculateOEE() {
   if (workDurationTime <= 0 || stopDurationTime <= 0 || totalTime < 0 || planStopDurationTime < 0 || freeTime < 0 || adjustTime < 0) {
     return false;
   }
-  const OEE = ((workDurationTime - stopDurationTime) / workDurationTime) * workDurationTime / (totalTime - planStopDurationTime - freeTime - adjustTime) * 100
+  const OEE = ((workDurationTime - stopDurationTime) / workDurationTime) * workDurationTime / (totalTime - planStopDurationTime - freeTime - adjustTime) * 100;
   if (!isNaN(OEE)) {
     form.value.oee = OEE.toFixed(1).toString();
   }
@@ -229,41 +239,40 @@ function calculateMTBFOrMTTR() {
   let mttr = 0;
 
   mainForm.value.reportDeptId = userInfo.deptId;
-  const firstDayOfYear = new Date(new Date(props.reportDate).getFullYear(), 0, 1);
-  mainForm.value.reportDateBegin = dayjs(firstDayOfYear);
-  const days = new Date(new Date(props.reportDate).getFullYear(), new Date(props.reportDate).getMonth() + 1, 0).getDate() + 1;
-  mainForm.value.reportDateEnd = dayjs(props.reportDate.toString() + "-" + days.toString());
+  const reportDate = dayjs(props.reportDate);
+  mainForm.value.reportDateBegin = dayjs().year(reportDate.year()).startOf('year');
+  mainForm.value.reportDateEnd = dayjs().year(reportDate.year()).month(reportDate.month()).endOf('month').format('YYYY-MM-DD');
   mainForm.value.orgIdentity = userInfo.orgId;
 
   subForm.value.equipmentCode = form.value.equipmentCode;
 
-  const postForm = proxy.$lodash.cloneDeep(form.value);
+  const postForm = proxy.$lodash.cloneDeep(mainForm.value);
   const postSubForm = proxy.$lodash.cloneDeep(subForm.value);
 
   getSpecifyYearList(postForm, postSubForm)
-    .then(res => {
-      if (res.success) {
-        for (let index = 0; index < res.data.length; index++) {
-          const element = res.data[index];
-          repairTime = repairTime + parseFloat(element.repairTime);
-          equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
-          failureNumber = failureNumber + parseFloat(element.failureNumber);
-        }
+      .then(res => {
+        if (res.success) {
+          for (let index = 0; index < res.data.length; index++) {
+            const element = res.data[index];
+            repairTime = repairTime + parseFloat(element.repairTime);
+            equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
+            failureNumber = failureNumber + parseFloat(element.failureNumber);
+          }
 
-        mtbf = equipmentRunTime / failureNumber;
-        mttr = repairTime / failureNumber;
+          mtbf = equipmentRunTime / failureNumber;
+          mttr = repairTime / failureNumber;
 
-        if (!isNaN(mtbf)) {
-          form.value.mtbf = mtbf.toFixed(1).toString();
-        }
+          if (!isNaN(mtbf)) {
+            form.value.mtbf = mtbf.toFixed(1).toString();
+          }
 
-        if (!isNaN(mttr)) {
-          form.value.mttr = mttr.toFixed(1).toString();
+          if (!isNaN(mttr)) {
+            form.value.mttr = mttr.toFixed(1).toString();
+          }
         }
-      }
-    })
-    .catch(() => {
-    });
+      })
+      .catch(() => {
+      });
 }
 </script>
 
