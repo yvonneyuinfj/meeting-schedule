@@ -277,7 +277,9 @@ import { batchHandle, getBatchHandleInfo } from '@/api/avic/bpm/BpmTaskApi'; //�
 import { listBpmTaskListByPage } from '@/api/avic/bpm/BpmTaskDndReadApi';
 import { Pagination } from 'ant-design-vue';
 import bpmUtils from '@/views/avic/bpm/bpmutils/FlowUtils'; //引入流程相关配置及方法
+import { useRouter } from "vue-router";
 
+const router = useRouter()
 const columns = ref<any>([
   {
     title: '标题',
@@ -464,6 +466,7 @@ function handleTableChange(pagination, filters, sorter) {
 /** 流程跳转 */
 function toFlowDetail(row) {
   if (row.processDefName) {
+    // router.push({ path:'/avic/mms/fam/famoverhaulrequire'})
     bpmUtils.executeTask(
       row.processInstance,
       row.executionId,
