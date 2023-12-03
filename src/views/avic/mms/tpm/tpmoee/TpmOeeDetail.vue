@@ -6,34 +6,36 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDate" label="申报月份">
               <a-date-picker v-model:value="form.reportDate" :auto-focus="true" format="YYYY-MM" value-format="YYYY-MM"
-                :disabled="true" />
+                             :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col>
-             <a-form-item label="关键瓶颈设备运行数据上报" :colon="false" :label-col="{ flex: '0 0 200px' }"></a-form-item>
+            <a-form-item label="关键瓶颈设备运行数据上报" :colon="false"
+                         :label-col="{ flex: '0 0 200px' }"></a-form-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDeptId" label="申报部门">
               <AvicCommonSelect v-model:value="form.reportDeptId" type="deptSelect"
-                :defaultShowValue="form.reportDeptIdAlias" :disabled="true" />
+                                :defaultShowValue="form.reportDeptIdAlias" :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyUserName" label="申请人名称">
-              <a-input v-model:value="form.applyUserName" :disabled="true" />
+              <a-input v-model:value="form.applyUserName" :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyDate" label="申请日期">
-              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :disabled="true" />
+              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+                             :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="密级">
               <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" :disabled="true">
+                        option-filter-prop="children" :show-search="true" :allow-clear="true" :disabled="true">
                 <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
                   {{ item.lookupName }}
                 </a-select-option>
@@ -44,7 +46,7 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="note" label="备注">
-              <a-input v-model:value="form.note" :disabled="true" />
+              <a-input v-model:value="form.note" :disabled="true"/>
             </a-form-item>
           </a-col>
         </a-row>
@@ -58,7 +60,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { useTpmOeeForm, emits } from './ts/TpmOeeForm'; // 引入表单ts
+import { emits, useTpmOeeForm } from './ts/TpmOeeForm'; // 引入表单ts
 const props = defineProps({
   formId: {
     type: String,

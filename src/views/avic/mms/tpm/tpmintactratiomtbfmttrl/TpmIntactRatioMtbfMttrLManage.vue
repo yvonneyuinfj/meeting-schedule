@@ -3,22 +3,16 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        v-if="showTable"
-        ref="tpmIntactRatioMtbfMttrL"
-        table-key="tpmIntactRatioMtbfMttrL"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        :customRow="
+          v-if="showTable"
+          ref="tpmIntactRatioMtbfMttrL"
+          table-key="tpmIntactRatioMtbfMttrL"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          :customRow="
           record => {
             return {
               onClick: () => {
@@ -27,8 +21,8 @@
             };
           }
         "
-        @change="handleTableChange"
-        @refresh="getList"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <!-- <template #toolBarLeft>
           <a-space>
@@ -48,11 +42,11 @@
         </template> -->
         <template #toolBarRight>
           <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
+              class="opt-btn-commonsearch"
+              style="width: 200px"
+              placeholder="请输入"
+              :allow-clear="true"
+              @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -74,7 +68,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { listTpmIntactRatioMtbfMttrLByPage, delTpmIntactRatioMtbfMttrL } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi'; // 引入模块API
+import {
+  listTpmIntactRatioMtbfMttrLByPage
+  // , delTpmIntactRatioMtbfMttrL
+} from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi';
+import dayjs from 'dayjs'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -479,23 +477,23 @@ const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
-const delLoading = ref(false);
+// const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
-const currentMonth = ref();
 const showTable = ref<boolean>(true);
+const reportDate = ref(dayjs(new Date()));
 
 // 非只读状态添加操作列
-if (false) {
-  columns.value.push({
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    width: 120,
-    fixed: 'right',
-    align: 'center'
-  });
-}
+// if (props.mainId) {
+//   columns.value.push({
+//     title: '操作',
+//     dataIndex: 'action',
+//     key: 'action',
+//     width: 120,
+//     fixed: 'right',
+//     align: 'center'
+//   });
+// }
 
 
 onMounted(() => {
@@ -507,9 +505,7 @@ onMounted(() => {
 
 function getTable() {
   showTable.value = false;
-
-  currentMonth.value = new Date(new Date(props.reportDate).getFullYear(), new Date(props.reportDate).getMonth() + 1, 0).getDate();
-  switch (currentMonth.value) {
+  switch (reportDate.value.daysInMonth()) {
     case 28:
       columns.value = [...columns1, ...columns2, ...columns6];
       break;
@@ -540,102 +536,104 @@ function getList() {
   loading.value = true;
   queryParam.searchParams.tpmIntactRatioMtbfMttrId = props.mainId ? props.mainId : '-1';
   listTpmIntactRatioMtbfMttrLByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
 
-      for (let index = 0; index < list.value.length; index++) {
-        const element = list.value[index];
-        const equipmentStatus = element.equipmentStatus.split(',');
-        element.day1 = equipmentStatus[0];
-        element.day2 = equipmentStatus[1];
-        element.day3 = equipmentStatus[2];
-        element.day4 = equipmentStatus[3];
-        element.day5 = equipmentStatus[4];
-        element.day6 = equipmentStatus[5];
-        element.day7 = equipmentStatus[6];
-        element.day8 = equipmentStatus[7];
-        element.day9 = equipmentStatus[8];
-        element.day10 = equipmentStatus[9];
-        element.day11 = equipmentStatus[10];
-        element.day12 = equipmentStatus[11];
-        element.day13 = equipmentStatus[12];
-        element.day14 = equipmentStatus[13];
-        element.day15 = equipmentStatus[14];
-        element.day16 = equipmentStatus[15];
-        element.day17 = equipmentStatus[16];
-        element.day18 = equipmentStatus[17];
-        element.day19 = equipmentStatus[18];
-        element.day20 = equipmentStatus[19];
-        element.day21 = equipmentStatus[20];
-        element.day22 = equipmentStatus[21];
-        element.day23 = equipmentStatus[22];
-        element.day24 = equipmentStatus[23];
-        element.day25 = equipmentStatus[24];
-        element.day26 = equipmentStatus[25];
-        element.day27 = equipmentStatus[26];
-        element.day28 = equipmentStatus[27];
-        element.day29 = equipmentStatus[28];
-        element.day30 = equipmentStatus[29];
-        element.day31 = equipmentStatus[30];
-      }
+        for (let index = 0; index < list.value.length; index++) {
+          const element = list.value[index];
+          const equipmentStatus = element.equipmentStatus.split(',');
+          element.day1 = equipmentStatus[0];
+          element.day2 = equipmentStatus[1];
+          element.day3 = equipmentStatus[2];
+          element.day4 = equipmentStatus[3];
+          element.day5 = equipmentStatus[4];
+          element.day6 = equipmentStatus[5];
+          element.day7 = equipmentStatus[6];
+          element.day8 = equipmentStatus[7];
+          element.day9 = equipmentStatus[8];
+          element.day10 = equipmentStatus[9];
+          element.day11 = equipmentStatus[10];
+          element.day12 = equipmentStatus[11];
+          element.day13 = equipmentStatus[12];
+          element.day14 = equipmentStatus[13];
+          element.day15 = equipmentStatus[14];
+          element.day16 = equipmentStatus[15];
+          element.day17 = equipmentStatus[16];
+          element.day18 = equipmentStatus[17];
+          element.day19 = equipmentStatus[18];
+          element.day20 = equipmentStatus[19];
+          element.day21 = equipmentStatus[20];
+          element.day22 = equipmentStatus[21];
+          element.day23 = equipmentStatus[22];
+          element.day24 = equipmentStatus[23];
+          element.day25 = equipmentStatus[24];
+          element.day26 = equipmentStatus[25];
+          element.day27 = equipmentStatus[26];
+          element.day28 = equipmentStatus[27];
+          element.day29 = equipmentStatus[28];
+          element.day30 = equipmentStatus[29];
+          element.day31 = equipmentStatus[30];
+        }
 
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 子表删除 */
-function handleDelete(ids, type) {
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      delTpmIntactRatioMtbfMttrL(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
-    }
-  });
-}
+// function handleDelete(ids, type) {
+//   if (ids.length == 0) {
+//     proxy.$message.warning('请选择要删除的数据！');
+//     return;
+//   }
+//   proxy.$confirm({
+//     title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
+//     okText: '确定',
+//     cancelText: '取消',
+//     onOk: () => {
+//       delLoading.value = true;
+//       delTpmIntactRatioMtbfMttrL(ids)
+//         .then(res => {
+//           if (res.success) {
+//             proxy.$message.success('删除成功！');
+//             // 清空选中
+//             selectedRowKeys.value = [];
+//             selectedRows.value = [];
+//             getList();
+//           }
+//           delLoading.value = false;
+//         })
+//         .catch(() => {
+//           delLoading.value = false;
+//         });
+//     }
+//   });
+// }
 /** 勾选复选框时触发 */
-function onSelectChange(rowKeys, rows) {
-  selectedRowKeys.value = rowKeys;
-  selectedRows.value = rows;
-}
+// function onSelectChange(rowKeys, rows) {
+//   selectedRowKeys.value = rowKeys;
+//   selectedRows.value = rows;
+// }
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -646,6 +644,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 表格行选中 */
 function handleRowSelection(record) {
   let selectIds = [...selectedRowKeys.value];
@@ -660,19 +659,20 @@ function handleRowSelection(record) {
 }
 
 watch(
-  () => props.mainId,
-  newVal => {
-    if (newVal) {
-      getTable();
-      getList(); // 查询表格数据
-    } else {
-      selectedRowKeys.value = []; // 清空选中
-      selectedRows.value = [];
-      list.value = [];
-      totalPage.value = 0;
-    }
-  },
-  { immediate: true }
+    () => props.mainId,
+    newVal => {
+      if (newVal) {
+        reportDate.value = dayjs(props.reportDate);
+        getTable();
+        getList(); // 查询表格数据
+      } else {
+        selectedRowKeys.value = []; // 清空选中
+        selectedRows.value = [];
+        list.value = [];
+        totalPage.value = 0;
+      }
+    },
+    { immediate: true }
 );
 </script>
 

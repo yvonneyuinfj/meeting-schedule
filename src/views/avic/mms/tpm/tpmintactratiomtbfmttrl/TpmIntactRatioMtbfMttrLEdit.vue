@@ -2,82 +2,82 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable
-      v-if="showTable"
-      ref="tpmIntactRatioMtbfMttrL"
-      table-key="tpmIntactRatioMtbfMttrL"
-      :height="300"
-      :columns="columns"
-      :row-key="record => record.id"
-      :data-source="list"
-      :loading="loading"
-      :row-selection="{
+        v-if="showTable"
+        ref="tpmIntactRatioMtbfMttrL"
+        table-key="tpmIntactRatioMtbfMttrL"
+        :height="300"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange,
         columnWidth: 40,
         fixed: true
       }"
-      :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
-      :total="totalPage"
-      :customRow="customRow"
-      @change="handleTableChange"
+        :showTableSetting="false"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
     >
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button
-              v-hasPermi="['tpmIntactRatioMtbfMttrL:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmIntactRatioMtbfMttrL:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
             <a-button
-              v-hasPermi="['tpmIntactRatioMtbfMttrL:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
+                v-hasPermi="['tpmIntactRatioMtbfMttrL:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="
                 event => {
                   handleDelete(selectedRowKeys, event);
                 }
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
             <a-button
-              v-if="props.mainId ? true : false"
-              v-hasPermi="['tpmIntactRatioMtbfMttrL:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
-                  <template #icon>
-                    <import-outlined />
-                  </template>
-                  导入
+                v-if="props.mainId ? true : false"
+                v-hasPermi="['tpmIntactRatioMtbfMttrL:import']"
+                title="导入"
+                type="primary"
+                ghost
+                @click="handleImport">
+              <template #icon>
+                <import-outlined/>
+              </template>
+              导入
             </a-button>
           </a-space>
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8', 'day9', 'day10', 'day11', 'day12', 'day13', 'day14', 'day15', 'day16', 'day17', 'day18', 'day19', 'day20', 'day21', 'day22', 'day23', 'day24', 'day25', 'day26', 'day27', 'day28', 'day29', 'day30', 'day31'].includes(
+        <AvicRowEdit
+            v-if="['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8', 'day9', 'day10', 'day11', 'day12', 'day13', 'day14', 'day15', 'day16', 'day17', 'day18', 'day19', 'day20', 'day21', 'day22', 'day23', 'day24', 'day25', 'day26', 'day27', 'day28', 'day29', 'day30', 'day31'].includes(
              column.dataIndex
            )"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input-number
+        >
+          <template #edit>
+            <a-input-number
                 v-model:value="record[column.dataIndex]"
                 :maxLength="16"
                 :max="1"
@@ -86,74 +86,74 @@
                 placeholder="请输入"
                 @change="calculateTotal(record)"
                 :readonly="props.readOnly"
-             >
-              </a-input-number>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input-number>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'secretLevel'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
+        >
+          <template #edit>
+            <a-select
                 v-model:value="record.secretLevel"
                 style="width: 100%"
                 placeholder="请选择密级"
                 @change="(value) => changeControlValue(value, record, 'secretLevel')"
                 :readonly="props.readOnly"
-              >
-                <a-select-option
+            >
+              <a-select-option
                   v-for="select in secretLevelList"
                   :key="select.sysLookupTlId"
                   :value="select.lookupCode"
                   :title="select.lookupName"
                   :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              {{ record['secretLevelName'] }}
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            {{ record['secretLevelName'] }}
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'equipmentCode'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.equipmentCode"
                 @click="handleOpen(record)"
                 :readonly="true"
                 placeholder="请选择设备编号"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'equipmentName'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.equipmentName"
                 :readonly="true"
                 placeholder="请选择设备名称"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'equipmentStatusTotal'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input-number
+        >
+          <template #edit>
+            <a-input-number
                 v-model:value="record.equipmentStatusTotal"
                 :min="0"
                 :max="999999999999"
@@ -162,86 +162,86 @@
                 style="width: 100%"
                 :readonly="true"
                 placeholder="请输入合计"
-              >
-              </a-input-number>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input-number>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'equipmentRunTime'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.equipmentRunTime"
                 placeholder="请输入设备运行时间（h）"
                 @change="calculateMTBFOrMTTR(record)"
                 :readonly="props.readOnly"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'repairTime'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.repairTime"
                 placeholder="请输入设备故障修复时间（h）"
                 @change="calculateMTBFOrMTTR(record)"
                 :readonly="props.readOnly"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'failureNumber'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.failureNumber"
                 placeholder="请输入设备故障次数"
                 @change="calculateMTBFOrMTTR(record)"
                 :readonly="props.readOnly"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'mtbf'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.mtbf"
                 :readonly="true"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'mttr'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
+        >
+          <template #edit>
+            <a-input
                 v-model:value="record.mttr"
                 :readonly="true"
-              >
-              </a-input>
-            </template>
-          </AvicRowEdit>
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
-            class="inner-btn"
-            type="link"
-            @click="
+              class="inner-btn"
+              type="link"
+              @click="
               event => {
                 handleDelete([record.id], event);
               }
@@ -253,9 +253,10 @@
       </template>
     </AvicTable>
   </div>
-    <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="模板导入"
-      importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1" downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1"
-      @reloadData="getList" @close="showImportModal = false" />
+  <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="模板导入"
+                   importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1"
+                   downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1"
+                   @reloadData="getList" @close="showImportModal = false"/>
   <!--选择设备弹窗-->
   <a-modal :visible="open" title="选择设备" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
     <div style="height: 400px;overflow: auto">
@@ -924,8 +925,8 @@ const deletedData = ref([]); // 前台删除数据的记录
 const open = ref<boolean>(false);
 const tpmIntactRatioMtbfMttrLSelect = ref(null);
 const currentRecord = ref<TpmIntactRatioMtbfMttrLDto>({});
-const currentMonth = ref();
 const showTable = ref<boolean>(false);
+const reportDate = ref(dayjs(new Date()));
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
@@ -948,9 +949,7 @@ onMounted(() => {
 
 function getTable() {
   showTable.value = false;
-
-  currentMonth.value = new Date(new Date(props.reportDate).getFullYear(), new Date(props.reportDate).getMonth() + 1, 0).getDate();
-  switch (currentMonth.value) {
+  switch (reportDate.value.daysInMonth()) {
     case 28:
       columns.value = [...columns1, ...columns2, ...columns6];
       break;
@@ -981,62 +980,64 @@ function getList() {
   queryForm.value.tpmIntactRatioMtbfMttrId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
   listTpmIntactRatioMtbfMttrLByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
 
-      for (let index = 0; index < list.value.length; index++) {
-        const element = list.value[index];
-        const equipmentStatus = element.equipmentStatus.split(',');
-        element.day1 = equipmentStatus[0];
-        element.day2 = equipmentStatus[1];
-        element.day3 = equipmentStatus[2];
-        element.day4 = equipmentStatus[3];
-        element.day5 = equipmentStatus[4];
-        element.day6 = equipmentStatus[5];
-        element.day7 = equipmentStatus[6];
-        element.day8 = equipmentStatus[7];
-        element.day9 = equipmentStatus[8];
-        element.day10 = equipmentStatus[9];
-        element.day11 = equipmentStatus[10];
-        element.day12 = equipmentStatus[11];
-        element.day13 = equipmentStatus[12];
-        element.day14 = equipmentStatus[13];
-        element.day15 = equipmentStatus[14];
-        element.day16 = equipmentStatus[15];
-        element.day17 = equipmentStatus[16];
-        element.day18 = equipmentStatus[17];
-        element.day19 = equipmentStatus[18];
-        element.day20 = equipmentStatus[19];
-        element.day21 = equipmentStatus[20];
-        element.day22 = equipmentStatus[21];
-        element.day23 = equipmentStatus[22];
-        element.day24 = equipmentStatus[23];
-        element.day25 = equipmentStatus[24];
-        element.day26 = equipmentStatus[25];
-        element.day27 = equipmentStatus[26];
-        element.day28 = equipmentStatus[27];
-        element.day29 = equipmentStatus[28];
-        element.day30 = equipmentStatus[29];
-        element.day31 = equipmentStatus[30];
-      }
+        for (let index = 0; index < list.value.length; index++) {
+          const element = list.value[index];
+          const equipmentStatus = element.equipmentStatus.split(',');
+          element.day1 = equipmentStatus[0];
+          element.day2 = equipmentStatus[1];
+          element.day3 = equipmentStatus[2];
+          element.day4 = equipmentStatus[3];
+          element.day5 = equipmentStatus[4];
+          element.day6 = equipmentStatus[5];
+          element.day7 = equipmentStatus[6];
+          element.day8 = equipmentStatus[7];
+          element.day9 = equipmentStatus[8];
+          element.day10 = equipmentStatus[9];
+          element.day11 = equipmentStatus[10];
+          element.day12 = equipmentStatus[11];
+          element.day13 = equipmentStatus[12];
+          element.day14 = equipmentStatus[13];
+          element.day15 = equipmentStatus[14];
+          element.day16 = equipmentStatus[15];
+          element.day17 = equipmentStatus[16];
+          element.day18 = equipmentStatus[17];
+          element.day19 = equipmentStatus[18];
+          element.day20 = equipmentStatus[19];
+          element.day21 = equipmentStatus[20];
+          element.day22 = equipmentStatus[21];
+          element.day23 = equipmentStatus[22];
+          element.day24 = equipmentStatus[23];
+          element.day25 = equipmentStatus[24];
+          element.day26 = equipmentStatus[25];
+          element.day27 = equipmentStatus[26];
+          element.day28 = equipmentStatus[27];
+          element.day29 = equipmentStatus[28];
+          element.day30 = equipmentStatus[29];
+          element.day31 = equipmentStatus[30];
+        }
 
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -1084,6 +1085,7 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -1139,11 +1141,13 @@ function customRow(record) {
     };
   }
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -1154,6 +1158,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -1173,10 +1178,12 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
+
 /** 输入框的值失去焦点 */
-function blurInput(e, record, column) {
-  proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
-}
+// function blurInput(e, record, column) {
+//   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
+// }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -1188,6 +1195,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -1203,11 +1211,13 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData,
   getListData
 });
+
 /** 导入 */
 function handleImport() {
   excelParams.value.tpmIntactRatioMtbfMttrId = props.mainId;
@@ -1247,10 +1257,9 @@ function calculateMTBFOrMTTR(record) {
   }
 
   form.value.reportDeptId = userInfo.deptId;
-  const firstDayOfYear = new Date(new Date(props.reportDate).getFullYear(), 0, 1);
-  form.value.reportDateBegin = dayjs(firstDayOfYear);
-  const days = new Date(new Date(props.reportDate).getFullYear(), new Date(props.reportDate).getMonth() + 1, 0).getDate() + 1;
-  form.value.reportDateEnd = dayjs(props.reportDate.toString() + "-" + days.toString());
+  const reportDate = dayjs(props.reportDate);
+  form.value.reportDateBegin = dayjs().year(reportDate.year()).startOf('year');
+  form.value.reportDateEnd = dayjs().year(reportDate.year()).endOf('year');
   form.value.orgIdentity = userInfo.orgId;
 
   subForm.value.equipmentCode = record.equipmentCode;
@@ -1259,128 +1268,128 @@ function calculateMTBFOrMTTR(record) {
   const postSubForm = proxy.$lodash.cloneDeep(subForm.value);
 
   getSpecifyYearList(postForm, postSubForm)
-    .then(res => {
-      if (res.success) {
-        for (let index = 0; index < res.data.length; index++) {
-          const element = res.data[index];
-          repairTime = repairTime + parseFloat(element.repairTime);
-          equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
-          failureNumber = failureNumber + parseFloat(element.failureNumber);
-        }
+      .then(res => {
+        if (res.success) {
+          for (let index = 0; index < res.data.length; index++) {
+            const element = res.data[index];
+            repairTime = repairTime + parseFloat(element.repairTime);
+            equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
+            failureNumber = failureNumber + parseFloat(element.failureNumber);
+          }
 
-        mtbf = equipmentRunTime / failureNumber;
-        mttr = repairTime / failureNumber;
+          mtbf = equipmentRunTime / failureNumber;
+          mttr = repairTime / failureNumber;
 
-        if (!isNaN(mtbf)) {
-          record.mtbf = mtbf.toFixed(1).toString();
-        }
+          if (!isNaN(mtbf)) {
+            record.mtbf = mtbf.toFixed(1).toString();
+          }
 
-        if (!isNaN(mttr)) {
-          record.mttr = mttr.toFixed(1).toString();
+          if (!isNaN(mttr)) {
+            record.mttr = mttr.toFixed(1).toString();
+          }
         }
-      }
-    })
-    .catch(() => {
-    });
+      })
+      .catch(() => {
+      });
 }
 
 function calculateTotal(record) {
 
   let total = 0;
-  for (let index = 0; index < currentMonth.value; index++) {
+  for (let index = 0; index < reportDate.value.daysInMonth(); index++) {
     switch (index) {
       case 0:
-        record.day1 == '1' ? total++ : total = total;
+        record.day1 == '1' ? total++ : total;
         break;
       case 1:
-        record.day2 == '1' ? total++ : total = total;
+        record.day2 == '1' ? total++ : total;
         break;
       case 2:
-        record.day3 == '1' ? total++ : total = total;
+        record.day3 == '1' ? total++ : total;
         break;
       case 3:
-        record.day4 == '1' ? total++ : total = total;
+        record.day4 == '1' ? total++ : total;
         break;
       case 4:
-        record.day5 == '1' ? total++ : total = total;
+        record.day5 == '1' ? total++ : total;
         break;
       case 5:
-        record.day6 == '1' ? total++ : total = total;
+        record.day6 == '1' ? total++ : total;
         break;
       case 6:
-        record.day7 == '1' ? total++ : total = total;
+        record.day7 == '1' ? total++ : total;
         break;
       case 7:
-        record.day8 == '1' ? total++ : total = total;
+        record.day8 == '1' ? total++ : total;
         break;
       case 8:
-        record.day9 == '1' ? total++ : total = total;
+        record.day9 == '1' ? total++ : total;
         break;
       case 9:
-        record.day10 == '1' ? total++ : total = total;
+        record.day10 == '1' ? total++ : total;
         break;
       case 10:
-        record.day11 == '1' ? total++ : total = total;
+        record.day11 == '1' ? total++ : total;
         break;
       case 11:
-        record.day12 == '1' ? total++ : total = total;
+        record.day12 == '1' ? total++ : total;
         break;
       case 12:
-        record.day13 == '1' ? total++ : total = total;
+        record.day13 == '1' ? total++ : total;
         break;
       case 13:
-        record.day14 == '1' ? total++ : total = total;
+        record.day14 == '1' ? total++ : total;
         break;
       case 14:
-        record.day15 == '1' ? total++ : total = total;
+        record.day15 == '1' ? total++ : total;
         break;
       case 15:
-        record.day16 == '1' ? total++ : total = total;
+        record.day16 == '1' ? total++ : total;
         break;
       case 16:
-        record.day17 == '1' ? total++ : total = total;
+        record.day17 == '1' ? total++ : total;
         break;
       case 17:
-        record.day18 == '1' ? total++ : total = total;
+        record.day18 == '1' ? total++ : total;
         break;
       case 18:
-        record.day19 == '1' ? total++ : total = total;
+        record.day19 == '1' ? total++ : total;
         break;
       case 19:
-        record.day20 == '1' ? total++ : total = total;
+        record.day20 == '1' ? total++ : total;
         break;
       case 20:
-        record.day21 == '1' ? total++ : total = total;
+        record.day21 == '1' ? total++ : total;
         break;
       case 21:
-        record.day22 == '1' ? total++ : total = total;
+        record.day22 == '1' ? total++ : total;
         break;
       case 22:
-        record.day23 == '1' ? total++ : total = total;
+        record.day23 == '1' ? total++ : total;
         break;
       case 23:
-        record.day24 == '1' ? total++ : total = total;
+        record.day24 == '1' ? total++ : total;
         break;
       case 24:
-        record.day25 == '1' ? total++ : total = total;
+        record.day25 == '1' ? total++ : total;
         break;
       case 25:
-        record.day26 == '1' ? total++ : total = total;
+        record.day26 == '1' ? total++ : total;
         break;
       case 26:
-        record.day27 == '1' ? total++ : total = total;
+        record.day27 == '1' ? total++ : total;
         break;
       case 27:
-        record.day28 == '1' ? total++ : total = total;
+        record.day28 == '1' ? total++ : total;
         break;
       case 28:
-        record.day29 == '1' ? total++ : total = total;
+        record.day29 == '1' ? total++ : total;
         break;
       case 29:
-        record.day30 == '1' ? total++ : total = total;
+        record.day30 == '1' ? total++ : total;
         break;
       case 30:
-        record.day31 == '1' ? total++ : total = total;
+        record.day31 == '1' ? total++ : total;
         break;
       default:
         break;
@@ -1425,10 +1434,11 @@ function calculateTotal(record) {
 }
 
 watch(
-  () => props.reportDate,
-  newV => {
-    getTable();
-  }
+    () => props.reportDate,
+    newV => {
+      reportDate.value = dayjs(newV);
+      getTable();
+    }
 );
 </script>
 

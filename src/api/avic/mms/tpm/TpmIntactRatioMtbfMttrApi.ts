@@ -4,6 +4,7 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/tpm/tpmintactratiomtbfmttrs';
+
 /** 设备完好率、MTBF、MTTR申报主表 */
 export interface TpmIntactRatioMtbfMttrDto extends BaseBeanModel {
   /** 申报月份 */
@@ -59,10 +60,10 @@ export function saveTpmIntactRatioMtbfMttr(form: TpmIntactRatioMtbfMttrDto): Pro
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,

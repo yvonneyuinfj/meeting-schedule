@@ -6,35 +6,39 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDate" label="申报月份" has-feedback>
               <a-date-picker v-model:value="form.reportDate" :auto-focus="true" format="YYYY-MM" value-format="YYYY-MM"
-                :disabled="true" placeholder="请选择申报月份" />
+                             :disabled="true" placeholder="请选择申报月份"/>
             </a-form-item>
           </a-col>
           <a-col>
-            <a-form-item label="关键瓶颈设备运行数据上报" :colon="false" :label-col="{ flex: '0 0 200px' }"></a-form-item>
+            <a-form-item label="关键瓶颈设备运行数据上报" :colon="false"
+                         :label-col="{ flex: '0 0 200px' }"></a-form-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="reportDeptId" label="申报部门" has-feedback>
-              <AvicCommonSelect v-model:value="form.reportDeptId" type="deptSelect" placeholder="请选择申报部门" :disabled="true"
-                :defaultShowValue="form.reportDeptIdAlias" />
+              <AvicCommonSelect v-model:value="form.reportDeptId" type="deptSelect" placeholder="请选择申报部门"
+                                :disabled="true"
+                                :defaultShowValue="form.reportDeptIdAlias"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyUserName" label="申请人名称">
-              <a-input v-model:value="form.applyUserName" :maxLength="64" placeholder="请输入申请人名称" :disabled="true" />
+              <a-input v-model:value="form.applyUserName" :maxLength="64" placeholder="请输入申请人名称"
+                       :disabled="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyDate" label="申请日期">
-              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD" :disabled="true"
-                placeholder="请选择申请日期" />
+              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+                             :disabled="true"
+                             placeholder="请选择申请日期"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="密级" has-feedback>
               <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级">
+                        option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级">
                 <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
                   {{ item.lookupName }}
                 </a-select-option>
@@ -45,7 +49,7 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="note" label="备注">
-              <a-input v-model:value="form.note" :maxLength="512" placeholder="请输入备注" />
+              <a-input v-model:value="form.note" :maxLength="512" placeholder="请输入备注"/>
             </a-form-item>
           </a-col>
         </a-row>
@@ -60,7 +64,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { useTpmOeeForm, emits } from './ts/TpmOeeForm'; // 引入表单ts
+import { emits, useTpmOeeForm } from './ts/TpmOeeForm'; // 引入表单ts
 const props = defineProps({
   formId: {
     type: String,

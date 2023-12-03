@@ -7,32 +7,32 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="申报月份(起)">
               <a-date-picker v-model:value="queryForm.reportDateBegin" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
-                placeholder="请选择申报月份(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportDateEnd)" />
+                             placeholder="请选择申报月份(起)"
+                             :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportDateEnd)"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="申报月份(止)">
               <a-date-picker v-model:value="queryForm.reportDateEnd" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
-                placeholder="请选择申报月份(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportDateBegin)" />
+                             placeholder="请选择申报月份(止)"
+                             :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportDateBegin)"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" style="margin-left: auto">
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -43,16 +43,16 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable ref="tpmOeeSelect" table-key="tpmOeeSelect" :columns="columns" :row-key="record => record.id"
-        :data-source="list" :loading="loading" :show-table-setting="false" :row-selection="{
+                 :data-source="list" :loading="loading" :show-table-setting="false" :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="customRow"
-        @change="handleTableChange" @refresh="getList">
+                 @change="handleTableChange" @refresh="getList">
         <template #toolBarRight>
           <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入" :allow-clear="true"
-            @search="handleKeyWordQuery" />
+                          @search="handleKeyWordQuery"/>
         </template>
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
@@ -158,23 +158,25 @@ onMounted(() => {
   // 加载表格数据
   getList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
   listTpmOeeByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -182,19 +184,21 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
@@ -207,6 +211,7 @@ function onSelectChange(rowKeys, rows) {
   // 传出选中项
   $emit('select', selectedRows.value);
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -217,6 +222,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 行双击事件 */
 function customRow(record) {
   return {

@@ -1,7 +1,9 @@
 import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import { TpmIntactRatioMtbfMttrDto } from './TpmIntactRatioMtbfMttrApi';
+
 const basePath = '/mms/tpm/tpmintactratiomtbfmttrls';
+
 /** 设备完好率、MTBF、MTTR申报子表 */
 export interface TpmIntactRatioMtbfMttrLDto extends BaseBeanModel {
   /** 设备完好率、MTBF、MTTR申报主表ID */

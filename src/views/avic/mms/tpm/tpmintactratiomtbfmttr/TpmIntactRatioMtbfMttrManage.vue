@@ -9,33 +9,35 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="申报月份(起)">
                   <a-date-picker
-                    v-model:value="queryForm.reportDateBegin"
-                    format="YYYY-MM-DD"
-                    value-format="YYYY-MM-DD"
-                    placeholder="请选择申报月份(起)"
-                    :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportDateEnd)"
+                      v-model:value="queryForm.reportDateBegin"
+                      format="YYYY-MM"
+                      value-format="YYYY-MM"
+                      placeholder="请选择申报月份(起)"
+                      :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportDateEnd)"
+                      picker="month"
                   />
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="申报月份(止)">
                   <a-date-picker
-                    v-model:value="queryForm.reportDateEnd"
-                    format="YYYY-MM-DD"
-                    value-format="YYYY-MM-DD"
-                    placeholder="请选择申报月份(止)"
-                    :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportDateBegin)"
+                      v-model:value="queryForm.reportDateEnd"
+                      format="YYYY-MM"
+                      value-format="YYYY-MM"
+                      placeholder="请选择申报月份(止)"
+                      :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportDateBegin)"
+                      picker="month"
                   />
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="填报部门">
                   <AvicCommonSelect
-                    v-model:value="queryForm.reportDeptId"
-                    type="deptSelect"
-                    placeholder="请选择填报部门"
-                    :defaultShowValue="queryForm.reportDeptIdAlias"
-                    @callback="
+                      v-model:value="queryForm.reportDeptId"
+                      type="deptSelect"
+                      placeholder="请选择填报部门"
+                      :defaultShowValue="queryForm.reportDeptIdAlias"
+                      @callback="
                       result => {
                         queryForm.reportDeptIdAlias = result.names;
                       }
@@ -44,23 +46,23 @@
                 </a-form-item>
               </a-col>
               <a-col
-                v-bind="colLayout.cols"
-                style="margin-left: auto"
+                  v-bind="colLayout.cols"
+                  style="margin-left: auto"
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
                     <a-button type="primary" @click="handleQuery">
-                      <search-outlined />
+                      <search-outlined/>
                       查询
                     </a-button>
                     <a-button type="primary" @click="resetQuery" ghost>
-                      <redo-outlined />
+                      <redo-outlined/>
                       重置
                     </a-button>
                     <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                       {{ advanced ? '收起' : '展开' }}
-                      <up-outlined v-if="advanced" />
-                      <down-outlined v-else />
+                      <up-outlined v-if="advanced"/>
+                      <down-outlined v-else/>
                     </a-button>
                   </a-space>
                 </div>
@@ -71,90 +73,90 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable
-            ref="tpmIntactRatioMtbfMttr"
-            table-key="tpmIntactRatioMtbfMttr"
-            :columns="columns"
-            :row-key="record => record.id"
-            :data-source="list"
-            :loading="loading"
-            :row-selection="{
+              ref="tpmIntactRatioMtbfMttr"
+              table-key="tpmIntactRatioMtbfMttr"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="list"
+              :loading="loading"
+              :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }"
-            rowClickSelectionType="radio"
-            :pageParameter="queryParam.pageParameter"
-            :total="totalPage"
-            @change="handleTableChange"
-            @refresh="getList"
+              rowClickSelectionType="radio"
+              :pageParameter="queryParam.pageParameter"
+              :total="totalPage"
+              @change="handleTableChange"
+              @refresh="getList"
           >
             <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['tpmIntactRatioMtbfMttr:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['tpmIntactRatioMtbfMttr:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
-            >
-              <template #icon>
-                <edit-outlined />
-              </template>
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['tpmIntactRatioMtbfMttr:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['tpmIntactRatioMtbfMttr:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
-          </a-space>
+              <a-space>
+                <a-button
+                    v-hasPermi="['tpmIntactRatioMtbfMttr:add']"
+                    title="添加"
+                    type="primary"
+                    @click="handleAdd"
+                >
+                  <template #icon>
+                    <plus-outlined/>
+                  </template>
+                  添加
+                </a-button>
+                <a-button
+                    v-hasPermi="['tpmIntactRatioMtbfMttr:edit']"
+                    title="编辑"
+                    type="primary"
+                    ghost
+                    @click="handleEdit"
+                >
+                  <template #icon>
+                    <edit-outlined/>
+                  </template>
+                  编辑
+                </a-button>
+                <a-button
+                    v-hasPermi="['tpmIntactRatioMtbfMttr:del']"
+                    title="删除"
+                    danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleDelete(selectedRows, selectedRowKeys)"
+                >
+                  <template #icon>
+                    <delete-outlined/>
+                  </template>
+                  删除
+                </a-button>
+                <a-button
+                    v-hasPermi="['tpmIntactRatioMtbfMttr:export']"
+                    title="导出"
+                    type="primary"
+                    ghost
+                    @click="handleExport">
+                  <template #icon>
+                    <export-outlined/>
+                  </template>
+                  导出
+                </a-button>
+              </a-space>
             </template>
             <template #toolBarRight>
               <a-space>
                 <AvicBpmFilter
-                  :allFileAuth="['tpmIntactRatioMtbfMttr:all']"
-                  :myFileAuth="['tpmIntactRatioMtbfMttr:my']"
-                  :defaultBpmType = 'queryForm.bpmType'
-                  :defaultBpmState = 'queryForm.bpmState'
-                  @change="changeBpmFilter"
+                    :allFileAuth="['tpmIntactRatioMtbfMttr:all']"
+                    :myFileAuth="['tpmIntactRatioMtbfMttr:my']"
+                    :defaultBpmType='queryForm.bpmType'
+                    :defaultBpmState='queryForm.bpmState'
+                    @change="changeBpmFilter"
                 />
                 <a-input-search
-                  class="opt-btn-commonsearch"
-                  style="width: 200px"
-                  placeholder="请输入"
-                  :allow-clear="true"
-                  @search="handleKeyWordQuery"
+                    class="opt-btn-commonsearch"
+                    style="width: 200px"
+                    placeholder="请输入"
+                    :allow-clear="true"
+                    @search="handleKeyWordQuery"
                 />
               </a-space>
             </template>
@@ -165,14 +167,14 @@
                 }}
               </template>
               <template v-else-if="column.dataIndex === 'reportDate'">
-                  <template v-if="record.bpmState !== null">
-                    <a @click="handleFlowDetail(record)">
-                        {{ dayjs(record.reportDate).format("YYYY-MM") }}
-                    </a>
-                  </template>
-                  <template v-else>
-                    {{ dayjs(record.reportDate).format("YYYY-MM") }}
-                  </template>
+                <template v-if="record.bpmState !== null">
+                  <a @click="handleFlowDetail(record)">
+                    {{ dayjs(record.reportDate).format('YYYY-MM') }}
+                  </a>
+                </template>
+                <template v-else>
+                  {{ dayjs(record.reportDate).format('YYYY-MM') }}
+                </template>
               </template>
             </template>
           </AvicTable>
@@ -180,48 +182,52 @@
       </div>
       <!-- 添加页面弹窗 -->
       <TpmIntactRatioMtbfMttrAdd
-        v-if="showAddModal"
-        ref="addModal"
-        :readOnly="readOnly"
-        :startLoading="startLoading"
-        :saveLoading="saveLoading"
-        :bpmOperatorRefresh="getList"
-        @reloadData="getList"
-        @close="showAddModal = false"
+          v-if="showAddModal"
+          ref="addModal"
+          :readOnly="readOnly"
+          :startLoading="startLoading"
+          :saveLoading="saveLoading"
+          :bpmOperatorRefresh="getList"
+          @reloadData="getList"
+          @close="showAddModal = false"
       />
       <!-- 编辑页面弹窗 -->
       <TpmIntactRatioMtbfMttrEdit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        :readOnly="readOnly"
-        :startLoading="startLoading"
-        :saveLoading="saveLoading"
-        @reloadData="getList"
-        @close="showEditModal = false"
+          v-if="showEditModal"
+          ref="editModal"
+          :form-id="formId"
+          :readOnly="readOnly"
+          :startLoading="startLoading"
+          :saveLoading="saveLoading"
+          @reloadData="getList"
+          @close="showEditModal = false"
       />
       <!-- 详情页面弹窗 -->
       <TpmIntactRatioMtbfMttrDetail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
+          v-if="showDetailModal"
+          ref="detailModal"
+          :form-id="formId"
+          @close="showDetailModal = false"
       />
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
       <TpmIntactRatioMtbfMttrLManage
-        key="tpmIntactRatioMtbfMttrLManage"
-        ref="tpmIntactRatioMtbfMttrLManage"
-        :mainId="mainId"
-        :reportDate="reportDate"
+          key="tpmIntactRatioMtbfMttrLManage"
+          ref="tpmIntactRatioMtbfMttrLManage"
+          :mainId="mainId"
+          :reportDate="reportDate"
       />
     </AvicPane>
   </AvicSplit>
 </template>
 <script lang="ts" setup>
 import type { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi'; // 引入模块DTO
-import { listTpmIntactRatioMtbfMttrByPage, delTpmIntactRatioMtbfMttr, exportExcel } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi'; // 引入模块API
+import {
+  listTpmIntactRatioMtbfMttrByPage,
+  delTpmIntactRatioMtbfMttr,
+  exportExcel
+} from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi'; // 引入模块API
 import TpmIntactRatioMtbfMttrAdd from './TpmIntactRatioMtbfMttrAdd.vue'; // 引入添加页面组件
 import TpmIntactRatioMtbfMttrEdit from './TpmIntactRatioMtbfMttrEdit.vue'; // 引入编辑页面组件
 import TpmIntactRatioMtbfMttrDetail from './TpmIntactRatioMtbfMttrDetail.vue'; // 引入详情页面组件
@@ -355,6 +361,8 @@ const saveLoading = ref(false);
 const reportDate = computed(() => {
   return selectedRows.value.length === 1 ? selectedRows.value[0].reportDate : ''; // 主表传入子表的申报月份
 });
+const bpmState = ref();
+const bpmType = ref();
 
 onMounted(() => {
   // 加载表格数据
@@ -366,26 +374,35 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
+  if (queryParam.searchParams.reportDateBegin != undefined) {
+    const reportDateBegin = dayjs(queryParam.searchParams.reportDateBegin);
+    queryParam.searchParams.reportDateBegin = dayjs().year(reportDateBegin.year()).month(reportDateBegin.month()).startOf('month').format('YYYY-MM-DD');
+  }
+  if (queryParam.searchParams.reportDateEnd != undefined) {
+    const reportDateEnd = dayjs(queryParam.searchParams.reportDateEnd);
+    queryParam.searchParams.reportDateEnd = dayjs().year(reportDateEnd.year()).month(reportDateEnd.month()).endOf('month').format('YYYY-MM-DD');
+  }
   listTpmIntactRatioMtbfMttrByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      // 设置表格初始选中项
-      if (list.value.length > 0) {
-        selectedRowKeys.value = [list.value[0]['id']];
-        selectedRows.value = [list.value[0]];
-      } else {
-        selectedRowKeys.value = [];
-        selectedRows.value = [];
-      }
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        // 设置表格初始选中项
+        if (list.value.length > 0) {
+          selectedRowKeys.value = [list.value[0]['id']];
+          selectedRows.value = [list.value[0]];
+        } else {
+          selectedRowKeys.value = [];
+          selectedRows.value = [];
+        }
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -393,6 +410,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -400,6 +418,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -408,18 +427,20 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   readOnly.value = false;
@@ -427,6 +448,7 @@ function handleAdd() {
   saveLoading.value = true;
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
@@ -453,6 +475,7 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -462,6 +485,7 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -470,14 +494,30 @@ function handleExport() {
     cancelText: '取消',
     onOk: () => {
       loading.value = true;
+      if (queryForm.value.reportDateBegin != undefined) {
+        const reportDateBegin = dayjs(queryForm.value.reportDateBegin);
+        queryForm.value.reportDateBegin = dayjs().year(reportDateBegin.year()).month(reportDateBegin.month()).startOf('month').format('YYYY-MM-DD');
+      }
+      if (queryForm.value.reportDateEnd != undefined) {
+        const reportDateEnd = dayjs(queryForm.value.reportDateEnd);
+        queryForm.value.reportDateEnd = dayjs().year(reportDateEnd.year()).month(reportDateEnd.month()).endOf('month').format('YYYY-MM-DD');
+      }
       queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
+      const post = queryParam;
+      bpmState.value = post.searchParams.bpmState;
+      bpmType.value = post.searchParams.bpmType;
+      post.searchParams.bpmState = null;
+      post.searchParams.bpmType = null;
+      exportExcel(post).then(() => {
         loading.value = false;
         proxy.$message.info('导出成功！');
       });
+      post.searchParams.bpmState = bpmState.value;
+      post.searchParams.bpmType = bpmType.value;
     }
   });
 }
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
@@ -499,27 +539,29 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delTpmIntactRatioMtbfMttr(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
