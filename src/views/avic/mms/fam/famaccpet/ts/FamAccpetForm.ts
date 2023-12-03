@@ -314,10 +314,10 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famAccpetListList = subInfoList; // 挂载子表数据
-      // if (autoCode.value) {
-      //   // 获取编码码段值
-      //   postData.accpetApplyNo = autoCode.value.getSegmentValue();
-      // }
+      if (autoCode.value) {
+        // 获取编码码段值
+        postData.accpetApplyNo = autoCode.value.getSegmentValue();
+      }
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,

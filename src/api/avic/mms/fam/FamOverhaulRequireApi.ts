@@ -93,6 +93,11 @@ export function listFamOverhaulRequireByPage(param: QueryParamModel): Promise<Re
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
+/** 获取分页数据 */
+export function listFamOverhaulRequireByPage2(param: QueryParamModel): Promise<ResponsePageData<FamOverhaulRequireDto>> {
+  return request.post(basePath + '/search-by-pageaccpet/v1', param);
+}
+
 /** 根据id加载数据 */
 export function getFamOverhaulRequire (id: string): Promise<ResponseBaseData<FamOverhaulRequireDto>> {
   return request.get(basePath + '/get/' + id + '/v1');

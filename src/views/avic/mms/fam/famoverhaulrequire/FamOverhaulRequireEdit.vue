@@ -17,7 +17,7 @@
         class="form-excel-style"
       >
         <a-row :gutter="0">
-          <a-col v-bind="colLayout.cols">
+  <!--        <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="数据密级" has-feedback>
               <a-select
                 v-model:value="form.secretLevel"
@@ -46,7 +46,7 @@
                 placeholder="请输入备注"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="billNo" label="单据号" has-feedback>
               <avic-auto-code
@@ -61,6 +61,17 @@
               />
             </a-form-item>
           </a-col>
+          
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="expectedMaintenance" label="预计维修/改造金额" has-feedback>
+              <a-input
+                v-model:value="form.expectedMaintenance"
+                :maxLength="32"
+                placeholder="请输入预计维修/改造金额"
+              />
+            </a-form-item>
+          </a-col>
+          
           <a-col v-bind="colLayout.cols">
             <a-form-item name="annualProvisional" label="年度/临时">
               <a-radio-group v-model:value="form.annualProvisional">

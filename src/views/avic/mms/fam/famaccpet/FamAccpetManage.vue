@@ -474,22 +474,6 @@ const columns = [
     align: 'center'
   },
   {
-    title: '主管部门名称',
-    dataIndex: 'managerDeptNameAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '接收部门名称',
-    dataIndex: 'receiveDeptNameAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '资产属性',
     dataIndex: 'assetClass',
     ellipsis: true,

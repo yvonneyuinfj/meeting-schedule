@@ -32,6 +32,7 @@
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
+                @change="annualChange"
                 placeholder="请选择验收类型"
               >
                 <a-select-option
@@ -223,6 +224,32 @@
               </a-select>
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item   v-if="annual === '2' "
+              name="overhaulRequireCode"
+              label="维修改造单号"
+              has-feedback
+            >
+     <!--         <a-input v-if="annual === '2'"
+                       v-model:value="form.overhaulRequireCode"
+                       :maxLength="32"
+                       placeholder="请输入选择维修改造"
+              /> -->
+              <a-input
+                v-model:value="form.overhaulRequireCode"
+                @click="overhaulRequireCodeClick"
+                placeholder="请选择维修改造"
+              >
+                <template #suffix>
+                  <a-tooltip title="Extra information">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                  </a-tooltip>
+                </template>
+              </a-input>
+            </a-form-item>
+          </a-col>
+          
+                    
           <a-col v-bind="colLayout.cols2">
             <a-form-item label="附件">
               <AvicUploader
@@ -250,6 +277,8 @@
           :mainId="formId || form.id"
         />
       </a-form>
+      <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal"
+                       @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="addForm">保存</a-button>
@@ -291,6 +320,7 @@ import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
 import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue';
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
 import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
+import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
 
 const props = defineProps({
   formId: {
@@ -317,10 +347,12 @@ onMounted(() => {
   form.value.handlePersonName = proxy.$getLoginUser().id;
   form.value.handlePersonNameAlias = proxy.$getLoginUser().name;
 });
-
+const famOverhaulRequireSelect = ref(null);
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
 const assetClass = ref();
+const maintPlanModal = ref<boolean>(false);
+const annual = ref();
 const assetClasstOpen = ref<boolean>(false);
 const treeLoading = ref(false);
 const treeData = ref(null);
@@ -376,6 +408,15 @@ function handleCancel() {
   assetClasstOpen.value = false;
 }
 
+/** 点击维修计划 */
+const overhaulRequireCodeClick = () => {
+  maintPlanModal.value = true;
+};
+/** 关闭年度弹窗 */
+const closeMaintPlan = () => {
+  maintPlanModal.value = false;
+};
+
 /** 提交类别 */
 function handleSummit() {
   getFamAssetClass(treeNodeId.value)
@@ -402,6 +443,19 @@ function handleSummit() {
 function handleExpand(keys) {
   expandedKeys.value = keys;
 }
+
+const annualChange = (v) => {
+  annual.value = v;
+};
+const getPlanNo = (v) => {
+  form.value.overhaulRequireCode = v.billNo;
+  form.value.overhaulRequireId =  v.id;
+  if(v.maintCategory ==='1'){
+     proxy.$message.warning(' 请选择改造申请！');
+  }
+
+  maintPlanModal.value = false;
+};
 
 /** 树选中事件 */
 function handleSelect(keys: string[], node) {

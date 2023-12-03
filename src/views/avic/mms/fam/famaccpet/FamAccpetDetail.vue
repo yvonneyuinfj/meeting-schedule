@@ -250,6 +250,16 @@
             />
           </a-form-item>
         </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('overhaulRequireCode')">
+          <a-form-item
+            name="overhaulRequireCode"
+            label="维修改造单号"
+            :rules="fieldRequired('overhaulRequireCode')"
+            has-feedback
+          >
+            <a-input v-model:value="form.overhaulRequireCode" :disabled="fieldDisabled('overhaulRequireCode')" />
+          </a-form-item>
+        </a-col>
         <a-col v-bind="colLayout.cols2">
           <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
             <AvicUploader

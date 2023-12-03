@@ -8,7 +8,7 @@
       class="form-excel-style"
     >
       <a-row>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('secretLevel')">
+     <!--   <a-col v-bind="colLayout.cols" v-if="fieldVisible('secretLevel')">
           <a-form-item name="secretLevel" label="数据密级" :rules="fieldRequired('secretLevel')" has-feedback>
             <a-select
               v-model:value="form.secretLevel"
@@ -36,7 +36,7 @@
               :disabled="fieldDisabled('note')"
             />
           </a-form-item>
-        </a-col>
+        </a-col> -->
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billNo')">
           <a-form-item name="billNo" label="单据号" :rules="fieldRequired('billNo')" has-feedback>
             <a-input
@@ -45,6 +45,16 @@
             />
           </a-form-item>
         </a-col>
+        
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('expectedMaintenance')">
+          <a-form-item name="expectedMaintenance" label="预计维修/改造金额" :rules="fieldRequired('expectedMaintenance')" has-feedback>
+            <a-input
+              v-model:value="form.expectedMaintenance"
+              :disabled="fieldDisabled('expectedMaintenance')"
+            />
+          </a-form-item>
+        </a-col>
+        
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('maintPlan')">
           <a-form-item name="maintPlan" label="维修计划" :rules="fieldRequired('maintPlan')" has-feedback>
             <a-input
@@ -283,14 +293,23 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('annex')">
-          <a-form-item name="annex" label="附件" :rules="fieldRequired('annex')" has-feedback>
-            <a-input
-              v-model:value="form.annex"
-              :disabled="fieldDisabled('annex')"
-            />
-          </a-form-item>
-        </a-col>
+      
+       <a-col v-bind="colLayout.cols" v-if="fieldVisible('accpetApplyNo')">
+         <a-form-item name="accpetApplyNo" label="验收单号" :rules="fieldRequired('accpetApplyNo')" has-feedback>
+           <a-input
+             v-model:value="form.accpetApplyNo"
+             :disabled="fieldDisabled('accpetApplyNo')"
+           />
+         </a-form-item>
+       </a-col>
+       <a-col v-bind="colLayout.cols" v-if="fieldVisible('isImproveName')">
+         <a-form-item name="isImproveName" label="是否提高固定资产性能" :rules="fieldRequired('isImproveName')" has-feedback>
+           <a-input
+             v-model:value="form.isImproveName"
+             :disabled="fieldDisabled('isImproveName')"
+           />
+         </a-form-item>
+       </a-col>
         <a-col v-bind="colLayout.cols2">
           <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
             <AvicUploader
@@ -400,5 +419,3 @@ defineExpose({
   afterClickBpmButtons
 });
 </script>
-
-

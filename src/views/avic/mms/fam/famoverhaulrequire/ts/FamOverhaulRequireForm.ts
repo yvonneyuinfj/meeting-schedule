@@ -67,11 +67,13 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const annualProvisionalList = ref([]); // 年度/临时通用代码
   const autoCode = ref(null); // 自动编码ref
   const isNeedReviewList = ref([]); // 是否需要评审通用代码
+  const isImproveList = ref([]); // 是否提高固定资产性能
   const lookupParams = [
     { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
     { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' },
     { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
-    { fieldName: 'isNeedReview', lookUpType: 'FAM_PROGRAM_VERSION' }
+    { fieldName: 'isNeedReview', lookUpType: 'FAM_PROGRAM_VERSION' },
+    { fieldName: 'isImprove', lookUpType: 'FAM_PROGRAM_VERSION' }
   ];
   const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
   const { toolbarConfig, editorConfig, onCreated, dealRichText, convertImageSrc } = useRichText(
@@ -119,6 +121,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       isUsedScientificrsList.value = result.isUsedScientificrs;
       annualProvisionalList.value = result.annualProvisional;
       isNeedReviewList.value = result.isNeedReview;
+      isImproveList.value = result.isImprove;
     });
   }
   /** 获取当前用户对应的文档密级 */
@@ -413,6 +416,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     isUsedScientificrsList,
     annualProvisionalList,
     isNeedReviewList,
+    isImproveList,
     uploadFile,
     afterUploadEvent,
     attachmentRequired,

@@ -436,9 +436,9 @@
                   index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
                 }}
               </template>
-              <template v-else-if="column.dataIndex === 'secretLevelName'">
+              <template v-else-if="column.dataIndex === 'billNo'">
                 <a @click="handleFlowDetail(record)">
-                  {{ record.secretLevelName }}
+                  {{ record.billNo }}
                 </a>
               </template>
             </template>
@@ -503,17 +503,26 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
+  // {
+  //   title: '数据密级',
+  //   dataIndex: 'secretLevelName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '备注',
+  //   dataIndex: 'note',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '备注',
-    dataIndex: 'note',
+    title: '单据号',
+    dataIndex: 'billNo',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -521,8 +530,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '单据号',
-    dataIndex: 'billNo',
+    title: '预计维修/改造金额',
+    dataIndex: 'expectedMaintenance',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -678,6 +687,24 @@ const columns = [
   {
     title: '联系电话',
     dataIndex: 'telephone',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '验收单号',
+    dataIndex: 'accpetApplyNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '是否提高固定资产性能',
+    dataIndex: 'isImproveName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,

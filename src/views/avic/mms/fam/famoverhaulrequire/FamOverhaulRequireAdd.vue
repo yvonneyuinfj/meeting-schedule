@@ -16,7 +16,7 @@
         class="form-excel-style"
       >
         <a-row :gutter="0">
-          <a-col v-bind="colLayout.cols">
+  <!--        <a-col v-bind="colLayout.cols">
             <a-form-item
               name="secretLevel"
               label="数据密级"
@@ -40,8 +40,8 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
+          </a-col> -->
+<!--          <a-col v-bind="colLayout.cols">
             <a-form-item
               name="note"
               label="备注"
@@ -52,7 +52,7 @@
                 placeholder="请输入备注"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="billNo"
@@ -71,6 +71,21 @@
               />
             </a-form-item>
           </a-col>
+          
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="expectedMaintenance"
+              label="预计维修/改造金额"
+              has-feedback
+            >
+              <a-input
+                v-model:value="form.expectedMaintenance"
+                :maxLength="32"
+                placeholder="请输入预计维修/改造金额"
+              />
+            </a-form-item>
+          </a-col>
+          
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="annualProvisional"
@@ -407,6 +422,33 @@
               />
             </a-form-item>
           </a-col>
+          
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="isImprove"
+              label="是否使用型号经费"
+              has-feedback
+            >
+              <a-select
+                v-model:value="form.isImprove"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                @change="changeIsimp"
+                placeholder="请选择是否使用型号经费"
+              >
+                <a-select-option
+                  v-for="item in isImproveList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          
           <!--          <a-col v-bind="colLayout.cols">-->
           <!--            <a-form-item-->
           <!--              name="annex"-->
@@ -501,6 +543,7 @@ const {
   secretLevelList,
   maintCategoryList,
   isUsedScientificrsList,
+  isImproveList,
   annualProvisionalList,
   isNeedReviewList,
   toolbarConfig,
@@ -517,7 +560,11 @@ const {
   props: props,
   emit: emit
 });
-
+const changeIsimp  = (v) => {
+  if(v==="1"){
+    form.value.maintCategory = '2';
+  }
+}
 const annualChange = (v) => {
   annual.value = v.target.value;
 };
