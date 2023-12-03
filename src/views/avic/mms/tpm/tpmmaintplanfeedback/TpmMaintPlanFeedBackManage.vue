@@ -96,7 +96,23 @@
             </a-button>
           </a-space>
         </template>
+        <template #toolBarRight>
+          <a-space>
+            <AvicBpmFilter
+                :allFileAuth="['tpmMaintPlan:all']"
+                :myFileAuth="['tpmMaintPlan:my']"
+                :defaultBpmType='queryForm.bpmType'
+                :defaultBpmState='queryForm.bpmState'
+                @change="changeBpmFilter"
+            />
+          </a-space>
+        </template>
         <template #bodyCell="{ column, text, record }">
+          <template v-if="column.dataIndex === 'billNo' && record.bpmState !== null">
+            <a @click="handleFlowDetail(record)">
+              {{ record.billNo }}
+            </a>
+          </template>
           <AvicRowEdit
               v-if="column.dataIndex === 'completeDate'"
               :record="record"
@@ -112,7 +128,7 @@
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-              v-else-if="column.dataIndex === 'goodConditionFlag'"
+              v-else-if="column.dataIndex === 'goodConditionFlag' "
               :record="record"
               :column="column.dataIndex"
           >
@@ -128,7 +144,6 @@
                     :key="select.sysLookupTlId"
                     :value="select.lookupCode"
                     :title="select.lookupName"
-                    :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
@@ -158,7 +173,6 @@
                     :key="select.sysLookupTlId"
                     :value="select.lookupCode"
                     :title="select.lookupName"
-                    :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
@@ -190,39 +204,7 @@
               </a-input>
             </template>
           </AvicRowEdit>
-<!--          <AvicRowEdit-->
-<!--              v-else-if="['billNo'].includes(-->
-<!--               column.dataIndex-->
-<!--              )"-->
-<!--              :record="record"-->
-<!--              :column="column.dataIndex"-->
-<!--          >-->
-<!--            <template #edit>-->
-<!--              &lt;!&ndash;              <a-input&ndash;&gt;-->
-<!--              &lt;!&ndash;                  v-model:value="record[column.dataIndex]"&ndash;&gt;-->
-<!--              &lt;!&ndash;                  :maxLength="256"&ndash;&gt;-->
-<!--              &lt;!&ndash;                  @input="$forceUpdate()"&ndash;&gt;-->
-<!--              &lt;!&ndash;                  style="width: 100%"&ndash;&gt;-->
-<!--              &lt;!&ndash;                  placeholder="请输入问题说明"&ndash;&gt;-->
-<!--              &lt;!&ndash;                  @blur="blurInput($event, record, column.dataIndex)"&ndash;&gt;-->
-<!--              &lt;!&ndash;              >&ndash;&gt;-->
-<!--              &lt;!&ndash;              </a-input>&ndash;&gt;-->
-<!--              <template v-if="record.bpmState !== null">-->
-<!--                <a @click="handleFlowDetail(record)">-->
-<!--                  {{ record.billNo }}-->
-<!--                </a>-->
-<!--              </template>-->
-<!--            </template>-->
-
-<!--          </AvicRowEdit>-->
         </template>
-        <!--        <template #bodyCell="{ column, text, record, index }">-->
-        <!--          <template v-if="column.dataIndex === 'billNo' && record.bpmState !== null">-->
-        <!--            <a @click="handleFlowDetail(record)">-->
-        <!--              {{ record.billNo }}-->
-        <!--            </a>-->
-        <!--          </template>-->
-        <!--        </template>-->
       </AvicTable>
     </div>
   </div>
@@ -591,7 +573,7 @@ const validateRules = {
 const editingId = ref(''); // 正在编辑中的数据
 
 onMounted(() => {
-  // queryForm.value.maintenanceStatus = '5';
+  queryForm.value.maintenanceStatus = '10';
   queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
@@ -613,12 +595,19 @@ function getList() {
         loading.value = false;
         // 查询的初始数据,保存时做比对
         initialList.value = proxy.$lodash.cloneDeep(list.value);
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+      }).catch(() => {
+    list.value = [];
+    totalPage.value = 0;
+    loading.value = false;
+  });
+}
+
+/** 根据流程状态及发起人查询数据 */
+function changeBpmFilter({ bpmType, bpmState }) {
+  queryForm.value.bpmType = bpmType;
+  queryForm.value.bpmState = bpmState;
+  queryParam.searchParams = queryForm.value;
+  getList();
 }
 
 /** 打开流程详情页面 */
@@ -647,15 +636,22 @@ const handleApproval = (rows, ids) => {
       return;
     }
   }
-  proxy.$confirm({
-    title: '确认要提交审批查询出的数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      approvalLoading.value = true;
-      getBpmDefine(rows, ids);
-    }
-  });
+  if (validateRecordData(rows)) {
+    proxy.$confirm({
+      title: '确认要提交审批查询出的数据吗?',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        saveTpmMaintPlan(rows).then(res => {
+          if (res.success) {
+            approvalLoading.value = true;
+            getBpmDefine(rows, ids);
+          }
+        });
+
+      }
+    });
+  }
 };
 
 function getBpmDefine(rows, ids) {
@@ -668,7 +664,6 @@ function getBpmDefine(rows, ids) {
   });
 }
 
-// TPM_MAINT_PLAN_FEED_BACK
 const approval = (bpmDefinedInfo, ids) => {
   const param = {
     processDefId: bpmDefinedInfo.dbid,
@@ -716,7 +711,7 @@ function handleQuery() {
 /** 高级查询 重置按钮操作  */
 function resetQuery() {
   queryForm.value = {};
-  // queryForm.value.maintenanceStatus = '5';
+  queryForm.value.maintenanceStatus = '10';
   handleQuery();
 }
 
@@ -793,10 +788,9 @@ function handleSaveAll() {
         proxy.$message.error('保存失败！');
         saveLoading.value = false;
       }
-    })
-        .catch(() => {
-          saveLoading.value = false;
-        });
+    }).catch(() => {
+      saveLoading.value = false;
+    });
   } else {
     saveLoading.value = false;
   }
@@ -823,7 +817,9 @@ function handleExport() {
 function customRow(record) {
   return {
     onClick: () => {
-      handleEdit(record);
+      if (record.bpmState == null || record.bpmState == 'start') {
+        handleEdit(record);
+      }
     }
   };
 }

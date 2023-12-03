@@ -51,15 +51,24 @@
 <script lang="ts" setup>
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
 import TpmMaintPlanManage from '@/views/avic/mms/tpm/tpmmaintplan/TpmMaintPlanManage.vue';
-import { listTpmMaintPlanByPage, backTpmMaintPlan } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
+import {
+  listTpmMaintPlanByPage,
+  backTpmMaintPlan,
+  listTpmMaintPlanDetailByPage
+} from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
 import bpmUtils from '@/views/avic/bpm/bpmutils/FlowUtils';
 import { useRouter } from 'vue-router';
+
 const backLoading = ref(false); // 提交按钮loading状态
 const router = useRouter();
 
 const props = defineProps({
   // 流程主表id
   tpmWorkflowId: {
+    type: String,
+    default: ''
+  },
+  originalOrderTabName: {
     type: String,
     default: ''
   }
@@ -235,7 +244,7 @@ onMounted(() => {
 
 // 保存驳回原因
 const handleBackModal = () => {
-  if(!backReason.value){
+  if (!backReason.value) {
     proxy.$message.warning('请输入驳回原因');
     return;
   }
@@ -247,7 +256,7 @@ const handleBackModal = () => {
           window.close();
           backReason.value = '';
           backModal.value = false;
-          bpmUtils.refreshBack(router.currentRoute.value.query.entryId,undefined);
+          bpmUtils.refreshBack(router.currentRoute.value.query.entryId, undefined);
         } else {
           backReason.value = '';
           backModal.value = false;
@@ -287,8 +296,9 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   queryForm.value.tpmWorkflowId = props.tpmWorkflowId;
+  queryForm.value.originalOrderTabName = props.originalOrderTabName;
   queryParam.searchParams = queryForm.value;
-  listTpmMaintPlanByPage(queryParam)
+  listTpmMaintPlanDetailByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;

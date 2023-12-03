@@ -8,7 +8,8 @@
     >
       <a-row></a-row>
     </a-form>
-    <TpmMaintPlanManageDetail ref="tpmMaintPlanManageDetail" :tpmWorkflowId="formId || form.id" style="height:260px"/>
+    <TpmMaintPlanManageDetail ref="tpmMaintPlanManageDetail" :tpmWorkflowId="formId || form.id"
+                              :originalOrderTabName="'TPM_MAINT_PLAN'" style="height:260px"/>
   </div>
 </template>
 <script lang="ts" setup>
