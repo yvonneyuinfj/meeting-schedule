@@ -7,21 +7,21 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="使用部门名称">
               <a-input
-                v-model:value="queryForm.useDeptName"
-                placeholder="请输入使用部门名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.useDeptName"
+                  placeholder="请输入使用部门名称"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="申请人姓名">
               <AvicCommonSelect
-                v-model:value="queryForm.applyUserName"
-                type="userSelect"
-                placeholder="请选择申请人姓名"
-                :defaultShowValue="queryForm.applyUserNameAlias"
-                @callback="
+                  v-model:value="queryForm.applyUserName"
+                  type="userSelect"
+                  placeholder="请选择申请人姓名"
+                  :defaultShowValue="queryForm.applyUserNameAlias"
+                  @callback="
                   result => {
                     queryForm.applyUserNameAlias = result.names;
                   }
@@ -32,17 +32,17 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="流程状态">
               <a-select
-                v-model:value="queryForm.billStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择流程状态"
+                  v-model:value="queryForm.billStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择流程状态"
               >
                 <a-select-option
-                  v-for="item in billStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in billStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -52,17 +52,17 @@
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="故障库类型">
               <a-select
-                v-model:value="queryForm.failureWarehouseType"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择故障库类型"
+                  v-model:value="queryForm.failureWarehouseType"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择故障库类型"
               >
                 <a-select-option
-                  v-for="item in failureWarehouseTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in failureWarehouseTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -70,23 +70,23 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -97,39 +97,39 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmFailureWarehouse"
-        table-key="tpmFailureWarehouse"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmFailureWarehouse"
+          table-key="tpmFailureWarehouse"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['tpmFailureWarehouse:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmFailureWarehouse:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               添加
             </a-button>
             <a-button
-              v-hasPermi="['tpmFailureWarehouse:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
+                v-hasPermi="['tpmFailureWarehouse:edit']"
+                title="编辑"
+                type="primary"
+                ghost
+                @click="handleEdit"
             >
               编辑
             </a-button>
@@ -137,12 +137,12 @@
               提交审批
             </a-button>
             <a-button
-              v-hasPermi="['tpmFailureWarehouse:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['tpmFailureWarehouse:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               删除
             </a-button>
@@ -163,18 +163,18 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpmFailureWarehouse:all']"
-              :myFileAuth="['tpmFailureWarehouse:my']"
-              :defaultBpmType = 'queryForm.bpmType'
-              :defaultBpmState = 'queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['tpmFailureWarehouse:all']"
+                :myFileAuth="['tpmFailureWarehouse:my']"
+                :defaultBpmType='queryForm.bpmType'
+                :defaultBpmState='queryForm.bpmState'
+                @change="changeBpmFilter"
             />
             <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入设备台账ID"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+                class="opt-btn-commonsearch"
+                style="width: 200px"
+                placeholder="请输入设备台账ID"
+                :allow-clear="true"
+                @search="handleKeyWordQuery"
             />
           </a-space>
         </template>
@@ -182,7 +182,7 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'billNo'">
+          <template v-else-if="column.dataIndex === 'billNo' && record.bpmState != null">
             <a @click="handleFlowDetail(record)">
               {{ record.billNo }}
             </a>
@@ -192,28 +192,32 @@
     </div>
     <!-- 添加页面弹窗 -->
     <TpmFailureWarehouseAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <TpmFailureWarehouseEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import type { TpmFailureWarehouseDto } from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块DTO
-import { listTpmFailureWarehouseByPage, delTpmFailureWarehouse, exportExcel, approvalMaintPlan } from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块API
+import {
+  listTpmFailureWarehouseByPage,
+  delTpmFailureWarehouse,
+  exportExcel,
+  approvalTpmFailureWarehouse, saveFormAndStartProcess
+} from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块API
 import TpmFailureWarehouseAdd from './TpmFailureWarehouseAdd.vue'; // 引入添加页面组件
 import TpmFailureWarehouseEdit from './TpmFailureWarehouseEdit.vue'; // 引入编辑页面组件
-// import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 const { proxy } = getCurrentInstance();
@@ -235,7 +239,7 @@ const columns = [
     title: '单据号',
     dataIndex: 'billNo',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'center'
   },
@@ -450,6 +454,7 @@ const lookupParams = [
   { fieldName: 'billStatus', lookUpType: 'FAILURE_BILL_STATUS' },
   { fieldName: 'failureWarehouseType', lookUpType: 'FAILURE_WAREHOUSE_TYPE' }
 ];
+const formCode = 'TpmFailureWarehouse';
 
 onMounted(() => {
   // 加载表格数据
@@ -464,44 +469,63 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmFailureWarehouseByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
-/** 提交审批 */
+
 const handleApproval = (rows, ids) => {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交审批的数据！');
+    return;
+  }
+  if (ids.length > 1) {
+    proxy.$message.warning('请选择一条要提交审批的数据！');
+    return;
+  }
+  for (let item of rows) {
+    if (item.bpmState !== null) {
+      proxy.$message.warning('请选择未提交审批的数据！');
+      return;
+    }
+  }
   proxy.$confirm({
     title: '确认要提交审批查询出的数据吗?',
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
       approvalLoading.value = true;
-      getBpmDefine(rows[0]);
+      getBpmDefine(rows);
     }
   });
 };
-function getBpmDefine(row) {
-  startFlowByFormCode({
-    formCode: 'TpmFailureWarehouse',
-    formData: row,
-    callback: bpmDefinedInfo => {
-      approval(bpmDefinedInfo);
-    }
-  });
+
+function getBpmDefine(rows) {
+  for (let postData of rows) {
+    startFlowByFormCode({
+      formCode: formCode,
+      formData: postData,
+      callback: bpmDefinedInfo => {
+        approval(bpmDefinedInfo, postData);
+      }
+    });
+  }
 }
-const approval = (bpmDefinedInfo) => {
+
+const approval = (bpmDefinedInfo, postData) => {
   const param = {
     processDefId: bpmDefinedInfo.dbid,
-    formCode: 'TpmFailureWarehouse'
+    formCode: formCode,
+    postData
   };
-  approvalMaintPlan(param).then(res => {
+  saveFormAndStartProcess(param).then(res => {
     if (res.success) {
       approvalLoading.value = false;
       proxy.$message.success('提交成功!');
@@ -521,6 +545,7 @@ function getLookupList() {
     failureWarehouseTypeList.value = result.failureWarehouseType;
   });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -528,6 +553,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -535,6 +561,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -543,10 +570,12 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -556,10 +585,12 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
@@ -569,6 +600,7 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -578,6 +610,7 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
@@ -595,19 +628,20 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delTpmFailureWarehouse(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -624,11 +658,13 @@ function handleExport() {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;

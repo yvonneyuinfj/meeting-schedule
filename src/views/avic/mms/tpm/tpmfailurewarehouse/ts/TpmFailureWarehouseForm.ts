@@ -1,5 +1,9 @@
 import type { TpmFailureWarehouseDto } from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块DTO
-import { getTpmFailureWarehouse, saveTpmFailureWarehouse, saveFormAndStartProcess } from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块API
+import {
+  getTpmFailureWarehouse,
+  saveTpmFailureWarehouse,
+  saveFormAndStartProcess
+} from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块API
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -11,7 +15,9 @@ import {
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import { useUserStore } from '@/store/user';
+
 export const emits = ['reloadData', 'close'];
+
 export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<TpmFailureWarehouseDto>({});
@@ -122,12 +128,14 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       failureWarehouseTypeList.value = result.failureWarehouseType;
     });
   }
+
   /** 获取当前用户对应的文档密级 */
   function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
@@ -156,8 +164,53 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
   function saveForm(params) {
+    formRef.value
+      .validate()
+      .then(() => {
+        // 附件密级校验
+        const validateResult = validateUploaderFileSecret();
+        if (!validateResult) {
+          return;
+        }
+        // 处理数据
+        const postData = proxy.$lodash.cloneDeep(form.value);
+        loading.value = true;
+        // 发送请求
+        saveTpmFailureWarehouse(postData)
+          .then(res => {
+            if (res.success) {
+              if (props.bpmInstanceObject) {
+                bpmButtonParams.value = { params, result: res.data };
+              }
+              if (!form.value.id) {
+                form.value.id = res.data;
+              }
+              uploadFile.value.upload(form.value.id || res.data); // 附件上传
+            } else {
+              errorCallback();
+            }
+          })
+          .catch(() => {
+            errorCallback();
+          });
+      })
+      .catch(error => {
+        if (props.bpmInstanceObject) {
+          closeFlowLoading(props.bpmInstanceObject);
+        }
+        // 定位校验失败元素
+        proxy.$scrollToFirstErrorField(formRef, error);
+      });
+  }
+
+  /**
+   * 添加页面保存
+   * @param params
+   */
+  function saveFormAdd(params) {
     formRef.value
       .validate()
       .then(() => {
@@ -200,6 +253,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -207,6 +261,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     // 附件密级校验
@@ -222,6 +277,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       }
     });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     formRef.value
@@ -278,6 +334,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -299,6 +356,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -310,6 +368,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 附件上传完之后的回调函数 */
   function afterUploadEvent(successFile, errorFile) {
     if (errorFile.length > 0) {
@@ -320,37 +379,44 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       successCallback();
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   /** 校验表单附件密级 */
   function validateUploaderFileSecret() {
     const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
@@ -360,17 +426,20 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
     }
     return true;
   }
+
   /** 表单附件是否必填(按elementId) */
   function attachmentRequired(fieldName) {
     const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
     return res;
   }
+
   /** 校验权限JSON */
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
     }
   }
+
   return {
     form,
     formRef,
@@ -386,6 +455,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
     attachmentRequired,
     autoCode,
     saveForm,
+    saveFormAdd,
     saveAndStartProcess,
     closeModal,
     fieldVisible,

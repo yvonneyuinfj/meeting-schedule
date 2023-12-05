@@ -242,7 +242,7 @@
     </a-spin>
     <template #footer>
       <a-button title="保存并提交" type="primary" :loading="loading" @click="saveAndStartProcess">保存并提交</a-button>
-      <a-button title="保存并返回" type="primary" :loading="loading" @click="saveForm">保存并返回</a-button>
+      <a-button title="保存并返回" type="primary" :loading="loading" @click="saveFormAdd">保存并返回</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
     <!--选择设备弹窗-->
@@ -291,7 +291,7 @@ const {
   afterUploadEvent,
   autoCode,
   saveAndStartProcess,
-  saveForm,
+  saveFormAdd,
   closeModal
 } = useTpmFailureWarehouseForm({
   props: props,

@@ -96,8 +96,8 @@ export function saveFormAndStartProcess({
   });
 }
 /** 提交审批 */
-export function approvalMaintPlan(data) {
-  return request.post(basePath + '/save-and-start-process/v1', data);
+export function approvalTpmFailureWarehouse(data) {
+  return request.post(basePath + '/start-process-by-ids/v1', data);
 }
 
 /** 根据id集合删除数据 */
