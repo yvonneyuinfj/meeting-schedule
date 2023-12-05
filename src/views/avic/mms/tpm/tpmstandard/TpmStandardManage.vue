@@ -76,7 +76,7 @@
                 <!--                  添加-->
                 <!--                </a-button>-->
                 <a-button
-                    v-hasPermi="['tpmInventory:add']"
+                    v-hasPermi="['tpmStandard:add']"
                     title="批量添加"
                     type="primary"
                     @click="handleOpenAdd"
@@ -99,9 +99,9 @@
                   </template>
                   删除
                 </a-button>
-                <a-button type="primary" @click="handleCopy(selectedRows, selectedRowKeys)">
-                  复制
-                </a-button>
+                <!--                <a-button type="primary" @click="handleCopy(selectedRows, selectedRowKeys)">-->
+                <!--                  复制-->
+                <!--                </a-button>-->
                 <!--                <a-button-->
                 <!--                    v-hasPermi="['tpmStandard:import']"-->
                 <!--                    title="导入"-->
@@ -331,7 +331,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const copyMoadl = ref<boolean>(false)
+const copyMoadl = ref<boolean>(false);
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
@@ -423,12 +423,12 @@ function handleOpenAdd() {
 
 /** 复制 */
 function handleCopy(rows, ids) {
-  copyMoadl.value = true
+  copyMoadl.value = true;
 }
 
 /** 提交复制 */
-function handleCopyModal () {
-  copyMoadl.value = false
+function handleCopyModal() {
+  copyMoadl.value = false;
 }
 
 
