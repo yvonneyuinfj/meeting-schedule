@@ -4,10 +4,15 @@
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billNo')">
           <a-form-item name="billNo" label="单据号" :rules="fieldRequired('billNo')" has-feedback>
-            <AvicAutoCode v-model:value="form.billNo" ref="autoCode" code-type="TPM_YEAR_MAINT_MODIFY_PLAN_NO"
-                          code-param="TPM_YEAR_MAINT_MODIFY_PLAN" :allow-clear="true"
-                          :disabled="fieldDisabled('billNo')"
-                          placeholder="请输入单据号"/>
+            <!--            <AvicAutoCode v-model:value="form.billNo" ref="autoCode" code-type="TPM_YEAR_MAINT_MODIFY_PLAN_NO"-->
+            <!--                          code-param="TPM_YEAR_MAINT_MODIFY_PLAN" :allow-clear="true"-->
+            <!--                          :disabled="fieldDisabled('billNo')"-->
+            <!--                          placeholder="请输入单据号"/>-->
+            <a-input
+                v-model:value="form.billNo"
+                :auto-focus="true"
+                :disabled="fieldDisabled('billNo')"
+            />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('editUserName')">
@@ -79,7 +84,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import {useTpmYearMaintModifyPlanForm, emits} from './ts/TpmYearMaintModifyPlanForm'; // 引入表单ts
+import { useTpmYearMaintModifyPlanForm, emits } from './ts/TpmYearMaintModifyPlanForm'; // 引入表单ts
 // import TpmYearMaintModifyPlanLEditDetail from '@/views/avic/mms/tpm/tpmyearmaintmodifyplanl/TpmYearMaintModifyPlanLEditDetail.vue'; // 引入子表组件
 import TpmYearMaintModifyPlanLEdit from '@/views/avic/mms/tpm/tpmyearmaintmodifyplanl/TpmYearMaintModifyPlanLEdit.vue'; // 引入子表组件
 
