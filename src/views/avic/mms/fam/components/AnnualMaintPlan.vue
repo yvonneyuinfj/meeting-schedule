@@ -91,8 +91,8 @@ const columns = [
   // },
   {
     title: '预算组织名称',
-    dataIndex: 'budgetOrganizationName',
-    key: 'budgetOrganizationName',
+    dataIndex: 'budgetOrganizationNameAlias',
+    key: 'budgetOrganizationNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -109,8 +109,8 @@ const columns = [
   },
   {
     title: '计划类别',
-    dataIndex: 'planType',
-    key: 'planType',
+    dataIndex: 'planTypeName',
+    key: 'planTypeName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -136,8 +136,8 @@ const columns = [
   // },
   {
     title: '需求部门名称',
-    dataIndex: 'requireDeptName',
-    key: 'requireDeptName',
+    dataIndex: 'requireDeptNameAlias',
+    key: 'requireDeptNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -292,7 +292,7 @@ function getList() {
 
 //确定
 const handleOk = () =>{
-  emit('getPlanNo',selectedRows.value[0].planNo)
+  emit('getPlanNo',selectedRows.value[0])
 }
 //取消
 const handleCancel = () =>{

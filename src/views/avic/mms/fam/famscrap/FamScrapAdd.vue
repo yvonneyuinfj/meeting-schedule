@@ -23,16 +23,16 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="isUsedScientificrs" label="是否科研用" has-feedback>
-              <a-input
-                v-model:value="form.isUsedScientificrs"
-                :maxLength="10"
-                :auto-focus="true"
-                placeholder="请输入是否科研用"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="isUsedScientificrs" label="是否科研用" has-feedback>-->
+<!--              <a-input-->
+<!--                v-model:value="form.isUsedScientificrs"-->
+<!--                :maxLength="10"-->
+<!--                :auto-focus="true"-->
+<!--                placeholder="请输入是否科研用"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
@@ -43,11 +43,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handleDeptId" label="处置方式">
+            <a-form-item name="handleDeptId" label="处置部门">
               <AvicCommonSelect
                 v-model:value="form.handleDeptId"
                 type="deptSelect"
-                placeholder="请选择处置方式"
+                placeholder="请选择处置部门"
               />
             </a-form-item>
           </a-col>
@@ -200,6 +200,7 @@ const {
   colLayout,
   loading,
   autoCode,
+  uploadFile,
   addForm,
   closeModal,
   afterUploadEvent,

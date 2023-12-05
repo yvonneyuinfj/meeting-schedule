@@ -424,7 +424,9 @@ function handleSummit() {
       if (res.success) {
         if (res.data.treeLeaf === 'Y') {
           const parentId = getParentId();
+          console.log(getParentId())
           isLand.value = res.data.treePath.split('/').includes(parentId);
+          console.log(isLand.value)
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           assetClasstOpen.value = false;
@@ -478,9 +480,10 @@ function getTreeList() {
 
 /** 获取土地及房屋的id */
 function getParentId() {
-  let id = '';
+  let id = 'NO';
   treeData.value[0].children.map(item => {
-    if (item.title === '土地及房屋') {
+    console.log(item)
+    if (item.title === '土地房屋') {
       id = item.id;
     }
   });

@@ -583,20 +583,20 @@
         @handleRowSelection="handleRowSelection"
         @expand="handleExpand"
       >
-        <template #toolBarLeft>
-          <a-space>
-            <a-button
-              type="primary"
-              title="添加"
-              @click="handleAdd(rootTree)"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-          </a-space>
-        </template>
+<!--        <template #toolBarLeft>-->
+<!--          <a-space>-->
+<!--            <a-button-->
+<!--              type="primary"-->
+<!--              title="添加"-->
+<!--              @click="handleAdd(rootTree)"-->
+<!--            >-->
+<!--              <template #icon>-->
+<!--                <plus-outlined />-->
+<!--              </template>-->
+<!--              添加-->
+<!--            </a-button>-->
+<!--          </a-space>-->
+<!--        </template>-->
         <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"

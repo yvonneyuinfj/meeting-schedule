@@ -19,7 +19,7 @@
         <a-row :gutter="0">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyNo" label="申请单编号" has-feedback>
-              <a-input v-model:value="form.applyNo" disabled />
+              <a-input v-model:value="form.applyNo" disabled/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -34,11 +34,22 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="sealingType" label="封存类型">
-              <a-input
+              <a-select
                 v-model:value="form.sealingType"
-                :maxLength="64"
-                placeholder="请输入封存类型"
-              />
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择封存类型"
+              >
+                <a-select-option
+                  v-for="item in sealingTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -111,15 +122,6 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="otherMatter" label="其他事项">
-              <a-input
-                v-model:value="form.otherMatter"
-                :maxLength="64"
-                placeholder="请输入其他事项"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
             <a-form-item name="sealingExecuteStatus" label="封存规定执行情况">
               <a-input
                 v-model:value="form.sealingExecuteStatus"
@@ -168,7 +170,7 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <FamSealAndUnsealListEdit ref="famSealAndUnsealListEdit" :mainId="formId || form.id" />
+        <FamSealAndUnsealListEdit ref="famSealAndUnsealListEdit" :mainId="formId || form.id"/>
       </a-form>
     </a-spin>
     <template #footer>
@@ -209,6 +211,7 @@ const {
   colLayout,
   loading,
   secretLevelList,
+  sealingTypeList,
   isAssetIntactList,
   saveForm,
   closeModal,

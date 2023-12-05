@@ -16,43 +16,43 @@
         class="form-excel-style"
       >
         <a-row :gutter="0">
-  <!--        <a-col v-bind="colLayout.cols">
-            <a-form-item
-              name="secretLevel"
-              label="数据密级"
-              has-feedback
-            >
-              <a-select
-                v-model:value="form.secretLevel"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择数据密级"
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col> -->
-<!--          <a-col v-bind="colLayout.cols">
-            <a-form-item
-              name="note"
-              label="备注"
-            >
-              <a-input
-                v-model:value="form.note"
-                :maxLength="512"
-                placeholder="请输入备注"
-              />
-            </a-form-item>
-          </a-col> -->
+          <!--        <a-col v-bind="colLayout.cols">
+                    <a-form-item
+                      name="secretLevel"
+                      label="数据密级"
+                      has-feedback
+                    >
+                      <a-select
+                        v-model:value="form.secretLevel"
+                        :auto-focus="true"
+                        :get-popup-container="triggerNode => triggerNode.parentNode"
+                        option-filter-prop="children"
+                        :show-search="true"
+                        :allow-clear="true"
+                        placeholder="请选择数据密级"
+                      >
+                        <a-select-option
+                          v-for="item in secretLevelList"
+                          :key="item.sysLookupTlId"
+                          :value="item.lookupCode"
+                        >
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col> -->
+          <!--          <a-col v-bind="colLayout.cols">
+                      <a-form-item
+                        name="note"
+                        label="备注"
+                      >
+                        <a-input
+                          v-model:value="form.note"
+                          :maxLength="512"
+                          placeholder="请输入备注"
+                        />
+                      </a-form-item>
+                    </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="billNo"
@@ -71,7 +71,7 @@
               />
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="expectedMaintenance"
@@ -85,7 +85,7 @@
               />
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="annualProvisional"
@@ -109,6 +109,7 @@
               has-feedback
             >
               <a-select
+                :disabled="annual === '1'"
                 v-model:value="form.maintCategory"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
@@ -126,17 +127,12 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="annual === '1' ">
             <a-form-item
               name="maintPlan"
               label="维修计划"
               has-feedback
             >
-              <a-input v-if="annual === '2'"
-                       v-model:value="form.maintPlan"
-                       :maxLength="32"
-                       placeholder="请输入维修计划"
-              />
               <a-input
                 v-if="annual === '1' "
                 v-model:value="form.maintPlan"
@@ -223,6 +219,7 @@
             >
               <a-input
                 v-model:value="form.budgetProject"
+                :disabled="annual === '1'"
                 :maxLength="32"
                 placeholder="请输入预算项目"
               />
@@ -236,6 +233,7 @@
             >
               <a-input
                 v-model:value="form.budgetSubitem"
+                :disabled="annual === '1'"
                 :maxLength="32"
                 placeholder="请输入预算分项"
               />
@@ -247,11 +245,19 @@
               label="预算组织"
               has-feedback
             >
-              <a-input
+              <AvicCommonSelect
                 v-model:value="form.budgetOrg"
-                :maxLength="32"
-                placeholder="请输入预算组织"
+                :disabled="annual === '1'"
+                type="deptSelect"
+                placeholder="请选择预算组织"
+                :defaultShowValue="form.budgetOrgAlias"
               />
+              <!--              <a-input-->
+              <!--                v-model:value="form.budgetOrg"-->
+              <!--                :disabled="annual === '1'"-->
+              <!--                :maxLength="32"-->
+              <!--                placeholder="请输入预算组织"-->
+              <!--              />-->
             </a-form-item>
           </a-col>
 
@@ -276,6 +282,7 @@
             >
               <a-input-number
                 v-model:value="form.projectAmount"
+                :disabled="annual === '1'"
                 :min="0"
                 :max="9999999999.99"
                 :precision="2"
@@ -366,6 +373,7 @@
                 v-model:value="form.applyDeptId"
                 type="deptSelect"
                 placeholder="请选择申请部门"
+                :defaultShowValue="form.applyDeptIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -392,6 +400,7 @@
                 v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择需求申请人名称"
+                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -422,11 +431,11 @@
               />
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="isImprove"
-              label="是否使用型号经费"
+              label="是否提高固定资产性能"
               has-feedback
             >
               <a-select
@@ -436,7 +445,7 @@
                 :show-search="true"
                 :allow-clear="true"
                 @change="changeIsimp"
-                placeholder="请选择是否使用型号经费"
+                placeholder="请选择是否提高固定资产性能"
               >
                 <a-select-option
                   v-for="item in isImproveList"
@@ -448,7 +457,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          
+
           <!--          <a-col v-bind="colLayout.cols">-->
           <!--            <a-form-item-->
           <!--              name="annex"-->
@@ -510,6 +519,7 @@ import FamOverhaulRequireListEdit from '@/views/avic/mms/fam/famoverhaulrequirel
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
 
+const { proxy } = getCurrentInstance();
 const props = defineProps({
   formId: {
     type: String,
@@ -560,11 +570,19 @@ const {
   props: props,
   emit: emit
 });
-const changeIsimp  = (v) => {
-  if(v==="1"){
+
+onMounted(() => {
+  form.value.handlePersonId = proxy.$getLoginUser().id;
+  form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
+  form.value.applyDeptId = proxy.$getLoginUser().deptId;
+  form.value.applyDeptIdAlias = proxy.$getLoginUser().deptName;
+});
+
+const changeIsimp = (v) => {
+  if (v === '1') {
     form.value.maintCategory = '2';
   }
-}
+};
 const annualChange = (v) => {
   annual.value = v.target.value;
 };
@@ -578,7 +596,13 @@ const closeMaintPlan = () => {
 };
 
 const getPlanNo = (v) => {
-  form.value.maintPlan = v;
+  form.value.maintPlan = v.planNo;
+  form.value.budgetProject = v.budgetItems;
+  form.value.budgetSubitem = v.budgetBreakdownItems;
+  form.value.budgetOrg = v.budgetOrganizationName;
+  form.value.budgetOrgAlias = v.budgetOrganizationNameAlias;
+  form.value.projectAmount = v.projectMoney;
+  form.value.maintCategory = v.planType;
   maintPlanModal.value = false;
 };
 </script>

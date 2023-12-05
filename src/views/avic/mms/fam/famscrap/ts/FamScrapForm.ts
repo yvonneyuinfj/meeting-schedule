@@ -10,7 +10,7 @@ import {
   getFieldDisabled,
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import { saveFamAccpet } from '@/api/avic/mms/fam/FamAccpetApi';
+// import { saveFamAccpet } from '@/api/avic/mms/fam/FamAccpetApi';
 
 export const emits = ['reloadData', 'close'];
 
@@ -29,9 +29,9 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     applyNo: [
       { required: true, message: '申请单编号不能为空', trigger: 'change' }
     ],
-    isUsedScientificrs: [
-      { required: true, message: '是否科研用不能为空', trigger: 'change' }
-    ],
+    // isUsedScientificrs: [
+    //   { required: true, message: '是否科研用不能为空', trigger: 'change' }
+    // ],
     applyDeptId: [
       { required: true, message: '申请部门id不能为空', trigger: 'change' }
     ],
@@ -123,6 +123,11 @@ export function useFamScrapForm({ props: props, emit: emit }) {
             if (!validate) {
               return;
             }
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
+              return;
+            }
             loading.value = true;
             const postData = proxy.$lodash.cloneDeep(form.value);
             const subInfoList = famScrapListEdit.value.getChangedData(); // 获取子表数据
@@ -139,7 +144,6 @@ export function useFamScrapForm({ props: props, emit: emit }) {
                     form.value.id = res.data;
                   }
                   uploadFile.value.upload(form.value.id || res.data); // 附件上传
-                  successCallback();
                 } else {
                   loading.value = false;
                 }
@@ -178,6 +182,11 @@ export function useFamScrapForm({ props: props, emit: emit }) {
             if (!validate) {
               return;
             }
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
+              return;
+            }
             startFlowByFormCode({
               formCode: formCode,
               callback: bpmDefinedInfo => {
@@ -198,6 +207,16 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       });
   }
 
+  /** 校验表单附件密级 */
+  function validateUploaderFileSecret() {
+    const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
+    if (errorMessage) {
+      closeFlowLoading(props.bpmInstanceObject);
+      return false;
+    }
+    return true;
+  }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     // 点击保存并启动流程按钮触发
@@ -205,6 +224,11 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       // 校验表单并选择需要启动的流程模板
       getBpmDefine();
     } else {
+      // 附件密级校验
+      const validateResult = validateUploaderFileSecret();
+      if (!validateResult) {
+        return;
+      }
       const subInfoList = famScrapListEdit.value.getChangedData(); // 获取子表数据
       loading.value = true;
       // 处理数据
@@ -231,14 +255,13 @@ export function useFamScrapForm({ props: props, emit: emit }) {
               form.value.id = res.data.formId;
             }
             uploadFile.value.upload(form.value.id || res.data); // 附件上传
-            successCallback();
           } else {
             errorCallback();
           }
-        })
-        .catch(() => {
-          errorCallback();
         });
+      // .catch(() => {
+      //   errorCallback();
+      // });
     }
   }
 
@@ -250,6 +273,11 @@ export function useFamScrapForm({ props: props, emit: emit }) {
         famScrapListEdit.value
           .validate(async validate => {
             if (!validate) {
+              return;
+            }
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
               return;
             }
             loading.value = true;
@@ -272,7 +300,6 @@ export function useFamScrapForm({ props: props, emit: emit }) {
                   if (!form.value.id) {
                     form.value.id = res.data;
                   }
-                  successCallback();
                   uploadFile.value.upload(form.value.id || res.data); // 附件上传
                 } else {
                   loading.value = false;
@@ -326,6 +353,12 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       emit('reloadData');
       emit('close');
     }
+  }
+
+  /** 表单附件是否必填(按elementId) */
+  function attachmentRequired(fieldName) {
+    const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
+    return res;
   }
 
   /** 返回关闭事件 */
@@ -395,6 +428,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     saveForm,
     addForm,
     handleWayList,
+    attachmentRequired,
     afterUploadEvent,
     saveAndStartProcess,
     closeModal,

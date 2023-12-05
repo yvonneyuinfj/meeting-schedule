@@ -86,16 +86,16 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="其他事项">
-                  <a-input
-                    v-model:value="queryForm.otherMatter"
-                    placeholder="请输入其他事项"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
-                </a-form-item>
-              </a-col>
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">-->
+<!--                <a-form-item label="其他事项">-->
+<!--                  <a-input-->
+<!--                    v-model:value="queryForm.otherMatter"-->
+<!--                    placeholder="请输入其他事项"-->
+<!--                    :allow-clear="true"-->
+<!--                    @pressEnter="handleQuery"-->
+<!--                  />-->
+<!--                </a-form-item>-->
+<!--              </a-col>-->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="申请部门">
                   <AvicCommonSelect
@@ -424,15 +424,15 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '其他事项',
-    dataIndex: 'otherMatter',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '其他事项',
+  //   dataIndex: 'otherMatter',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '申请部门',
     dataIndex: 'applyDeptIdAlias',

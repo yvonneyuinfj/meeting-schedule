@@ -73,7 +73,7 @@ export function useFamAssetLendForm({ props: props, emit: emit }) {
   });
 
   async function leaseTermValidator(rule, value) {
-    if (form.value.tranType === '2') {
+    if (form.value.tranType === '1') {
       if (!value) {
         return Promise.reject(new Error('请输入租凭期限'));
       }
@@ -83,7 +83,7 @@ export function useFamAssetLendForm({ props: props, emit: emit }) {
   }
 
   async function hireTermValidator(rule, value) {
-    if (form.value.tranType === '1') {
+    if (form.value.tranType === '2') {
       if (!value) {
         return Promise.reject(new Error('请输入出借期限'));
       }

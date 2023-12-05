@@ -89,6 +89,7 @@
             <a-form-item name="maintCategory" label="维修类别" has-feedback>
               <a-select
                 v-model:value="form.maintCategory"
+                :disabled="annual === '1'"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
@@ -105,7 +106,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="annual === '1' ">
             <a-form-item name="maintPlan" label="维修计划" has-feedback>
               <a-input v-if="annual === '2'"
                        v-model:value="form.maintPlan"
@@ -179,6 +180,7 @@
             <a-form-item name="budgetProject" label="预算项目" has-feedback>
               <a-input
                 v-model:value="form.budgetProject"
+                :disabled="annual === '1'"
                 :maxLength="32"
                 placeholder="请输入预算项目"
               />
@@ -188,6 +190,7 @@
             <a-form-item name="budgetSubitem" label="预算分项" has-feedback>
               <a-input
                 v-model:value="form.budgetSubitem"
+                :disabled="annual === '1'"
                 :maxLength="32"
                 placeholder="请输入预算分项"
               />
@@ -195,10 +198,12 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="budgetOrg" label="预算组织" has-feedback>
-              <a-input
+              <AvicCommonSelect
                 v-model:value="form.budgetOrg"
-                :maxLength="32"
-                placeholder="请输入预算组织"
+                :disabled="annual === '1'"
+                type="deptSelect"
+                placeholder="请选择预算组织"
+                :defaultShowValue="form.budgetOrgAlias"
               />
             </a-form-item>
           </a-col>
@@ -216,6 +221,7 @@
             <a-form-item name="projectAmount" label="项目金额（万元）" has-feedback>
               <a-input-number
                 v-model:value="form.projectAmount"
+                :disabled="annual === '1'"
                 :min="0"
                 :max="9999999999.99"
                 :precision="2"
@@ -333,12 +339,28 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="annex" label="附件" has-feedback>
-              <a-input
-                v-model:value="form.annex"
-                :maxLength="65535"
-                placeholder="请输入附件"
-              />
+            <a-form-item
+              name="isImprove"
+              label="是否提高固定资产性能"
+              has-feedback
+            >
+              <a-select
+                v-model:value="form.isImprove"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                @change="changeIsimp"
+                placeholder="请选择是否提高固定资产性能"
+              >
+                <a-select-option
+                  v-for="item in isImproveList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -417,6 +439,7 @@ const {
   isNeedReviewList,
   uploadFile,
   afterUploadEvent,
+  isImproveList,
   toolbarConfig,
   editorConfig,
   editorRef,
@@ -433,6 +456,12 @@ watch(()=> form.value.annualProvisional , newV => {
   annual.value = newV
 })
 
+const changeIsimp = (v) => {
+  if (v === '1') {
+    form.value.maintCategory = '2';
+  }
+};
+
 /** 点击维修计划 */
 const maintPlanClick = () => {
   maintPlanModal.value = true;
@@ -443,7 +472,13 @@ const closeMaintPlan = () => {
 };
 
 const getPlanNo = (v) => {
-  form.value.maintPlan = v;
+  form.value.maintPlan = v.planNo;
+  form.value.budgetProject = v.budgetItems;
+  form.value.budgetSubitem = v.budgetBreakdownItems;
+  form.value.budgetOrg = v.budgetOrganizationName;
+  form.value.budgetOrgAlias = v.budgetOrganizationNameAlias;
+  form.value.projectAmount = v.projectMoney;
+  form.value.maintCategory = v.planType;
   maintPlanModal.value = false;
 };
 </script>

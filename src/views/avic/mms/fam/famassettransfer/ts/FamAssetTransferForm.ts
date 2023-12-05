@@ -10,6 +10,7 @@ import {
   getFieldDisabled,
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import upload from 'ant-design-vue/es/vc-upload/request';
 
 export const emits = ['reloadData', 'close'];
 export function useFamAssetTransferForm({ props: props, emit: emit }) {
