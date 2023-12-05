@@ -128,11 +128,11 @@
               {{ record.classicCaseTypeName }}
             </a>
           </template>
-          <template v-else-if="column.dataIndex === 'note'">
+            <!-- <template v-else-if="column.dataIndex === 'note'">
             <a @click="handleOpenNote(record)">
               {{ record.note }}
             </a>
-          </template>
+          </template> -->
           <template v-else-if="column.dataIndex === 'attach'">
             <a @click="handleAttach(record)">
               查看
