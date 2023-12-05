@@ -34,6 +34,26 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="tranType" label="事务类型">
+              <a-select
+                v-model:value="form.tranType"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择事务类型"
+              >
+                <a-select-option
+                  v-for="item in tranTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.managerDeptId"
@@ -108,14 +128,23 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="rent" label="租金">
+            <a-form-item name="hireTerm" label="出借期限(单位年)">
               <a-input
-                v-model:value="form.rent"
-                :maxLength="20"
-                placeholder="请输入租金"
+                v-model:value="form.hireTerm"
+                :maxLength="10"
+                placeholder="请输入出借期限(单位年)"
               />
             </a-form-item>
           </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="rent" label="租金">-->
+<!--              <a-input-->
+<!--                v-model:value="form.rent"-->
+<!--                :maxLength="20"-->
+<!--                placeholder="请输入租金"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
         </a-row>
       </a-form>
       <FamAssetLendListEdit ref="famAssetLendListEdit" />
@@ -128,7 +157,8 @@
 </template>
 <script lang="ts" setup>
 import { useFamAssetLendForm, emits } from './ts/FamAssetLendForm'; // 引入表单ts
-import FamAssetLendListEdit from '@/views/avic/mms/fam/famassetlendlist/FamAssetLendListEdit.vue'; // 引入子表组件
+import FamAssetLendListEdit from '@/views/avic/mms/fam/famassetlendlist/FamAssetLendListEdit.vue';
+import dayjs from 'dayjs'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -149,7 +179,11 @@ const props = defineProps({
     type: Function
   }
 });
+const { proxy } = getCurrentInstance()
 const emit = defineEmits(emits);
+onMounted(()=>{
+  form.value.title = proxy.$getLoginUser().name + dayjs(new Date()).format('YYYYMMDD') + '出租申请';
+})
 const {
   form,
   formRef,
@@ -158,6 +192,7 @@ const {
   colLayout,
   loading,
   autoCode,
+  tranTypeList,
   closeModal,
   saveAndStartProcess,
   famAssetLendListEdit

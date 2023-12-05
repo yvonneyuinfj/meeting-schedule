@@ -10,8 +10,10 @@ import {
   getFieldDisabled,
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import { saveFamAccpet } from '@/api/avic/mms/fam/FamAccpetApi';
 
 export const emits = ['reloadData', 'close'];
+
 export function useFamScrapForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<FamScrapDto>({});
@@ -21,6 +23,8 @@ export function useFamScrapForm({ props: props, emit: emit }) {
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
+  const handleWayList = ref([]); // 处置方式 通用代码
+  const uploadFile = ref(null); // 附件ref
   const rules: Record<string, Rule[]> = {
     applyNo: [
       { required: true, message: '申请单编号不能为空', trigger: 'change' }
@@ -43,16 +47,19 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout3; // 调用布局公共方法
+  const colLayout = proxy.$colLayout3; // 调用布局公共方法
   const loading = ref(false);
   const autoCode = ref(null); // 自动编码ref
   const authJson = ref(null);
+  const lookupParams = [
+    { fieldName: 'handleWay', lookUpType: 'FAM_HANDLE_WAY' }
+  ];
 
   if (props.params) {
     bpmParams.value = props.params;
   } else {
     if (proxy.$route) {
-      bpmParams.value = proxy. $route.query;
+      bpmParams.value = proxy.$route.query;
     }
   }
   if (bpmParams) {
@@ -62,6 +69,8 @@ export function useFamScrapForm({ props: props, emit: emit }) {
   }
 
   onMounted(() => {
+    // 加载查询区所需通用代码
+    getLookupList();
     if (props.formId || form.value.id) {
       // 编辑详情页面加载数据
       getFormData(props.formId || form.value.id);
@@ -70,6 +79,14 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
+  /** 获取通用代码  */
+  function getLookupList() {
+    proxy.$getLookupByType(lookupParams, result => {
+      handleWayList.value = result.handleWay;
+    });
+  }
+
   /**
    * 编辑详情页面加载数据
    * @param {String} id 行数据的id
@@ -83,8 +100,8 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       .then(async res => {
         if (res.data) {
           form.value = res.data;
-        // 处理数据
-           loading.value = false;
+          // 处理数据
+          loading.value = false;
         } else {
           initForm();
           loading.value = false;
@@ -95,6 +112,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
   function saveForm(params) {
     formRef.value
@@ -117,13 +135,15 @@ export function useFamScrapForm({ props: props, emit: emit }) {
                   if (props.bpmInstanceObject) {
                     bpmButtonParams.value = { params, result: res.data };
                   }
-                  if (!form.value.id){
-                    form.value.id=res.data;
+                  if (!form.value.id) {
+                    form.value.id = res.data;
                   }
+                  uploadFile.value.upload(form.value.id || res.data); // 附件上传
                   successCallback();
                 } else {
                   loading.value = false;
                 }
+
               })
               .catch(() => {
                 loading.value = false;
@@ -139,6 +159,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -146,6 +167,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     formRef.value
@@ -175,6 +197,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     // 点击保存并启动流程按钮触发
@@ -187,10 +210,10 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famScrapListList = subInfoList; // 挂载子表数据
-        if (autoCode.value) {
-          // 获取编码码段值
-          postData.applyNo = autoCode.value.getSegmentValue();
-        }
+      if (autoCode.value) {
+        // 获取编码码段值
+        postData.applyNo = autoCode.value.getSegmentValue();
+      }
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
@@ -204,9 +227,10 @@ export function useFamScrapForm({ props: props, emit: emit }) {
               bpmButtonParams.value = { params, result: res.data };
             }
             bpmResult.value = res.data;
-            if (!form.value.id){
-              form.value.id=res.data.formId;
+            if (!form.value.id) {
+              form.value.id = res.data.formId;
             }
+            uploadFile.value.upload(form.value.id || res.data); // 附件上传
             successCallback();
           } else {
             errorCallback();
@@ -217,6 +241,59 @@ export function useFamScrapForm({ props: props, emit: emit }) {
         });
     }
   }
+
+  /** 新增 */
+  function addForm(params) {
+    formRef.value
+      .validate()
+      .then(async () => {
+        famScrapListEdit.value
+          .validate(async validate => {
+            if (!validate) {
+              return;
+            }
+            loading.value = true;
+            const postData = proxy.$lodash.cloneDeep(form.value);
+            const subInfoList = famScrapListEdit.value.getChangedData(); // 获取子表数据
+
+            // 处理数据
+            postData.famScrapListList = subInfoList; // 挂载子表数据
+            if (autoCode.value) {
+              // 获取编码码段值
+              postData.applyNo = autoCode.value.getSegmentValue();
+            }
+            // 发送请求
+            saveFamScrap(postData)
+              .then(res => {
+                if (res.success) {
+                  if (props.bpmInstanceObject) {
+                    bpmButtonParams.value = { params, result: res.data };
+                  }
+                  if (!form.value.id) {
+                    form.value.id = res.data;
+                  }
+                  successCallback();
+                  uploadFile.value.upload(form.value.id || res.data); // 附件上传
+                } else {
+                  loading.value = false;
+                }
+
+              })
+              .catch(() => {
+                loading.value = false;
+              });
+          })
+          .catch(error => {
+            console.log('error', error);
+            loading.value = false;
+          });
+      })
+      .catch(error => {
+        // 定位校验失败元素
+        proxy.$scrollToFirstErrorField(formRef, error);
+      });
+  }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -238,6 +315,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -249,37 +327,55 @@ export function useFamScrapForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
+  /** 附件上传完之后的回调函数 */
+  function afterUploadEvent(successFile, errorFile) {
+    if (errorFile.length > 0) {
+      // 有附件保存失败的处理
+      errorCallback();
+    } else {
+      // 所有附件都保存成功的处理
+      successCallback();
+    }
+  }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
@@ -294,8 +390,12 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
+    uploadFile,
     autoCode,
     saveForm,
+    addForm,
+    handleWayList,
+    afterUploadEvent,
     saveAndStartProcess,
     closeModal,
     fieldVisible,

@@ -9,16 +9,16 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="设备编号">
                   <a-input
-                      v-model:value="queryForm.equipmentCode"
-                      placeholder="请输入设备编号"
-                      :allow-clear="true"
-                      @pressEnter="handleQuery"
+                    v-model:value="queryForm.equipmentCode"
+                    placeholder="请输入设备编号"
+                    :allow-clear="true"
+                    @pressEnter="handleQuery"
                   />
                 </a-form-item>
               </a-col>
               <a-col
-                  v-bind="colLayout.cols"
-                  style="margin-left: auto"
+                v-bind="colLayout.cols"
+                style="margin-left: auto"
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
@@ -44,23 +44,23 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable
-              ref="tpmStandard"
-              table-key="tpmStandard"
-              :columns="columns"
-              :row-key="record => record.id"
-              :data-source="list"
-              :loading="loading"
-              :row-selection="{
+            ref="tpmStandard"
+            table-key="tpmStandard"
+            :columns="columns"
+            :row-key="record => record.id"
+            :data-source="list"
+            :loading="loading"
+            :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }"
-              :pageParameter="queryParam.pageParameter"
-              :total="totalPage"
-              rowClickSelectionType="radio"
-              @change="handleTableChange"
-              @refresh="getList"
+            :pageParameter="queryParam.pageParameter"
+            :total="totalPage"
+            rowClickSelectionType="radio"
+            @change="handleTableChange"
+            @refresh="getList"
           >
             <template #toolBarLeft>
               <a-space>
@@ -76,10 +76,10 @@
                 <!--                  添加-->
                 <!--                </a-button>-->
                 <a-button
-                    v-hasPermi="['tpmInventory:add']"
-                    title="批量添加"
-                    type="primary"
-                    @click="handleOpenAdd"
+                  v-hasPermi="['tpmInventory:add']"
+                  title="批量添加"
+                  type="primary"
+                  @click="handleOpenAdd"
                 >
                   <template #icon>
                     <plus-outlined/>
@@ -87,12 +87,12 @@
                   批量添加
                 </a-button>
                 <a-button
-                    v-hasPermi="['tpmStandard:del']"
-                    title="删除"
-                    danger
-                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                    :loading="delLoading"
-                    @click="handleDelete(selectedRowKeys, '')"
+                  v-hasPermi="['tpmStandard:del']"
+                  title="删除"
+                  danger
+                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                  :loading="delLoading"
+                  @click="handleDelete(selectedRowKeys, '')"
                 >
                   <template #icon>
                     <delete-outlined/>
@@ -128,11 +128,11 @@
             </template>
             <template #toolBarRight>
               <a-input-search
-                  class="opt-btn-commonsearch"
-                  style="width: 200px"
-                  placeholder="或设备编号"
-                  :allow-clear="true"
-                  @search="handleKeyWordQuery"
+                class="opt-btn-commonsearch"
+                style="width: 200px"
+                placeholder="或设备编号"
+                :allow-clear="true"
+                @search="handleKeyWordQuery"
               />
             </template>
             <template #bodyCell="{ column, text, record, index }">
@@ -150,53 +150,84 @@
       </div>
       <!-- 添加页面弹窗 -->
       <tpm-standard-add
-          v-if="showAddModal"
-          ref="addModal"
-          @reloadData="getList"
-          @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        @reloadData="getList"
+        @close="showAddModal = false"
       />
       <!--批量添加弹窗-->
       <a-modal
-          :visible="open"
-          title="批量添加"
-          @ok="handleOk"
-          @cancel="handleCancel"
-          width="80%"
-          style="top: 20px"
+        :visible="open"
+        title="批量添加"
+        @ok="handleOk"
+        @cancel="handleCancel"
+        width="80%"
+        style="top: 20px"
       >
         <div style="height: 400px;overflow: auto">
           <Tpm-inventory-standard-select
-              ref="tpmInventoryStandardSelect">
+            ref="tpmInventoryStandardSelect">
           </Tpm-inventory-standard-select>
         </div>
       </a-modal>
       <!-- 编辑页面弹窗 -->
       <tpm-standard-edit
-          v-if="showEditModal"
-          ref="editModal"
-          :form-id="formId"
-          @reloadData="getList"
-          @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
       />
       <!-- 详情页面弹窗 -->
       <tpm-standard-detail
-          v-if="showDetailModal"
-          ref="detailModal"
-          :form-id="formId"
-          @close="showDetailModal = false"
+        v-if="showDetailModal"
+        ref="detailModal"
+        :form-id="formId"
+        @close="showDetailModal = false"
       />
       <AvicExcelImport
-          v-if="showImportModal"
-          :formData="excelParams"
-          title="模板导入"
-          importUrl="/mms/tpm/tpmstandards/importData/v1"
-          downloadTemplateUrl="/mms/tpm/tpmstandards/downloadTemplate/v1"
-          @reloadData="getList"
-          @close="showImportModal = false"
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="模板导入"
+        importUrl="/mms/tpm/tpmstandards/importData/v1"
+        downloadTemplateUrl="/mms/tpm/tpmstandards/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
       />
     </AvicPane>
-    <a-modal :visible="copyMoadl" @ok="handleCopyModal" @cancel="copyMoadl = false" title="复制">
+    <a-modal :visible="copyMoadl" @ok="handleCopyModal" @cancel="copyMoadl = false" title="复制" width="80%">
 
+      <AvicTable
+
+        ref="tpmStandard"
+        table-key="tpmStandard"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
+              selectedRowKeys: selectedRowKeys,
+              onChange: onSelectChange,
+              columnWidth: 40,
+              fixed: true
+            }"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        rowClickSelectionType="radio"
+        @change="handleTableChange"
+        @refresh="getList"
+      >
+        <template #bodyCell="{ column, text, record, index }">
+          <template v-if="column.dataIndex  === 'id'">
+            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+          </template>
+          <template v-else-if="column.dataIndex === 'tpmInventoryId'">
+            <a @click="handleDetail(record)">
+              {{ record.tpmInventoryId }}
+            </a>
+          </template>
+        </template>
+      </AvicTable>
     </a-modal>
     <AvicPane>
       <!-- 子表组件 -->
@@ -331,7 +362,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const copyMoadl = ref<boolean>(false)
+const copyMoadl = ref<boolean>(false);
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
@@ -364,22 +395,22 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmStandardByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        // 设置表格初始选中项
-        if (list.value.length > 0) {
-          selectedRowKeys.value = [list.value[0]['id']];
-        } else {
-          selectedRowKeys.value = [];
-        }
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      // 设置表格初始选中项
+      if (list.value.length > 0) {
+        selectedRowKeys.value = [list.value[0]['id']];
+      } else {
+        selectedRowKeys.value = [];
+      }
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 高级搜索按钮操作 */
@@ -423,12 +454,12 @@ function handleOpenAdd() {
 
 /** 复制 */
 function handleCopy(rows, ids) {
-  copyMoadl.value = true
+  copyMoadl.value = true;
 }
 
 /** 提交复制 */
-function handleCopyModal () {
-  copyMoadl.value = false
+function handleCopyModal() {
+  copyMoadl.value = false;
 }
 
 
@@ -503,19 +534,19 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delTpmStandard(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('删除成功！');
-              // 清空选中
-              selectedRowKeys.value = [];
-              selectedRows.value = [];
-              getList();
-            }
-            delLoading.value = false;
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('删除成功！');
+            // 清空选中
+            selectedRowKeys.value = [];
+            selectedRows.value = [];
+            getList();
+          }
+          delLoading.value = false;
+        })
+        .catch(() => {
+          delLoading.value = false;
+        });
     }
   });
 }
