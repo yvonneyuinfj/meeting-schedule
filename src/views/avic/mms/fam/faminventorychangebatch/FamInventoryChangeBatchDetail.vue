@@ -22,7 +22,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyPersonId')">
-          <a-form-item name="applyPersonId" label="申请人ID" :rules="fieldRequired('applyPersonId')" has-feedback>
+          <a-form-item name="applyPersonId" label="申请人" :rules="fieldRequired('applyPersonId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.applyPersonId"
               :auto-focus="true"
@@ -33,7 +33,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
-          <a-form-item name="applyDeptId" label="主管部门ID" :rules="fieldRequired('applyDeptId')" has-feedback>
+          <a-form-item name="applyDeptId" label="主管部门" :rules="fieldRequired('applyDeptId')" has-feedback>
             <AvicCommonSelect
               v-model:value="form.applyDeptId"
               type="deptSelect"
@@ -57,14 +57,14 @@
             <a-textarea v-model:value="form.changeNote" :rows="2" :disabled="fieldDisabled('changeNote')" />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('fenqi')">
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('fenqi')">
           <a-form-item name="fenqi" label="分期金额" :rules="fieldRequired('fenqi')" has-feedback>
             <a-input
               v-model:value="form.fenqi"
               :disabled="fieldDisabled('fenqi')"
             />
           </a-form-item>
-        </a-col>
+        </a-col> -->
       <a-col v-bind="colLayout.cols4">
         <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
           <AvicUploader
@@ -163,5 +163,3 @@ defineExpose({
   afterClickBpmButtons
 });
 </script>
-
-
