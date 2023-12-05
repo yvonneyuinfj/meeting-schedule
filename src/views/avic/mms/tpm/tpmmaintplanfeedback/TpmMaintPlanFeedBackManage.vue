@@ -94,9 +94,6 @@
             <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)" :loading="approvalLoading">
               提交审批
             </a-button>
-            <a-button type="primary" @click="handleCopy(selectedRows, selectedRowKeys)">
-              复制
-            </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -209,9 +206,6 @@
           </AvicRowEdit>
         </template>
       </AvicTable>
-      <a-modal :visible="copyMoadl" @ok="handleOk" @cancel="copyMoadl = false" title="复制">
-
-      </a-modal>
     </div>
   </div>
 </template>
@@ -541,7 +535,6 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const copyMoadl = ref<boolean>(false)
 const tpmMaintPlan = ref(null);
 const showImportModal = ref(false); // 是否展示导入弹窗
 const excelParams = ref({ tableName: 'tpmMaintPlan' }); // 导入Excel数据过滤参数
@@ -661,17 +654,6 @@ const handleApproval = (rows, ids) => {
     });
   }
 };
-
-/** 复制 */
-function handleCopy(rows, ids) {
-  copyMoadl.value = true
-}
-
-/** 提交复制 */
-function handleOk () {
-  copyMoadl.value = false
-}
-
 
 function getBpmDefine(rows, ids) {
   startFlowByFormCode({
