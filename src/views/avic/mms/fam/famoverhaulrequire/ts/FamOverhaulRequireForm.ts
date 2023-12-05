@@ -18,6 +18,7 @@ import {
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 export const emits = ['reloadData', 'close'];
+
 export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<FamOverhaulRequireDto>({});
@@ -31,7 +32,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     secretLevel: [{ required: true, message: '数据密级不能为空', trigger: 'change' }],
     billNo: [{ required: true, message: '单据号不能为空', trigger: 'change' }],
     maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
-    maintCategory: [{ required: true, message: '维修类别不能为空', trigger: 'change' }],
+    maintCategory: [{ validator: maintCategoryValidator, trigger: 'change' }],
     expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
     // managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
     managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
@@ -96,6 +97,19 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     openType.value = bpmParams.value.id ? 'edit' : 'add';
   }
 
+  async function maintCategoryValidator(_rule, value) {
+    if (form.value.annualProvisional === '1') {
+      if (!value) {
+        return Promise.reject(new Error('请输入维修类别'));
+      } else {
+        return Promise.resolve();
+      }
+    } else {
+      return Promise.resolve();
+    }
+  }
+  ;
+
   onMounted(() => {
     // 加载查询区所需通用代码
     getLookupList();
@@ -114,6 +128,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     if (editor == null) return;
     editor.destroy(); // 组件销毁时，及时销毁编辑器
   });
+
   /** 获取通用代码  */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
@@ -124,12 +139,14 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       isImproveList.value = result.isImprove;
     });
   }
+
   /** 获取当前用户对应的文档密级 */
   function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑详情页面加载数据
    * @param {String} id 行数据的id
@@ -147,7 +164,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
           // 处理富文本
           await dealRichText(form.value.applyReason);
           // 详情表单 富文本是否可编辑
-          if ( props.bpmInstanceObject &&  fieldDisabled('applyReason')) {
+          if (props.bpmInstanceObject && fieldDisabled('applyReason')) {
             editorRef.value.disable();
           }
           loading.value = false;
@@ -161,6 +178,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
   function saveForm(params) {
     formRef.value
@@ -216,6 +234,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -223,6 +242,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     formRef.value
@@ -257,6 +277,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     // 点击保存并启动流程按钮触发
@@ -310,6 +331,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
         });
     }
   }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -331,6 +353,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -342,8 +365,9 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 附件上传完之后的回调函数 */
-  function afterUploadEvent(successFile, errorFile) {
+  function afterUploadEvent(_successFile, errorFile) {
     if (errorFile.length > 0) {
       // 有附件保存失败的处理
       errorCallback();
@@ -352,37 +376,44 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       successCallback();
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   /** 校验表单附件密级 */
   function validateUploaderFileSecret() {
     const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
@@ -392,11 +423,13 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     }
     return true;
   }
+
   /** 表单附件是否必填(按elementId) */
   function attachmentRequired(fieldName) {
     const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
     return res;
   }
+
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);

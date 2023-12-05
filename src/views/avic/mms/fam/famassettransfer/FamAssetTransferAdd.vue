@@ -1,7 +1,7 @@
 <template>
   <AvicModal
     :visible="true"
-    title="添加"
+    title="新增"
     width="960px"
     height="520px"
     :centered="true"
@@ -15,7 +15,7 @@
               <avic-auto-code
                 v-model:value="form.applyNo"
                 ref="autoCode"
-                code-type="FAM_BILL_NO"
+                code-type="FAM_ASSET_APPLY_NO"
                 code-param="FAM_ASSET_TRANSFER"
                 :allow-clear="true"
                 :disabled="false"
@@ -75,6 +75,7 @@
                 v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择经办人"
+                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -88,30 +89,29 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols4">
-            <a-form-item
-              label="附件"
-            >
-              <AvicUploader
-                element-id="1"
-                form-type="add"
-                ref="uploadFile"
-                :allow-download="true"
-                :allow-preview="true"
-                :allow-delete="true"
-                :allow-update-secret-level="true"
-                :form-id="form.id"
-                table-name="FAM_ASSET_TRANSFER"
-                @afterUpload="afterUploadEvent"
-              />
-            </a-form-item>
-          </a-col>
         </a-row>
+        <a-form-item
+          label="附件"
+        >
+          <AvicUploader
+            element-id="1"
+            form-type="add"
+            ref="uploadFile"
+            :allow-download="true"
+            :allow-preview="true"
+            :allow-delete="true"
+            :allow-update-secret-level="true"
+            :form-id="form.id"
+            table-name="FAM_ASSET_TRANSFER"
+            @afterUpload="afterUploadEvent"
+          />
+        </a-form-item>
       </a-form>
-      <FamAssetTransferListEdit ref="famAssetTransferListEdit" />
+      <FamAssetTransferListEdit ref="famAssetTransferListEdit"/>
     </a-spin>
     <template #footer>
-      <a-button title="保存并启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">保存并启动流程</a-button>
+      <a-button title="保存并启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">保存并启动流程
+      </a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
@@ -119,6 +119,7 @@
 <script lang="ts" setup>
 import { useFamAssetTransferForm, emits } from './ts/FamAssetTransferForm'; // 引入表单ts
 import FamAssetTransferListEdit from '@/views/avic/mms/fam/famassettransferlist/FamAssetTransferListEdit.vue'; // 引入子表组件
+import dayjs from 'dayjs';
 
 const props = defineProps({
   formId: {
@@ -139,7 +140,14 @@ const props = defineProps({
     type: Function
   }
 });
+const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
+onMounted(() => {
+  form.value.title = proxy.$getLoginUser().name + dayjs(new Date()).format('YYYYMMDD') + '调拨申请';
+  form.value.applyDate = dayjs(new Date()).format('YYYY-MM-DD')
+  form.value.handlePersonIdAlias = proxy.$getLoginUser().name
+  form.value.handlePersonId = proxy.$getLoginUser().id
+});
 const {
   form,
   formRef,

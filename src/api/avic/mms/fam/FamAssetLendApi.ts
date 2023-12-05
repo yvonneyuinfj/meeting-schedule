@@ -4,6 +4,7 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/fam/famassetlends';
+
 /** FAM_ASSET_LEND */
 export interface FamAssetLendDto extends BaseBeanModel {
   /** 数据密级 */
@@ -70,6 +71,8 @@ export interface FamAssetLendDto extends BaseBeanModel {
   rent?: string;
   bpmState?: string;
   bpmType?: string;
+  tranType?: string;
+  hireTerm?: string;
   /** 子表集合 */
   famAssetLendListList?: [];
 }
@@ -80,30 +83,31 @@ export function listFamAssetLendByPage(param: QueryParamModel): Promise<Response
 }
 
 /** 根据id加载数据 */
-export function getFamAssetLend (id: string): Promise<ResponseBaseData<FamAssetLendDto>> {
+export function getFamAssetLend(id: string): Promise<ResponseBaseData<FamAssetLendDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamAssetLend (form: FamAssetLendDto): Promise<ResponseBaseData<any>> {
+export function saveFamAssetLend(form: FamAssetLendDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,
     bean: postData
   });
 }
+
 /** 根据id归还数据 */
 export function returnFamAssetLend(ids: [string]): Promise<ResponseBaseData<any>> {
-  return request.get(basePath + '/update-type-ids/'+ids+'/v1');
+  return request.get(basePath + '/update-type-ids/' + ids + '/v1');
 }
 
 /** 根据id集合删除数据 */

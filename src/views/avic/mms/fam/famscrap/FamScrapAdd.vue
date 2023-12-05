@@ -23,16 +23,16 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="isUsedScientificrs" label="是否科研用" has-feedback>
-              <a-input
-                v-model:value="form.isUsedScientificrs"
-                :maxLength="10"
-                :auto-focus="true"
-                placeholder="请输入是否科研用"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="isUsedScientificrs" label="是否科研用" has-feedback>-->
+<!--              <a-input-->
+<!--                v-model:value="form.isUsedScientificrs"-->
+<!--                :maxLength="10"-->
+<!--                :auto-focus="true"-->
+<!--                placeholder="请输入是否科研用"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
@@ -49,6 +49,26 @@
                 type="deptSelect"
                 placeholder="请选择处置部门"
               />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="handleWay" label="处置方式">
+              <a-select
+                v-model:value="form.handleWay"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择处置方式"
+              >
+                <a-select-option
+                  v-for="item in handleWayList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
         </a-row>
@@ -75,15 +95,15 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="otherMatter" label="其他事项">
-              <a-input
-                v-model:value="form.otherMatter"
-                :maxLength="64"
-                placeholder="请输入其他事项"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item name="otherMatter" label="其他事项">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.otherMatter"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入其他事项"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyDeptId" label="申请部门" has-feedback>
               <AvicCommonSelect
@@ -99,6 +119,7 @@
                 v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择经办人"
+                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -113,11 +134,29 @@
             </a-form-item>
           </a-col>
         </a-row>
+        <a-form-item
+          label="附件"
+        >
+          <AvicUploader
+            element-id="1"
+            form-type="add"
+            ref="uploadFile"
+            :allow-download="true"
+            :allow-preview="true"
+            :allow-delete="true"
+            :allow-update-secret-level="true"
+            :form-id="form.id"
+            table-name="FAM_SCRAP"
+            @afterUpload="afterUploadEvent"
+          />
+        </a-form-item>
       </a-form>
-      <FamScrapListEdit ref="famScrapListEdit" />
+      <FamScrapListEdit ref="famScrapListEdit"/>
     </a-spin>
     <template #footer>
-      <a-button title="保存并启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">保存并启动流程</a-button>
+      <a-button title="保存" type="primary" :loading="loading" @click="addForm">保存</a-button>
+      <a-button title="保存并启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">保存并启动流程
+      </a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
@@ -125,6 +164,7 @@
 <script lang="ts" setup>
 import { useFamScrapForm, emits } from './ts/FamScrapForm'; // 引入表单ts
 import FamScrapListEdit from '@/views/avic/mms/fam/famscraplist/FamScrapListEdit.vue'; // 引入子表组件
+import dayjs from 'dayjs';
 
 const props = defineProps({
   formId: {
@@ -145,7 +185,13 @@ const props = defineProps({
     type: Function
   }
 });
+const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
+onMounted(() => {
+  form.value.applyDate = dayjs(new Date()).format('YYYY-MM-DD');
+  form.value.handlePersonId = proxy.$getLoginUser().id;
+  form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
+});
 const {
   form,
   formRef,
@@ -154,7 +200,11 @@ const {
   colLayout,
   loading,
   autoCode,
+  uploadFile,
+  addForm,
   closeModal,
+  afterUploadEvent,
+  handleWayList,
   saveAndStartProcess,
   famScrapListEdit
 } = useFamScrapForm({

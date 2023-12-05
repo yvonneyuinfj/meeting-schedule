@@ -88,22 +88,20 @@
             />
           </a-form-item>
         </a-col>
-      <a-col v-bind="colLayout.cols4">
-        <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
-          <AvicUploader
-            element-id="1"
-            ref="uploadFile"
-            label="上传附件"
-            :form-id="form.id"
-            :bpm-instance-object="props.bpmInstanceObject"
-            :form-secret-level="form.secretLevel"
-            :allow-download="true"
-            table-name="FAM_ASSET_TRANSFER"
-            @afterUpload="afterUploadEvent"
-          />
-        </a-form-item>
-      </a-col>
       </a-row>
+      <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
+        <AvicUploader
+          element-id="1"
+          ref="uploadFile"
+          label="上传附件"
+          :form-id="form.id"
+          :bpm-instance-object="props.bpmInstanceObject"
+          :form-secret-level="form.secretLevel"
+          :allow-download="true"
+          table-name="FAM_ASSET_TRANSFER"
+          @afterUpload="afterUploadEvent"
+        />
+      </a-form-item>
     </a-form>
     <FamAssetTransferListEdit
       v-if="fieldVisible('FAM_ASSET_TRANSFER_LIST')"

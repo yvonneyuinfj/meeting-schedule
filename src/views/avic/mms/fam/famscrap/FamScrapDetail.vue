@@ -21,15 +21,15 @@
               />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('isUsedScientificrs')">
-          <a-form-item name="isUsedScientificrs" label="是否科研用" :rules="fieldRequired('isUsedScientificrs')" has-feedback>
-            <a-input
-              v-model:value="form.isUsedScientificrs"
-              :auto-focus="true"
-              :disabled="fieldDisabled('isUsedScientificrs')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('isUsedScientificrs')">-->
+<!--          <a-form-item name="isUsedScientificrs" label="是否科研用" :rules="fieldRequired('isUsedScientificrs')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.isUsedScientificrs"-->
+<!--              :auto-focus="true"-->
+<!--              :disabled="fieldDisabled('isUsedScientificrs')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
           <a-form-item name="managerDeptId" label="主管部门" :rules="fieldRequired('managerDeptId')" has-feedback>
             <AvicCommonSelect
@@ -50,6 +50,26 @@
             />
           </a-form-item>
         </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handleWay')">
+          <a-form-item name="handleWay" label="处置方式" :rules="fieldRequired('handleWay')" has-feedback>
+            <a-select
+              v-model:value="form.handleWay"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              :disabled="fieldDisabled('handleWay')"
+            >
+              <a-select-option
+                v-for="item in handleWayList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
         </a-row>
         <a-row>
         <a-col v-bind="colLayout.cols3" v-if="fieldVisible('handleReason')">
@@ -65,14 +85,14 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('otherMatter')">
-          <a-form-item name="otherMatter" label="其他事项" :rules="fieldRequired('otherMatter')" has-feedback>
-            <a-input
-              v-model:value="form.otherMatter"
-              :disabled="fieldDisabled('otherMatter')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('otherMatter')">-->
+<!--          <a-form-item name="otherMatter" label="其他事项" :rules="fieldRequired('otherMatter')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.otherMatter"-->
+<!--              :disabled="fieldDisabled('otherMatter')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDeptId')">
           <a-form-item name="applyDeptId" label="申请部门" :rules="fieldRequired('applyDeptId')" has-feedback>
             <AvicCommonSelect
@@ -104,6 +124,19 @@
           </a-form-item>
         </a-col>
       </a-row>
+      <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
+        <AvicUploader
+          element-id="1"
+          ref="uploadFile"
+          label="上传附件"
+          :form-id="form.id"
+          :bpm-instance-object="props.bpmInstanceObject"
+          :form-secret-level="form.secretLevel"
+          :allow-download="true"
+          table-name="FAM_SCRAP"
+          @afterUpload="afterUploadEvent"
+        />
+      </a-form-item>
     </a-form>
     <FamScrapListEdit
       v-if="fieldVisible('FAM_SCRAP_LIST')"
@@ -167,7 +200,11 @@ const {
   famScrapListEdit,
   fieldVisible,
   fieldDisabled,
+  attachmentRequired,
+  afterUploadEvent,
+  uploadFile,
   fieldRequired,
+  handleWayList,
   saveForm,
   saveAndStartProcess,
   beforeClickBpmButtons,

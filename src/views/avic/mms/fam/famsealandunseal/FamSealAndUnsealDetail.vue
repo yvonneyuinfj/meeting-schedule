@@ -32,10 +32,22 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('sealingType')">
           <a-form-item name="sealingType" label="封存类型" :rules="fieldRequired('sealingType')" has-feedback>
-            <a-input
+            <a-select
               v-model:value="form.sealingType"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
               :disabled="fieldDisabled('sealingType')"
-            />
+            >
+              <a-select-option
+                v-for="item in sealingTypeList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('isAssetIntact')">
@@ -103,14 +115,6 @@
             <a-input
               v-model:value="form.applyReason"
               :disabled="fieldDisabled('applyReason')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('otherMatter')">
-          <a-form-item name="otherMatter" label="其他事项" :rules="fieldRequired('otherMatter')" has-feedback>
-            <a-input
-              v-model:value="form.otherMatter"
-              :disabled="fieldDisabled('otherMatter')"
             />
           </a-form-item>
         </a-col>
@@ -227,6 +231,7 @@ const {
   fieldVisible,
   fieldDisabled,
   fieldRequired,
+  sealingTypeList,
   saveForm,
   saveAndStartProcess,
   beforeClickBpmButtons,

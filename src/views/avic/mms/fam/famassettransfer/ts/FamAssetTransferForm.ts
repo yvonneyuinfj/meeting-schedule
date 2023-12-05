@@ -11,6 +11,7 @@ import {
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
+
 export const emits = ['reloadData', 'close'];
 export function useFamAssetTransferForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
@@ -31,7 +32,7 @@ export function useFamAssetTransferForm({ props: props, emit: emit }) {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout4; // 调用布局公共方法
+  const colLayout = proxy. $colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
   const autoCode = ref(null); // 自动编码ref
@@ -254,7 +255,7 @@ export function useFamAssetTransferForm({ props: props, emit: emit }) {
     }
   }
   /** 附件上传完之后的回调函数 */
-  function afterUploadEvent(successFile, errorFile) {
+  function afterUploadEvent(_successFile, errorFile) {
     if (errorFile.length > 0) {
       // 有附件保存失败的处理
       errorCallback();

@@ -608,7 +608,7 @@ const columns = [
   },
   {
     title: '预算组织',
-    dataIndex: 'budgetOrg',
+    dataIndex: 'budgetOrgAlias',
     ellipsis: true,
     sorter: true,
     minWidth: 120,

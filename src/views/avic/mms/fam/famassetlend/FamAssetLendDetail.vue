@@ -10,15 +10,15 @@
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyNo')">
           <a-form-item name="applyNo" label="申请单编号" :rules="fieldRequired('applyNo')" has-feedback>
-              <AvicAutoCode
-                v-model:value="form.applyNo"
-                ref="autoCode"
-                code-type="FAM_BILL_NO"
-                code-param="FAM_ASSET_LEND"
-                :allow-clear="true"
-                :disabled="fieldDisabled('applyNo')"
-                placeholder="请输入申请单编号"
-              />
+            <AvicAutoCode
+              v-model:value="form.applyNo"
+              ref="autoCode"
+              code-type="FAM_BILL_NO"
+              code-param="FAM_ASSET_LEND"
+              :allow-clear="true"
+              :disabled="fieldDisabled('applyNo')"
+              placeholder="请输入申请单编号"
+            />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('title')">
@@ -28,6 +28,26 @@
               :auto-focus="true"
               :disabled="fieldDisabled('title')"
             />
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('tranType')">
+          <a-form-item name="tranType" label="事务类型" :rules="fieldRequired('tranType')" has-feedback>
+            <a-select
+              v-model:value="form.tranType"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              :disabled="fieldDisabled('tranType')"
+            >
+              <a-select-option
+                v-for="item in tranTypeList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
@@ -106,14 +126,22 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('rent')">
-          <a-form-item name="rent" label="租金" :rules="fieldRequired('rent')" has-feedback>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('hireTerm')">
+          <a-form-item name="hireTerm" label="出借期限(单位年)" :rules="fieldRequired('hireTerm')" has-feedback>
             <a-input
-              v-model:value="form.rent"
-              :disabled="fieldDisabled('rent')"
+              v-model:value="form.hireTerm"
+              :disabled="fieldDisabled('hireTerm')"
             />
           </a-form-item>
         </a-col>
+        <!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('rent')">-->
+        <!--          <a-form-item name="rent" label="租金" :rules="fieldRequired('rent')" has-feedback>-->
+        <!--            <a-input-->
+        <!--              v-model:value="form.rent"-->
+        <!--              :disabled="fieldDisabled('rent')"-->
+        <!--            />-->
+        <!--          </a-form-item>-->
+        <!--        </a-col>-->
       </a-row>
     </a-form>
     <FamAssetLendListEdit
@@ -180,6 +208,7 @@ const {
   fieldDisabled,
   fieldRequired,
   saveForm,
+  tranTypeList,
   saveAndStartProcess,
   beforeClickBpmButtons,
   afterClickBpmButtons
