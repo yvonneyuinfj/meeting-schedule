@@ -33,7 +33,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
     maintCategory: [{ required: true, message: '维修类别不能为空', trigger: 'change' }],
     expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
-    managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
+    // managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
     managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
     isUsedScientificrs: [
       { required: true, message: '是否使用型号经费不能为空', trigger: 'change' }
