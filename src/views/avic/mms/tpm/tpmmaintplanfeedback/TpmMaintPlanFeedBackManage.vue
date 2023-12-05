@@ -7,27 +7,27 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划编号">
               <a-input
-                v-model:value="queryForm.billNo"
-                placeholder="请输入计划编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.billNo"
+                  placeholder="请输入计划编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="保养状态">
               <a-select
-                v-model:value="queryForm.maintenanceStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择保养状态"
+                  v-model:value="queryForm.maintenanceStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择保养状态"
               >
                 <a-select-option
-                  v-for="item in maintenanceStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in maintenanceStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -59,32 +59,32 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmMaintPlan"
-        table-key="tpmMaintPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmMaintPlan"
+          table-key="tpmMaintPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        :customRow="customRow"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          :customRow="customRow"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['tpmMaintPlan:save']"
-              title="保存"
-              type="primary"
-              :loading="saveLoading"
-              @click="handleSaveAll"
+                v-hasPermi="['tpmMaintPlan:save']"
+                title="保存"
+                type="primary"
+                :loading="saveLoading"
+                @click="handleSaveAll"
             >
               <template #icon>
                 <save-outlined/>
@@ -114,15 +114,15 @@
             </a>
           </template>
           <AvicRowEdit
-            v-if="column.dataIndex === 'completeDate'"
-            :record="record"
-            :column="column.dataIndex"
+              v-if="column.dataIndex === 'completeDate'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <a-date-picker
-                v-model:value="record.completeDate"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择完工日期"
+                  v-model:value="record.completeDate"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择完工日期"
               >
               </a-date-picker>
             </template>
@@ -643,6 +643,9 @@ const handleApproval = (rows, ids) => {
       okText: '确定',
       cancelText: '取消',
       onOk: () => {
+        for (let item of rows) {
+          item.operationType_ = 'update';
+        }
         saveTpmMaintPlan(rows).then(res => {
           if (res.success) {
             approvalLoading.value = true;
