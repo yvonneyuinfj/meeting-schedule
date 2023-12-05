@@ -367,7 +367,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   }
 
   /** 附件上传完之后的回调函数 */
-  function afterUploadEvent(successFile, errorFile) {
+  function afterUploadEvent(_successFile, errorFile) {
     if (errorFile.length > 0) {
       // 有附件保存失败的处理
       errorCallback();

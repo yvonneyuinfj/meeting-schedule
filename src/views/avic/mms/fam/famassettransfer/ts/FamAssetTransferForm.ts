@@ -10,7 +10,7 @@ import {
   getFieldDisabled,
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import upload from 'ant-design-vue/es/vc-upload/request';
+
 
 export const emits = ['reloadData', 'close'];
 export function useFamAssetTransferForm({ props: props, emit: emit }) {
@@ -255,7 +255,7 @@ export function useFamAssetTransferForm({ props: props, emit: emit }) {
     }
   }
   /** 附件上传完之后的回调函数 */
-  function afterUploadEvent(successFile, errorFile) {
+  function afterUploadEvent(_successFile, errorFile) {
     if (errorFile.length > 0) {
       // 有附件保存失败的处理
       errorCallback();

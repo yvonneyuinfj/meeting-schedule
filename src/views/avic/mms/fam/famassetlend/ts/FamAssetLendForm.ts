@@ -1,7 +1,6 @@
 import type { FamAssetLendDto } from '@/api/avic/mms/fam/FamAssetLendApi'; // 引入模块DTO
 import { getFamAssetLend, saveFamAssetLend, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamAssetLendApi'; // 引入模块API
 import {
-  default as flowUtils,
   startFlowByFormCode,
   closeFlowLoading,
   openFlowDetail,
@@ -72,7 +71,7 @@ export function useFamAssetLendForm({ props: props, emit: emit }) {
     }
   });
 
-  async function leaseTermValidator(rule, value) {
+  async function leaseTermValidator(_rule, value) {
     if (form.value.tranType === '1') {
       if (!value) {
         return Promise.reject(new Error('请输入租凭期限'));
@@ -82,7 +81,7 @@ export function useFamAssetLendForm({ props: props, emit: emit }) {
     }
   }
 
-  async function hireTermValidator(rule, value) {
+  async function hireTermValidator(_rule, value) {
     if (form.value.tranType === '2') {
       if (!value) {
         return Promise.reject(new Error('请输入出借期限'));
