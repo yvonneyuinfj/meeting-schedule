@@ -47,11 +47,11 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="申请人ID">
+                <a-form-item label="申请人">
                   <AvicCommonSelect
                     v-model:value="queryForm.applyPersonId"
                     type="userSelect"
-                    placeholder="请选择申请人ID"
+                    placeholder="请选择申请人"
                     :defaultShowValue="queryForm.applyPersonIdAlias"
                     @callback="
                       result => {
@@ -62,37 +62,17 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="申请人NAME">
-                  <a-input
-                    v-model:value="queryForm.applyPersonName"
-                    placeholder="请输入申请人NAME"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="主管部门ID">
+                <a-form-item label="主管部门">
                   <AvicCommonSelect
                     v-model:value="queryForm.applyDeptId"
                     type="deptSelect"
-                    placeholder="请选择主管部门ID"
+                    placeholder="请选择主管部门"
                     :defaultShowValue="queryForm.applyDeptIdAlias"
                     @callback="
                       result => {
                         queryForm.applyDeptIdAlias = result.names;
                       }
                     "
-                  />
-                </a-form-item>
-              </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="主管部门名称">
-                  <a-input
-                    v-model:value="queryForm.applyDeptName"
-                    placeholder="请输入主管部门名称"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
                   />
                 </a-form-item>
               </a-col>
@@ -330,7 +310,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '申请人ID',
+    title: '申请人',
     dataIndex: 'applyPersonIdAlias',
     ellipsis: true,
     minWidth: 120,
@@ -338,27 +318,9 @@ const columns = [
     align: 'left'
   },
   {
-    title: '申请人NAME',
-    dataIndex: 'applyPersonName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '主管部门ID',
+    title: '主管部门',
     dataIndex: 'applyDeptIdAlias',
     ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '主管部门名称',
-    dataIndex: 'applyDeptName',
-    ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -605,4 +567,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

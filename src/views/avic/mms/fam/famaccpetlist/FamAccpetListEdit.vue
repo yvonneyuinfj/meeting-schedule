@@ -1003,7 +1003,6 @@ const lookupParams = [
   { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' }
 ];
 const validateRules = {
-  isNewAsset: [{ required: true, message: '是否新增资产列不能为空' }],
   assetClass: [{ required: true, message: '资产类别列不能为空' }],
   equipNo: [{ required: true, message: '设备编号列不能为空' }],
   equipClass: [{ required: props.isLand, message: '设备大类列不能为空' }],

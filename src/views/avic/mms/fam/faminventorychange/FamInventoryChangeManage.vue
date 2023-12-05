@@ -864,7 +864,7 @@ const columns = [
   },
   {
     title: '申请时间',
-    dataIndex: 'creationDate',
+    dataIndex: 'creationDateName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
