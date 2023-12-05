@@ -5,19 +5,24 @@
       :model="form"
       v-bind="layout"
       class="form-excel-style"
-     >
+    >
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billNo')">
           <a-form-item name="billNo" label="单据号" :rules="fieldRequired('billNo')" has-feedback>
-              <AvicAutoCode
-                v-model:value="form.billNo"
-                ref="autoCode"
-                code-type="FAILURE_BILL_NO"
-                code-param="TPM_FAILURE_WAREHOUSE"
-                :allow-clear="true"
-                :disabled="fieldDisabled('billNo')"
-                placeholder="请输入单据号"
-              />
+            <!--            <AvicAutoCode-->
+            <!--              v-model:value="form.billNo"-->
+            <!--              ref="autoCode"-->
+            <!--              code-type="FAILURE_BILL_NO"-->
+            <!--              code-param="TPM_FAILURE_WAREHOUSE"-->
+            <!--              :allow-clear="true"-->
+            <!--              :disabled="fieldDisabled('billNo')"-->
+            <!--              placeholder="请输入单据号"-->
+            <!--            />-->
+            <a-input
+              v-model:value="form.billNo"
+              :auto-focus="true"
+              :disabled="fieldDisabled('billNo')"
+            />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('equipmentCode')">
@@ -139,7 +144,8 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('failureWarehouseType')">
-          <a-form-item name="failureWarehouseType" label="故障库类型" :rules="fieldRequired('failureWarehouseType')" has-feedback>
+          <a-form-item name="failureWarehouseType" label="故障库类型" :rules="fieldRequired('failureWarehouseType')"
+                       has-feedback>
             <a-select
               v-model:value="form.failureWarehouseType"
               :get-popup-container="triggerNode => triggerNode.parentNode"
@@ -178,35 +184,35 @@
             </a-select>
           </a-form-item>
         </a-col>
-        </a-row>
-        <a-row>
+      </a-row>
+      <a-row>
         <a-col v-bind="colLayout.cols3" v-if="fieldVisible('faultContent')">
           <a-form-item name="faultContent" label="故障现象及原因" :rules="fieldRequired('faultContent')" has-feedback>
-            <a-textarea v-model:value="form.faultContent" :rows="2" :disabled="fieldDisabled('faultContent')" />
+            <a-textarea v-model:value="form.faultContent" :rows="2" :disabled="fieldDisabled('faultContent')"/>
           </a-form-item>
         </a-col>
-        </a-row>
-        <a-row>
+      </a-row>
+      <a-row>
         <a-col v-bind="colLayout.cols3" v-if="fieldVisible('repairContent')">
           <a-form-item name="repairContent" label="维修内容" :rules="fieldRequired('repairContent')" has-feedback>
-            <a-textarea v-model:value="form.repairContent" :rows="2" :disabled="fieldDisabled('repairContent')" />
+            <a-textarea v-model:value="form.repairContent" :rows="2" :disabled="fieldDisabled('repairContent')"/>
           </a-form-item>
         </a-col>
-      <a-col v-bind="colLayout.cols3">
-        <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
-          <AvicUploader
-            element-id="1"
-            ref="uploadFile"
-            label="上传附件"
-            :form-id="form.id"
-            :bpm-instance-object="props.bpmInstanceObject"
-            :form-secret-level="form.secretLevel"
-            :allow-download="true"
-            table-name="TPM_FAILURE_WAREHOUSE"
-            @afterUpload="afterUploadEvent"
-          />
-        </a-form-item>
-      </a-col>
+        <a-col v-bind="colLayout.cols3">
+          <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
+            <AvicUploader
+              element-id="1"
+              ref="uploadFile"
+              label="上传附件"
+              :form-id="form.id"
+              :bpm-instance-object="props.bpmInstanceObject"
+              :form-secret-level="form.secretLevel"
+              :allow-download="true"
+              table-name="TPM_FAILURE_WAREHOUSE"
+              @afterUpload="afterUploadEvent"
+            />
+          </a-form-item>
+        </a-col>
       </a-row>
     </a-form>
   </div>
