@@ -1549,7 +1549,8 @@ watch(
   newV => {
     reportDate.value = dayjs(newV);
     getTable();
-  }
+  },
+  { immediate: true }
 );
 </script>
 

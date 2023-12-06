@@ -444,5 +444,6 @@ watch(
       totalPage.value = 0;
     }
   },
+  { immediate: true }
 );
 </script>

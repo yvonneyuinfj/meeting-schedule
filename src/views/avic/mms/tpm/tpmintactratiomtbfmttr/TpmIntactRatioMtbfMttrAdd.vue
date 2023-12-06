@@ -178,6 +178,7 @@ watch(
   () => form.value.reportDate,
   newV => {
     reportDate.value = newV;
-  }
+  },
+  { immediate: true }
 );
 </script>
