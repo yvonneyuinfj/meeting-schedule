@@ -158,7 +158,7 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
                             });
                     })
                     .catch(error => {
-                        proxy.$message.warning(error);
+                        proxy.$message.warning(error.message);
                         loading.value = false;
                     });
             })
