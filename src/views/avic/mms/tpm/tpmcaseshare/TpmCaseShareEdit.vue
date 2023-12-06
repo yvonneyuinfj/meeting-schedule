@@ -56,7 +56,7 @@
 
           <a-col v-bind="colLayout.cols3">
             <a-form-item label="附件">
-              <AvicUploader element-id="1" form-type="edit" ref="uploadFile" :allow-download="true" :allow-preview="true"
+              <AvicUploader element-id="1" form-type="edit" ref="uploadFile" :allow-download="true" :allow-preview="true" :file-size-limit="500"
                 :allow-delete="true" :allow-update-secret-level="true" :form-id="form.id"
                 :form-secret-level="form.secretLevel" table-name="TPM_CASE_SHARE" @afterUpload="afterUploadEvent" />
             </a-form-item>
