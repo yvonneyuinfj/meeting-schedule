@@ -47,7 +47,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+<!--          <a-col v-bind="colLayout.cols">
             <a-form-item name="parentAssetClassName" label="上级资产类别名称" has-feedback>
               <a-input
                 v-model:value="form.parentAssetClassName"
@@ -64,7 +64,7 @@
                 placeholder="请输入上级资产类别编码"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="parentId" label="父级分类">
               <AvicTreeSelect

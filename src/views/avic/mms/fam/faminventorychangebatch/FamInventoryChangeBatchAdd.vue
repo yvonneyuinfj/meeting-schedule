@@ -24,20 +24,20 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyPersonId" label="申请人ID">
+            <a-form-item name="applyPersonId" label="申请人">
               <AvicCommonSelect
                 v-model:value="form.applyPersonId"
                 type="userSelect"
-                placeholder="请选择申请人ID"
+                placeholder="请选择申请人"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyDeptId" label="主管部门ID">
+            <a-form-item name="applyDeptId" label="主管部门">
               <AvicCommonSelect
                 v-model:value="form.applyDeptId"
                 type="deptSelect"
-                placeholder="请选择主管部门ID"
+                placeholder="请选择主管部门"
               />
             </a-form-item>
           </a-col>
