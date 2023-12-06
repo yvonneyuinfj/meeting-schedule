@@ -3,25 +3,25 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          v-if="showTable"
-          ref="tpmIntactRatioMtbfMttrL"
-          table-key="tpmIntactRatioMtbfMttrL"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="record => {
-            return {
-              Click: () => {
-                handleRowSelection(record);
-              }
+        v-if="showTable"
+        ref="tpmIntactRatioMtbfMttrL"
+        table-key="tpmIntactRatioMtbfMttrL"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="record => {
+          return {
+            onClick: () => {
+              handleRowSelection(record);
             }
-          }
-            "
-          @change="handleTableChange"
-          @refresh="getList"
+          };
+        }
+          "
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <!-- <template #toolBarLeft>
           <a-space>
@@ -41,11 +41,11 @@
         </template> -->
         <template #toolBarRight>
           <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+            class="opt-btn-commonsearch"
+            style="width: 200px"
+            placeholder="请输入"
+            :allow-clear="true"
+            @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">

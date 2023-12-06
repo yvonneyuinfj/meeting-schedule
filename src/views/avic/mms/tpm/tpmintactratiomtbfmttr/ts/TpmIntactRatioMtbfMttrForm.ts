@@ -152,12 +152,13 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
                                     loading.value = false;
                                 }
                             })
-                            .catch(() => {
+                            .catch((error) => {
+                                proxy.$message.warning(error.message);
                                 loading.value = false;
                             });
                     })
                     .catch(error => {
-                        console.log('error', error);
+                        proxy.$message.warning(error);
                         loading.value = false;
                     });
             })
@@ -193,7 +194,7 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
                         });
                     })
                     .catch(error => {
-                        console.log('error', error);
+                        proxy.$message.warning(error);
                     });
             })
             .catch(error => {
@@ -245,7 +246,8 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
                         errorCallback();
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
+                    proxy.$message.warning(error.message);
                     errorCallback();
                 });
         }

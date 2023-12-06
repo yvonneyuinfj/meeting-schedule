@@ -3,84 +3,25 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable ref="tpmOeeL" table-key="tpmOeeL" :columns="columns" :row-key="record => record.id"
-                 :data-source="list" :loading="loading" :row-selection="{
-                   selectedRowKeys: selectedRowKeys,
-                   onChange: onSelectChange,
-                   columnWidth: 40,
-                   fixed: true
-                 }" :customRow="record => {
-  return {
-    onClick: () => {
-      handleRowSelection(record);
-    }
-  };
-}
-  " :pageParameter="queryParam.pageParameter" :total="totalPage" @change="handleTableChange" @refresh="getList">
-        <template #toolBarLeft>
-          <a-space>
-            <a-button v-hasPermi="['tpmOeeL:add']" title="添加" type="primary" @click="handleAdd">
-              <template #icon>
-                <plus-outlined/>
-              </template>
-              添加
-            </a-button>
-            <a-button v-hasPermi="['tpmOeeL:del']" title="删除" danger
-                      :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
-                      @click="handleDelete(selectedRowKeys, '')">
-              <template #icon>
-                <delete-outlined/>
-              </template>
-              删除
-            </a-button>
-            <a-button v-hasPermi="['tpmOeeL:import']" title="导入" type="primary" ghost
-                      @click="handleImport">
-              <template #icon>
-                <import-outlined/>
-              </template>
-              导入
-            </a-button>
-            <!-- <a-button v-hasPermi="['tpmOeeL:export']" title="导出" type="primary" ghost @click="handleExport">
-  <template #icon>
-    <export-outlined />
-  </template>
-  导出
-</a-button> -->
-          </a-space>
-        </template>
+                 :data-source="list" :loading="loading" :customRow="record => {
+                   return {
+                     onClick: () => {
+                       handleRowSelection(record);
+                     }
+                   };
+                 }
+                   " :pageParameter="queryParam.pageParameter" :total="totalPage" @change="handleTableChange" @refresh="getList">
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'action'">
-            <a-button type="link" class="inner-btn" @click.stop="handleEdit(record.id)">
-              编辑
-            </a-button>
-            <a-button v-hasPermi="['tpmOeeL:del']" type="link" class="inner-btn"
-                      @click.stop="handleDelete([record.id], 'row')">
-              删除
-            </a-button>
-          </template>
         </template>
       </AvicTable>
     </div>
-    <!-- 添加页面弹窗 -->
-    <tpm-oee-l-add v-if="showAddModal" ref="addModal" :mainId="mainId" :reportDate="props.reportDate"
-                   @reloadData="getList"
-                   @close="showAddModal = false"/>
-    <!-- 编辑页面弹窗 -->
-    <tpm-oee-l-edit v-if="showEditModal" ref="editModal" :mainId="mainId" :reportDate="props.reportDate"
-                    :form-id="formId" @reloadData="getList"
-                    @close="showEditModal = false"/>
-    <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="单表模板导入"
-                     importUrl="/mms/tpm/tpmoeels/importData/v1"
-                     downloadTemplateUrl="/mms/tpm/tpmoeels/downloadTemplate/v1"
-                     @reloadData="getList" @close="showImportModal = false"/>
   </div>
 </template>
 <script lang="ts" setup>
-import { listTpmOeeLByPage, delTpmOeeL } from '@/api/avic/mms/tpm/TpmOeeLApi'; // 引入模块API
-import TpmOeeLAdd from './TpmOeeLAdd.vue'; // 引入添加页面组件
-import TpmOeeLEdit from './TpmOeeLEdit.vue'; // 引入编辑页面组件
+import { listTpmOeeLByPage } from '@/api/avic/mms/tpm/TpmOeeLApi'; // 引入模块API
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
@@ -261,13 +202,6 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    width: 120,
-    fixed: 'right'
   }
 ];
 const queryParam = reactive({
@@ -283,16 +217,10 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const showAddModal = ref(false); // 是否展示添加弹窗
-const showEditModal = ref(false); // 是否展示编辑弹窗
-const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'tpmOeeL', tpmOeeId: '' });
 const list = ref([]); // 表格数据集合
-const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
-const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 
@@ -315,8 +243,7 @@ function getList() {
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
     })
-    .catch((error) => {
-      proxy.$message.warning(error.message);
+    .catch(() => {
       list.value = [];
       totalPage.value = 0;
       loading.value = false;
@@ -328,83 +255,6 @@ function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
-}
-
-/** 添加 */
-function handleAdd() {
-  if (props.mainId == '') {
-    proxy.$message.warning('请选择一条主数据');
-    return;
-  }
-  showAddModal.value = true;
-}
-
-/** 编辑 */
-function handleEdit(id) {
-  formId.value = id;
-  showEditModal.value = true;
-}
-
-/* 子表删除 */
-function handleDelete(ids, type) {
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      delTpmOeeL(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch((error) => {
-          proxy.$message.warning(error.message);
-          delLoading.value = false;
-        });
-    }
-  });
-}
-
-/** 导入 */
-function handleImport() {
-  if (props.mainId == '') {
-    proxy.$message.warning('请选择一条主数据');
-    return;
-  }
-  excelParams.value.tpmOeeId = props.mainId;
-  showImportModal.value = true;
-}
-
-/** 导出 */
-// function handleExport() {
-//     proxy.$confirm({
-//         title: '确认导出数据吗?',
-//         okText: '确定',
-//         cancelText: '取消',
-//         onOk: () => {
-//             loading.value = true;
-//             exportExcel(queryParam).then(() => {
-//                 loading.value = false;
-//                 proxy.$message.info('导出成功！');
-//             });
-//         }
-//     });
-// }
-/** 勾选复选框时触发 */
-function onSelectChange(rowKeys, rows) {
-  selectedRowKeys.value = rowKeys;
-  selectedRows.value = rows;
 }
 
 /** 表头排序 */
@@ -435,7 +285,6 @@ watch(
   () => props.mainId,
   newVal => {
     if (newVal) {
-      console.log(props.reportDate)
       getList(); // 查询表格数据
     } else {
       selectedRowKeys.value = []; // 清空选中
@@ -444,5 +293,6 @@ watch(
       totalPage.value = 0;
     }
   },
+  { immediate: true }
 );
 </script>

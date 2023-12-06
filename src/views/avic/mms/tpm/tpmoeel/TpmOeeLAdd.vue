@@ -5,7 +5,8 @@
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetsCode" label="资产编号" has-feedback>
-              <a-input v-model:value="form.assetsCode" :maxLength="64" :auto-focus="true" placeholder="请输入资产编号"
+              <a-input v-model:value="form.assetsCode" :maxLength="64" :auto-focus="true"
+                       placeholder="请输入资产编号"
                        :disabled="true"/>
             </a-form-item>
           </a-col>
@@ -24,71 +25,77 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="testMission" label="试验任务/件号" has-feedback>
-              <a-input v-model:value="form.testMission" :maxLength="64" placeholder="请输入试验任务/件号"/>
+              <a-input v-model:value="form.testMission" :maxLength="64"
+                       placeholder="请输入试验任务/件号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="theoreticalExperimentTime" label="理论试验/加工时间">
-              <a-input v-model:value="form.theoreticalExperimentTime" :maxLength="16"
-                       placeholder="请输入理论试验/加工时间"/>
+              <a-input-number v-model:value="form.theoreticalExperimentTime" :maxLength="16"
+                              min="0" placeholder="请输入理论试验/加工时间"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="totalTime" label="总时间（h）" has-feedback>
-              <a-input v-model:value="form.totalTime" :maxLength="16" placeholder="请输入总时间（h）"
-                       @change="calculateOEE"/>
+              <a-input-number v-model:value="form.totalTime" :maxLength="16" placeholder="请输入总时间（h）"
+                              min="0" @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="planStopDurationTime" label="计划停机时间（h）" has-feedback>
-              <a-input v-model:value="form.planStopDurationTime" :maxLength="16" placeholder="请输入计划停机时间（h）"
-                       @change="calculateOEE"/>
+              <a-input-number v-model:value="form.planStopDurationTime" :maxLength="16"
+                              placeholder="请输入计划停机时间（h）" min="0"
+                              @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="workDurationTime" label="开动时间（h）" has-feedback>
-              <a-input v-model:value="form.workDurationTime" :maxLength="16" placeholder="请输入开动时间（h）"
-                       @change="calculateTestSuccessRateOrQualifiedProductRate"/>
+              <a-input-number v-model:value="form.workDurationTime" :maxLength="16"
+                              placeholder="请输入开动时间（h）" min="0"
+                              @change="calculateTestSuccessRateOrQualifiedProductRate"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="freeTime" label="空闲待工时间（h）" has-feedback>
-              <a-input v-model:value="form.freeTime" :maxLength="16" placeholder="请输入空闲待工时间（h）"
-                       @change="calculateOEE"/>
+              <a-input-number v-model:value="form.freeTime" :maxLength="16" placeholder="请输入空闲待工时间（h）"
+                              min="0" @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="adjustTime" label="准备调整时间（h）" has-feedback>
-              <a-input v-model:value="form.adjustTime" :maxLength="16" placeholder="请输入准备调整时间（h）"
-                       @change="calculateOEE"/>
+              <a-input-number v-model:value="form.adjustTime" :maxLength="16" placeholder="请输入准备调整时间（h）"
+                              min="0" @change="calculateOEE"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="stopDurationTime" label="故障停机时间（h）" has-feedback>
-              <a-input v-model:value="form.stopDurationTime" :maxLength="16" placeholder="请输入故障停机时间（h）"
-                       @change="calculateTestSuccessRateOrQualifiedProductRate"/>
+              <a-input-number v-model:value="form.stopDurationTime" :maxLength="16"
+                              placeholder="请输入故障停机时间（h）" min="0"
+                              @change="calculateTestSuccessRateOrQualifiedProductRate"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="stopDurationNumber" label="故障停机次数" has-feedback>
-              <a-input v-model:value="form.stopDurationNumber" :maxLength="16" placeholder="请输入故障停机次数"/>
+              <a-input-number v-model:value="form.stopDurationNumber" :maxLength="16"
+                              min="0" placeholder="请输入故障停机次数"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="mtbf" label="平均故障间隔时间MTBF(h)" has-feedback>
-              <a-input v-model:value="form.mtbf" :maxLength="16" placeholder="请输入平均故障间隔时间MTBF(h)"
-                       :disabled="true"/>
+              <a-input-number v-model:value="form.mtbf" :maxLength="16"
+                              min="0" placeholder="请输入平均故障间隔时间MTBF(h)"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="mttr" label="平均故障停机时间MTTR(h)" has-feedback>
-              <a-input v-model:value="form.mttr" :maxLength="16" placeholder="请输入平均故障停机时间MTTR(h)"
-                       :disabled="true"/>
+              <a-input-number v-model:value="form.mttr" :maxLength="16"
+                              min="0" placeholder="请输入平均故障停机时间MTTR(h)"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="passRate" label="试验成功率/合格品率" has-feedback>
-              <a-input v-model:value="form.passRate" :maxLength="16" placeholder="请输入试验成功率/合格品率"
+              <a-input v-model:value="form.passRate" :maxLength="16"
+                       placeholder="请输入试验成功率/合格品率"
                        :disabled="true"/>
             </a-form-item>
           </a-col>
@@ -104,9 +111,12 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="密级" has-feedback>
-              <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                        option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级">
-                <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
+              <a-select v-model:value="form.secretLevel"
+                        :get-popup-container="triggerNode => triggerNode.parentNode"
+                        option-filter-prop="children" :show-search="true" :allow-clear="true"
+                        placeholder="请选择密级">
+                <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId"
+                                 :value="item.lookupCode">
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
@@ -131,9 +141,10 @@
 <script lang="ts" setup>
 import { useTpmOeeLForm, emits } from './ts/TpmOeeLForm'; // 引入表单ts
 import TpmInventoryOeeLSelect from './TpmInventorySelect.vue'; // 引入弹窗选择页
-import { TpmIntactRatioMtbfMttrLDto, getSpecifyYearList } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi'; // 引入模块API
+import type { TpmIntactRatioMtbfMttrLDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi';
+import { getSpecifyYearList } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi'; // 引入模块API
 import { useUserStore } from '@/store/user';
-import { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi';
+import type { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi';
 import dayjs from 'dayjs';
 
 const props = defineProps({
@@ -178,7 +189,7 @@ const {
 function calculateTestSuccessRateOrQualifiedProductRate() {
   const workDurationTime = parseFloat(form.value.workDurationTime);
   const stopDurationTime = parseFloat(form.value.stopDurationTime);
-  if (workDurationTime <= 0 || stopDurationTime <= 0) {
+  if (workDurationTime < 0 || stopDurationTime < 0) {
     return false;
   }
   const passRate = (workDurationTime - stopDurationTime) / workDurationTime * 100;
@@ -203,7 +214,7 @@ function calculateOEE() {
   // 准备调整时间
   const adjustTime = parseFloat(form.value.adjustTime);
 
-  if (workDurationTime <= 0 || stopDurationTime <= 0 || totalTime < 0 || planStopDurationTime < 0 || freeTime < 0 || adjustTime < 0) {
+  if (workDurationTime < 0 || stopDurationTime < 0 || totalTime < 0 || planStopDurationTime < 0 || freeTime < 0 || adjustTime < 0) {
     return false;
   }
   const OEE = ((workDurationTime - stopDurationTime) / workDurationTime) * workDurationTime / (totalTime - planStopDurationTime - freeTime - adjustTime) * 100;
@@ -250,29 +261,30 @@ function calculateMTBFOrMTTR() {
   const postSubForm = proxy.$lodash.cloneDeep(subForm.value);
 
   getSpecifyYearList(postForm, postSubForm)
-      .then(res => {
-        if (res.success) {
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
-            repairTime = repairTime + parseFloat(element.repairTime);
-            equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
-            failureNumber = failureNumber + parseFloat(element.failureNumber);
-          }
-
-          mtbf = equipmentRunTime / failureNumber;
-          mttr = repairTime / failureNumber;
-
-          if (!isNaN(mtbf)) {
-            form.value.mtbf = mtbf.toFixed(1).toString();
-          }
-
-          if (!isNaN(mttr)) {
-            form.value.mttr = mttr.toFixed(1).toString();
-          }
+    .then(res => {
+      if (res.success) {
+        for (let index = 0; index < res.data.length; index++) {
+          const element = res.data[index];
+          repairTime = repairTime + parseFloat(element.repairTime);
+          equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
+          failureNumber = failureNumber + parseFloat(element.failureNumber);
         }
-      })
-      .catch(() => {
-      });
+
+        mtbf = equipmentRunTime / failureNumber;
+        mttr = repairTime / failureNumber;
+
+        if (!isNaN(mtbf)) {
+          form.value.mtbf = mtbf.toFixed(1).toString();
+        }
+
+        if (!isNaN(mttr)) {
+          form.value.mttr = mttr.toFixed(1).toString();
+        }
+      }
+    })
+    .catch((error) => {
+      proxy.$message.warning(error.message);
+    });
 }
 </script>
 

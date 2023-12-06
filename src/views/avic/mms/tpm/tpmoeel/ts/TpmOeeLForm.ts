@@ -3,9 +3,9 @@ import { getTpmOeeL, saveTpmOeeL } from '@/api/avic/mms/tpm/TpmOeeLApi'; // å¼•å
 export const emits = ['reloadData', 'close'];
 
 export function useTpmOeeLForm({
-                                   props: props,
-                                   emit: emit
-                               }) {
+    props: props,
+    emit: emit
+}) {
     const { proxy } = getCurrentInstance();
     const form = ref<TpmOeeLDto>({});
     const formRef = ref(null);

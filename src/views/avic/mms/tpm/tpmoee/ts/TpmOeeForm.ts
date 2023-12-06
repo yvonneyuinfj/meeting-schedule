@@ -6,9 +6,9 @@ import { useUserStore } from '@/store/user';
 export const emits = ['reloadData', 'close'];
 
 export function useTpmOeeForm({
-                                  props: props,
-                                  emit: emit
-                              }) {
+    props: props,
+    emit: emit
+}) {
     const { proxy } = getCurrentInstance();
     const form = ref<TpmOeeDto>({});
     const formRef = ref(null);
@@ -71,8 +71,8 @@ export function useTpmOeeForm({
                     form.value.reportDate = dayjs(reportDate).format('YYYY-MM');
                 }
             })
-            .catch(() => {
-                proxy.$message.warning('获取表单数据失败！');
+            .catch((error) => {
+                proxy.$message.warning(error.message);
                 loading.value = false;
             });
     }

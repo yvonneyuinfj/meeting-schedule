@@ -44,13 +44,20 @@
           </a-col>
         </a-row>
         <a-row>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="note" label="备注">
-              <a-input v-model:value="form.note" :disabled="true"/>
+          <a-col v-bind="colLayout.cols2">
+            <a-form-item
+                name="note"
+                label="备注"
+            >
+              <a-textarea
+                  v-model:value="form.note"
+                  :rows="2"
+                  :maxLength="512"
+                  placeholder="请输入备注"
+                  :disabled="true"
+              />
             </a-form-item>
           </a-col>
-        </a-row>
-        <a-row>
         </a-row>
       </a-form>
     </a-spin>

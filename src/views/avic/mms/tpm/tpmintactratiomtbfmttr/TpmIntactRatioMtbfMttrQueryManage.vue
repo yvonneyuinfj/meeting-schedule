@@ -93,42 +93,6 @@
             <template #toolBarLeft>
               <a-space>
                 <a-button
-                    v-hasPermi="['tpmIntactRatioMtbfMttr:add']"
-                    title="添加"
-                    type="primary"
-                    @click="handleAdd"
-                >
-                  <template #icon>
-                    <plus-outlined/>
-                  </template>
-                  添加
-                </a-button>
-                <a-button
-                    v-hasPermi="['tpmIntactRatioMtbfMttr:edit']"
-                    title="编辑"
-                    type="primary"
-                    ghost
-                    @click="handleEdit"
-                >
-                  <template #icon>
-                    <edit-outlined/>
-                  </template>
-                  编辑
-                </a-button>
-                <a-button
-                    v-hasPermi="['tpmIntactRatioMtbfMttr:del']"
-                    title="删除"
-                    danger
-                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                    :loading="delLoading"
-                    @click="handleDelete(selectedRows, selectedRowKeys)"
-                >
-                  <template #icon>
-                    <delete-outlined/>
-                  </template>
-                  删除
-                </a-button>
-                <a-button
                     v-hasPermi="['tpmIntactRatioMtbfMttr:export']"
                     title="导出"
                     type="primary"
@@ -166,54 +130,18 @@
                 }}
               </template>
               <template v-else-if="column.dataIndex === 'reportDate'">
-                <template v-if="record.bpmState !== null">
-                  <a @click="handleFlowDetail(record)">
-                    {{ dayjs(record.reportDate).format('YYYY-MM') }}
-                  </a>
-                </template>
-                <template v-else>
-                  {{ dayjs(record.reportDate).format('YYYY-MM') }}
-                </template>
+                {{ dayjs(record.reportDate).format('YYYY-MM') }}
               </template>
             </template>
           </AvicTable>
         </div>
       </div>
-      <!-- 添加页面弹窗 -->
-      <TpmIntactRatioMtbfMttrAdd
-          v-if="showAddModal"
-          ref="addModal"
-          :readOnly="readOnly"
-          :startLoading="startLoading"
-          :saveLoading="saveLoading"
-          :bpmOperatorRefresh="getList"
-          @reloadData="getList"
-          @close="showAddModal = false"
-      />
-      <!-- 编辑页面弹窗 -->
-      <TpmIntactRatioMtbfMttrEdit
-          v-if="showEditModal"
-          ref="editModal"
-          :form-id="formId"
-          :readOnly="readOnly"
-          :startLoading="startLoading"
-          :saveLoading="saveLoading"
-          @reloadData="getList"
-          @close="showEditModal = false"
-      />
-      <!-- 详情页面弹窗 -->
-      <TpmIntactRatioMtbfMttrDetail
-          v-if="showDetailModal"
-          ref="detailModal"
-          :form-id="formId"
-          @close="showDetailModal = false"
-      />
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
-      <TpmIntactRatioMtbfMttrLManage
-          key="tpmIntactRatioMtbfMttrLManage"
-          ref="tpmIntactRatioMtbfMttrLManage"
+      <TpmIntactRatioMtbfMttrLQueryManage
+          key="tpmIntactRatioMtbfMttrLQueryManage"
+          ref="tpmIntactRatioMtbfMttrLQueryManage"
           :mainId="mainId"
           :reportDate="reportDate"
       />
@@ -224,16 +152,10 @@
 import type { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi'; // 引入模块DTO
 import {
   listTpmIntactRatioMtbfMttrByPage,
-  delTpmIntactRatioMtbfMttr,
   exportExcel
 } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi'; // 引入模块API
-import TpmIntactRatioMtbfMttrAdd from './TpmIntactRatioMtbfMttrAdd.vue'; // 引入添加页面组件
-import TpmIntactRatioMtbfMttrEdit from './TpmIntactRatioMtbfMttrEdit.vue'; // 引入编辑页面组件
-import TpmIntactRatioMtbfMttrDetail from './TpmIntactRatioMtbfMttrDetail.vue'; // 引入详情页面组件
-import TpmIntactRatioMtbfMttrLManage from '../tpmintactratiomtbfmttrl/TpmIntactRatioMtbfMttrLManage.vue'; // 引入子表页面组件
-import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import TpmIntactRatioMtbfMttrLQueryManage from '../tpmintactratiomtbfmttrl/TpmIntactRatioMtbfMttrLQueryManage.vue'; // 引入子表页面组件
 import dayjs from 'dayjs';
-import { useUserStore } from '@/store/user';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -321,11 +243,9 @@ const columns = [
     fixed: 'right'
   }
 ];
-const userStore = useUserStore();
 const queryForm = ref<TpmIntactRatioMtbfMttrDto>({
   bpmState: 'all',
-  bpmType: 'all',
-  reportDeptId: userStore.userInfo.deptId
+  bpmType: 'all'
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数
@@ -340,23 +260,15 @@ const queryParam = reactive({
   sidx: 'applyDate', // 排序字段
   sord: 'desc' // 排序方式: desc降序 asc升序
 });
-const showAddModal = ref(false); // 是否展示添加弹窗
-const showEditModal = ref(false); // 是否展示编辑弹窗
-const showDetailModal = ref(false); // 是否展示详情弹窗
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); //表格数据集合
-const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); //选中数据主键集合
 const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
-const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
-const readOnly = ref(false);
-const startLoading = ref(false);
-const saveLoading = ref(false);
 const reportDate = computed(() => {
   return selectedRows.value.length === 1 ? selectedRows.value[0].reportDate : ''; // 主表传入子表的申报月份
 });
@@ -440,51 +352,6 @@ function handleKeyWordQuery(value) {
   getList();
 }
 
-/** 添加 */
-function handleAdd() {
-  readOnly.value = false;
-  startLoading.value = true;
-  saveLoading.value = true;
-  showAddModal.value = true;
-}
-
-/** 编辑 */
-function handleEdit() {
-  if (selectedRows.value.length !== 1) {
-    proxy.$message.warning('请选择一条要编辑的数据！');
-    return;
-  }
-  if (selectedRows.value[0].applyUserId !== userStore.userInfo.id) {
-    proxy.$message.warning('只有自己的数据才可以编辑！');
-    return;
-  }
-  if (selectedRows.value[0].bpmState === 'start') {
-    readOnly.value = false;
-    startLoading.value = false;
-    saveLoading.value = true;
-  } else if (selectedRows.value[0].bpmState == null) {
-    readOnly.value = false;
-    startLoading.value = true;
-    saveLoading.value = true;
-  } else {
-    readOnly.value = true;
-    startLoading.value = false;
-    saveLoading.value = false;
-  }
-  formId.value = selectedRows.value[0].id;
-  showEditModal.value = true;
-}
-
-/** 打开流程详情页面 */
-function handleFlowDetail(record) {
-  if (record.id) {
-    flowUtils.detailByOptions({
-      formId: record.id,
-      bpmOperatorRefresh: getList
-    });
-  }
-}
-
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -513,44 +380,6 @@ function handleExport() {
       });
       post.searchParams.bpmState = bpmState.value;
       post.searchParams.bpmType = bpmType.value;
-    }
-  });
-}
-
-/** 删除 */
-function handleDelete(rows, ids) {
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  if (rows.filter(row => row.applyUserId !== userStore.userInfo.id)?.length > 0) {
-    proxy.$message.warning('只有自己的数据才可以删除！');
-    return;
-  }
-  if (rows.filter(row => row.bpmState !== 'start' && row.bpmState !== null)?.length > 0) {
-    proxy.$message.warning('只有拟稿中和未提交的数据才可以删除！');
-    return;
-  }
-  proxy.$confirm({
-    title: '确定删除已选数据及关联的子表数据吗？',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      delTpmIntactRatioMtbfMttr(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
     }
   });
 }

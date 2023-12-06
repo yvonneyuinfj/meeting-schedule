@@ -103,9 +103,19 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <TpmIntactRatioMtbfMttrLEdit ref="tpmIntactRatioMtbfMttrLEdit" :mainId="formId || form.id"
-                                     :reportDate="reportDate" :readOnly="props.readOnly"/>
       </a-form>
+      <div style="margin: 0">
+        <p style="margin: 0">1、B类及以上设备是指A类、B类设备。</p>
+        <p style="margin: 0">2、设备完好填“1”不完好填“0”。</p>
+        <p style="margin: 0">3、改造期超过一个月的设备，不列入设备完好率统计。</p>
+        <p style="margin: 0">4、闲置设备不列入设备完好率统计。</p>
+        <p style="margin: 0">5、完好率=Σ日完好设备（）/月份天数（）/设备总台数（）×100%。</p>
+        <p style="margin: 0">6、故障平均时间=年内设备运行时间（）/年内故障次数（）。</p>
+        <p style="margin: 0">7、故障平均修复时间=年内设备故障修复时间（）/年内故障总数（）。</p>
+        <p style="margin: 0">8、示例：某设备工作80h后发生故障，修复后工作60h又发生故障，再修复后又工作70h发生故障，则设备在这段时期内设备平均故障间隔期（MTBF）=（80h+60h+70h）/3=70h。</p>
+      </div>
+      <TpmIntactRatioMtbfMttrLEdit ref="tpmIntactRatioMtbfMttrLEdit" :mainId="formId || form.id"
+                                   :reportDate="reportDate" :readOnly="props.readOnly"/>
     </a-spin>
     <template #footer>
       <a-button title="保存并启动流程" v-if="startLoading" type="primary" :loading="loading"
@@ -181,9 +191,9 @@ function reportDateChange(v) {
 }
 
 watch(
-    () => form.value.reportDate,
-    newV => {
-      reportDate.value = newV;
-    }
+  () => form.value.reportDate,
+  newV => {
+    reportDate.value = newV;
+  }
 );
 </script>

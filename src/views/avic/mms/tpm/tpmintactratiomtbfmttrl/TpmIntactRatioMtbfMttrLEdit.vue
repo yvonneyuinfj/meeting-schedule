@@ -1,6 +1,6 @@
 <template>
   <!-- 表格组件 -->
-  <div style="padding-bottom: 8px">
+  <div style="padding: 8px 0">
     <AvicTable
         v-if="showTable"
         ref="tpmIntactRatioMtbfMttrL"
@@ -11,11 +11,11 @@
         :data-source="list"
         :loading="loading"
         :row-selection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange,
-        columnWidth: 40,
-        fixed: true
-      }"
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+          columnWidth: 40,
+          fixed: true
+        }"
         :showTableSetting="false"
         :pageParameter="queryParam.pageParameter"
         :total="totalPage"
@@ -42,11 +42,10 @@
                 danger
                 :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 :loading="delLoading"
-                @click="
-                event => {
+                @click="event => {
                   handleDelete(selectedRowKeys, event);
                 }
-              "
+                  "
             >
               <template #icon>
                 <delete-outlined/>
@@ -71,23 +70,32 @@
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
             v-if="['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8', 'day9', 'day10', 'day11', 'day12', 'day13', 'day14', 'day15', 'day16', 'day17', 'day18', 'day19', 'day20', 'day21', 'day22', 'day23', 'day24', 'day25', 'day26', 'day27', 'day28', 'day29', 'day30', 'day31'].includes(
-             column.dataIndex
-           )"
+              column.dataIndex
+            )"
             :record="record"
             :column="column.dataIndex"
         >
           <template #edit>
-            <a-input-number
-                v-model:value="record[column.dataIndex]"
-                :maxLength="16"
-                :max="1"
-                :min="0"
-                style="width: 100%"
-                placeholder="请输入"
-                @change="calculateTotal(record)"
-                :readonly="props.readOnly"
-            >
-            </a-input-number>
+            <a-tooltip placement="top">
+              <template #title>
+                <span>设备完好填“1”不完好填“0”。</span>
+              </template>
+              <a-input-number
+                  v-model:value="record[column.dataIndex]"
+                  :maxLength="16"
+                  :max="1"
+                  :min="0"
+                  style="width: 100%"
+                  placeholder="请输入"
+                  @change="calculateTotal(record)"
+                  :readonly="props.readOnly"
+                  :formatter="transForm0Or1"
+                  :parser="transForm0Or1"
+                  @blur="blurInput($event, record, column.dataIndex)"
+
+              >
+              </a-input-number>
+            </a-tooltip>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
@@ -129,6 +137,7 @@
                 @click="handleOpen(record)"
                 :readonly="true"
                 placeholder="请选择设备编号"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input>
           </template>
@@ -143,6 +152,7 @@
                 v-model:value="record.equipmentName"
                 :readonly="true"
                 placeholder="请选择设备名称"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input>
           </template>
@@ -162,6 +172,7 @@
                 style="width: 100%"
                 :readonly="true"
                 placeholder="请输入合计"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input-number>
           </template>
@@ -172,13 +183,20 @@
             :column="column.dataIndex"
         >
           <template #edit>
-            <a-input
+            <a-input-number
                 v-model:value="record.equipmentRunTime"
                 placeholder="请输入设备运行时间（h）"
                 @change="calculateMTBFOrMTTR(record)"
                 :readonly="props.readOnly"
+                :min="0"
+                :max="999999999999"
+                :precision="0"
+                :step="1"
+                :formatter="transFormNum"
+                :parser="transFormNum"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
-            </a-input>
+            </a-input-number>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
@@ -187,13 +205,20 @@
             :column="column.dataIndex"
         >
           <template #edit>
-            <a-input
+            <a-input-number
                 v-model:value="record.repairTime"
                 placeholder="请输入设备故障修复时间（h）"
                 @change="calculateMTBFOrMTTR(record)"
                 :readonly="props.readOnly"
+                :min="0"
+                :max="999999999999"
+                :precision="0"
+                :step="1"
+                :formatter="transFormNum"
+                :parser="transFormNum"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
-            </a-input>
+            </a-input-number>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
@@ -202,13 +227,20 @@
             :column="column.dataIndex"
         >
           <template #edit>
-            <a-input
+            <a-input-number
                 v-model:value="record.failureNumber"
                 placeholder="请输入设备故障次数"
                 @change="calculateMTBFOrMTTR(record)"
                 :readonly="props.readOnly"
+                :min="0"
+                :max="999999999999"
+                :precision="0"
+                :step="1"
+                :formatter="transFormNum"
+                :parser="transFormNum"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
-            </a-input>
+            </a-input-number>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
@@ -220,6 +252,7 @@
             <a-input
                 v-model:value="record.mtbf"
                 :readonly="true"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input>
           </template>
@@ -233,6 +266,7 @@
             <a-input
                 v-model:value="record.mttr"
                 :readonly="true"
+                @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input>
           </template>
@@ -241,11 +275,10 @@
           <a-button
               class="inner-btn"
               type="link"
-              @click="
-              event => {
+              @click="event => {
                 handleDelete([record.id], event);
               }
-            "
+                "
           >
             删除
           </a-button>
@@ -269,7 +302,7 @@
 import type { TpmIntactRatioMtbfMttrLDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi'; // 引入模块DTO
 import { listTpmIntactRatioMtbfMttrLByPage, getSpecifyYearList } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi'; // 引入模块API
 import TpmIntactRatioMtbfMttrLSelect from './TpmInventorySelect.vue'; // 引入弹窗选择页
-import { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi';
+import type { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi';
 import { useUserStore } from '@/store/user';
 import dayjs from 'dayjs';
 
@@ -889,10 +922,8 @@ const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const showImportModal = ref(false); // 是否展示导入弹窗
 const excelParams = ref({ tableName: 'tpmIntactRatioMtbfMttrL', tpmIntactRatioMtbfMttrId: '' });
+
 const validateRules = {
-  tpmInventoryId: [
-    { required: true, message: '设备台账ID列不能为空' }
-  ],
   equipmentCode: [
     { required: true, message: '设备编号列不能为空' }
   ],
@@ -939,6 +970,7 @@ if (!props.readOnly) {
     align: 'center'
   });
 }
+
 onMounted(() => {
   // 加载表格数据
   getList();
@@ -980,55 +1012,55 @@ function getList() {
   queryForm.value.tpmIntactRatioMtbfMttrId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
   listTpmIntactRatioMtbfMttrLByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
 
-        for (let index = 0; index < list.value.length; index++) {
-          const element = list.value[index];
-          const equipmentStatus = element.equipmentStatus.split(',');
-          element.day1 = equipmentStatus[0];
-          element.day2 = equipmentStatus[1];
-          element.day3 = equipmentStatus[2];
-          element.day4 = equipmentStatus[3];
-          element.day5 = equipmentStatus[4];
-          element.day6 = equipmentStatus[5];
-          element.day7 = equipmentStatus[6];
-          element.day8 = equipmentStatus[7];
-          element.day9 = equipmentStatus[8];
-          element.day10 = equipmentStatus[9];
-          element.day11 = equipmentStatus[10];
-          element.day12 = equipmentStatus[11];
-          element.day13 = equipmentStatus[12];
-          element.day14 = equipmentStatus[13];
-          element.day15 = equipmentStatus[14];
-          element.day16 = equipmentStatus[15];
-          element.day17 = equipmentStatus[16];
-          element.day18 = equipmentStatus[17];
-          element.day19 = equipmentStatus[18];
-          element.day20 = equipmentStatus[19];
-          element.day21 = equipmentStatus[20];
-          element.day22 = equipmentStatus[21];
-          element.day23 = equipmentStatus[22];
-          element.day24 = equipmentStatus[23];
-          element.day25 = equipmentStatus[24];
-          element.day26 = equipmentStatus[25];
-          element.day27 = equipmentStatus[26];
-          element.day28 = equipmentStatus[27];
-          element.day29 = equipmentStatus[28];
-          element.day30 = equipmentStatus[29];
-          element.day31 = equipmentStatus[30];
-        }
+      for (let index = 0; index < list.value.length; index++) {
+        const element = list.value[index];
+        const equipmentStatus = element.equipmentStatus.split(',');
+        element.day1 = equipmentStatus[0];
+        element.day2 = equipmentStatus[1];
+        element.day3 = equipmentStatus[2];
+        element.day4 = equipmentStatus[3];
+        element.day5 = equipmentStatus[4];
+        element.day6 = equipmentStatus[5];
+        element.day7 = equipmentStatus[6];
+        element.day8 = equipmentStatus[7];
+        element.day9 = equipmentStatus[8];
+        element.day10 = equipmentStatus[9];
+        element.day11 = equipmentStatus[10];
+        element.day12 = equipmentStatus[11];
+        element.day13 = equipmentStatus[12];
+        element.day14 = equipmentStatus[13];
+        element.day15 = equipmentStatus[14];
+        element.day16 = equipmentStatus[15];
+        element.day17 = equipmentStatus[16];
+        element.day18 = equipmentStatus[17];
+        element.day19 = equipmentStatus[18];
+        element.day20 = equipmentStatus[19];
+        element.day21 = equipmentStatus[20];
+        element.day22 = equipmentStatus[21];
+        element.day23 = equipmentStatus[22];
+        element.day24 = equipmentStatus[23];
+        element.day25 = equipmentStatus[24];
+        element.day26 = equipmentStatus[25];
+        element.day27 = equipmentStatus[26];
+        element.day28 = equipmentStatus[27];
+        element.day29 = equipmentStatus[28];
+        element.day30 = equipmentStatus[29];
+        element.day31 = equipmentStatus[30];
+      }
 
-        loading.value = false;
-        // 查询的初始数据,保存时做比对
-        initialList.value = proxy.$lodash.cloneDeep(list.value);
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+      loading.value = false;
+      // 查询的初始数据,保存时做比对
+      initialList.value = proxy.$lodash.cloneDeep(list.value);
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 获取当前用户对应的文档密级 */
@@ -1071,6 +1103,37 @@ function handleAdd() {
     equipmentStatus: '',
     note: '',
     secretLevel: undefined,
+    day1: '',
+    day2: '',
+    day3: '',
+    day4: '',
+    day5: '',
+    day6: '',
+    day7: '',
+    day8: '',
+    day9: '',
+    day10: '',
+    day11: '',
+    day12: '',
+    day13: '',
+    day14: '',
+    day15: '',
+    day16: '',
+    day17: '',
+    day18: '',
+    day19: '',
+    day20: '',
+    day21: '',
+    day22: '',
+    day23: '',
+    day24: '',
+    day25: '',
+    day26: '',
+    day27: '',
+    day28: '',
+    day29: '',
+    day30: '',
+    day31: '',
     editable: true // true为编辑中, false为未编辑
   };
   const newData = [...list.value];
@@ -1180,9 +1243,9 @@ function changeControlValue(values, record, column) {
 }
 
 /** 输入框的值失去焦点 */
-// function blurInput(e, record, column) {
-//   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
-// }
+function blurInput(e, record, column) {
+  proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
+}
 
 /** 批量数据校验 */
 function validateRecordData(records) {
@@ -1236,9 +1299,15 @@ const handleCancel = () => {
 
 const handleOk = () => {
   const info = tpmIntactRatioMtbfMttrLSelect.value.info;
+
+  if (list.value.filter(row => row.equipmentCode === info[0].equipmentCode)?.length > 0) {
+    proxy.$message.warning('该月此设备已申报');
+    return;
+  }
   currentRecord.value.tpmInventoryId = info[0].id;
   currentRecord.value.equipmentCode = info[0].equipmentCode;
   currentRecord.value.equipmentName = info[0].equipmentName;
+
   open.value = false;
 };
 
@@ -1249,11 +1318,19 @@ function calculateMTBFOrMTTR(record) {
   let mtbf = equipmentRunTime / failureNumber;
   let mttr = repairTime / failureNumber;
 
-  if (!isNaN(mtbf)) {
+  record.equipmentRunTime = equipmentRunTime.toString();
+  record.repairTime = repairTime.toString();
+  record.failureNumber = failureNumber.toString();
+
+  if (isFinite(mtbf)) {
     record.monthMtbf = mtbf.toFixed(1).toString();
+  } else {
+    record.monthMtbf = '0';
   }
-  if (!isNaN(mttr)) {
+  if (isFinite(mttr)) {
     record.monthMttr = mttr.toFixed(1).toString();
+  } else {
+    record.monthMttr = '0';
   }
 
   form.value.reportDeptId = userInfo.deptId;
@@ -1268,29 +1345,34 @@ function calculateMTBFOrMTTR(record) {
   const postSubForm = proxy.$lodash.cloneDeep(subForm.value);
 
   getSpecifyYearList(postForm, postSubForm)
-      .then(res => {
-        if (res.success) {
-          for (let index = 0; index < res.data.length; index++) {
-            const element = res.data[index];
+    .then(res => {
+      if (res.success) {
+        for (let index = 0; index < res.data.length; index++) {
+          const element = res.data[index];
+          if (props.mainId !== element.tpmIntactRatioMtbfMttrId) {
             repairTime = repairTime + parseFloat(element.repairTime);
             equipmentRunTime = equipmentRunTime + parseFloat(element.equipmentRunTime);
             failureNumber = failureNumber + parseFloat(element.failureNumber);
           }
-
-          mtbf = equipmentRunTime / failureNumber;
-          mttr = repairTime / failureNumber;
-
-          if (!isNaN(mtbf)) {
-            record.mtbf = mtbf.toFixed(1).toString();
-          }
-
-          if (!isNaN(mttr)) {
-            record.mttr = mttr.toFixed(1).toString();
-          }
         }
-      })
-      .catch(() => {
-      });
+
+        mtbf = equipmentRunTime / failureNumber;
+        mttr = repairTime / failureNumber;
+        if (isFinite(mtbf)) {
+          record.mtbf = mtbf.toFixed(1).toString();
+        } else {
+          record.mtbf = '0';
+        }
+
+        if (isFinite(mttr)) {
+          record.mttr = mttr.toFixed(1).toString();
+        } else {
+          record.mttr = '0';
+        }
+      }
+    })
+    .catch(() => {
+    });
 }
 
 function calculateTotal(record) {
@@ -1433,12 +1515,41 @@ function calculateTotal(record) {
 
 }
 
+const transFormNum = value => {
+  let v = null;
+  switch (typeof value) {
+    case "string":
+      v = isNaN(+value) ? 0 : value.replace(/\./g, '');
+      break;
+    case "number":
+      v = isNaN(value) ? 0 : String(value).replace(/\./g, '');
+      break;
+    default:
+      v = 0;
+  }
+  return v;
+};
+const transForm0Or1 = value => {
+  let v = null;
+  switch (typeof value) {
+    case "string":
+      v = isNaN(+value) ? 0 : value.replace(/[^01]/g, '');
+      break;
+    case "number":
+      v = isNaN(value) ? 0 : String(value).replace(/[^01]/g, '');
+      break;
+    default:
+      v = 0;
+  }
+  return v;
+};
+
 watch(
-    () => props.reportDate,
-    newV => {
-      reportDate.value = dayjs(newV);
-      getTable();
-    }
+  () => props.reportDate,
+  newV => {
+    reportDate.value = dayjs(newV);
+    getTable();
+  }
 );
 </script>
 

@@ -44,11 +44,11 @@
     <div class="table-wrapper">
       <AvicTable ref="tpmOeeSelect" table-key="tpmOeeSelect" :columns="columns" :row-key="record => record.id"
                  :data-source="list" :loading="loading" :show-table-setting="false" :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="customRow"
+                   selectedRowKeys: selectedRowKeys,
+                   onChange: onSelectChange,
+                   columnWidth: 40,
+                   fixed: true
+                 }" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="customRow"
                  @change="handleTableChange" @refresh="getList">
         <template #toolBarRight>
           <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入" :allow-clear="true"
@@ -165,16 +165,16 @@ function getList() {
   selectedRows.value = []; // 清空选中
   loading.value = true;
   listTpmOeeByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 高级查询 查询按钮操作 */
