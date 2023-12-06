@@ -23,7 +23,7 @@
               <a-input v-model:value="form.useTime" disabled />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+  <!--        <a-col v-bind="colLayout.cols">
             <a-form-item name="parentAssetClassName" label="上级资产类别名称">
               <a-input v-model:value="form.parentAssetClassName" disabled />
             </a-form-item>
@@ -32,7 +32,7 @@
             <a-form-item name="parentAssetCode" label="上级资产类别编码">
               <a-input v-model:value="form.parentAssetCode" disabled />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="parentId" label="父级分类">
               <AvicTreeSelect

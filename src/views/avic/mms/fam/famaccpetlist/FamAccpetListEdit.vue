@@ -456,7 +456,6 @@ import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树�
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
-console.log(proxy.$getLoginUser);
 const assetClassOpen = ref<boolean>(false);
 const props = defineProps({
   // 主表选中项的keys集合

@@ -56,7 +56,7 @@
           </a-form-item>
         </a-col>
 
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('maintPlan')">
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('maintPlan') && annual === '1' ">
           <a-form-item name="maintPlan" label="维修计划" :rules="fieldRequired('maintPlan')" has-feedback>
             <a-input
               v-model:value="form.maintPlan"
@@ -266,7 +266,8 @@
             />
           </a-form-item>
         </a-col> -->
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId') && annual !== '2'">
+        <!--        && annual !== '2'-->
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId') ">
           <a-form-item name="handlePersonId" label="需求申请人名称" :rules="fieldRequired('handlePersonId')"
                        has-feedback>
             <AvicCommonSelect

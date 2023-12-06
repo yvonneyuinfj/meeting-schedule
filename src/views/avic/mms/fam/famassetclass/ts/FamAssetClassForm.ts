@@ -20,12 +20,12 @@ export function useFamAssetClassForm({ props: props, emit: emit }) {
     useTime: [
       { required: true, message: '使用年限不能为空', trigger: 'change' }
     ],
-    parentAssetClassName: [
-      { required: true, message: '上级资产类别名称不能为空', trigger: 'change' }
-    ],
-    parentAssetCode: [
-      { required: true, message: '上级资产类别编码不能为空', trigger: 'change' }
-    ],
+    // parentAssetClassName: [
+    //   { required: true, message: '上级资产类别名称不能为空', trigger: 'change' }
+    // ],
+    // parentAssetCode: [
+    //   { required: true, message: '上级资产类别编码不能为空', trigger: 'change' }
+    // ],
     parentId: [
       { required: true, message: '上级节点ID不能为空', trigger: 'change' }
     ],
