@@ -40,6 +40,12 @@ export interface FamAssetInventoryResultDto extends BaseBeanModel {
   /** 盘点部门ID */
   inventoryDeptId?: string;
   inventoryDeptIdAlias?: string;
+  /** 盘点人 */
+  inventoryUserId?:string;
+  inventoryUserIdAlias?:string;
+  /** 监盘人 */
+  jkinventoryUserId?:string;
+  jkinventoryUserIdAlias?:string;
   /** 盘点部门名称 */
   inventoryDeptName?: string;
   /** 盘点日期 */

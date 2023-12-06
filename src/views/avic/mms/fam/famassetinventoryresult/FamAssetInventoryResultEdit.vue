@@ -53,6 +53,26 @@
               />
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="inventoryUserId" label="盘点人">
+              <AvicCommonSelect
+                v-model:value="form.inventoryUserId"
+                type="userSelect"
+                placeholder="请选择盘点部门ID"
+                :defaultShowValue="form.inventoryUserIdAlias"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="jkinventoryUserId" label="监盘人">
+              <AvicCommonSelect
+                v-model:value="form.jkinventoryUserId"
+                type="userSelect"
+                placeholder="请选择盘点部门ID"
+                :defaultShowValue="form.jkinventoryUserIdAlias"
+              />
+            </a-form-item>
+          </a-col>
         </a-row>
         <FamAssetInventoryResultListEdit ref="famAssetInventoryResultListEdit" :mainId="formId || form.id" />
       </a-form>

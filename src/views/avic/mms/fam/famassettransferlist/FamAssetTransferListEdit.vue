@@ -45,7 +45,7 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
@@ -62,7 +62,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -71,7 +71,8 @@
       </template>
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
-          v-if="['assetCode','assetOriginalValue','technicalDataList','factorySerialNumber','attachmentToolList','assetModel','assetName','assetSecretLevel','assetSpec'].includes(
+          v-if="['assetCode','assetOriginalValue','technicalDataList','factorySerialNumber','attachmentToolList','assetModel','assetName','assetSecretLevel',
+          'storageLocation','assetSpec','geographicalArea'].includes(
                column.dataIndex
               )"
           :record="record"
@@ -89,6 +90,7 @@
             </a-input>
           </template>
         </AvicRowEdit>
+
         <AvicRowEdit
           v-else-if="column.dataIndex === 'isAssetIntact'"
           :record="record"
@@ -119,6 +121,28 @@
             />
           </template>
         </AvicRowEdit>
+<!--        <AvicRowEdit-->
+<!--          v-else-if="column.dataIndex === 'geographicalArea'"-->
+<!--          :record="record"-->
+<!--          :column="column.dataIndex"-->
+<!--        >-->
+<!--          <template #edit>-->
+<!--            <a-input-->
+<!--              v-model:value="record.geographicalArea"-->
+<!--              @click="geographicalAreaClick(record)"-->
+<!--              placeholder="请选择地理区域"-->
+<!--            >-->
+<!--              <template #suffix>-->
+<!--                <a-tooltip title="Extra information">-->
+<!--                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>-->
+<!--                </a-tooltip>-->
+<!--              </template>-->
+<!--            </a-input>-->
+<!--          </template>-->
+<!--          <template #default>-->
+<!--            {{ record.geographicalArea }}-->
+<!--          </template>-->
+<!--        </AvicRowEdit>-->
         <AvicRowEdit
           v-else-if="column.dataIndex === 'responseUserId'"
           :record="record"
@@ -156,6 +180,36 @@
         </template>
       </template>
     </AvicTable>
+    <a-modal :visible="geographicalOpen" @cancel="handleCancel" @ok="handleSummit">
+      <a-spin :spinning="treeLoading">
+        <a-tree
+          v-if="treeData && treeData.length > 0"
+          v-model:expanded-keys="expandedKeys"
+          v-model:selectedKeys="selectedKeys"
+          :tree-data="treeData"
+          :load-data="onLoadData"
+          :show-icon="true"
+          :show-line="true && { showLeafIcon: false }"
+          :default-expand-all="true"
+          @expand="handleExpand"
+          @select="handleSelect"
+        >
+          <template #icon="{ expanded, dataRef }">
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+            <AvicIcon
+              v-if="!expanded && !dataRef.isLeaf"
+              svg="avic-folder-3-fill"
+              color="#ffb800"
+            />
+            <AvicIcon
+              v-if="expanded && !dataRef.isLeaf"
+              svg="avic-folder-open-fill"
+              color="#ffb800"
+            />
+          </template>
+        </a-tree>
+      </a-spin>
+    </a-modal>
     <a-modal
       :visible="open"
       title="批量新增"
@@ -177,6 +231,8 @@
 import type { FamAssetTransferListDto } from '@/api/avic/mms/fam/FamAssetTransferListApi'; // 引入模块DTO
 import { listFamAssetTransferListByPage } from '@/api/avic/mms/fam/FamAssetTransferListApi'; // 引入模块API
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
+import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
+import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -214,6 +270,24 @@ const columns = [
     title: '资产密级',
     dataIndex: 'assetSecretLevel',
     key: 'assetSecretLevel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '地理区域',
+    dataIndex: 'geographicalArea',
+    key: 'geographicalArea',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '存放地点',
+    dataIndex: 'storageLocation',
+    key: 'storageLocation',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -319,6 +393,14 @@ const isAssetIntactList = ref([]); // 资产是否完好通用代码
 const lookupParams = [{ fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' }];
 const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
+const geographicalOpen = ref<boolean>(false);
+const geographicalRecord = ref();
+const treeLoading = ref(false);
+const expandedKeys = ref([]); //树节点validateRules
+const treeData = ref(null);
+const selectedKeys = ref([]);
+const treeNodeId = ref();
+const defaultRootParentId = ref('-1');
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
@@ -337,7 +419,23 @@ onMounted(() => {
   getList();
   // 加载查询区所需通用代码
   getLookupList();
+  getTreeList();
 });
+
+/** 查询数据 */
+function getTreeList() {
+  treeLoading.value = true;
+  const expandLevel = 2;
+  treeData.value = [];
+  expandedKeys.value = [];
+  getTreeData(expandLevel, defaultRootParentId.value).then(response => {
+    setNodeSlots(response.data);
+    getExpandedKeys(response.data, expandLevel, expandedKeys.value);
+    treeData.value = response.data;
+    treeLoading.value = false;
+  });
+}
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -359,12 +457,14 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     isAssetIntactList.value = result.isAssetIntact;
   });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -408,6 +508,61 @@ function handleAdd() {
 /** 批量添加 */
 function handleMostAdd() {
   open.value = true;
+}
+
+/** 点击地理区域 */
+const geographicalAreaClick = (record) => {
+  geographicalOpen.value = true;
+  geographicalRecord.value = record;
+};
+
+/** 关闭类别树弹窗 */
+function handleCancel() {
+  geographicalOpen.value = false;
+}
+
+/** 树节点展开事件 */
+function handleExpand(keys) {
+  expandedKeys.value = keys;
+}
+
+/** 树选中事件 */
+function handleSelect(keys: string[], node) {
+  treeNodeId.value = node.node.id;
+}
+
+/** 异步加载树节点 */
+async function onLoadData(treeNode) {
+  return new Promise<void>(resolve => {
+    if (treeNode.dataRef.children) {
+      resolve();
+      return;
+    }
+    getTreeData(1, treeNode.dataRef.id).then(response => {
+      setNodeSlots(response.data);
+      treeNode.dataRef.children = response.data;
+      treeData.value = [...treeData.value];
+      resolve();
+    });
+  });
+}
+
+/** 提交类别 */
+function handleSummit() {
+  getFamAssetClass(treeNodeId.value)
+    .then(async res => {
+      if (res.success) {
+        const record = list.value.filter(item => item.id === geographicalRecord.value.id)[0];
+        record.geographicalArea = res.data.classCode;
+        record.geographicalAreaName = res.data.className;
+        geographicalOpen.value = false;
+        geographicalRecord.value = null;
+      }
+    })
+    .catch(() => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
 }
 
 /** 批量新增确认  */
@@ -470,11 +625,13 @@ function customRow(record) {
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -485,10 +642,12 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
   record[column + 'Alias'] = value.names;
 }
+
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -508,10 +667,12 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -528,6 +689,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -543,6 +705,7 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData

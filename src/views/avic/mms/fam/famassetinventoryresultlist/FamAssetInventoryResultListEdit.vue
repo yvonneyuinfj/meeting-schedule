@@ -45,7 +45,7 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
@@ -62,7 +62,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -90,6 +90,28 @@
           </template>
         </AvicRowEdit>
         <AvicRowEdit
+          v-else-if="['note','inventoryPal'].includes(
+               column.dataIndex
+              )"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+              <a-textarea
+                v-model:value="record[column.dataIndex]"
+                @input="$forceUpdate()"
+                style="width: 100%;padding-top: 25px"
+                placeholder="请输入"
+                @blur="blurInput($event, record, column.dataIndex)"
+              >
+              </a-textarea>
+          </template>
+          <template #default>
+            <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ record[column.dataIndex] }}
+            </div>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
           v-else-if="column.dataIndex === 'purchaseTime'"
           :record="record"
           :column="column.dataIndex"
@@ -112,7 +134,7 @@
             <a-select
               v-model:value="record.inventoryResults"
               style="width: 100%"
-              placeholder="请选择盘点结果（正常/盘盈/盘亏）"
+              placeholder="请选择损益类型"
               @change="(value)=>changeControlValue(value,record,'inventoryResults')"
             >
               <a-select-option
@@ -284,7 +306,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '盘点结果（正常/盘盈/盘亏）',
+    title: '损益类型',
     dataIndex: 'inventoryResults',
     key: 'inventoryResults',
     ellipsis: true,
@@ -296,6 +318,24 @@ const columns = [
       };
     },
     align: 'center'
+  },
+  {
+    title: '盘营亏原因',
+    dataIndex: 'inventoryPal',
+    key: 'inventoryPal',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '备注',
+    dataIndex: 'note',
+    key: 'note',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'left'
   }
 ] as any[];
 const queryForm = ref<FamAssetInventoryResultListDto>({});
@@ -346,6 +386,7 @@ onMounted(() => {
   // 加载查询区所需通用代码
   getLookupList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -367,12 +408,14 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     inventoryResultsList.value = result.inventoryResults;
   });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -413,6 +456,7 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -487,11 +531,13 @@ function customRow(record) {
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -502,6 +548,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -521,10 +568,12 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -541,6 +590,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -556,6 +606,7 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData

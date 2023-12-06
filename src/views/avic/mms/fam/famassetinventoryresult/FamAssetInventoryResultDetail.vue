@@ -52,6 +52,26 @@
             />
           </a-form-item>
         </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('inventoryUserId')">
+          <a-form-item name="inventoryUserId" label="盘点人" :rules="fieldRequired('inventoryUserId')" has-feedback>
+            <AvicCommonSelect
+              v-model:value="form.inventoryUserId"
+              type="userSelect"
+              :defaultShowValue="form.inventoryUserIdAlias"
+              :disabled="fieldDisabled('inventoryUserId')"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('jkinventoryUserId')">
+          <a-form-item name="jkinventoryUserId" label="监盘人" :rules="fieldRequired('jkinventoryUserId')" has-feedback>
+            <AvicCommonSelect
+              v-model:value="form.jkinventoryUserId"
+              type="userSelect"
+              :defaultShowValue="form.jkinventoryUserIdAlias"
+              :disabled="fieldDisabled('jkinventoryUserId')"
+            />
+          </a-form-item>
+        </a-col>
       </a-row>
     </a-form>
     <FamAssetInventoryResultListEdit
