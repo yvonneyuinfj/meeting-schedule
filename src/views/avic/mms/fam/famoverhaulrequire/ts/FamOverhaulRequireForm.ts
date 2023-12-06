@@ -51,7 +51,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     applyDeptName: [{ required: true, message: '申请部门名称不能为空', trigger: 'change' }],
     handlePersonId: [{ required: true, message: '需求申请人不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '需求申请人名称不能为空', trigger: 'change' }],
-    applyDate: [{ required: true, message: '故障时间不能为空', trigger: 'change' }],
+    applyDate: [{validator:applyDateValidator,  trigger: 'change' }],
     telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }]
   };
   const famOverhaulRequireListEdit = ref();
@@ -107,8 +107,19 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     } else {
       return Promise.resolve();
     }
+  };
+
+  async function applyDateValidator(_ruler,value) {
+    if (form.value.maintCategory === '1') {
+      if (!value) {
+        return Promise.reject(new Error('故障时间不能为空'));
+      } else {
+        return Promise.resolve();
+      }
+    } else {
+      return Promise.resolve();
+    }
   }
-  ;
 
   onMounted(() => {
     // 加载查询区所需通用代码
