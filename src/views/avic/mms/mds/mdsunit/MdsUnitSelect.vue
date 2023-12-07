@@ -1,153 +1,151 @@
 <template>
-  <div class="content-wrapper">
-    <div class="top-search-box">
-      <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
-        <a-row :gutter="16">
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="计量单位代码">
-              <a-input
-                  v-model:value="queryForm.unitCode"
-                  placeholder="请输入计量单位代码 如Cm,Km"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="计量单位说明">
-              <a-input
-                  v-model:value="queryForm.unitDesc"
-                  placeholder="请输入计量单位说明 例如厘米，毫米"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="计量单位大类">
-              <a-select
-                  v-model:value="queryForm.unitClass"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择计量单位大类"
-              >
-                <a-select-option
-                    v-for="item in unitClassList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="有效标识">
-              <a-select
-                  v-model:value="queryForm.validFlag"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择有效标识"
-              >
-                <a-select-option
-                    v-for="item in validFlagList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="密级">
-              <a-select
-                  v-model:value="queryForm.secretLevel"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择密级"
-              >
-                <a-select-option
-                    v-for="item in secretLevelList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col
-              v-bind="colLayout.cols"
-              style="margin-left: auto"
-          >
-            <div class="table-page-search-submitButtons">
-              <a-space>
-                <a-button type="primary" @click="handleQuery">
-                  <search-outlined/>
-                  查询
-                </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined/>
-                  重置
-                </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
-                  {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced"/>
-                  <down-outlined v-else/>
-                </a-button>
-              </a-space>
+    <a-modal :visible="visible" @ok="handleOk" @cancel.once="handleCancel" title="计量单位选择" width="80%">
+            <div class="top-search-box">
+              <!-- 高级查询 -->
+              <a-form v-bind="layout" ref="formRef" :model="queryForm">
+                <a-row :gutter="16">
+                  <a-col v-bind="colLayout.cols">
+                    <a-form-item label="计量单位代码">
+                      <a-input
+                          v-model:value="queryForm.unitCode"
+                          placeholder="请输入计量单位代码 如Cm,Km"
+                          :allow-clear="true"
+                          @pressEnter="handleQuery"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols">
+                    <a-form-item label="计量单位说明">
+                      <a-input
+                          v-model:value="queryForm.unitDesc"
+                          placeholder="请输入计量单位说明 例如厘米，毫米"
+                          :allow-clear="true"
+                          @pressEnter="handleQuery"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols">
+                    <a-form-item label="计量单位大类">
+                      <a-select
+                          v-model:value="queryForm.unitClass"
+                          :get-popup-container="triggerNode => triggerNode.parentNode"
+                          option-filter-prop="children"
+                          :show-search="true"
+                          :allow-clear="true"
+                          placeholder="请选择计量单位大类"
+                      >
+                        <a-select-option
+                            v-for="item in unitClassList"
+                            :key="item.sysLookupTlId"
+                            :value="item.lookupCode"
+                        >
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="有效标识">
+                      <a-select
+                          v-model:value="queryForm.validFlag"
+                          :get-popup-container="triggerNode => triggerNode.parentNode"
+                          option-filter-prop="children"
+                          :show-search="true"
+                          :allow-clear="true"
+                          placeholder="请选择有效标识"
+                      >
+                        <a-select-option
+                            v-for="item in validFlagList"
+                            :key="item.sysLookupTlId"
+                            :value="item.lookupCode"
+                        >
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="密级">
+                      <a-select
+                          v-model:value="queryForm.secretLevel"
+                          :get-popup-container="triggerNode => triggerNode.parentNode"
+                          option-filter-prop="children"
+                          :show-search="true"
+                          :allow-clear="true"
+                          placeholder="请选择密级"
+                      >
+                        <a-select-option
+                            v-for="item in secretLevelList"
+                            :key="item.sysLookupTlId"
+                            :value="item.lookupCode"
+                        >
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col
+                      v-bind="colLayout.cols"
+                      style="margin-left: auto"
+                  >
+                    <div class="table-page-search-submitButtons">
+                      <a-space>
+                        <a-button type="primary" @click="handleQuery">
+                          <search-outlined/>
+                          查询
+                        </a-button>
+                        <a-button type="primary" @click="resetQuery" ghost>
+                          <redo-outlined/>
+                          重置
+                        </a-button>
+                        <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                          {{ advanced ? '收起' : '展开' }}
+                          <up-outlined v-if="advanced"/>
+                          <down-outlined v-else/>
+                        </a-button>
+                      </a-space>
+                    </div>
+                  </a-col>
+                </a-row>
+              </a-form>
             </div>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 表格组件 -->
-    <div class="table-wrapper">
-      <AvicTable
-          ref="mdsUnitSelect"
-          table-key="mdsUnitSelect"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :show-table-setting="false"
-          :row-selection="{
-            selectedRowKeys: selectedRowKeys,
-            onChange: onSelectChange,
-            columnWidth: 40,
-            fixed: true
-          }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="customRow"
-          @change="handleTableChange"
-          @refresh="getList"
-      >
-        <template #toolBarRight>
-          <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入计量单位代码 如Cm,Km或计量单位说明 例如厘米，毫米"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
-          />
-        </template>
-        <template #bodyCell="{ column, text, record, index }">
-          <template v-if="column.dataIndex === 'id'">
-            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
-          </template>
-        </template>
-      </AvicTable>
-    </div>
-  </div>
+            <!-- 表格组件 -->
+              <AvicTable
+                  ref="mdsUnitSelect"
+                  table-key="mdsUnitSelect"
+                  :columns="columns"
+                  :row-key="record => record.id"
+                  :data-source="list"
+                  :loading="loading"
+                  :show-table-setting="false"
+                  :row-selection="{
+                    selectedRowKeys: selectedRowKeys,
+                    onChange: onSelectChange,
+                    columnWidth: 40,
+                    fixed: true
+                  }"
+                  :pageParameter="queryParam.pageParameter"
+                  :total="totalPage"
+                  :customRow="customRow"
+                  @change="handleTableChange"
+                  @refresh="getList"
+              >
+                <template #toolBarRight>
+                  <a-input-search
+                      class="opt-btn-commonsearch"
+                      style="width: 200px"
+                      placeholder="请输入计量单位代码 如Cm,Km或计量单位说明 例如厘米，毫米"
+                      :allow-clear="true"
+                      @search="handleKeyWordQuery"
+                  />
+                </template>
+                <template #bodyCell="{ column, text, record, index }">
+                  <template v-if="column.dataIndex === 'id'">
+                    {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+                  </template>
+                </template>
+              </AvicTable>
+    </a-modal>
 </template>
 <script lang="ts" setup>
 import type { MdsUnitDto } from '@/api/avic/mms/mds/MdsUnitApi'; // 引入模块DTO
@@ -348,6 +346,14 @@ function customRow(record) {
       }
     }
   };
+}
+//确定
+const handleOk = () => {
+  $emit('getUnitId', selectedRows.value[0])
+}
+//取消
+const handleCancel = () => {
+  $emit('closeCancel')
 }
 </script>
 
