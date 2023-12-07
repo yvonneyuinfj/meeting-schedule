@@ -62,9 +62,13 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const accpetTypeList = ref([]); // 验收类型通用代码
   const assetTypeList = ref([]); //资产属性通用代码
   const equipmentTypeList = ref([]); //设备类型通用代码
+  const purchWayList = ref([]); //购置方式通用代码
+  const fundSourceList = ref([]); // 资产来源通用代码
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
+    { fieldName: 'purchWay', lookUpType: 'FAM_PURCH_WAY' },
+    { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' },
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' }
   ];
   const authJson = ref(null);
@@ -85,6 +89,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   onMounted(() => {
     // 加载查询区所需通用代码
     getLookupList();
+    console.log('走了')
     if (props.formId || form.value.id) {
       // 编辑详情页面加载数据
       getFormData(props.formId || form.value.id);
@@ -100,6 +105,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       accpetTypeList.value = result.accpetType;
       assetTypeList.value = result.assetType;
       equipmentTypeList.value = result.equipmentType;
+      purchWayList.value = result.purchWay;
+      fundSourceList.value = result.fundSource;
     });
   }
 
@@ -145,12 +152,15 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               return;
             }
             loading.value = true;
+
             const postData = proxy.$lodash.cloneDeep(form.value);
+            console.log(postData)
             if (famAccpetListEntityEdit.value) {
               const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
-              postData.famAccpetListList = subInfoList; // 挂载子表数据
+              postData.famAccpetListEntityList = subInfoList; // 挂载子表数据
             }
+
             // 发送请求
             saveFamAccpet(postData)
               .then(res => {
@@ -174,16 +184,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
             console.log('error', error);
             loading.value = false;
           });
-        // famAccpetListEdit.value
-        //   .validate(async validate => {
-        //     if (!validate) {
-        //       return;
-        //     }
-        //   })
-        //   .catch(error => {
-        //     console.log('error', error);
-        //     loading.value = false;
-        //   });
       })
       .catch(error => {
         // 定位校验失败元素
@@ -196,42 +196,49 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(async () => {
-        // 附件密级校验
-        const validateResult = validateUploaderFileSecret();
-        if (!validateResult) {
-          return;
-        }
-        loading.value = true;
-        const postData = proxy.$lodash.cloneDeep(form.value);
-        if (autoCode.value) {
-          // 获取编码码段值
-          postData.accpetApplyNo = autoCode.value.getSegmentValue();
-        }
-
-        if (famAccpetListEntityEdit.value) {
-          const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
-          // 处理数据
-          postData.famAccpetListList = subInfoList; // 挂载子表数据
-        }
-        // 发送请求
-        saveFamAccpet(postData)
-          .then(res => {
-            if (res.success) {
-              if (props.bpmInstanceObject) {
-                bpmButtonParams.value = { params, result: res.data };
-              }
-              if (!form.value.id) {
-                form.value.id = res.data;
-              }
-              uploadFile.value.upload(form.value.id || res.data); // 附件上传
-            } else {
-              loading.value = false;
+        famAccpetListEntityEdit.value
+          .validate(async validate => {
+            if (!validate) {
+              return;
             }
-          })
-          .catch(() => {
-            loading.value = false;
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
+              return;
+            }
+            loading.value = true;
+            const postData = proxy.$lodash.cloneDeep(form.value);
+            if (autoCode.value) {
+              // 获取编码码段值
+              postData.accpetApplyNo = autoCode.value.getSegmentValue();
+            }
+
+            if (famAccpetListEntityEdit.value) {
+              const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
+              // 处理数据
+              postData.famAccpetListEntityList = subInfoList; // 挂载子表数据
+            }
+            // 发送请求
+            saveFamAccpet(postData)
+              .then(res => {
+                if (res.success) {
+                  if (props.bpmInstanceObject) {
+                    bpmButtonParams.value = { params, result: res.data };
+                  }
+                  if (!form.value.id) {
+                    form.value.id = res.data;
+                  }
+                  uploadFile.value.upload(form.value.id || res.data); // 附件上传
+                } else {
+                  loading.value = false;
+                }
+              })
+              .catch(() => {
+                loading.value = false;
+              });
           });
-        // famAccpetListEdit.value
+
+        // famAccpetListEntityEdit.value
         //   .validate(async validate => {
         //     if (!validate) {
         //       return;
@@ -304,20 +311,20 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
         return;
       }
       const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
-      console.log(subInfoList)
       loading.value = true;
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famAccpetListEntityList = subInfoList; // 挂载子表数据
-      // if (autoCode.value) {
-      //   // 获取编码码段值
-      //   postData.accpetApplyNo = autoCode.value.getSegmentValue();
-      // }
+      if (autoCode.value) {
+        // 获取编码码段值
+        postData.accpetApplyNo = autoCode.value.getSegmentValue();
+      }
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
         postData
       };
+
       // 发送请求
       saveFormAndStartProcess(param)
         .then(res => {
@@ -339,6 +346,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
         });
     }
   }
+
 
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
@@ -455,6 +463,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     secretLevelList,
     accpetTypeList,
     assetTypeList,
+    purchWayList,
+    fundSourceList,
     equipmentTypeList,
     uploadFile,
     afterUploadEvent,

@@ -45,26 +45,6 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产属性" has-feedback>
-              <a-select
-                v-model:value="form.assetClass"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-              >
-                <a-select-option
-                  v-for="item in assetTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
             <a-form-item name="orderName" label="合同名称" has-feedback>
               <a-input
                 v-model:value="form.orderName"
@@ -105,6 +85,26 @@
                 value-format="YYYY-MM-DD"
                 placeholder="请选择验收日期"
               />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
+                v-model:value="form.assetClass"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <!-- <a-col v-bind="colLayout.cols">
@@ -223,6 +223,25 @@
               </a-select>
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item v-if="form.accpetType === '2' "
+                         name="overhaulRequireCode"
+                         label="维修改造单号"
+                         has-feedback
+            >
+              <a-input
+                v-model:value="form.overhaulRequireCode"
+                @click="overhaulRequireCodeClick"
+                placeholder="请选择维修改造"
+              >
+                <template #suffix>
+                  <a-tooltip title="Extra information">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                  </a-tooltip>
+                </template>
+              </a-input>
+            </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item label="附件">
               <AvicUploader
@@ -250,6 +269,8 @@
         />
       </a-form>
     </a-spin>
+    <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal"
+                              @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
       <a-button title="保存" type="primary" :loading="loading" @click="saveAndStartProcess">
@@ -291,6 +312,7 @@ import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListE
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
 import { getTreeParent } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
+import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
 
 const props = defineProps({
   formId: {
@@ -331,6 +353,7 @@ const treeNodeId = ref();
 const isLand = ref(false); //是否为土地及房屋
 const assetClasstObj = ref();
 const emit = defineEmits(emits);
+const maintPlanModal = ref<boolean>(false);
 
 function accpetTypeChange(v) {
   accpetType.value = v;
@@ -365,6 +388,27 @@ async function onLoadData(treeNode) {
 function handleSelect(keys: string[], node) {
   treeNodeId.value = node.node.id;
 }
+
+/** 点击维修计划 */
+const overhaulRequireCodeClick = () => {
+  maintPlanModal.value = true;
+};
+
+/** 关闭年度弹窗 */
+const closeMaintPlan = () => {
+  maintPlanModal.value = false;
+};
+
+const getPlanNo = (v) => {
+  form.value.overhaulRequireCode = v.billNo;
+  form.value.overhaulRequireId = v.id;
+  // if (v.maintCategory === '1') {
+  //   proxy.$message.warning(' 请选择改造申请！');
+  // }
+
+  maintPlanModal.value = false;
+};
+
 
 /** 查询数据 */
 function getTreeList() {

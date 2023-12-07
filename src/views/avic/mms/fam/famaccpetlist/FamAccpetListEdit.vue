@@ -1188,7 +1188,6 @@ const handleOk = () => {
   open.value = false;
   const selectRow = famInventoryManage.value.selectedRow();
   selectRow.map(item => {
-    console.log(item);
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['assetCode'] = item.assetsCode;
@@ -1202,8 +1201,6 @@ const handleOk = () => {
     item['producer'] = item.factoryOwner;
     item['liablePerson'] = item.responseUserName;
   });
-  console.log(selectRow);
-  console.log(list.value);
   list.value = [...list.value, ...selectRow];
 };
 

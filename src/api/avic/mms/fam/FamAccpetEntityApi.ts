@@ -82,7 +82,7 @@ export interface FamAccpetDto extends BaseBeanModel {
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */
-  famAccpetListList?: [];
+  famAccpetListEntityList?: [];
 }
 
 /** 获取分页数据 */

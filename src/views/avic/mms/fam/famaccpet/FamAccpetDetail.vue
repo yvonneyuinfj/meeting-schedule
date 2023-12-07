@@ -63,7 +63,7 @@
             :rules="fieldRequired('orderName')"
             has-feedback
           >
-            <a-input v-model:value="form.orderName" :disabled="fieldDisabled('orderName')" />
+            <a-input v-model:value="form.orderName" :disabled="fieldDisabled('orderName')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderNo')">
@@ -73,7 +73,7 @@
             :rules="fieldRequired('orderNo')"
             has-feedback
           >
-            <a-input v-model:value="form.orderNo" :disabled="fieldDisabled('orderNo')" />
+            <a-input v-model:value="form.orderNo" :disabled="fieldDisabled('orderNo')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderValue')">
@@ -83,7 +83,7 @@
             :rules="fieldRequired('orderValue')"
             has-feedback
           >
-            <a-input v-model:value="form.orderValue" :disabled="fieldDisabled('orderValue')" />
+            <a-input v-model:value="form.orderValue" :disabled="fieldDisabled('orderValue')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('procureDeptName')">
@@ -232,7 +232,7 @@
             :rules="fieldRequired('projectName')"
             has-feedback
           >
-            <a-input v-model:value="form.projectName" :disabled="fieldDisabled('projectName')" />
+            <a-input v-model:value="form.projectName" :disabled="fieldDisabled('projectName')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonName')">
@@ -250,14 +250,51 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('overhaulRequireCode')">
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetClasst')">
+          <a-form-item
+            name="assetClasst"
+            label="资产类别"
+            :rules="fieldRequired('assetClasst')"
+            has-feedback
+          >
+            <a-input v-model:value="form.assetClasst" :disabled="fieldDisabled('assetClasst')"/>
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('equipmentType')">
+          <a-form-item
+            name="equipmentType"
+            label="设备类型"
+            :rules="fieldRequired('equipmentType')"
+            has-feedback
+          >
+            <a-select
+              v-model:value="form.equipmentType"
+              :auto-focus="true"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              placeholder="请选择设备类型"
+              :disabled="fieldDisabled('equipmentType')"
+            >
+              <a-select-option
+                v-for="item in equipmentTypeList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('overhaulRequireCode') && form.accpetType === '2'">
           <a-form-item
             name="overhaulRequireCode"
             label="维修改造单号"
             :rules="fieldRequired('overhaulRequireCode')"
             has-feedback
           >
-            <a-input v-model:value="form.overhaulRequireCode" :disabled="fieldDisabled('overhaulRequireCode')" />
+            <a-input v-model:value="form.overhaulRequireCode" :disabled="fieldDisabled('overhaulRequireCode')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols2">
@@ -345,6 +382,7 @@ const {
   purchWayList,
   fundSourceList,
   famAccpetListEdit,
+  equipmentTypeList,
   fieldVisible,
   fieldDisabled,
   fieldRequired,

@@ -225,7 +225,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item   v-if="annual === '2' "
+            <a-form-item v-if="annual === '2'"
               name="overhaulRequireCode"
               label="维修改造单号"
               has-feedback
@@ -238,7 +238,7 @@
               <a-input
                 v-model:value="form.overhaulRequireCode"
                 @click="overhaulRequireCodeClick"
-                placeholder="请选择维修改造"
+                placeholder="请选择维修改造单号"
               >
                 <template #suffix>
                   <a-tooltip title="Extra information">
@@ -248,8 +248,8 @@
               </a-input>
             </a-form-item>
           </a-col>
-          
-                    
+
+
           <a-col v-bind="colLayout.cols2">
             <a-form-item label="附件">
               <AvicUploader
@@ -480,7 +480,7 @@ function getTreeList() {
 
 /** 获取土地及房屋的id */
 function getParentId() {
-  let id = 'NO';
+  let id = '';
   treeData.value[0].children.map(item => {
     console.log(item)
     if (item.title === '土地房屋') {

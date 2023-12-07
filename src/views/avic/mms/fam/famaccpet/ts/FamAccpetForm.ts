@@ -202,51 +202,55 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(async () => {
-        // 附件密级校验
-        const validateResult = validateUploaderFileSecret();
-        if (!validateResult) {
-          return;
-        }
-        loading.value = true;
-        const postData = proxy.$lodash.cloneDeep(form.value);
-        if (autoCode.value) {
-          // 获取编码码段值
-          postData.accpetApplyNo = autoCode.value.getSegmentValue();
-        }
-
-        if (famAccpetListEdit.value) {
-          const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
-          // 处理数据
-          postData.famAccpetListList = subInfoList; // 挂载子表数据
-        }
-        // 发送请求
-        saveFamAccpet(postData)
-          .then(res => {
-            if (res.success) {
-              if (props.bpmInstanceObject) {
-                bpmButtonParams.value = { params, result: res.data };
-              }
-              if (!form.value.id) {
-                form.value.id = res.data;
-              }
-              uploadFile.value.upload(form.value.id || res.data); // 附件上传
-            } else {
-              loading.value = false;
+        famAccpetListEdit.value
+          .validate(async validate => {
+            if (!validate) return;
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
+              return;
             }
-          })
-          .catch(() => {
-            loading.value = false;
+            loading.value = true;
+            const postData = proxy.$lodash.cloneDeep(form.value);
+            if (autoCode.value) {
+              // 获取编码码段值
+              postData.accpetApplyNo = autoCode.value.getSegmentValue();
+            }
+
+            if (famAccpetListEdit.value) {
+              const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
+              // 处理数据
+              postData.famAccpetListList = subInfoList; // 挂载子表数据
+            }
+            // 发送请求
+            saveFamAccpet(postData)
+              .then(res => {
+                if (res.success) {
+                  if (props.bpmInstanceObject) {
+                    bpmButtonParams.value = { params, result: res.data };
+                  }
+                  if (!form.value.id) {
+                    form.value.id = res.data;
+                  }
+                  uploadFile.value.upload(form.value.id || res.data); // 附件上传
+                } else {
+                  loading.value = false;
+                }
+              })
+              .catch(() => {
+                loading.value = false;
+              });
+            // famAccpetListEdit.value
+            //   .validate(async validate => {
+            //     if (!validate) {
+            //       return;
+            //     }
+            //   })
+            //   .catch(error => {
+            //     console.log('error', error);
+            //     loading.value = false;
+            //   });
           });
-        // famAccpetListEdit.value
-        //   .validate(async validate => {
-        //     if (!validate) {
-        //       return;
-        //     }
-        //   })
-        //   .catch(error => {
-        //     console.log('error', error);
-        //     loading.value = false;
-        //   });
       })
       .catch(error => {
         // 定位校验失败元素

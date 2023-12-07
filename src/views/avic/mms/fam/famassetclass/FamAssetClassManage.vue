@@ -214,6 +214,7 @@ function selectNode(keys: string[], { node }, type) {
 /** 获取列表 */
 function getList1() {
   RightListManageRef.value.getList();
+  getTreeList()
 }
 
 /** 树右键点击事件 */

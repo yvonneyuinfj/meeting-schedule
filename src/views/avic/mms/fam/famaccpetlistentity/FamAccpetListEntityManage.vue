@@ -353,7 +353,6 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
-  debugger
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
