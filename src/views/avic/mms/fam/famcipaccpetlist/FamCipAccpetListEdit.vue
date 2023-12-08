@@ -103,7 +103,6 @@
               'equipNo',
               'invoiceNo',
               'assetSecretLevel',
-              'monthProposed',
               'deviceStandby1',
               'deviceStandby2',
               'deviceStandby3',
@@ -126,6 +125,21 @@
             ></a-input>
           </template>
         </AvicRowEdit>
+
+        <!-- 已提月份-->
+        <AvicRowEdit v-else-if="column.dataIndex === 'monthProposed' &&
+         (props.accpetType === '1' || (props.accpetType === '2' && props.assetClass === '2'))"
+                     :record="record"
+                     :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-month-picker v-model:value="record[column.dataIndex]"
+                            format="YYYY-MM"
+                            placeholder="请选择月份"
+                            valueFormat="YYYY-MM"/>
+          </template>
+        </AvicRowEdit>
+
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetOriginalValue'"
           :record="record"

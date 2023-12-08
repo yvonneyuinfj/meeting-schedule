@@ -33,7 +33,7 @@
               @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
@@ -45,7 +45,7 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
@@ -57,7 +57,7 @@
               @click="event => handleCopy(selectedRowKeys, event)"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               复制
             </a-button>
@@ -74,7 +74,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -103,7 +103,6 @@
               'equipNo',
               'invoiceNo',
               'assetSecretLevel',
-              'monthProposed',
               'deviceStandby1',
               'deviceStandby2',
               'deviceStandby3',
@@ -126,6 +125,21 @@
             ></a-input>
           </template>
         </AvicRowEdit>
+
+        <!-- 已提月份-->
+        <AvicRowEdit v-else-if="column.dataIndex === 'monthProposed' &&
+         (props.accpetType === '1' || (props.accpetType === '2' && props.assetClass === '2'))"
+                     :record="record"
+                     :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-month-picker v-model:value="record[column.dataIndex]"
+                            format="YYYY-MM"
+                            placeholder="请选择月份"
+                            valueFormat="YYYY-MM"/>
+          </template>
+        </AvicRowEdit>
+
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetOriginalValue'"
           :record="record"
@@ -159,7 +173,7 @@
             >
               <template #suffix>
                 <a-tooltip title="Extra information">
-                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                 </a-tooltip>
               </template>
             </a-input>
@@ -208,7 +222,7 @@
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag :value="record.importedOrNotName" :options="importedOrNotList" />
+            <AvicDictTag :value="record.importedOrNotName" :options="importedOrNotList"/>
           </template>
         </AvicRowEdit>
         <AvicRowEdit
@@ -353,7 +367,7 @@
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag :value="record.geographicalAreaName" :options="geographicalAreaList" />
+            <AvicDictTag :value="record.geographicalAreaName" :options="geographicalAreaList"/>
           </template>
         </AvicRowEdit>
 
@@ -381,7 +395,7 @@
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag :value="record.assetsUseName" :options="assetsUseList" />
+            <AvicDictTag :value="record.assetsUseName" :options="assetsUseList"/>
           </template>
         </AvicRowEdit>
 
@@ -415,7 +429,7 @@
           @select="handleSelect"
         >
           <template #icon="{ expanded, dataRef }">
-            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff" />
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
             <AvicIcon
               v-if="!expanded && !dataRef.isLeaf"
               svg="avic-folder-3-fill"
@@ -1425,7 +1439,7 @@ watch(
   () => props.isLand,
   _newV => {
     showTable.value = false;
-    console.log(props.isLand)
+    console.log(props.isLand);
     if (props.isLand) {
       columns.value = [...columns1];
     } else {
