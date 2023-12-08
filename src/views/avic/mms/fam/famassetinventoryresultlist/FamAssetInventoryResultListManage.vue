@@ -43,6 +43,17 @@
               </template>
               删除
             </a-button>
+            <a-button
+              v-hasPermi="['famAssetInventoryResultList:import']"
+              title="导入"
+              type="primary"
+              ghost
+              @click="handleImport">
+              <template #icon>
+                 <import-outlined />
+              </template>
+              导入
+            </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -70,6 +81,15 @@
         </template>
       </AvicTable>
     </div>
+    <AvicExcelImport
+      v-if="showImportModal"
+      :formData="excelParams"
+      title="单表模板导入"
+      importUrl="/mms/fam/famassetinventoryresultlists/importData/v1"
+      downloadTemplateUrl="/mms/fam/famassetinventoryresultlists/downloadTemplate/v1"
+      @reloadData="getList"
+      @close="showImportModal = false"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -223,7 +243,9 @@ const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
+const showImportModal = ref(false); // 是否展示导入弹窗
 const delLoading = ref(false);
+const excelParams = ref({ tableName: 'famAssetInventoryResultList', inventoryResultId: '' });
 const totalPage = ref(0);
 const secretLevelList = ref([]); // SECRET_LEVEL通用代码
 const inventoryResultsList = ref([]); // 盘点结果（正常/盘盈/盘亏）通用代码
@@ -269,6 +291,15 @@ function handleKeyWordQuery (value) {
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
+}
+/** 导入 */
+function handleImport () {
+  if (props.mainId == '') {
+    proxy.$message.warning('请选择一条主数据');
+    return;
+  }
+  excelParams.value.inventoryResultId = props.mainId;
+  showImportModal.value = true;
 }
 /** 子表删除 */
 function handleDelete (ids, type) {
@@ -342,4 +373,3 @@ watch(
   { immediate: true }
 );
 </script>
-
