@@ -69,9 +69,9 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="procureDeptName" label="采购部门名称" has-feedback>
+            <a-form-item name="procureDeptId" label="采购部门名称" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.procureDeptName"
+                v-model:value="form.procureDeptId"
                 type="deptSelect"
                 placeholder="请选择采购部门名称"
               />
@@ -180,11 +180,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonName" label="经办人名称" has-feedback>
+            <a-form-item name="handlePersonId" label="经办人名称" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.handlePersonName"
+                v-model:value="form.handlePersonId"
                 type="userSelect"
-                :defaultShowValue="form.handlePersonNameAlias"
+                :defaultShowValue="form.handlePersonIdAlias"
                 placeholder="请选择经办人名称"
               />
             </a-form-item>
@@ -263,7 +263,7 @@
                 :allow-delete="true"
                 :allow-update-secret-level="true"
                 :form-id="form.id"
-                table-name="FAM_ACCPET"
+                table-name="FAM_ACCPET_ENTITY"
                 @afterUpload="afterUploadEvent"
               />
             </a-form-item>
@@ -345,8 +345,8 @@ const props = defineProps({
 
 onMounted(() => {
   getTreeList();
-  form.value.handlePersonName = proxy.$getLoginUser().id;
-  form.value.handlePersonNameAlias = proxy.$getLoginUser().name;
+  form.value.handlePersonId = proxy.$getLoginUser().id;
+  form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
   form.value.assetClass = '2'
 });
 const famOverhaulRequireSelect = ref(null);

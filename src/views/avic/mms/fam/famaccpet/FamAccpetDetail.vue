@@ -86,18 +86,18 @@
             <a-input v-model:value="form.orderValue" :disabled="fieldDisabled('orderValue')"/>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('procureDeptName')">
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('procureDeptId')">
           <a-form-item
-            name="procureDeptName"
+            name="procureDeptId"
             label="采购部门名称"
-            :rules="fieldRequired('procureDeptName')"
+            :rules="fieldRequired('procureDeptId')"
             has-feedback
           >
             <AvicCommonSelect
-              v-model:value="form.procureDeptName"
+              v-model:value="form.procureDeptId"
               type="deptSelect"
-              :defaultShowValue="form.procureDeptNameAlias"
-              :disabled="fieldDisabled('procureDeptName')"
+              :defaultShowValue="form.procureDeptIdAlias"
+              :disabled="fieldDisabled('procureDeptId')"
             />
           </a-form-item>
         </a-col>
@@ -235,18 +235,18 @@
             <a-input v-model:value="form.projectName" :disabled="fieldDisabled('projectName')"/>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonName')">
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
           <a-form-item
-            name="handlePersonName"
+            name="handlePersonId"
             label="经办人名称"
-            :rules="fieldRequired('handlePersonName')"
+            :rules="fieldRequired('handlePersonId')"
             has-feedback
           >
             <AvicCommonSelect
-              v-model:value="form.handlePersonName"
+              v-model:value="form.handlePersonId"
               type="userSelect"
-              :defaultShowValue="form.handlePersonNameAlias"
-              :disabled="fieldDisabled('handlePersonName')"
+              :defaultShowValue="form.handlePersonIdAlias"
+              :disabled="fieldDisabled('handlePersonId')"
             />
           </a-form-item>
         </a-col>

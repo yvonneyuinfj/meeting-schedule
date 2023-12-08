@@ -68,12 +68,12 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="procureDeptName" label="采购部门名称" has-feedback>
+            <a-form-item name="procureDeptId" label="采购部门名称" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.procureDeptName"
+                v-model:value="form.procureDeptId"
                 type="deptSelect"
                 placeholder="请选择采购部门名称"
-                :defaultShowValue="form.procureDeptNameAlias"
+                :defaultShowValue="form.procureDeptIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -183,12 +183,12 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="handlePersonName" label="经办人名称" has-feedback>
+            <a-form-item name="handlePersonId" label="经办人名称" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.handlePersonName"
+                v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择经办人名称"
-                :defaultShowValue="form.handlePersonNameAlias"
+                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>

@@ -1,11 +1,11 @@
 import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 const basePath = '/mms/fam/famcipaccpetlists';
-/** FAM_CIP_ACCPET_LIST */
-export interface FamCipAccpetListDto extends BaseBeanModel {
-  /** SECRET_LEVEL */
+/** FAM_ACCPET_LIST */
+export interface FamAccpetListDto extends BaseBeanModel {
+  /** 数据密级 */
   secretLevel?: any;
-  /** NOTE */
+  /** 备注 */
   note?: string;
   /** ATTRIBUTE_01 */
   attribute01?: string;
@@ -80,26 +80,23 @@ export interface FamCipAccpetListDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listFamCipAccpetListByPage (
+export function listFamAccpetListByPage (
   param: QueryParamModel
-): Promise<ResponsePageData<FamCipAccpetListDto>> {
+): Promise<ResponsePageData<FamAccpetListDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getFamCipAccpetList (id: string): Promise<ResponseBaseData<FamCipAccpetListDto>> {
+export function getFamAccpetList (id: string): Promise<ResponseBaseData<FamAccpetListDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamCipAccpetList (form: FamCipAccpetListDto): Promise<ResponseBaseData<any>> {
+export function saveFamAccpetList (form: FamAccpetListDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delFamCipAccpetList (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delFamAccpetList (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
-
-
-

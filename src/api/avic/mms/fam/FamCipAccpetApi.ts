@@ -4,11 +4,12 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/fam/famcipaccpets';
-/** FAM_CIP_ACCPET */
+const treePath = '/mms/fam/famassetclasss';
+/** FAM_ACCPET */
 export interface FamCipAccpetDto extends BaseBeanModel {
-  /** SECRET_LEVEL */
+  /** 数据密级 */
   secretLevel?: any;
-  /** NOTE */
+  /** 备注 */
   note?: string;
   /** ATTRIBUTE_01 */
   attribute01?: string;
@@ -32,7 +33,7 @@ export interface FamCipAccpetDto extends BaseBeanModel {
   attribute10?: string;
   /** 验收申请单号 */
   accpetApplyNo?: any;
-  /** 验收类型（新增/改造） */
+  /** 验收类型 */
   accpetType?: any;
   /** 合同名称 */
   orderName?: string;
@@ -42,23 +43,27 @@ export interface FamCipAccpetDto extends BaseBeanModel {
   orderValue?: string;
   /** 采购部门id */
   procureDeptId?: string;
-  procureDeptIdAlias?: string;
   /** 采购部门名称 */
   procureDeptName?: string;
+  procureDeptIdAlias?: string;
   /** 验收日期 */
   accpetDate?: any;
   accpetDateBegin?: any;
   accpetDateEnd?: any;
   /** 主管部门id */
   managerDeptId?: string;
-  managerDeptIdAlias?: string;
   /** 主管部门名称 */
   managerDeptName?: string;
+  managerDeptNameAlias?: string;
   /** 接收部门ID */
   receiveDeptId?: string;
-  receiveDeptIdAlias?: string;
   /** 接收部门名称 */
   receiveDeptName?: string;
+  receiveDeptNameAlias?: string;
+  /** 设备类型 */
+  equipmentType?: string;
+  /** 资产类别 */
+  assetClasst?: string;
   /** 资产类别 */
   assetClass?: string;
   /** 资金来源 */
@@ -71,9 +76,9 @@ export interface FamCipAccpetDto extends BaseBeanModel {
   projectName?: string;
   /** 经办人id */
   handlePersonId?: string;
-  handlePersonIdAlias?: string;
   /** 经办人名称 */
   handlePersonName?: string;
+  handlePersonIdAlias?: string;
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */
@@ -81,26 +86,28 @@ export interface FamCipAccpetDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listFamCipAccpetByPage(param: QueryParamModel): Promise<ResponsePageData<FamCipAccpetDto>> {
+export function listFamAccpetByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<FamCipAccpetDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getFamCipAccpet (id: string): Promise<ResponseBaseData<FamCipAccpetDto>> {
+export function getFamAccpet(id: string): Promise<ResponseBaseData<FamCipAccpetDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamCipAccpet (form: FamCipAccpetDto): Promise<ResponseBaseData<any>> {
+export function saveFamAccpet(form: FamCipAccpetDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,
@@ -109,10 +116,15 @@ export function saveFormAndStartProcess({
 }
 
 /** 根据id集合删除数据 */
-export function delFamCipAccpet(ids: [string]): Promise<ResponseBaseData<any>> {
+export function delFamAccpet(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
+
+/** 根据资产类型名称返回父节点 */
+export function getTreeParent(id: string): Promise<ResponseBaseData<FamCipAccpetDto>> {
+  return request.get(treePath + '/getTreeTd/' + id + '/v1');
+}
 /** 导出Excel */
 export function exportExcel(param) {
   const download = {

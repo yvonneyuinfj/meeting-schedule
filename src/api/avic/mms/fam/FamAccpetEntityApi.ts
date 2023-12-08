@@ -45,7 +45,7 @@ export interface FamAccpetDto extends BaseBeanModel {
   procureDeptId?: string;
   /** 采购部门名称 */
   procureDeptName?: string;
-  procureDeptNameAlias?: string;
+  procureDeptIdAlias?: string;
   /** 验收日期 */
   accpetDate?: any;
   accpetDateBegin?: any;
@@ -78,7 +78,7 @@ export interface FamAccpetDto extends BaseBeanModel {
   handlePersonId?: string;
   /** 经办人名称 */
   handlePersonName?: string;
-  handlePersonNameAlias?: string;
+  handlePersonIdAlias?: string;
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */

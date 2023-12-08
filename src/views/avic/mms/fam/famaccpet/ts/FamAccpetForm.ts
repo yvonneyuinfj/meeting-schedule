@@ -3,7 +3,6 @@ import {
   getFamAccpet,
   saveFamAccpet,
   saveFormAndStartProcess,
-  getTreeParent
 } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
 
 import {
@@ -385,7 +384,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   }
 
   /** 附件上传完之后的回调函数 */
-  function afterUploadEvent(successFile, errorFile) {
+  function afterUploadEvent(_successFile, errorFile) {
     if (errorFile.length > 0) {
       // 有附件保存失败的处理
       errorCallback();
