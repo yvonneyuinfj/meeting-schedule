@@ -90,7 +90,6 @@
             <a-form-item name="assetClass" label="资产属性" has-feedback>
               <a-select
                 v-model:value="form.assetClass"
-                disabled
                 :auto-focus="true"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"

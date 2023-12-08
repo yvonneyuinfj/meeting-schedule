@@ -614,11 +614,6 @@ const columns1 = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -637,11 +632,6 @@ const columns1 = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -679,11 +669,6 @@ const columns1 = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -693,11 +678,6 @@ const columns1 = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1021,8 +1001,8 @@ const validateRules = {
   equipClass: [{ required: props.isLand, message: '设备大类列不能为空' }],
   assetName: [{ required: true, message: '资产名称不能为空' }],
   assetModel: [{ required: true, message: '资产型号不能为空' }],
-  assetUnit: [{ required: true, message: '资产单价列不能为空' }],
-  assetOriginalValue: [{ required: true, message: '资产原值不能为空' }],
+  // assetUnit: [{ required: true, message: '资产单价列不能为空' }],
+  // assetOriginalValue: [{ required: true, message: '资产原值不能为空' }],
   installLocation: [{ required: true, message: '存放地点列不能为空' }],
   liablePerson: [{ required: true, message: '责任人不能为空' }],
   invoiceNo: [{ required: true, message: '发票号不能为空' }],

@@ -77,6 +77,13 @@
             >
               删除
             </a-button>
+            <a-button
+              type="link"
+              class="inner-btn"
+              @click="handleDelete([record.id], 'row')"
+            >
+              附件
+            </a-button>
           </template>
         </template>
       </AvicTable>
