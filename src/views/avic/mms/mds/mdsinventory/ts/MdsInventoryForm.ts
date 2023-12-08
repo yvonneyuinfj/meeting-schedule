@@ -132,7 +132,7 @@ export function useMdsInventoryForm({
   function closeModal() {
     emit('close');
   }
-  /**获取项目类型信息*/
+  /**获取库房类型信息*/
   const queryForm = ref<MdsInventoryTypeDto>({});
   const queryParam = reactive({
     // 请求表格数据参数
@@ -159,7 +159,7 @@ export function useMdsInventoryForm({
         }
       })
       .catch(() => {
-        proxy.$message.warning('获取项目类型失败！');
+        proxy.$message.warning('获取库房类型失败！');
         loading.value = false;
       });
   }

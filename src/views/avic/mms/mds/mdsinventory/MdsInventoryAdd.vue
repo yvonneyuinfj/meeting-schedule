@@ -57,7 +57,7 @@
               <a-select v-model:value="form.mdsInventoryTypeId"
                 :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
                 :show-search="true" :allow-clear="true" placeholder="请选择库房类别 ">
-                <a-select-option v-for="item in mdsInventoryTypeIdList" :key="item.id" :value="item.invTypeCode">
+                  <a-select-option v-for="item in mdsInventoryTypeIdList" :key="item.id" :value="item.id">
                   {{ item.invTypeCode }}
                 </a-select-option>
               </a-select>
