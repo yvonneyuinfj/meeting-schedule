@@ -52,3 +52,8 @@ export function exportExcel (param: any) {
   } as downloadParam;
   return downloadSysFile(download);
 }
+/**获取所有客户类型 */
+export function getMdsCustomerTypeAll(param: QueryParamModel
+): Promise<ResponsePageData<MdsCustomerTypeDto>> {
+  return request.post(basePath + '/search-by-page/v1', param);
+}
