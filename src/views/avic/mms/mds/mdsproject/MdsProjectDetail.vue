@@ -172,55 +172,55 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-                <a-form-item name="mdsCustomerId" label="客户">
-                  <a-input v-model:value="form.mdsCustomerIdAlias" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyUserId" label="申请人">
-              <AvicCommonSelect v-model:value="form.applyUserId" type="userSelect"
-                :defaultShowValue="form.applyUserIdAlias" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyUserCode" label="申请人编码">
-              <a-input v-model:value="form.applyUserCode" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyUserName" label="申请人名称">
-              <a-input v-model:value="form.applyUserName" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyedDeptId" label="申请部门">
-              <AvicCommonSelect v-model:value="form.applyedDeptId" type="deptSelect"
-                :defaultShowValue="form.applyedDeptIdAlias" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyedDeptCode" label="申请部门编码">
-              <a-input v-model:value="form.applyedDeptCode" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyedDeptName" label="申请部门名称">
-              <a-input v-model:value="form.applyedDeptName" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="balanceFlag" label="是否按项目号平衡">
-              <a-select v-model:value="form.balanceFlag" :get-popup-container="(triggerNode) => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" disabled>
-                <a-select-option v-for="item in balanceFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="proMdsItemId" label="产品ID">
-              <a-input v-model:value="form.proMdsItemId" disabled />
+              <a-form-item name="mdsCustomerId" label="客户">
+                <a-input v-model:value="form.mdsCustomerIdAlias" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="applyUserId" label="申请人">
+                <AvicCommonSelect v-model:value="form.applyUserId" type="userSelect"
+                  :defaultShowValue="form.applyUserIdAlias" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyUserCode" label="申请人编码">
+                <a-input v-model:value="form.applyUserCode" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyUserName" label="申请人名称">
+                <a-input v-model:value="form.applyUserName" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="applyedDeptId" label="申请部门">
+                <AvicCommonSelect v-model:value="form.applyedDeptId" type="deptSelect"
+                  :defaultShowValue="form.applyedDeptIdAlias" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyedDeptCode" label="申请部门编码">
+                <a-input v-model:value="form.applyedDeptCode" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyedDeptName" label="申请部门名称">
+                <a-input v-model:value="form.applyedDeptName" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="balanceFlag" label="是否按项目号平衡">
+                <a-select v-model:value="form.balanceFlag" :get-popup-container="(triggerNode) => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" disabled>
+                  <a-select-option v-for="item in balanceFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="proMdsItemId" label="产品">
+                <a-input v-model:value="form.proMdsItemIdAlias" disabled />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">

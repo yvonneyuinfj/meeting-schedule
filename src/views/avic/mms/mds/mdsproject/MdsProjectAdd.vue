@@ -174,7 +174,8 @@
           <a-col v-bind="colLayout.cols">
               <a-form-item name="mdsCustomerId" label="客户">
                 <a-input v-model:value="form.mdsCustomerIdAlias" :maxLength="64" placeholder="请选择客户" :readonly="true"
-                  @click="handleOpen"><template #suffix>
+                  @click="handleOpen">
+                  <template #suffix>
                     <a-tooltip title="客户">
                       <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
                     </a-tooltip>
@@ -224,8 +225,15 @@
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
-              <a-form-item name="proMdsItemId" label="产品ID">
-                <a-input v-model:value="form.proMdsItemId" :maxLength="64" placeholder="请输入产品ID" />
+              <a-form-item name="proMdsItemId" label="产品">
+                <a-input v-model:value="form.proMdsItemIdAlias" :maxLength="64" placeholder="请输入产品" :readonly="true"
+                  @click="proMdsItemOpen">
+                  <template #suffix>
+                    <a-tooltip title="产品">
+                      <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    </a-tooltip>
+                  </template>
+                </a-input>
               </a-form-item>
             </a-col>
             <a-col v-bind="colLayout.cols">
@@ -315,11 +323,19 @@
           </Mds-customer-select>
         </div>
       </a-modal>
+      <!--选择产品弹窗-->
+      <a-modal :visible="openMdsItem" title="选择产品" @ok="handleOk2" @cancel="handleCancel2" width="80%" style="top: 20px">
+        <div style="height: 400px;overflow: auto">
+          <Mds-item-select ref="mdsItemSelect">
+          </Mds-item-select>
+        </div>
+      </a-modal>
   </AvicModal>
 </template>
 <script lang="ts" setup>
 import { useMdsProjectForm, emits } from './ts/MdsProjectForm'; // 引入表单ts
 import MdsCustomerSelect from './MdsCustomerSelect.vue'; // 引入弹窗选择页
+import MdsItemSelect from './MdsItemSelect.vue'; // 引入产品弹窗选择页
 const props = defineProps({
   formId: {
     type: String,
@@ -328,13 +344,22 @@ const props = defineProps({
 });
 const open = ref<boolean>(false);
 const mdsCustomerSelect = ref(null);
+const openMdsItem = ref<boolean>(false);
+const mdsItemSelect = ref(null);
 /** 选择客户 */
 function handleOpen() {
   open.value = true;
 }
+/** 选择产品 */
+function proMdsItemOpen() {
+  openMdsItem.value = true;
+}
 
 const handleCancel = () => {
   open.value = false;
+};
+const handleCancel2 = () => {
+  openMdsItem.value = false;
 };
 
 const handleOk = () => {
@@ -342,6 +367,13 @@ const handleOk = () => {
   form.value.mdsCustomerId = info.id;
   form.value.mdsCustomerIdAlias = info.customerName;
   open.value = false;
+};
+
+const handleOk2 = () => {
+  const info = mdsItemSelect.value.info;
+  form.value.proMdsItemId = info.id;
+  form.value.proMdsItemIdAlias = info.itemName;
+  openMdsItem.value = false;
 };
 import dayjs from 'dayjs';
 const currentTime = ref(dayjs().format('YYYY-MM-DD'));

@@ -89,6 +89,7 @@ export interface MdsProjectDto extends BaseBeanModel {
   balanceFlag?: any;
   /** 产品ID */
   proMdsItemId?: string;
+  proMdsItemIdAlias?: string;
   /** 有效标识 */
   validFlag?: any;
   /** 备注 */
