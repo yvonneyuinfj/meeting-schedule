@@ -207,7 +207,9 @@ export function useMdsCustomerForm({
     emit('close');
   }
   /**获取客户类型信息*/
-  const queryForm = ref<MdsCustomerTypeDto>({});
+  const queryForm = ref<MdsCustomerTypeDto>({
+    validFlag: '1'
+  });
   const queryParam = reactive({
     // 请求表格数据参数
     pageParameter: {
