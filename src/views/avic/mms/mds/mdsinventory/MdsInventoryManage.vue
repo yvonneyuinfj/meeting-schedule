@@ -24,35 +24,37 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="库房是否有效 ">
-              <a-input v-model:value="queryForm.validFlag" placeholder="请输入库房是否有效 " :allow-clear="true"
-                @pressEnter="handleQuery" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="库房所属部门ID">
-              <a-input v-model:value="queryForm.inventoryDeptId" placeholder="请输入库房所属部门ID" :allow-clear="true"
-                @pressEnter="handleQuery" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="库房所属部门编码">
-              <a-input v-model:value="queryForm.inventoryDeptCode" placeholder="请输入库房所属部门编码" :allow-clear="true"
-                @pressEnter="handleQuery" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="库房所属部门名称">
-              <a-input v-model:value="queryForm.inventoryDeptName" placeholder="请输入库房所属部门名称" :allow-clear="true"
-                @pressEnter="handleQuery" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="联系人ID">
-              <a-input v-model:value="queryForm.contactUserId" placeholder="请输入联系人ID" :allow-clear="true"
-                @pressEnter="handleQuery" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-select v-model:value="queryForm.validFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
+                      option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择库房是否有效">
+                      <a-select-option v-for="item in validFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                        {{ item.lookupName }}
+                      </a-select-option>
+                    </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-form-item label="库房所属部门">
+                <AvicCommonSelect v-model:value="queryForm.inventoryDeptId" type="deptSelect" placeholder="库房所属部门" />
+              </a-form-item>
+            </a-col>
+            <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
+        <a-form-item label="库房所属部门编码">
+          <a-input v-model:value="queryForm.inventoryDeptCode" placeholder="请输入库房所属部门编码" :allow-clear="true"
+            @pressEnter="handleQuery" />
+        </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-show="advanced">
+        <a-form-item label="库房所属部门名称">
+          <a-input v-model:value="queryForm.inventoryDeptName" placeholder="请输入库房所属部门名称" :allow-clear="true"
+            @pressEnter="handleQuery" />
+        </a-form-item>
+        </a-col> -->
+            <a-col v-bind="colLayout.cols" v-show="advanced">
+              <a-form-item label="联系人">
+                <AvicCommonSelect v-model:value="queryForm.contactUserId" type="userSelect" placeholder="请选择联系人" />
+              </a-form-item>
+            </a-col>
+                        <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="联系人编码">
               <a-input v-model:value="queryForm.contactUserCode" placeholder="请输入联系人编码" :allow-clear="true"
                 @pressEnter="handleQuery" />
@@ -75,34 +77,34 @@
               <a-input v-model:value="queryForm.note" placeholder="请输入备注 ^" :allow-clear="true"
                 @pressEnter="handleQuery" />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="业务类型">
-              <a-select v-model:value="queryForm.transactionType"
-                :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
-                :show-search="true" :allow-clear="true" placeholder="请选择业务类型">
-                <a-select-option v-for="item in transactionTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="质量状态">
-              <a-select v-model:value="queryForm.quanlityType"
-                :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
-                :show-search="true" :allow-clear="true" placeholder="请选择质量状态">
-                <a-select-option v-for="item in quanlityTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="密级 ^ 通用代码MMS_DATA_SECRET_LEVEL">
-              <a-select v-model:value="queryForm.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true"
-                placeholder="请选择密级 ^ 通用代码MMS_DATA_SECRET_LEVEL">
+          </a-col> -->
+                        <a-col v-bind="colLayout.cols" v-show="advanced">
+                          <a-form-item label="业务类型">
+                            <a-select v-model:value="queryForm.transactionType"
+                              :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                              :show-search="true" :allow-clear="true" placeholder="请选择业务类型">
+                              <a-select-option v-for="item in transactionTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                                {{ item.lookupName }}
+                              </a-select-option>
+                            </a-select>
+                          </a-form-item>
+                        </a-col>
+                        <a-col v-bind="colLayout.cols" v-show="advanced">
+                          <a-form-item label="质量状态">
+                            <a-select v-model:value="queryForm.quanlityType"
+                              :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                              :show-search="true" :allow-clear="true" placeholder="请选择质量状态">
+                              <a-select-option v-for="item in quanlityTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                                {{ item.lookupName }}
+                              </a-select-option>
+                            </a-select>
+                          </a-form-item>
+                        </a-col>
+                        <a-col v-bind="colLayout.cols" v-show="advanced">
+                          <a-form-item label="密级 ">
+                            <a-select v-model:value="queryForm.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
+                              option-filter-prop="children" :show-search="true" :allow-clear="true"
+                              placeholder="请选择密级">
                 <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
                   {{ item.lookupName }}
                 </a-select-option>
@@ -287,7 +289,7 @@ const columns = [
   },
   {
     title: '库房是否有效 ',
-    dataIndex: 'validFlag',
+    dataIndex: 'validFlagName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -444,11 +446,13 @@ const totalPage = ref(0);
 const mdsInventoryTypeIdList = ref([]); // 库房类别 通用代码
 const transactionTypeList = ref([]); // 业务类型通用代码
 const quanlityTypeList = ref([]); // 质量状态通用代码
+const validFlagList = ref([]); // 是否有效通用代码
 const secretLevelList = ref([]); // 密级 ^ 通用代码MMS_DATA_SECRET_LEVEL通用代码
 const lookupParams = [
   { fieldName: 'mdsInventoryTypeId', lookUpType: 'MDS_INVENTORY_TYPE' },
   { fieldName: 'transactionType', lookUpType: 'MDS_TRANSACTION_TYPE' },
-  { fieldName: 'quanlityType', lookUpType: 'MDS_QUANLITY_TYPE' }
+  { fieldName: 'quanlityType', lookUpType: 'MDS_QUANLITY_TYPE' },
+  { fieldName: 'validFlag', lookUpType: 'PLATFORM_VALID_FLAG' }
 ];
 
 onMounted(() => {
@@ -482,6 +486,7 @@ function getLookupList() {
     mdsInventoryTypeIdList.value = result.mdsInventoryTypeId;
     transactionTypeList.value = result.transactionType;
     quanlityTypeList.value = result.quanlityType;
+    validFlagList.value = result.validFlag;
   });
 }
 /** 获取当前用户对应的文档密级 */

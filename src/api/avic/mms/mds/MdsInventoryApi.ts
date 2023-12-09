@@ -21,6 +21,8 @@ export interface MdsInventoryDto extends BaseBeanModel {
   mdsInventoryTypeId?: any;
   /** 库房是否有效  */
   validFlag?: string;
+  /** 库房是否有效  */
+  validFlagName?: string;
   /** 库房所属部门ID */
   inventoryDeptId?: string;
   /** 库房所属部门编码 */

@@ -233,7 +233,7 @@ const columns = [
   },
   {
     title: '库房是否有效 ',
-    dataIndex: 'validFlag',
+    dataIndex: 'validFlagName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -337,7 +337,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '密级 ^ 通用代码MMS_DATA_SECRET_LEVEL',
+    title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
@@ -386,10 +386,12 @@ const mdsInventoryTypeIdList = ref([]); // 库房类别 通用代码
 const transactionTypeList = ref([]); // 业务类型通用代码
 const quanlityTypeList = ref([]); // 质量状态通用代码
 const secretLevelList = ref([]); // 密级 ^ 通用代码MMS_DATA_SECRET_LEVEL通用代码
+const validFlagList = ref([]); // 是否有效通用代码
 const lookupParams = [
   { fieldName: 'mdsInventoryTypeId', lookUpType: 'MDS_INVENTORY_TYPE' },
   { fieldName: 'transactionType', lookUpType: 'MDS_TRANSACTION_TYPE' },
-  { fieldName: 'quanlityType', lookUpType: 'MDS_QUANLITY_TYPE' }
+  { fieldName: 'quanlityType', lookUpType: 'MDS_QUANLITY_TYPE' },
+  { fieldName: 'validFlag', lookUpType: 'PLATFORM_VALID_FLAG' }
 ];
 
 onMounted(() => {
@@ -423,6 +425,7 @@ function getLookupList() {
     mdsInventoryTypeIdList.value = result.mdsInventoryTypeId;
     transactionTypeList.value = result.transactionType;
     quanlityTypeList.value = result.quanlityType;
+    validFlagList.value = result.validFlag;
   });
 }
 /** 获取当前用户对应的文档密级 */

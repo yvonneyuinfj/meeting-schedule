@@ -55,63 +55,63 @@
               <a-select v-model:value="form.mdsInventoryTypeId"
                 :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
                 :show-search="true" :allow-clear="true" placeholder="请选择库房类别 ">
-                <a-select-option v-for="item in mdsInventoryTypeIdList" :key="item.sysLookupTlId"
-                  :value="item.invTypeCode">
-                  {{ item.invTypeCode }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="validFlag" label="库房是否有效 " has-feedback>
-              <a-select v-model:value="form.validFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择库房是否有效">
-                <a-select-option v-for="item in validFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="inventoryDeptId" label="库房所属部门" has-feedback>
-              <AvicCommonSelect v-model:value="form.inventoryDeptId" type="deptSelect" placeholder="库房所属部门"
-                :defaultShowValue="form.inventoryDeptName" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="inventoryDeptCode" label="库房所属部门编码">
-              <a-input v-model:value="form.inventoryDeptCode" :maxLength="64" placeholder="请输入库房所属部门编码" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="inventoryDeptName" label="库房所属部门名称">
-              <a-input v-model:value="form.inventoryDeptName" :maxLength="128" placeholder="请输入库房所属部门名称" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="contactUserId" label="联系人">
-              <AvicCommonSelect v-model:value="form.contactUserId" type="userSelect" placeholder="请选择联系人"
-                :defaultShowValue="form.contactUserName" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="contactUserCode" label="联系人编码">
-              <a-input v-model:value="form.contactUserCode" :maxLength="64" placeholder="请输入联系人编码" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="contactUserName" label="联系人姓名">
-              <a-input v-model:value="form.contactUserName" :maxLength="128" placeholder="请输入联系人姓名" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="contactTel" label="联系电话 ^">
-              <a-input v-model:value="form.contactTel" :maxLength="32" placeholder="请输入联系电话 ^" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="note" label="备注">
-              <a-input v-model:value="form.note" :maxLength="2048" placeholder="请输入备注 ^" />
+                    <a-select-option v-for="item in mdsInventoryTypeIdList" :key="item.id"
+                      :value="item.id">
+                    {{ item.invTypeCode }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="validFlag" label="库房是否有效 " has-feedback>
+                <a-select v-model:value="form.validFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择库房是否有效">
+                  <a-select-option v-for="item in validFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="inventoryDeptId" label="库房所属部门" has-feedback>
+                <AvicCommonSelect v-model:value="form.inventoryDeptId" type="deptSelect" placeholder="库房所属部门"
+                  :defaultShowValue="form.inventoryDeptName" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="inventoryDeptCode" label="库房所属部门编码">
+                <a-input v-model:value="form.inventoryDeptCode" :maxLength="64" placeholder="请输入库房所属部门编码" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="inventoryDeptName" label="库房所属部门名称">
+                <a-input v-model:value="form.inventoryDeptName" :maxLength="128" placeholder="请输入库房所属部门名称" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="contactUserId" label="联系人">
+                <AvicCommonSelect v-model:value="form.contactUserId" type="userSelect" placeholder="请选择联系人"
+                  :defaultShowValue="form.contactUserName" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="contactUserCode" label="联系人编码">
+                <a-input v-model:value="form.contactUserCode" :maxLength="64" placeholder="请输入联系人编码" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="contactUserName" label="联系人姓名">
+                <a-input v-model:value="form.contactUserName" :maxLength="128" placeholder="请输入联系人姓名" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="contactTel" label="联系电话 ^">
+                <a-input v-model:value="form.contactTel" :maxLength="32" placeholder="请输入联系电话" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="note" label="备注">
+                <a-input v-model:value="form.note" :maxLength="2048" placeholder="请输入备注" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
