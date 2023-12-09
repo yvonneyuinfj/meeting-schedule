@@ -717,7 +717,7 @@ const columns = [
   },
   {
     title: '客户类型',
-    dataIndex: 'mdsCustomerTypeId',
+    dataIndex: 'mdsCustomerTypeIdName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -726,7 +726,7 @@ const columns = [
   },
   {
     title: '客户ID',
-    dataIndex: 'mdsCustomerId',
+    dataIndex: 'mdsCustomerIdName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,

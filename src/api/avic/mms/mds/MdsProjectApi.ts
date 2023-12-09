@@ -70,6 +70,7 @@ export interface MdsProjectDto extends BaseBeanModel {
   mdsCustomerTypeId?: string;
   /** 客户ID */
   mdsCustomerId?: string;
+  mdsCustomerIdAlias?: string;
   /** 申请人 */
   applyUserId?: string;
   applyUserIdAlias?: string;

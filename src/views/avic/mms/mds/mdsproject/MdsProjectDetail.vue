@@ -172,8 +172,8 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="mdsCustomerId" label="客户ID">
-              <a-input v-model:value="form.mdsCustomerId" disabled />
+                <a-form-item name="mdsCustomerId" label="客户">
+                  <a-input v-model:value="form.mdsCustomerIdAlias" disabled />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
