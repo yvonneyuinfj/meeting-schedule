@@ -126,12 +126,21 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="结存数量">
-              <a-input
+            <!--  <a-input
                 v-model:value="queryForm.currentOnhandQty"
                 placeholder="请输入结存数量"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
-              />
+              /> -->
+              <a-select
+                    v-model:value="queryForm.currentOnhandQty"
+                    placeholder='请选择结存数量'
+                    @change="handleQuery"
+                  >
+                    <a-select-option value="大于0">大于0</a-select-option>
+                    <a-select-option value="等于0">等于0</a-select-option>
+                    <a-select-option value="全部">全部</a-select-option>
+                  </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
@@ -177,14 +186,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="材料状态">
+            <a-form-item label="物料状态">
               <a-select
                 v-model:value="queryForm.materialStatus"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择材料状态"
+                placeholder="请选择物料状态"
               >
                 <a-select-option
                   v-for="item in materialStatusList"
@@ -253,14 +262,25 @@
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="质量凭证">
-              <a-input
+              <a-select
                 v-model:value="queryForm.qualityCertificate"
-                placeholder="请输入质量凭证"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
                 :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
+                placeholder="请选择质量凭证"
+              >
+                <a-select-option
+                  v-for="item in qualityCertificateList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
+          
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="生产单位">
               <AvicCommonSelect
@@ -592,7 +612,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '材料状态',
+    title: '物料状态',
     dataIndex: 'materialStatusName',
     ellipsis: true,
     minWidth: 120,
@@ -718,11 +738,21 @@ const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
+const inputBasisList = ref([]);
+const materialStatusList = ref([]);
+const qualityCertificateList = ref([]);
+const mdsCustomerTypeIdList = ref([]);
+const planBasisList = ref([]);
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
+  {  fieldName: 'planBasis', lookUpType: 'WMS_PLAN_BASIS' },
+  {  fieldName: 'inputBasis', lookUpType: 'WMS_INPUT_BASIS' },
+  {  fieldName: 'mdsCustomerTypeId', lookUpType: 'WMS_CUSTOMER_TYPE_ID' },
+  {  fieldName: 'materialStatus', lookUpType: 'WMS_MATERIAL_STATUS' },
+  {  fieldName: 'qualityCertificate', lookUpType: 'WMS_QUALITY_CERTIFICATE' },
 ];
 
 onMounted(() => {
@@ -753,6 +783,11 @@ function getList () {
 /** 获取通用代码  */
 function getLookupList () {
   proxy.$getLookupByType(lookupParams, result => {
+      planBasisList.value = result.planBasis
+      inputBasisList.value = result.inputBasis
+      mdsCustomerTypeIdList.value  = result.mdsCustomerTypeId
+      materialStatusList.value  = result.materialStatus
+      qualityCertificateList.value =  result.qualityCertificate
   });
 }
 /** 获取当前用户对应的文档密级 */
@@ -863,4 +898,3 @@ function handleTableChange (pagination, filters, sorter) {
 }
 
 </script>
-

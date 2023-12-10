@@ -688,8 +688,10 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
+const mdsInvOperationTypeList = ref([]);
 const secretLevelList = ref([]); // 密级 ^ 通用代码MMS_DATA_SECRET_LEVEL通用代码
 const lookupParams = [
+    {  fieldName: 'mdsInvOperationType', lookUpType: 'FAM_ACCPET_TYPE' }
 ];
 
 onMounted(() => {
@@ -718,6 +720,7 @@ function getList () {
 /** 获取通用代码  */
 function getLookupList () {
   proxy.$getLookupByType(lookupParams, result => {
+    mdsInvOperationTypeList.value  = result. mdsInvOperationType
   });
 }
 /** 高级查询 查询按钮操作 */
@@ -820,4 +823,3 @@ function handleTableChange (pagination, filters, sorter) {
 }
 
 </script>
-
