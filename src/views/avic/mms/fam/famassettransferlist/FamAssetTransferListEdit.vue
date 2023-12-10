@@ -72,7 +72,7 @@
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
           v-if="['assetCode','assetOriginalValue','technicalDataList','factorySerialNumber','attachmentToolList','assetModel','assetName','assetSecretLevel',
-          'storageLocation','assetSpec','geographicalArea'].includes(
+          'storageLocation','assetSpec'].includes(
                column.dataIndex
               )"
           :record="record"
@@ -88,6 +88,34 @@
               @blur="blurInput($event, record, column.dataIndex)"
             >
             </a-input>
+          </template>
+        </AvicRowEdit>
+
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'geographicalArea'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record.geographicalArea"
+              style="width: 100%"
+              placeholder="请选择地理区域"
+              @change="value => changeControlValue(value, record, 'geographicalArea')"
+            >
+              <a-select-option
+                v-for="select in geographicalAreaList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag :value="record.geographicalAreaName" :options="geographicalAreaList"/>
           </template>
         </AvicRowEdit>
 
@@ -121,28 +149,28 @@
             />
           </template>
         </AvicRowEdit>
-<!--        <AvicRowEdit-->
-<!--          v-else-if="column.dataIndex === 'geographicalArea'"-->
-<!--          :record="record"-->
-<!--          :column="column.dataIndex"-->
-<!--        >-->
-<!--          <template #edit>-->
-<!--            <a-input-->
-<!--              v-model:value="record.geographicalArea"-->
-<!--              @click="geographicalAreaClick(record)"-->
-<!--              placeholder="请选择地理区域"-->
-<!--            >-->
-<!--              <template #suffix>-->
-<!--                <a-tooltip title="Extra information">-->
-<!--                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>-->
-<!--                </a-tooltip>-->
-<!--              </template>-->
-<!--            </a-input>-->
-<!--          </template>-->
-<!--          <template #default>-->
-<!--            {{ record.geographicalArea }}-->
-<!--          </template>-->
-<!--        </AvicRowEdit>-->
+        <!--        <AvicRowEdit-->
+        <!--          v-else-if="column.dataIndex === 'geographicalArea'"-->
+        <!--          :record="record"-->
+        <!--          :column="column.dataIndex"-->
+        <!--        >-->
+        <!--          <template #edit>-->
+        <!--            <a-input-->
+        <!--              v-model:value="record.geographicalArea"-->
+        <!--              @click="geographicalAreaClick(record)"-->
+        <!--              placeholder="请选择地理区域"-->
+        <!--            >-->
+        <!--              <template #suffix>-->
+        <!--                <a-tooltip title="Extra information">-->
+        <!--                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>-->
+        <!--                </a-tooltip>-->
+        <!--              </template>-->
+        <!--            </a-input>-->
+        <!--          </template>-->
+        <!--          <template #default>-->
+        <!--            {{ record.geographicalArea }}-->
+        <!--          </template>-->
+        <!--        </AvicRowEdit>-->
         <AvicRowEdit
           v-else-if="column.dataIndex === 'responseUserId'"
           :record="record"
@@ -390,7 +418,10 @@ const famInventoryManage = ref(null);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // SECRET_LEVEL通用代码
 const isAssetIntactList = ref([]); // 资产是否完好通用代码
-const lookupParams = [{ fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' }];
+const lookupParams = [
+  { fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' }
+];
 const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 const geographicalOpen = ref<boolean>(false);
@@ -401,6 +432,7 @@ const treeData = ref(null);
 const selectedKeys = ref([]);
 const treeNodeId = ref();
 const defaultRootParentId = ref('-1');
+const geographicalAreaList = ref([]);
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
@@ -462,6 +494,7 @@ function getList() {
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     isAssetIntactList.value = result.isAssetIntact;
+    geographicalAreaList.value = result.geographicalArea;
   });
 }
 

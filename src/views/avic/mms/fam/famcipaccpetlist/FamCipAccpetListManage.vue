@@ -50,7 +50,7 @@
               @click="handleImport"
             >
               <template #icon>
-                <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
@@ -80,9 +80,9 @@
             <a-button
               type="link"
               class="inner-btn"
-              @click="handleDelete([record.id], 'row')"
+              @click="handleLink(record.id)"
             >
-              附件
+              链接
             </a-button>
           </template>
         </template>
@@ -96,11 +96,15 @@
         @reloadData="getList"
         @close="showImportModal = false"
       />
+      <FamCipAccpetListSubsidiary ref="famCipAccpetListSubsidiary" :open="linkModal" :main-id="linkId"
+                                  @closeLink="closeLink"
+      />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamCipAccpetListApi'; // 引入模块API
+import FamCipAccpetListSubsidiary from './FamCipAccpetListSubsidiary.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -110,6 +114,7 @@ const props = defineProps({
     default: ''
   }
 });
+
 const columns = [
   {
     title: '序号',
@@ -335,6 +340,8 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
+const linkModal = ref(false);
+const linkId = ref();
 const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -394,7 +401,7 @@ function handleKeyWordQuery(value) {
 }
 
 /** 导入 */
-function handleImport () {
+function handleImport() {
   showImportModal.value = true;
 }
 
@@ -429,10 +436,21 @@ function handleDelete(ids, type) {
   });
 }
 
+function handleLink(id) {
+  console.log(id);
+  linkModal.value = true;
+  linkId.value = id;
+}
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
+}
+
+function closeLink() {
+  linkModal.value = false;
+  linkId.value = '';
 }
 
 /** 表头排序 */
@@ -473,4 +491,8 @@ watch(
   },
   { immediate: true }
 );
+
+defineExpose({
+  closeLink,
+})
 </script>
