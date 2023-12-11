@@ -330,6 +330,24 @@ const columns = [
     fixed: 'left'
   },
   {
+    title: '库房',
+    dataIndex: 'inventoryName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '父库位',
+    dataIndex: 'parentMdsLocatorNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '库位号',
     dataIndex: 'locatorNo',
     ellipsis: true,

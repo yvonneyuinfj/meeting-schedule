@@ -35,7 +35,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="mdsInventoryIdAlias" label="库房ID">
+            <a-form-item name="mdsInventoryIdAlias" label="库房">
               <a-input  v-model:value="form.inventoryName"  placeholder="请选择库房"  @click="inventoryClick">
                 <template #suffix>
                   <a-tooltip title="库房">
