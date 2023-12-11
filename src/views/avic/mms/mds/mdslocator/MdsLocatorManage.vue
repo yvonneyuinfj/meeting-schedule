@@ -4,7 +4,7 @@
       <!-- 高级查询 -->
       <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item label="库房ID">
               <a-input
                 v-model:value="queryForm.mdsInventoryId"
@@ -13,7 +13,7 @@
                 @pressEnter="handleQuery"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item label="库位号">
               <a-input
@@ -64,7 +64,7 @@
               />
             </a-form-item>
           </a-col> -->
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="物料ID ">
               <a-input
                 v-model:value="queryForm.mdsItemId"
@@ -73,7 +73,7 @@
                 @pressEnter="handleQuery"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="区域类型">
               <a-select
@@ -330,15 +330,6 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '库房ID',
-    dataIndex: 'mdsInventoryId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '库位号',
     dataIndex: 'locatorNo',
     ellipsis: true,
@@ -374,30 +365,12 @@ const columns = [
     align: 'left'
   },
   {
-    title: '物料ID ^',
-    dataIndex: 'mdsItemId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '区域类型',
     dataIndex: 'placeTypeName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
-  },
-  {
-    title: '父库位ID',
-    dataIndex: 'parentMdsLocatorId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
   },
   {
     title: '备注',
