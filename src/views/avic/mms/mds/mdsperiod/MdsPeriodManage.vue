@@ -217,12 +217,6 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button  v-hasPermi="['mdsPeriod:add']"  title="批量添加"  type="primary"  @click="handleAdds">
-              <template #icon>
-                <plus-outlined />
-              </template>
-              批量添加
-            </a-button>
             <a-button  v-hasPermi="['mdsPeriod:add']"  title="添加"  type="primary"  @click="handleAdd" >
               <template #icon>
                 <plus-outlined />
@@ -293,13 +287,6 @@
         </template>
       </AvicTable>
     </div>
-    <!-- 批量添加页面弹窗 -->
-    <mds-period-add
-      v-if="showAddsModal"
-      ref="addsModal"
-      @reloadData="getList"
-      @close="showAddsModal = false"
-    />
     <!-- 添加页面弹窗 -->
     <mds-period-add
       v-if="showAddModal"
@@ -337,7 +324,6 @@
 import type { MdsPeriodDto } from '@/api/avic/mms/mds/MdsPeriodApi'; // 引入模块DTO
 import { listMdsPeriodByPage, delMdsPeriod, exportExcel } from '@/api/avic/mms/mds/MdsPeriodApi'; // 引入模块API
 import MdsPeriodAdd from './MdsPeriodAdd.vue'; // 引入添加页面组件
-import MdsPeriodAdds from './MdsPeriodAdds.vue'; // 引入批量添加页面组件
 import MdsPeriodEdit from './MdsPeriodEdit.vue'; // 引入编辑页面组件
 import MdsPeriodDetail from './MdsPeriodDetail.vue'; // 引入详情页面组件
 const { proxy } = getCurrentInstance();
@@ -467,7 +453,6 @@ const queryParam = reactive({
   sord: null // 排序方式: desc降序 asc升序
 });
 const showAddModal = ref(false); // 是否展示添加弹窗
-const showAddsModal = ref(false); // 是否展示批量添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
 const showImportModal = ref(false); // 是否展示导入弹窗
@@ -555,10 +540,6 @@ function handleKeyWordQuery (value) {
 /** 添加 */
 function handleAdd () {
   showAddModal.value = true;
-}
-/** 批量添加 */
-function handleAdds () {
-  showAddsModal.value = true;
 }
 /** 编辑 */
 function handleEdit (id) {
