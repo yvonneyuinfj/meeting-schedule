@@ -9,6 +9,7 @@ const famoverhaulrequiresPath='/mms/fam/famoverhaulrequires'
 const famassetlendsPath = '/mms/fam/famassetlends'
 const famsealandunsealsPath = '/mms/fam/famsealandunseals'
 const famassetborrowapplysPath = '/mms/fam/famassetborrowapplys'
+const faminventorysubsPath = '/mms/fam/faminventorysubs'
 
 /** FAM_INVENTORY */
 export interface FamInventoryDto extends BaseBeanModel {
@@ -195,6 +196,8 @@ export function getFormList(selectId,id) {
       return request.get(famsealandunsealsPath + '/getInventoryChange/'+id+'/v1')
     case 6:
       return request.get(famassetborrowapplysPath + '/getInventoryChange/'+id+'/v1')
+    case 7:
+      return request.get(faminventorysubsPath + '/getInventoryChange/'+id+'/v1')
   }
 }
 
