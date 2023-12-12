@@ -225,16 +225,16 @@
         :form-id="formId"
         @close="showDetailModal = false"
       />
-      <AvicExcelImport
-        v-if="showImportModal"
-        :formData="excelParams"
-        title="模板导入"
-        importUrl="/mms/fam/famassetinventorytasks/importData/v1"
-        downloadTemplateUrl="/mms/fam/famassetinventorytasks/downloadTemplate/v1"
-        @reloadData="getList"
-        @close="showImportModal = false"
-      />
     </AvicPane>
+    <AvicExcelImport
+      v-if="showImportModal"
+      :formData="excelParams"
+      title="模板导入"
+      importUrl="/mms/fam/famassetinventorytasks/importData/v1"
+      downloadTemplateUrl="/mms/fam/famassetinventorytasks/downloadTemplate/v1"
+      @reloadData="getList"
+      @close="showImportModal = false"
+    />
     <AvicPane>
       <!-- 子表组件 -->
       <fam-asset-inventory-task-list-manage key="famAssetInventoryTaskListManage" ref="famAssetInventoryTaskListManage" :mainId="mainId" />

@@ -95,7 +95,6 @@
               'factoryNo',
               'procureOrder',
               'assetSpec',
-              'equipClass',
               'assetUnit',
               'warrantyPeriod',
               'assetName',
@@ -159,6 +158,7 @@
         <template v-else-if="column.dataIndex === 'assetNo'">
           {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
         </template>
+        
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetClass'"
           :record="record"
@@ -182,7 +182,32 @@
             </div>
           </template>
         </AvicRowEdit>
-
+        
+         <AvicRowEdit
+          v-else-if="column.dataIndex === 'equipClass'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-if="props.accpetType === '1'"
+              v-model:value="record.equipClass"
+              @click="equipClassClick(record)"
+              placeholder="请选择设备类别"
+            >
+              <template #suffix>
+                <a-tooltip title="Extra information">
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                </a-tooltip>
+              </template>
+            </a-input>
+            <div v-else>
+              {{ record.equipClass }}
+            </div>
+          </template>
+        </AvicRowEdit>
+        
+        
         <AvicRowEdit
           v-else-if="column.dataIndex === 'productionDate'"
           :record="record"
@@ -293,7 +318,7 @@
               v-model:value="record.managerDeptId"
               type="deptSelect"
               placeholder="请选择主管部门名称"
-              :defaultShowValue="record.managerDeptNameAlias"
+              :defaultShowValue="record.managerDeptIdAlias"
               @callback="
                 (value, _selectRows) => {
                   changeCommonSelect(value, record, 'managerDeptId');
@@ -444,6 +469,38 @@
         </a-tree>
       </a-spin>
     </a-modal>
+    
+    <a-modal :visible="equipClassOpen" @cancel="equiphandleCancel" @ok="equiphandleSummit">
+      <a-spin :spinning="treeLoading">
+        <a-tree
+          v-if="equipsetreeData && equipsetreeData.length > 0"
+          v-model:expanded-keys="equipselexpandedKeys"
+          v-model:selectedKeys="equipselectedKeys"
+          :tree-data="equipsetreeData"
+          :load-data="equipseonLoadData"
+          :show-icon="true"
+          :show-line="true && { showLeafIcon: false }"
+          :default-expand-all="true"
+          @expand="handleExpand"
+          @select="handleSelect"
+        >
+          <template #icon="{ expanded, dataRef }">
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+            <AvicIcon
+              v-if="!expanded && !dataRef.isLeaf"
+              svg="avic-folder-3-fill"
+              color="#ffb800"
+            />
+            <AvicIcon
+              v-if="expanded && !dataRef.isLeaf"
+              svg="avic-folder-open-fill"
+              color="#ffb800"
+            />
+          </template>
+        </a-tree>
+      </a-spin>
+    </a-modal>
+    
     <a-modal
       :visible="open"
       title="批量新增"
@@ -466,11 +523,13 @@
 import type { FamAccpetListDto } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块DTO
 import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
+import { getTpmAssetClass, getTreeData as getTpmTreeData } from '@/api/avic/mms/tpm/TpmAssetClassApi'; // 引入模块API
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 
 const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
+const equipClassOpen = ref<boolean>(false);
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
@@ -997,14 +1056,18 @@ const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const expandedKeys = ref([]); //树节点validateRules
+const equipselexpandedKeys = ref([]);
 const treeData = ref(null);
+const equipsetreeData = ref(null);
 const selectedKeys = ref([]);
+const equipselectedKeys = ref([]);
 const secretLevelList = ref([]); // 数据密级通用代码
 const defaultRootParentId = ref('-1');
 const treeLoading = ref(false);
 const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const assetClassRecord = ref();
+const equiphClassRecord = ref();
 const ynMilitaryKeyEquipList = ref([]);
 const assetsUseList = ref([]);
 const geographicalAreaList = ref([]);
@@ -1080,10 +1143,21 @@ function handleExpand(keys) {
   expandedKeys.value = keys;
 }
 
+function equiphandleExpand(keys) {
+  equipselexpandedKeys.value = keys;
+}
+
+
 /** 关闭类别树弹窗 */
 function handleCancel() {
   assetClassOpen.value = false;
 }
+
+/** 关闭类别树弹窗 */
+function equiphandleCancel() {
+  assetClassOpen.value = false;
+}
+
 
 /** 树选中事件 */
 function handleSelect(keys: string[], node) {
@@ -1102,6 +1176,14 @@ function getTreeList() {
     treeData.value = response.data;
     treeLoading.value = false;
   });
+  
+  getTpmTreeData(expandLevel, defaultRootParentId.value).then(response => {
+    setNodeSlots(response.data);
+    getExpandedKeys(response.data, expandLevel, expandedKeys.value);
+    equipsetreeData.value = response.data;
+    treeLoading.value = false;
+  });
+  
 }
 
 /** 异步加载树节点 */
@@ -1120,6 +1202,21 @@ async function onLoadData(treeNode) {
   });
 }
 
+async function equipseonLoadData(treeNode){
+  return new Promise<void>(resolve => {
+    if (treeNode.dataRef.children) {
+      resolve();
+      return;
+    }
+    getTpmTreeData(1, treeNode.dataRef.id).then(response => {
+      setNodeSlots(response.data);
+      treeNode.dataRef.children = response.data;
+      treeData.value = [...treeData.value];
+      resolve();
+    });
+  });
+  
+}
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
   record[column + 'Alias'] = value.names;
@@ -1143,12 +1240,33 @@ function handleSummit() {
     });
 }
 
+function equiphandleSummit() {
+  getTpmAssetClass(treeNodeId.value)
+    .then(async res => {
+      if (res.success) {
+        const record = list.value.filter(item => item.id === equiphClassRecord.value.id)[0];
+        record.equipClass = res.data.classCode;
+        record.equiphClassName = res.data.className;
+        equipClassOpen.value = false;
+        equiphClassRecord.value = null;
+      }
+    })
+    .catch(() => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
+}
+
 /** 类别树弹窗 */
 function assetClassClick(column) {
   assetClassOpen.value = true;
   assetClassRecord.value = column;
 }
 
+function equipClassClick(column){
+  equipClassOpen.value = true;
+  equiphClassRecord.value = column;
+}
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中

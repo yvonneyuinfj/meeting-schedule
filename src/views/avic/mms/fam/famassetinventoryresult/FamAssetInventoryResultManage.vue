@@ -163,6 +163,17 @@
               删除
             </a-button>
             <a-button
+              v-hasPermi="['famAssetInventoryTask:import']"
+              title="导入"
+              type="primary"
+              ghost
+              @click="handleImport">
+              <template #icon>
+                 <import-outlined />
+              </template>
+              导入
+            </a-button>
+            <a-button
               v-hasPermi="['famAssetInventoryResult:export']"
               title="导出"
               type="primary"
@@ -232,6 +243,16 @@
         @close="showDetailModal = false"
       />
     </AvicPane>
+    <AvicExcelImport
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="模板导入"
+        importUrl="/mms/fam/famassetinventorytasks/importData/v1"
+        downloadTemplateUrl="/mms/fam/famassetinventorytasks/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
+      />
+<!--    </AvicPane> -->
     <AvicPane>
       <!--子表组件-->
       <FamAssetInventoryResultListManage
@@ -359,6 +380,7 @@ const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
+const showImportModal = ref(false); // 是否展示导入弹窗
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
@@ -430,6 +452,10 @@ function handleKeyWordQuery(value) {
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
+}
+/** 导入 */
+function handleImport () {
+  showImportModal.value = true;
 }
 /** 编辑 */
 function handleEdit() {
@@ -514,4 +540,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-
