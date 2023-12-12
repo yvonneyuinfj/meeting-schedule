@@ -2,6 +2,7 @@ import type { MdsProjectDto } from '@/api/avic/mms/mds/MdsProjectApi'; // 引入
 import type { MdsCustomerTypeDto } from '@/api/avic/mms/mds/MdsCustomerTypeApi'; // 引入模块DTO
 import { getMdsProject, saveMdsProject } from '@/api/avic/mms/mds/MdsProjectApi'; // 引入模块API
 import { getMdsCustomerTypeAll } from '@/api/avic/mms/mds/MdsCustomerTypeApi'; // 引入模块API
+import { getMdsCustomer } from '@/api/avic/mms/mds/MdsCustomerApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 export function useMdsProjectForm({
   props: props,
@@ -121,6 +122,11 @@ export function useMdsProjectForm({
       .then(async (res) => {
         if (res.success) {
           form.value = res.data;
+          getMdsCustomer(form.value.mdsCustomerId).then(async (result) => {
+            if (result) {
+              form.value.mdsCustomerIdAlias = result.data.customerName;
+            }
+          })
           // 处理数据
           loading.value = false;
         }

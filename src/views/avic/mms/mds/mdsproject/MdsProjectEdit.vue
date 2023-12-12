@@ -175,142 +175,171 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="mdsCustomerId" label="客户ID">
-              <a-input v-model:value="form.mdsCustomerId" :maxLength="64" placeholder="请输入客户ID" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyUserId" label="申请人">
-              <AvicCommonSelect v-model:value="form.applyUserId" type="userSelect" placeholder="请选择申请人"
-                :defaultShowValue="form.applyUserIdAlias" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyUserCode" label="申请人编码">
-              <a-input v-model:value="form.applyUserCode" :maxLength="64" placeholder="请输入申请人编码" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyUserName" label="申请人名称">
-              <a-input v-model:value="form.applyUserName" :maxLength="64" placeholder="请输入申请人名称" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyedDeptId" label="申请部门">
-              <AvicCommonSelect v-model:value="form.applyedDeptId" type="deptSelect" placeholder="请选择申请部门"
-                :defaultShowValue="form.applyedDeptIdAlias" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyedDeptCode" label="申请部门编码">
-              <a-input v-model:value="form.applyedDeptCode" :maxLength="64" placeholder="请输入申请部门编码" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="applyedDeptName" label="申请部门名称">
-              <a-input v-model:value="form.applyedDeptName" :maxLength="64" placeholder="请输入申请部门名称" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="balanceFlag" label="是否按项目号平衡">
-              <a-select v-model:value="form.balanceFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择是否按项目号平衡">
-                <a-select-option v-for="item in balanceFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="proMdsItemId" label="产品ID">
-              <a-input v-model:value="form.proMdsItemId" :maxLength="64" placeholder="请输入产品ID" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="validFlag" label="有效标识">
-              <a-select v-model:value="form.validFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择有效标识">
-                <a-select-option v-for="item in validFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="remark" label="备注">
-              <a-input v-model:value="form.remark" :maxLength="2048" placeholder="请输入备注" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="projectType" label="项目类型" has-feedback>
-              <a-select v-model:value="form.projectType" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择项目类型">
-                <a-select-option v-for="item in projectTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applicationType" label="应用类型" has-feedback>
-              <a-select v-model:value="form.applicationType" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择应用类型">
-                <a-select-option v-for="item in applicationTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyDate" label="申请日期">
-              <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
-                placeholder="请选择申请日期" disabled />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="cooperationDeptId" label="协作部门">
-              <AvicCommonSelect v-model:value="form.cooperationDeptId" type="deptSelect" placeholder="请选择协作部门"
-                :defaultShowValue="form.cooperationDeptIdAlias" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="cooperationDeptCode" label="协作部门CODE">
-              <a-input v-model:value="form.cooperationDeptCode" :maxLength="128" placeholder="请输入协作部门CODE" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" hidden>
-            <a-form-item name="cooperationDeptName" label="协作部门NAME">
-              <a-input v-model:value="form.cooperationDeptName" :maxLength="128" placeholder="请输入协作部门NAME" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="secretLevel" label="密级 " has-feedback>
-              <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级 ">
-                <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item label="附件">
-              <AvicUploader element-id="1" form-type="edit" ref="uploadFile" :allow-download="true" :allow-preview="true"
-                :allow-delete="true" :allow-update-secret-level="true" :form-id="form.id"
-                :form-secret-level="form.secretLevel" table-name="MDS_PROJECT" @afterUpload="afterUploadEvent" />
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-    </a-spin>
-    <template #footer>
-      <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
-      <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
-    </template>
+              <a-form-item name="mdsCustomerId" label="客户">
+                <a-input v-model:value="form.mdsCustomerIdAlias" :maxLength="64" placeholder="请选择客户" :readonly="true"
+                  @click="handleOpen"><template #suffix>
+                    <a-tooltip title="客户">
+                      <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    </a-tooltip>
+                  </template></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="applyUserId" label="申请人">
+                <AvicCommonSelect v-model:value="form.applyUserId" type="userSelect" placeholder="请选择申请人"
+                  :defaultShowValue="form.applyUserIdAlias" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyUserCode" label="申请人编码">
+                <a-input v-model:value="form.applyUserCode" :maxLength="64" placeholder="请输入申请人编码" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyUserName" label="申请人名称">
+                <a-input v-model:value="form.applyUserName" :maxLength="64" placeholder="请输入申请人名称" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="applyedDeptId" label="申请部门">
+                <AvicCommonSelect v-model:value="form.applyedDeptId" type="deptSelect" placeholder="请选择申请部门"
+                  :defaultShowValue="form.applyedDeptIdAlias" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyedDeptCode" label="申请部门编码">
+                <a-input v-model:value="form.applyedDeptCode" :maxLength="64" placeholder="请输入申请部门编码" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="applyedDeptName" label="申请部门名称">
+                <a-input v-model:value="form.applyedDeptName" :maxLength="64" placeholder="请输入申请部门名称" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="balanceFlag" label="是否按项目号平衡">
+                <a-select v-model:value="form.balanceFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择是否按项目号平衡">
+                  <a-select-option v-for="item in balanceFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="proMdsItemId" label="产品">
+                <a-input v-model:value="form.proMdsItemIdAlias" :maxLength="64" placeholder="请输入产品" :readonly="true"
+                  @click="proMdsItemOpen">
+                  <template #suffix>
+                    <a-tooltip title="产品">
+                      <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    </a-tooltip>
+                  </template>
+                </a-input>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="validFlag" label="有效标识">
+                <a-select v-model:value="form.validFlag" :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择有效标识">
+                  <a-select-option v-for="item in validFlagList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="remark" label="备注">
+                <a-input v-model:value="form.remark" :maxLength="2048" placeholder="请输入备注" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="projectType" label="项目类型" has-feedback>
+                <a-select v-model:value="form.projectType" :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择项目类型">
+                  <a-select-option v-for="item in projectTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="applicationType" label="应用类型" has-feedback>
+                <a-select v-model:value="form.applicationType" :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择应用类型">
+                  <a-select-option v-for="item in applicationTypeList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="applyDate" label="申请日期">
+                <a-date-picker v-model:value="form.applyDate" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+                  placeholder="请选择申请日期" disabled />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="cooperationDeptId" label="协作部门">
+                <AvicCommonSelect v-model:value="form.cooperationDeptId" type="deptSelect" placeholder="请选择协作部门"
+                  :defaultShowValue="form.cooperationDeptIdAlias" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="cooperationDeptCode" label="协作部门CODE">
+                <a-input v-model:value="form.cooperationDeptCode" :maxLength="128" placeholder="请输入协作部门CODE" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols" hidden>
+              <a-form-item name="cooperationDeptName" label="协作部门NAME">
+                <a-input v-model:value="form.cooperationDeptName" :maxLength="128" placeholder="请输入协作部门NAME" />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item name="secretLevel" label="密级 " has-feedback>
+                <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择密级 ">
+                  <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                    {{ item.lookupName }}
+                  </a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols2">
+              <a-form-item label="附件">
+                <AvicUploader element-id="1" form-type="edit" ref="uploadFile" :allow-download="true" :allow-preview="true"
+                  :allow-delete="true" :allow-update-secret-level="true" :form-id="form.id"
+                  :form-secret-level="form.secretLevel" table-name="MDS_PROJECT" @afterUpload="afterUploadEvent" />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </a-spin>
+      <template #footer>
+        <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+        <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
+      </template>
+      <!--选择客户弹窗-->
+      <a-modal :visible="open" title="选择客户" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
+        <div style="height: 400px;overflow: auto">
+          <Mds-customer-select ref="mdsCustomerSelect">
+          </Mds-customer-select>
+        </div>
+      </a-modal>
+      <!--选择产品弹窗-->
+      <a-modal :visible="openMdsItem" title="选择产品" @ok="handleOk2" @cancel="handleCancel2" width="80%" style="top: 20px">
+        <div style="height: 400px;overflow: auto">
+          <Mds-item-select ref="mdsItemSelect">
+          </Mds-item-select>
+        </div>
+      </a-modal>
   </AvicModal>
 </template>
 <script lang="ts" setup>
 import { useMdsProjectForm, emits } from './ts/MdsProjectForm'; // 引入表单ts
+import MdsCustomerSelect from './MdsCustomerSelect.vue'; // 引入弹窗选择页
+import MdsItemSelect from './MdsItemSelect.vue'; // 引入产品弹窗选择页
+
 const props = defineProps({
   formId: {
     type: String,
@@ -318,6 +347,37 @@ const props = defineProps({
   }
 });
 const emit = defineEmits(emits);
+const open = ref<boolean>(false);
+const mdsCustomerSelect = ref(null);
+const openMdsItem = ref<boolean>(false);
+const mdsItemSelect = ref(null);
+/** 选择客户 */
+function handleOpen() {
+  open.value = true;
+}
+
+const handleCancel = () => {
+  open.value = false;
+};
+/** 选择产品 */
+function proMdsItemOpen() {
+  openMdsItem.value = true;
+}
+const handleCancel2 = () => {
+  openMdsItem.value = false;
+};
+const handleOk2 = () => {
+  const info = mdsItemSelect.value.info;
+  form.value.proMdsItemId = info.id;
+  form.value.proMdsItemIdAlias = info.itemName;
+  openMdsItem.value = false;
+};
+const handleOk = () => {
+  const info = mdsCustomerSelect.value.info;
+  form.value.mdsCustomerId = info.id;
+  form.value.mdsCustomerIdAlias = info.customerName;
+  open.value = false;
+};
 const {
   form,
   formRef,

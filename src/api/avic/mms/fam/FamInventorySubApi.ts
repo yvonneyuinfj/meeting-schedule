@@ -45,6 +45,7 @@ export interface FamInventorySubDto extends BaseBeanModel {
   acquisitionValue?: string;
   /** 主表ID */
   inventoryListId?: string;
+  famInventorySubDTOList?:[]
 }
 
 /** 获取分页数据 */

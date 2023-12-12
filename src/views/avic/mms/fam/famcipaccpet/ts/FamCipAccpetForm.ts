@@ -24,7 +24,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const formRef = ref(null);
   const formCode = 'FamCipAccpet';
   // const accpetType = ref();
-  const openType = ref('add'); // 流程表单的打开方式，add: 流程中心打开, edit: 待办打开
+  const openType = ref('add'); // 流程表单的打开方式，add: 流程中心打开, edit: 待办打开F
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据

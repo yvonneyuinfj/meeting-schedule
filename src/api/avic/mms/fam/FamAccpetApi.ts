@@ -80,9 +80,9 @@ export interface FamAccpetDto extends BaseBeanModel {
   handlePersonName?: string;
   handlePersonIdAlias?: string;
   bpmState?: string;
-  bpmType?: string
-  /** 子表集合 */
+  bpmType?: string  /** 子表集合 */
   famAccpetListList?: [];
+
 }
 
 /** 获取分页数据 */

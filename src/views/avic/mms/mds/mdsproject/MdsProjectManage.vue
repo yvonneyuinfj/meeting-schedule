@@ -717,7 +717,7 @@ const columns = [
   },
   {
     title: '客户类型',
-    dataIndex: 'mdsCustomerTypeId',
+    dataIndex: 'mdsCustomerTypeIdName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -725,8 +725,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '客户ID',
-    dataIndex: 'mdsCustomerId',
+    title: '客户',
+    dataIndex: 'mdsCustomerIdAlias',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -794,8 +794,8 @@ const columns = [
     align: 'center'
   },
   {
-    title: '产品ID',
-    dataIndex: 'proMdsItemId',
+    title: '产品',
+    dataIndex: 'proMdsItemIdAlias',
     ellipsis: true,
     sorter: true,
     minWidth: 120,

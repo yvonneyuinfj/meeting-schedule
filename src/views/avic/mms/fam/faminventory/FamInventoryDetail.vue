@@ -1107,13 +1107,9 @@ function famTabsClick(id) {
       break;
     case 7:
       columns.value = [...columns7];
-      // getList(7)
-      show.value = true;
-      data.value = [];
-      loading.value = false
+      getList(7)
       break;
   }
-  // getList(id);
 }
 
 /** 获取列表 */
