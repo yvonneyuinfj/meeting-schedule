@@ -10,107 +10,21 @@ export function useTpmInventoryForm({
   const formRef = ref(null);
   /**
    * 校验规则
-   * 于小耘 20231111
+   * 于小耘 20231113
    */
-  // 特种设备和普通设备的公共校验规则
-  const rules_common = reactive({
-    equipmentType: [
-      { required: true, message: '设备类型不能为空', trigger: 'change' }
-    ],
-    tpmAssetClassId: [
-      { required: true, message: '设备大类不能为空', trigger: 'change' }
-    ],
-    assetsCode: [
-      { required: true, message: '资产编号不能为空', trigger: 'change' }
-    ],
-    equipmentCode: [
-      { required: true, message: '设备编号不能为空', trigger: 'change' }
-      // { validator: (rule, value) => validateDemoUniqueUnique(rule, value), trigger: 'blur' }
-    ],
-    equipmentName: [
-      { required: true, message: '设备名称不能为空', trigger: 'change' }
-    ],
-    useDeptId: [
-      { required: true, message: '使用部门不能为空', trigger: 'change' }
-    ],
-    tpmAreaId: [
-      { required: true, message: '设备地理区域不能为空', trigger: 'change' }
-    ],
-    storageLocation: [
-      { required: true, message: '具体位置不能为空', trigger: 'change' }
-    ],
-    secretLevel: [
-      { required: true, message: '密级不能为空', trigger: 'change' }
-    ]
-  });
-  // 特种设备校验规则
-  const rules_01 = reactive({
-    registrationCode: [{ required: true, message: '注册代码不能为空' }],
-    ynAnnualInspection: [{ required: true, message: '是否年检不能为空' }]
-  });
-  // 普通设备校验规则
-  const rules_05 = reactive({
-    manufactureFactoryName: [{ required: true, message: '生产厂家不能为空', trigger: 'change' }],
-    manufactureFactoryCountry: [{ required: true, message: '厂家国别不能为空', trigger: 'change' }],
-    originalValue: [{ required: true, message: '原值不能为空', trigger: 'change' }],
-    abcdType: [{ required: true, message: '设备级别不能为空', trigger: 'change' }],
-    recordDate: [{ required: true, message: '启用时间不能为空', trigger: 'change' }],
+  const rules = reactive({
+    equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
+    tpmAssetClassId: [{ required: true, message: '设备大类不能为空', trigger: 'change' }],
+    assetsCode: [{ required: true, message: '资产编号不能为空', trigger: 'change' }],
+    equipmentCode: [{ required: true, message: '设备编号不能为空', trigger: 'change' }],
+    equipmentName: [{ required: true, message: '设备名称不能为空', trigger: 'change' }],
+    useDeptId: [{ required: true, message: '使用部门不能为空', trigger: 'change' }],
+    tpmAreaId: [{ required: true, message: '设备地理区域不能为空', trigger: 'change' }],
+    storageLocation: [{ required: true, message: '具体位置不能为空', trigger: 'change' }],
+    secretLevel: [{ required: true, message: '密级不能为空', trigger: 'change' }],
     responseUserId: [{ required: true, message: '责任人不能为空', trigger: 'change' }],
-    equipmentManageDeptId: [{ required: true, message: '管理部门不能为空', trigger: 'change' }]
+    equipmentStatus: [{ required: true, message: '设备状态不能为空', trigger: 'change' }]
   });
-  const rules = reactive({});
-  for (const key in rules_common) {
-    rules[key] = rules_common[key];
-  }
-  // const rules: Record<string, Rule[]> = {
-  // equipmentType: [
-  //   { required: true, message: '设备类型不能为空', trigger: 'change' }
-  // ],
-  // tpmAssetClassId: [
-  //   { required: true, message: '设备大类不能为空', trigger: 'change' }
-  // ],
-  // assetsCode: [
-  //   { required: true, message: '资产编号不能为空', trigger: 'change' }
-  // ],
-  // equipmentCode: [
-  //   { required: true, message: '设备编号不能为空', trigger: 'change' }
-  // ],
-  // equipmentName: [
-  //   { required: true, message: '设备名称不能为空', trigger: 'change' }
-  // ],
-  // useDeptId: [
-  //   { required: true, message: '使用部门不能为空', trigger: 'change' }
-  // ],
-  // tpmAreaId: [
-  //   { required: true, message: '设备地理区域不能为空', trigger: 'change' }
-  // ],
-  // storageLocation: [
-  //   { required: true, message: '具体位置不能为空', trigger: 'change' }
-  // ],
-  // secretLevel: [
-  //   { required: true, message: '密级不能为空', trigger: 'change' }
-  // ],
-  // manufactureFactoryName: [
-  //   { required: true, message: '生产厂家不能为空', trigger: 'change' }
-  // ],
-  // manufactureFactoryCountry: [
-  //   { required: true, message: '厂家国别不能为空', trigger: 'change' }
-  // ],
-
-  // abcdType: [
-  //   { required: true, message: '设备级别不能为空', trigger: 'change' }
-  // ],
-
-  // responseUserId: [
-  //   { required: true, message: '责任人不能为空', trigger: 'change' }
-  // ],
-  // recordDate: [
-  //   { required: true, message: '启用时间不能为空', trigger: 'change' }
-  // ],
-  // equipmentManageDeptId: [
-  //   { required: true, message: '管理部门不能为空', trigger: 'change' }
-  // ],
-  // };
 
   const layout = {
     labelCol: { flex: '0 0 140px' },
@@ -160,56 +74,7 @@ export function useTpmInventoryForm({
     { fieldName: 'ynAnnualInspection', lookUpType: 'YN_FLAG' },
     { fieldName: 'capitalSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
   ];
-  /** 
-   *  过滤设备类型列表，只显示1特种设备5普通设备
-   *  by 于小耘
-   *  Date 20231111
-   */
-  watchEffect(() => {
-    if (equipmentTypeList.value.length > 0) {
-      equipmentTypeList.value = equipmentTypeList.value.filter(item => item.lookupCode <= 5);
-    }
-  });
-  /** 
-   *  监听设备类型，动态修改校验规则。
-   *  by 于小耘
-   *  Date 20231112
-   */
-  watch(
-    () => form.value.equipmentType,
-    newVal => {
-      for (const key in rules) {
-        if (!(key in rules_common)) {
-          delete rules[key];
-        }
-      }
-      if (newVal === '1') { // 特种设备
-        for (const key in rules_01) {
-          rules[key] = rules_01[key];
-        }
-      } else if (newVal === '5') {  // 普通设备
-        for (const key in rules_05) {
-          rules[key] = rules_05[key];
-        }
-      }
-    },
-    { immediate: true }
-  );
-  /**
-   *  监听是否军工关键设备，如果是，则军工关键设备专用代码必填。
-   *  by 于小耘
-   *  Date 20231112
-   */
-  watch(
-    () => form.value.ynMilitaryKeyEquip,
-    newVal => {
-      console.log('军工关键设备==============>', newVal);
-      if (newVal === 'Y') {
-        rules['militaryKeyEquipCode'] = [{ required: true, message: '军工关键设备专用代码不能为空', trigger: 'change' }];
-      }
-    },
-    { immediate: true }
-  );
+
   onMounted(() => {
     // 加载查询区所需通用代码
     getLookupList();
@@ -229,6 +94,10 @@ export function useTpmInventoryForm({
    *  Date 20231110
    */
   const initFormDate = () => {
+    // 设备类型默认15办公自动化设备
+    if (!form.value.equipmentType) {
+      form.value.equipmentType = '15';
+    }
     // 初始化设备状态，默认【在用】
     if (!form.value.equipmentStatus) {
       form.value.equipmentStatus = '1';
@@ -238,23 +107,8 @@ export function useTpmInventoryForm({
       form.value.qty = '1';
     }
     // 初始化创建人姓名,默认为当前登录人
-    if (!form.value.attribute01) {
+    if (!form.value.createdBy) {
       form.value.attribute01 = proxy.$getLoginUser().name;
-    }
-    // 初始化责任人，默认为当前登录人
-    if (!form.value.responseUserId) {
-      form.value.responseUserId = proxy.$getLoginUser().id;
-      form.value.responseUserName = proxy.$getLoginUser().name;
-    }
-    // 初始化管理部门，默认为当前登录人部门
-    if (!form.value.equipmentManageDeptId) {
-      form.value.equipmentManageDeptId = proxy.$getLoginUser().deptId;
-      form.value.attribute02 = proxy.$getLoginUser().deptName;
-    }
-    // 初始化使用部门，默认为当前登录人部门
-    if (!form.value.useDeptId) {
-      form.value.useDeptId = proxy.$getLoginUser().deptId;
-      form.value.useDeptName = proxy.$getLoginUser().deptName;
     }
   };
 
@@ -367,19 +221,6 @@ export function useTpmInventoryForm({
   function closeModal() {
     emit('close');
   }
-
-  /** 
-   *  CommenSelect 组件 callback 事件扩展
-   *  增加点击确定按钮后，表单name字段写入功能
-   *  by 于小耘
-   *  Date 20231110
-   */
-  const getSelectName = (e, name) => {
-    form.value[name] = e.names;
-  };
-  const getTreeNodeTitle = (nodeTitle, name) => {
-    form.value[name] = nodeTitle;
-  };
   return {
     form,
     formRef,
@@ -411,8 +252,6 @@ export function useTpmInventoryForm({
     proxy,
     afterUploadEvent,
     saveForm,
-    closeModal,
-    getSelectName,
-    getTreeNodeTitle
+    closeModal
   };
 }

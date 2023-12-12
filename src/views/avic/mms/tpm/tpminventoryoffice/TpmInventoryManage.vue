@@ -1,6 +1,6 @@
 <template>
   <AvicSplit horizontal>
-    <AvicPane size="65">
+    <AvicPane>
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
@@ -1529,14 +1529,6 @@
         @close="showImportModal = false"
       />
     </AvicPane>
-    <AvicPane collapsible="bottom" height="150px">
-      <!-- 子表组件 -->
-      <tpm-inventory-property-manage
-        key="tpmInventoryPropertyManage"
-        ref="tpmInventoryPropertyManage"
-        :mainId="mainId"
-      />
-    </AvicPane>
   </AvicSplit>
 </template>
 
@@ -1550,10 +1542,9 @@ import {
 import TpmInventoryAdd from './TpmInventoryAdd.vue'; // 引入添加页面组件
 import TpmInventoryEdit from './TpmInventoryEdit.vue'; // 引入编辑页面组件
 import TpmInventoryDetail from './TpmInventoryDetail.vue'; // 引入详情页面组件
-import TpmInventoryPropertyManage from '../tpminventoryproperty/TpmInventoryPropertyManage.vue'; // 引入子表页面组件
 const { proxy } = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '120px' },
+  labelCol: { flex: '100px' },
   wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
@@ -1566,15 +1557,14 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  // {
-  //   title: '物料表ID',
-  //   dataIndex: 'mdsItemId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
+  {
+    title: '设备类型',
+    dataIndex: 'equipmentTypeName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
   {
     title: '设备大类',
     dataIndex: 'className',
@@ -1611,26 +1601,6 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  // {
-  //   title: '设备大类',
-  //   dataIndex: 'tpmAssetClassId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
-  // {
-  //   title: '设备大类编码',
-  //   dataIndex: 'classCode',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
   {
     title: '设备规格',
     dataIndex: 'specs',
@@ -1650,102 +1620,6 @@ const columns = [
     align: 'left'
   },
   {
-    title: '对应试验器',
-    dataIndex: 'equipmentNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '注册代码',
-    dataIndex: 'registrationCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '生产厂家',
-    dataIndex: 'manufactureFactoryName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '厂家国别',
-    dataIndex: 'manufactureFactoryCountry',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂编号',
-    dataIndex: 'leaveFactoryNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'leaveFactoryDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '设备类型',
-    dataIndex: 'equipmentTypeName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '设备级别',
-    dataIndex: 'abcdTypeName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  // {
-  //   title: '使用部门ID',
-  //   dataIndex: 'useDeptId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  {
-    title: '使用部门',
-    dataIndex: 'useDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  // {
-  //   title: '责任人ID',
-  //   dataIndex: 'responseUserId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  {
     title: '责任人',
     dataIndex: 'responseUserName',
     ellipsis: true,
@@ -1755,40 +1629,15 @@ const columns = [
     align: 'left'
   },
   {
-    title: '购置日期',
-    dataIndex: 'purchaseDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '原值(元)',
-    dataIndex: 'originalValue',
+    title: '使用部门',
+    dataIndex: 'useDeptName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
-  {
-    title: '净值(元)',
-    dataIndex: 'netValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '累计折旧',
-    dataIndex: 'depreciationValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+
   {
     title: '启用时间',
     dataIndex: 'recordDate',
@@ -1798,89 +1647,13 @@ const columns = [
     align: 'center'
   },
   {
-    title: '投产时间',
-    dataIndex: 'commissionDate',
+    title: '设备状态',
+    dataIndex: 'equipmentStatusName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   },
-  {
-    title: '质保日期',
-    dataIndex: 'qaDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  // {
-  //   title: '管理部门',
-  //   dataIndex: 'equipmentManageDeptId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  {
-    title: '管理部门',
-    dataIndex: 'attribute02',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否军工关键设备',
-    dataIndex: 'ynMilitaryKeyEquipName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '军工关键设备专用代码',
-    dataIndex: 'militaryKeyEquipCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否瓶颈设备',
-    dataIndex: 'ynBottleneckEquipmentName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '能效',
-    dataIndex: 'energyEfficiencyName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '是否年检',
-    dataIndex: 'ynAnnualInspectionName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  // {
-  //   title: '设备区域',
-  //   dataIndex: 'tpmAreaId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
     title: '设备区域',
     dataIndex: 'areaName',
@@ -1900,8 +1673,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资金来源',
-    dataIndex: 'capitalSource',
+    title: '设备序列号',
+    dataIndex: 'equipmentSerialNumber',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -1909,48 +1682,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '设备状态',
-    dataIndex: 'equipmentStatusName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '是否保养',
-    dataIndex: 'ynMaintainName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '是否进口',
-    dataIndex: 'ynEntranceName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '是否调拨',
-    dataIndex: 'ynTransferRecordName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '调拨时间',
-    dataIndex: 'transferRecordDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '调拨记录',
-    dataIndex: 'transferRecord',
+    title: '联网设备IP地址',
+    dataIndex: 'ipAddress',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -1958,13 +1691,59 @@ const columns = [
     align: 'left'
   },
   {
-    title: '报废日期',
-    dataIndex: 'wasteDate',
+    title: '存储介质类型',
+    dataIndex: 'storageType',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
+  {
+    title: '存储介质序列号',
+    dataIndex: 'storageMediaSerialNumber',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '存储介质编号',
+    dataIndex: 'storageMediaCode',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '存储介质名称',
+    dataIndex: 'storageMediaName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  // {
+  //   title: '存储介质使用状态',
+  //   dataIndex: 'storageMediaStatus',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '存储介质密级',
+  //   dataIndex: 'storageMediaSecretLevel',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '密级',
     dataIndex: 'secretLevelName',
@@ -1989,510 +1768,6 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-
-  // {
-  //   title: '设备重量（kg）',
-  //   dataIndex: 'weight',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '供应商ID',
-  //   dataIndex: 'mdsVendorId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '供应商名称【冗余设计】',
-  //   dataIndex: 'mdsVendorName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '生产厂家ID',
-  //   dataIndex: 'manufactureFactoryId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
-  // {
-  //   title: '数量',
-  //   dataIndex: 'qty',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '计量单位名称',
-  //   dataIndex: 'mdsUnitName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '机械复杂系数',
-  //   dataIndex: 'machineComplexRate',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '电气复杂系数',
-  //   dataIndex: 'electricComplexRate',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '设备功率（kW）',
-  //   dataIndex: 'equipmentPower',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '电机台数',
-  //   dataIndex: 'motorQty',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'right'
-  // },
-  // {
-  //   title: '是否关键独生子',
-  //   dataIndex: 'keyOnlyChildFlagName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '车牌号',
-  //   dataIndex: 'plateNumber',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '油箱大小（L）',
-  //   dataIndex: 'tankSize',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '检定周期（月）',
-  //   dataIndex: 'verificationCycle',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'right'
-  // },
-  // {
-  //   title: '上次检定日期',
-  //   dataIndex: 'lastVerificationDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-
-  // {
-  //   title: '数控分类',
-  //   dataIndex: 'cncTypeName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '数控控制系统',
-  //   dataIndex: 'cncCtrlSystem',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '资产状态',
-  //   dataIndex: 'assetsStatusName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '备注',
-  //   dataIndex: 'note',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '原因，可以是各种原因，作废原因、报废原因、拆除原因等',
-  //   dataIndex: 'reason',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '是转固，通用代码：YN_FLAG^ Y是，N否',
-  //   dataIndex: 'ynFixedName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '使用年限',
-  //   dataIndex: 'useTime',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'right'
-  // },
-  // {
-  //   title: '检定单位',
-  //   dataIndex: 'checkDeptName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '设备外文名称',
-  //   dataIndex: 'equipmentForeignName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetTypeName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '资产分管人员ID',
-  //   dataIndex: 'assetManageUserId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '资产分管人员名称',
-  //   dataIndex: 'assetManageUserName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '资产用途',
-  //   dataIndex: 'assetsUseName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '安装运杂费',
-  //   dataIndex: 'otherCost',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '财务凭证号',
-  //   dataIndex: 'voucherNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '燃料种类',
-  //   dataIndex: 'fuelType',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '外廓尺寸',
-  //   dataIndex: 'outlineSize',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '车身颜色',
-  //   dataIndex: 'carColor',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '车架号',
-  //   dataIndex: 'vinNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '发动机号码',
-  //   dataIndex: 'engineNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '发动机型号',
-  //   dataIndex: 'engineModel',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '订单号',
-  //   dataIndex: 'orderNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '发票号',
-  //   dataIndex: 'invoiceNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '批复文号',
-  //   dataIndex: 'documentNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
-  // {
-  //   title: '登记号',
-  //   dataIndex: 'registrationNo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '验收日期',
-  //   dataIndex: 'acceptanceDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '设备性能/主要技术指标',
-  //   dataIndex: 'equipmentPerformance',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '技术资料',
-  //   dataIndex: 'technicalInfo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '载货（吨）',
-  //   dataIndex: 'carryCargo',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '载人数量',
-  //   dataIndex: 'passengersNum',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'right'
-  // },
-  // {
-  //   title: '移交项目类别',
-  //   dataIndex: 'transferProjectTypeName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '移交转固表ID',
-  //   dataIndex: 'tpmTransferFixedBillId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
-  // {
-  //   title: '资产分管单位ID',
-  //   dataIndex: 'assetManageDeptId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
-  // {
-  //   title: '用途',
-  //   dataIndex: 'equipmentUseName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '设备序列号',
-  //   dataIndex: 'equipmentSerialNumber',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '硬盘序列号',
-  //   dataIndex: 'hdSerialNumber',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '操作系统安装时间',
-  //   dataIndex: 'systemInstallDate',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
-  // {
-  //   title: '存储介质类型',
-  //   dataIndex: 'storageType',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '存储介质序列号',
-  //   dataIndex: 'storageMediaSerialNumber',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '存储介质编号',
-  //   dataIndex: 'storageMediaCode',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '存储介质名称',
-  //   dataIndex: 'storageMediaName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '联网设备IP地址',
-  //   dataIndex: 'ipAddress',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
     title: '操作',
     dataIndex: 'action',
@@ -2591,7 +1866,8 @@ function getList() {
   loading.value = true;
   listTpmInventoryByPage(queryParam)
     .then(response => {
-      list.value = response.data.result;
+      // 只查询办公自动化设备
+      list.value = response.data.result.filter(item => item.equipmentType === '10');
       totalPage.value = response.data.pageParameter.totalCount;
       // 设置表格初始选中项
       if (list.value.length > 0) {

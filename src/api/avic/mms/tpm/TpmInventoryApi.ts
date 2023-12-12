@@ -2,22 +2,20 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
-
 const basePath = '/mms/tpm/tpminventorys';
-
-/** 设备台账 */
+/** TPM_INVENTORY */
 export interface TpmInventoryDto extends BaseBeanModel {
   /** 物料表ID */
   mdsItemId?: string;
   /** 资产编号 */
   assetsCode?: string;
-  /** 设备编号，编码规则：分类码+四位流水 */
+  /** 设备编号 */
   equipmentCode?: string;
   /** 设备名称 */
   equipmentName?: string;
-  /** 设备类型，通用代码：TPM_EQUIPMENT_TYPE^1特种设备 5 普通设备 10 办公自动化设备 15 视频监控、硬盘录像设备 */
-  equipmentType?: string;
-  /** 设备规格 ^ */
+  /** 设备类型 */
+  equipmentType?: any;
+  /** 设备规格 */
   specs?: string;
   /** 设备型号 */
   model?: string;
@@ -65,8 +63,8 @@ export interface TpmInventoryDto extends BaseBeanModel {
   qaDate?: any;
   qaDateBegin?: any;
   qaDateEnd?: any;
-  /** 设备级别，ABCD分类，通用代码：TPM_ABCD_TYPE^ A重点设备B主要设备 C一般设备 D不重要设备 */
-  abcdType?: string;
+  /** 设备级别，ABCD分类 */
+  abcdType?: any;
   /** 购置日期 */
   purchaseDate?: any;
   purchaseDateBegin?: any;
@@ -81,8 +79,8 @@ export interface TpmInventoryDto extends BaseBeanModel {
   equipmentPower?: string;
   /** 电机台数 */
   motorQty?: number;
-  /** 是否关键独生子，通用代码：YN_FLAG^ Y是，N否 */
-  keyOnlyChildFlag?: string;
+  /** 是否关键独生子 */
+  keyOnlyChildFlag?: any;
   /** 车牌号 */
   plateNumber?: string;
   /** 油箱大小（L） */
@@ -95,16 +93,16 @@ export interface TpmInventoryDto extends BaseBeanModel {
   lastVerificationDateEnd?: any;
   /** 资金来源 */
   capitalSource?: string;
-  /** 数控分类，通用代码：TPM_CNC_TYPE，1数控车床 5数控铣床及数控镗铣床 10数控加工中心 15数控坐标磨床 20数控电火花机床 25数控弯管机 30其它数控 */
-  cncType?: string;
+  /** 数控分类 */
+  cncType?: any;
   /** 数控控制系统 */
   cncCtrlSystem?: string;
-  /** 设备状态，通用代码：TPM_EQUIPMENT_STATUS^1在用 5限用 10待修 15 待修 20封存 25调试 30禁用 */
-  equipmentStatus?: string;
-  /** 资产状态，通用代码：TPM_ASSETS_STATUS^^1在用 5租借 10闲置 15封存 20积压 25待报废 30报废 35拆除 40处置 45降级 50作废 默认在用 */
-  assetsStatus?: string;
+  /** 设备状态 */
+  equipmentStatus?: any;
+  /** 资产状态 */
+  assetsStatus?: any;
   /** 是否进口 */
-  ynEntrance?: string;
+  ynEntrance?: any;
   /** 报废日期 */
   wasteDate?: any;
   wasteDateBegin?: any;
@@ -123,8 +121,8 @@ export interface TpmInventoryDto extends BaseBeanModel {
   netValue?: string;
   /** 累计折旧值 */
   depreciationValue?: string;
-  /** 是否军工关键设备，通用代码：YN_FLAG^ Y是，N否 */
-  ynMilitaryKeyEquip?: string;
+  /** 是否军工关键设备 */
+  ynMilitaryKeyEquip?: any;
   /** 原因，可以是各种原因，作废原因、报废原因、拆除原因等 */
   reason?: string;
   /** 设备区域表ID */
@@ -154,21 +152,21 @@ export interface TpmInventoryDto extends BaseBeanModel {
   /** 调拨记录 */
   transferRecord?: string;
   /** 是转固，通用代码：YN_FLAG^ Y是，N否 */
-  ynFixed?: string;
+  ynFixed?: any;
   /** 使用年限 */
   useTime?: number;
   /** 检定单位 */
   checkDeptName?: string;
   /** 设备外文名称 */
   equipmentForeignName?: string;
-  /** 资产类别，通用代码：TPM_ASSET_TYPE^1土地、2设备、3运输工具、4房屋及建筑物、5投资性房地产、6土地使用权、7计算机软件 */
-  assetType?: string;
+  /** 资产类别 */
+  assetType?: any;
   /** 资产分管人员ID */
   assetManageUserId?: string;
   /** 资产分管人员名称 */
   assetManageUserName?: string;
-  /** 资产用途，通用代码：TPM_ASSETS_USE^1科研用、2生产用、3试验用、4办公用、5经营用、6其他 */
-  assetsUse?: string;
+  /** 资产用途 */
+  assetsUse?: any;
   /** 安装运杂费 */
   otherCost?: string;
   /** 财务凭证号 */
@@ -207,30 +205,30 @@ export interface TpmInventoryDto extends BaseBeanModel {
   carryCargo?: string;
   /** 载人数量 */
   passengersNum?: number;
-  /** 移交项目类别，通用代码：TPM_TRANSFER_PROJECT_TYPE^1购置、2科研、3自制 */
-  transferProjectType?: string;
+  /** 移交项目类别 */
+  transferProjectType?: any;
   /** 移交转固表ID */
   tpmTransferFixedBillId?: string;
-  /** 是否保养，通用代码：YN_FLAG^ Y是，N否 */
-  ynMaintain?: string;
+  /** 是否保养 */
+  ynMaintain?: any;
   /** 资产分管单位ID */
   assetManageDeptId?: string;
-  /** 是否调拨 通用代码：YN_FLAG^ Y是，N否 */
-  ynTransferRecord?: string;
+  /** 是否调拨 */
+  ynTransferRecord?: any;
   /** 调拨时间 */
   transferRecordDate?: any;
   transferRecordDateBegin?: any;
   transferRecordDateEnd?: any;
   /** 设备分管单位ID */
   equipmentManageDeptId?: string;
-  /** 用途，通用代码：TPM_EQUIPMENT_USE^ */
-  equipmentUse?: string;
+  /** 用途 */
+  equipmentUse?: any;
   /** 军工关键设备专用代码 */
   militaryKeyEquipCode?: string;
-  /** 是否瓶颈设备，通用代码：YN_FALG^Y是,N否 */
-  ynBottleneckEquipment?: string;
-  /** 能效，通用代码：TPM_ENERGY_EFFICIENCY^1 I ,2 II , 3 III */
-  energyEfficiency?: string;
+  /** 是否瓶颈设备 */
+  ynBottleneckEquipment?: any;
+  /** 能效 */
+  energyEfficiency?: any;
   /** 设备序列号 */
   equipmentSerialNumber?: string;
   /** 硬盘序列号 */
@@ -251,44 +249,50 @@ export interface TpmInventoryDto extends BaseBeanModel {
   ipAddress?: string;
   /** 注册代码 */
   registrationCode?: string;
-  /** 是否年检，通用代码：YN_FALG^Y是,N否 */
-  ynAnnualInspection?: string;
+  /** 是否年检 */
+  ynAnnualInspection?: any;
+  /** 使用部门名称 */
+  equipmentManageDeptName?: string;
+  /** 存储介质密级 */
+  storageMediaNameSecretLevel?: string;
+  /** 存储介质状态 */
+  storageMediaStatus?: string;
 }
 
 /** 获取分页数据 */
-export function listTpmInventoryByPage(
+export function listTpmInventoryByPage (
   param: QueryParamModel
 ): Promise<ResponsePageData<TpmInventoryDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
-export function standardListTpmInventorySelectByPage(
-  param: QueryParamModel
-): Promise<ResponsePageData<TpmInventoryDto>> {
-  return request.post(basePath + '/searchStandard-by-page/v1', param);
-}
-
 /** 根据id加载数据 */
-export function getTpmInventory(id: string): Promise<ResponseBaseData<TpmInventoryDto>> {
+export function getTpmInventory (id: string): Promise<ResponseBaseData<TpmInventoryDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveTpmInventory(form: TpmInventoryDto): Promise<ResponseBaseData<any>> {
+export function saveTpmInventory (form: TpmInventoryDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delTpmInventory(ids: [string]): Promise<ResponseBaseData<any>> {
+export function delTpmInventory (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
 /** 导出Excel */
-export function exportExcel(param: any) {
+export function exportExcel (param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,
     method: 'post'
   } as downloadParam;
   return downloadSysFile(download);
+}
+
+export function standardListTpmInventorySelectByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmInventoryDto>> {
+  return request.post(basePath + '/searchStandard-by-page/v1', param);
 }
