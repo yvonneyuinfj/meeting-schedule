@@ -11,6 +11,7 @@ import { useUserStore, GLOBAL_USER_CUSTOMED_CONFIG } from './user';
 export const STORAGE_TOKEN_KEY = 'access_token';
 export const STORAGE_LANG_KEY = 'app_lang';
 export const SSO_TYPE = 'sso_type';
+export const USER_TYPE: 'user_type' = 'user_type';
 
 export interface AppState extends PureSettings {
   lang: string;
@@ -86,7 +87,8 @@ export const useAppStore = defineStore('app', {
           this.lang = lang;
           localStorage.set(STORAGE_LANG_KEY, lang);
         })
-        .catch(() => {});
+        .catch(() => {
+        });
     },
     [SET_DEVICE](device: string) {
       this.device = device;
