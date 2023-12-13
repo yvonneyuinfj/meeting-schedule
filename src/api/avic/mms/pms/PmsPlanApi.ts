@@ -2,36 +2,37 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
-const basePath = '/mms/pms/pmsrequirereceives';
-/** 采购需求接收表 */
-export interface PmsRequireReceiveDto extends BaseBeanModel {
+const basePath = '/mms/pms/pmsplans';
+/** 采购计划表 */
+export interface PmsPlanDto extends BaseBeanModel {
   /** 密级 */
   secretLevel?: any;
+  /** 采购任务编号 */
+  pmsTaskNo?: any;
+  /** 合并标识 */
+  mergeFlag?: any;
   /** 采购计划号 */
   reqPlanNo?: string;
-  /** 采购计划名称 */
-  reqPlanName?: string;
-  /** 采购需求部门 */
+  /** 主责单位 */
   reqDeptId?: string;
   reqDeptIdAlias?: string;
-  /** 需求人 */
+  /** 设计员 */
   reqUserId?: string;
   reqUserIdAlias?: string;
-  /** 项目主管 */
+  /** 采购负责人 */
   managerUserId?: string;
   managerUserIdAlias?: string;
+  /** 对接人 */
+  abutmentUserId?: string;
+  abutmentUserIdAlias?: string;
   /** 产品和服务类别 */
   productServiceCategory?: string;
   /** 产品需求分类 */
   productReqClassify?: string;
-  /** 计划类型 */
-  planType?: any;
   /** 产品类型 */
   productType?: string;
   /** 所属项目课题号 */
   projectTopicNumber?: string;
-  /** 需求来源 */
-  sourceType?: any;
   /** 申请日期 */
   applyDate?: any;
   applyDateBegin?: any;
@@ -56,8 +57,10 @@ export interface PmsRequireReceiveDto extends BaseBeanModel {
   techDocCompleteDate?: any;
   techDocCompleteDateBegin?: any;
   techDocCompleteDateEnd?: any;
-  /** 需求编号 */
-  reqNo?: string;
+  /** 需求接收ID */
+  pmsRequireReceiveId?: string;
+  /** 采购计划名称 */
+  reqPlanName?: string;
   /** 采购需求部门编码 */
   reqDeptCode?: string;
   /** 采购需求部门名称 */
@@ -119,40 +122,64 @@ export interface PmsRequireReceiveDto extends BaseBeanModel {
   singleSourceReason?: string;
   /** 申请原因 */
   applyReason?: string;
-  /** 需求状态 */
-  reqStatus?: any;
+  /** 对接人编码 */
+  abutmentUserCode?: string;
+  /** 对接人名称 */
+  abutmentUserName?: string;
+  /** 计划状态 */
+  planStatus?: any;
   /** 备注 */
   note?: string;
 }
 
 /** 获取分页数据 */
-export function listPmsRequireReceiveByPage (
+export function listPmsPlanByPage(
   param: QueryParamModel
-): Promise<ResponsePageData<PmsRequireReceiveDto>> {
+): Promise<ResponsePageData<PmsPlanDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 根据id加载数据 */
-export function getPmsRequireReceive (id: string): Promise<ResponseBaseData<PmsRequireReceiveDto>> {
+export function getPmsPlan(id: string): Promise<ResponseBaseData<PmsPlanDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function savePmsRequireReceive (form: PmsRequireReceiveDto): Promise<ResponseBaseData<any>> {
+export function savePmsPlan(form: PmsPlanDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delPmsRequireReceive (ids: [string]): Promise<ResponseBaseData<any>> {
+export function delPmsPlan(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,
     method: 'post'
   } as downloadParam;
   return downloadSysFile(download);
+}
+
+/** 根据id集合保存数据 */
+export function savePmsPlanList(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-by-ids/v1', { ids: ids });
+}
+
+/** 根据id集合合并计划 */
+export function saveMergePlanByIds(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-merge-plan-by-ids/v1', { ids: ids });
+}
+
+/** 根据id集合取消合并计划 */
+export function canelMergePlanByIds(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/canel-merge-plan-by-ids/v1', { ids: ids });
+}
+
+/** 根据id集合下达计划 */
+export function issuancePlanByIds(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/issuance-plan-by-ids/v1', { ids: ids });
 }
