@@ -26,132 +26,130 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
+                              </a-col>
+                              <a-col v-bind="colLayout.cols">
+                                <a-form-item label="分享时间(起)">
+                                  <a-date-picker v-model:value="queryForm.shareDateBegin" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+                                    placeholder="请选择分享时间(起)"
+                                    :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.shareDateBegin)" />
+                                </a-form-item>
+                              </a-col>
+                              <a-col v-bind="colLayout.cols">
+                                <a-form-item label="分享时间(止)">
+                                  <a-date-picker v-model:value="queryForm.shareDateEnd" format="YYYY-MM-DD" value-format="YYYY-MM-DD" 
+                                    placeholder="请选择分享时间(止)"
+                                    :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.shareDateBegin)" />
+                                </a-form-item>
+                              </a-col>
 
+                              <a-col v-bind="colLayout.cols" style="margin-left: auto">
+                                <div class="table-page-search-submitButtons">
+                                  <a-space>
+                                    <a-button type="primary" @click="handleQuery">
+                                      <search-outlined />
+                                      查询
+                                    </a-button>
+                                    <a-button type="primary" @click="resetQuery" ghost>
+                                      <redo-outlined />
+                                      重置
+                                    </a-button>
+                                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                                      {{ advanced ? '收起' : '展开' }}
+                                      <up-outlined v-if="advanced" />
+                                      <down-outlined v-else />
+                                    </a-button>
+                                  </a-space>
+                                </div>
+                              </a-col>
+                            </a-row>
+                          </a-form>
+                        </div>
+                        <!-- 表格组件 -->
+                        <div class="table-wrapper">
+                          <AvicTable ref="tpmCaseShare" table-key="tpmCaseShare" :columns="columns" :row-key="record => record.id"
+                            :data-source="list" :loading="loading" :row-selection="{
+                              selectedRowKeys: selectedRowKeys,
+                              onChange: onSelectChange,
+                              columnWidth: 40,
+                              fixed: true
+                            }" :pageParameter="queryParam.pageParameter" :total="totalPage" @change="handleTableChange" @refresh="getList">
+                            <template #toolBarLeft>
+                              <a-space>
+                                <a-button v-hasPermi="['tpmCaseShare:add']" title="添加" type="primary" @click="handleAdd">
+                                  <template #icon>
+                                    <plus-outlined />
+                                  </template>
+                                  添加
+                                </a-button>
+                                <a-button v-hasPermi="['tpmCaseShare:edit']" title="编辑" type="primary" ghost @click="handleEdit">
+                                  <template #icon>
+                                    <edit-outlined />
+                                  </template>
+                                  编辑
+                                </a-button>
+                                <a-button v-hasPermi="['tpmCaseShare:del']" title="删除" danger
+                                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
+                                  @click="handleDelete(selectedRows, selectedRowKeys)">
+                                  <template #icon>
+                                    <delete-outlined />
+                                  </template>
+                                  删除
+                                </a-button>
+                                <a-button v-hasPermi="['tpmCaseShare:export']" title="导出" type="primary" ghost @click="handleExport">
+                                  <template #icon>
+                                    <export-outlined />
+                                  </template>
+                                  导出
+                                </a-button>
+                                <a-button v-hasPermi="['tpmCaseShare:startFlow']" title="提交流程" type="primary" ghost
+                                  @click="handleStartFlow(selectedRows, selectedRowKeys)">
+                                  <template #icon>
+                                    <avic-icon svg='avic-arrow-up-circle-line' />
+                                  </template>
+                                  提交流程
+                                </a-button>
+                              </a-space>
+                            </template>
+                            <template #toolBarRight>
+                              <a-space>
+                                <AvicBpmFilter :allFileAuth="['tpmCaseShare:all']" :myFileAuth="['tpmCaseShare:my']"
+                                  :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
 
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="分享时间(起)">
-              <a-date-picker v-model:value="queryForm.shareDateBegin" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
-                showTime placeholder="请选择分享时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.shareDateEnd)" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="分享时间(止)">
-              <a-date-picker v-model:value="queryForm.shareDateEnd" format="YYYY-MM-DD" value-format="YYYY-MM-DD" showTime
-                placeholder="请选择分享时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.shareDateBegin)" />
-            </a-form-item>
-          </a-col>
-
-          <a-col v-bind="colLayout.cols" style="margin-left: auto">
-            <div class="table-page-search-submitButtons">
-              <a-space>
-                <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
-                  查询
-                </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
-                  重置
-                </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
-                  {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
-                </a-button>
-              </a-space>
-            </div>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 表格组件 -->
-    <div class="table-wrapper">
-      <AvicTable ref="tpmCaseShare" table-key="tpmCaseShare" :columns="columns" :row-key="record => record.id"
-        :data-source="list" :loading="loading" :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }" :pageParameter="queryParam.pageParameter" :total="totalPage" @change="handleTableChange" @refresh="getList">
-        <template #toolBarLeft>
-          <a-space>
-            <a-button v-hasPermi="['tpmCaseShare:add']" title="添加" type="primary" @click="handleAdd">
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button v-hasPermi="['tpmCaseShare:edit']" title="编辑" type="primary" ghost @click="handleEdit">
-              <template #icon>
-                <edit-outlined />
-              </template>
-              编辑
-            </a-button>
-            <a-button v-hasPermi="['tpmCaseShare:del']" title="删除" danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)">
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button v-hasPermi="['tpmCaseShare:export']" title="导出" type="primary" ghost @click="handleExport">
-              <template #icon>
-                <export-outlined />
-              </template>
-              导出
-            </a-button>
-            <a-button v-hasPermi="['tpmCaseShare:startFlow']" title="提交流程" type="primary" ghost
-              @click="handleStartFlow(selectedRows, selectedRowKeys)">
-              <template #icon>
-                <avic-icon svg='avic-arrow-up-circle-line' />
-              </template>
-              提交流程
-            </a-button>
-          </a-space>
-        </template>
-        <template #toolBarRight>
-          <a-space>
-            <AvicBpmFilter :allFileAuth="['tpmCaseShare:all']" :myFileAuth="['tpmCaseShare:my']"
-              :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
-
-          </a-space>
-        </template>
-        <template #bodyCell="{ column, text, record, index }">
-          <template v-if="column.dataIndex === 'id'">
-            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
-          </template>
-          <template v-else-if="column.dataIndex === 'classicCaseTypeName'">
-            <a @click="handleFlowDetail(record)">
-              {{ record.classicCaseTypeName }}
-            </a>
-          </template>
-            <!-- <template v-else-if="column.dataIndex === 'note'">
+                              </a-space>
+                            </template>
+                            <template #bodyCell="{ column, text, record, index }">
+                              <template v-if="column.dataIndex === 'id'">
+                                {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+                              </template>
+                              <template v-else-if="column.dataIndex === 'classicCaseTypeName'">
+                                <a @click="handleFlowDetail(record)">
+                                  {{ record.classicCaseTypeName }}
+                                </a>
+                              </template>
+                            <!-- <template v-else-if="column.dataIndex === 'note'">
             <a @click="handleOpenNote(record)">
               {{ record.note }}
             </a>
           </template> -->
-          <template v-else-if="column.dataIndex === 'attach'">
-            <a @click="handleAttach(record)">
-              查看
-            </a>
-          </template>
-        </template>
-      </AvicTable>
-    </div>
-    <!-- 添加页面弹窗 -->
-    <TpmCaseShareAdd v-if="showAddModal" ref="addModal" :bpmOperatorRefresh="getList" @reloadData="getList"
-      @close="showAddModal = false" />
-    <!-- 编辑页面弹窗 -->
-    <TpmCaseShareEdit v-if="showEditModal" ref="editModal" :form-id="formId" @reloadData="getList"
-      @close="showEditModal = false" />
-    <!-- 备注页面弹窗 -->
-    <TpmCaseShareNote v-if="showNoteModal" ref="noteModal" :form-id="formId" @reloadData="getList"
-      @close="showNoteModal = false" />
-    <AttachModal :attachOpen="attachOpen" :attach-form="attchForm" @closeAttach="closeAttach" />
-  </div>
+                          <template v-else-if="column.dataIndex === 'attach'">
+                            <a @click="handleAttach(record)">
+                              查看
+                            </a>
+                          </template>
+                        </template>
+                      </AvicTable>
+                    </div>
+                    <!-- 添加页面弹窗 -->
+                    <TpmCaseShareAdd v-if="showAddModal" ref="addModal" :bpmOperatorRefresh="getList" @reloadData="getList"
+                      @close="showAddModal = false" />
+                    <!-- 编辑页面弹窗 -->
+                    <TpmCaseShareEdit v-if="showEditModal" ref="editModal" :form-id="formId" @reloadData="getList"
+                      @close="showEditModal = false" />
+                    <!-- 备注页面弹窗 -->
+                    <TpmCaseShareNote v-if="showNoteModal" ref="noteModal" :form-id="formId" @reloadData="getList"
+                      @close="showNoteModal = false" />
+                    <AttachModal :attachOpen="attachOpen" :attach-form="attchForm" @closeAttach="closeAttach" />
+                  </div>
 </template>
 <script lang="ts" setup>
 import type { TpmCaseShareDto } from '@/api/avic/mms/tpm/TpmCaseShareApi'; // 引入模块DTO
@@ -258,6 +256,14 @@ const columns = [
     align: 'left',
     fixed: 'right'
   }
+  // {
+  //   title: '创建人',
+  //   dataIndex: 'createdBy',
+  //   ellipsis: true,
+  //   width: 130,
+  //   align: 'left',
+  //   fixed: 'right'
+  // }
 ];
 const queryForm = ref<TpmCaseShareDto>({
   bpmState: 'all',
@@ -401,6 +407,10 @@ function handleEdit() {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value[0].createdBy !== proxy.$getLoginUser().id) {
+    proxy.$message.warning('只能编辑自己创建的数据');
+    return;
+  }
   if (selectedRows.value[0].businessstate_ != '拟稿中' && selectedRows.value[0].businessstate_ != '') {
     proxy.$message.warning('不能编辑流转中和结束状态的数据');
     return;
@@ -440,6 +450,12 @@ function handleDelete(rows, ids) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
+  //判断文件创建人是否是当前登陆人，如果不是不允许删除
+  if (rows.filter(row => row.createdBy !== proxy.$getLoginUser().id)?.length > 0) {
+    proxy.$message.warning('只能删除自己创建的数据');
+    return;
+  }
+  //end
   if (selectedRows.value[0].businessstate_ != '拟稿中' && selectedRows.value[0].businessstate_ != '') {
     proxy.$message.warning('不能删除流转中和结束状态的数据');
     return;
