@@ -114,7 +114,7 @@ const columns = [
   },
   {
     title: '预算组织',
-    dataIndex: 'budgetOrganizationNameAlias',
+    dataIndex: 'budgetOrganizationIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -139,7 +139,7 @@ const columns = [
   },
   {
     title: '需求部门',
-    dataIndex: 'requireDeptNameAlias',
+    dataIndex: 'requireDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -172,7 +172,7 @@ const columns = [
   },
   {
     title: '经办人',
-    dataIndex: 'agentNameAlias',
+    dataIndex: 'agentIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

@@ -12,7 +12,7 @@
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
-            <!-- <a-button v-hasPermi="['tpmYearMaintModifyPlanL:add']" title="添加" type="primary" @click="handleAdd">
+            <a-button v-hasPermi="['tpmYearMaintModifyPlanL:add']" title="添加" type="primary" @click="handleAdd">
               <template #icon>
                 <plus-outlined />
               </template>
@@ -27,7 +27,7 @@
                 <delete-outlined />
               </template>
               删除
-            </a-button> -->
+            </a-button>
           </a-space>
         </a-space>
       </template>
@@ -415,6 +415,7 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
+const isShow = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const planTypeList = ref([]); // 计划类别通用代码
