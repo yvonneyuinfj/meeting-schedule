@@ -85,6 +85,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
   const billStatusList = ref([]); // 流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过通用代码
   const failureWarehouseTypeList = ref([]); // 故障库类型通用代码
   const secretLevelList = ref([]); // 密级通用代码
+  const repairTypeList = ref([]); 
   const userStore = useUserStore();
   const lookupParams = [
     { fieldName: 'billStatus', lookUpType: 'FAILURE_BILL_STATUS' },
@@ -126,6 +127,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
     proxy.$getLookupByType(lookupParams, result => {
       billStatusList.value = result.billStatus;
       failureWarehouseTypeList.value = result.failureWarehouseType;
+      repairTypeList.value = result.repairType;
     });
   }
 
@@ -449,6 +451,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
     loading,
     billStatusList,
     failureWarehouseTypeList,
+    repairTypeList,
     secretLevelList,
     uploadFile,
     afterUploadEvent,

@@ -24,6 +24,27 @@ export function useTpmOplTrainingForm({
     ],
     secretLevel: [
       { required: true, message: '密级不能为空', trigger: 'change' }
+    ],
+    groupName: [
+      { required: true, message: '小组名称不能为空', trigger: 'change' }
+    ],
+    subjectCategory: [
+      { required: true, message: '课题分类不能为空', trigger: 'change' }
+    ],
+    trainingDate: [
+      { required: true, message: '培训时间不能为空', trigger: 'change' }
+    ],
+    // trainingPurpose: [
+    //   { required: true, message: '培训目的不能为空', trigger: 'change' }
+    // ],
+    trainingFocus: [
+      { required: true, message: '培训要点不能为空', trigger: 'change' }
+    ],
+    lecturerUserId: [
+      { required: true, message: '讲师姓名不能为空', trigger: 'change' }
+    ],
+    trainingPersonId: [
+      { required: true, message: '培训人员不能为空', trigger: 'change' }
     ]
   };
   const layout = {

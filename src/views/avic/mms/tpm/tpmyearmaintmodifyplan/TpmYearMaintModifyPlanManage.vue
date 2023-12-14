@@ -143,6 +143,9 @@
                   </template>
                   编辑
                 </a-button>
+                <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)" :loading="approvalLoading">
+                  提交审批
+                </a-button>
                 <a-button v-hasPermi="['tpmYearMaintModifyPlan:del']" title="删除" danger
                   :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
                   @click="handleDelete(selectedRows, selectedRowKeys)">
@@ -196,7 +199,7 @@
     <AvicPane>
       <!--子表组件-->
       <TpmYearMaintModifyPlanLManage key="tpmYearMaintModifyPlanLManage" ref="tpmYearMaintModifyPlanLManage"
-        :mainId="mainId" :mainForm="mainForm" />
+        :mainId="mainId" :mainForm="mainForm" @getSonList="getSonList" />
     </AvicPane>
   </AvicSplit>
 </template>
@@ -205,13 +208,14 @@ import type { TpmYearMaintModifyPlanDto } from '@/api/avic/mms/tpm/TpmYearMaintM
 import {
   listTpmYearMaintModifyPlanByPage,
   delTpmYearMaintModifyPlan,
-  exportExcel
+  exportExcel,
+  saveFormAndStartProcess
 } from '@/api/avic/mms/tpm/TpmYearMaintModifyPlanApi'; // 引入模块API
 import TpmYearMaintModifyPlanAdd from './TpmYearMaintModifyPlanAdd.vue'; // 引入添加页面组件
 import TpmYearMaintModifyPlanEdit from './TpmYearMaintModifyPlanEdit.vue'; // 引入编辑页面组件
 import TpmYearMaintModifyPlanDetail from './TpmYearMaintModifyPlanDetail.vue'; // 引入详情页面组件
 import TpmYearMaintModifyPlanLManage from '../tpmyearmaintmodifyplanl/TpmYearMaintModifyPlanLManage.vue'; // 引入子表页面组件
-import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -338,12 +342,15 @@ const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [];
+const approvalLoading = ref(false);
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
 const mainForm = computed(() => {
   return selectedRowKeys.value.length === 1 ? list.value.filter(item => item.id === selectedRowKeys.value[0])[0] : ''; // 主表传入数据
 });
+const formCode = 'TpmYearMaintModifyPlan';
+const sonnum = ref(null);
 onMounted(() => {
   // 加载表格数据
   getList();
@@ -450,6 +457,71 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+// 提交审批
+const handleApproval = (rows, ids) => {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交审批的数据！');
+    return;
+  }
+  if (ids.length > 1) {
+    proxy.$message.warning('请选择一条要提交审批的数据！');
+    return;
+  }
+  for (let item of rows) {
+    if (item.bpmState !== null) {
+      proxy.$message.warning('请选择未提交审批的数据！');
+      return;
+    }
+  }
+  if (sonnum.value === 0) {
+    proxy.$message.warning('年度维修改造计划明细不能为空');
+    return;
+  }
+  proxy.$confirm({
+    title: '确认要提交审批查询出的数据吗?',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      approvalLoading.value = true;
+      getBpmDefine(rows);
+    }
+  });
+};
+
+function getBpmDefine(rows) {
+  for (let postData of rows) {
+    startFlowByFormCode({
+      formCode: formCode,
+      formData: postData,
+      callback: bpmDefinedInfo => {
+        approval(bpmDefinedInfo, postData);
+      }
+    });
+  }
+}
+
+function getSonList(v){
+  sonnum.value = v
+}
+
+const approval = (bpmDefinedInfo, postData) => {
+  const param = {
+    processDefId: bpmDefinedInfo.dbid,
+    formCode: formCode,
+    postData
+  };
+  saveFormAndStartProcess(param).then(res => {
+    if (res.success) {
+      approvalLoading.value = false;
+      proxy.$message.success('提交成功!');
+      getList();
+    } else {
+      approvalLoading.value = false;
+    }
+  }).catch(() => {
+    approvalLoading.value = false;
+  });
+};
 
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
@@ -528,5 +600,9 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+defineExpose({
+  getSonList
+})
+
 </script>
 

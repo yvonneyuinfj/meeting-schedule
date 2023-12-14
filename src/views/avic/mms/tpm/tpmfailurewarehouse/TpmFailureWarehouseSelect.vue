@@ -408,7 +408,7 @@ const columns = [
   },
   {
     title: '维修类型',
-    dataIndex: 'repairType',
+    dataIndex: 'repairTypeName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -514,7 +514,8 @@ const repairTypeList = ref([]); // 维修类型通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
   { fieldName: 'billStatus', lookUpType: 'FAILURE_BILL_STATUS' },
-  { fieldName: 'failureWarehouseType', lookUpType: 'FAILURE_WAREHOUSE_TYPE' }
+  { fieldName: 'failureWarehouseType', lookUpType: 'FAILURE_WAREHOUSE_TYPE' },
+  { fieldName: 'repairType', lookUpType: 'REPAIR_TYPE' }
 ];
 const formCode = 'TpmFailureWarehouse';
 

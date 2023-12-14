@@ -216,6 +216,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
+const emit = defineEmits(['getSonList']);
 const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -248,6 +249,7 @@ function getList() {
   listTpmYearMaintModifyPlanLByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
+      emit('getSonList',list.value.length)
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
     })

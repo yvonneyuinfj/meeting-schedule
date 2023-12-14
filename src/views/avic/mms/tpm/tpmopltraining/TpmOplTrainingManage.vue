@@ -329,7 +329,7 @@
             <a-button
               type="link"
               class="inner-btn"
-              @click.stop="handleEdit(record.id)">
+              @click.stop="handleEdit(record)">
               编辑
             </a-button>
             <a-button
@@ -613,8 +613,12 @@ function handleAdd () {
   showAddModal.value = true;
 }
 /** 编辑 */
-function handleEdit (id) {
-  formId.value = id;
+function handleEdit (record) {
+  if (record.editUserId !== proxy.$getLoginUser().id) {
+    proxy.$message.warning('只能编辑自己的数据！');
+    return;
+  }
+  formId.value = record.id;
   infoStatus.value = 'edit';
   showEditModal.value = true;
 }
@@ -648,6 +652,10 @@ function handleExport () {
 function handleDelete (ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
+    return;
+  }
+  if (ids.filter(row => row.editUserId !== proxy.$getLoginUser().id)?.length > 0) {
+    proxy.$message.warning('只能删除自己的数据！');
     return;
   }
   proxy.$confirm({

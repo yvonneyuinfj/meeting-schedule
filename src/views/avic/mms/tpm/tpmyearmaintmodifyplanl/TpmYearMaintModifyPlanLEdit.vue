@@ -12,7 +12,7 @@
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
-            <a-button v-hasPermi="['tpmYearMaintModifyPlanL:add']" title="添加" type="primary" @click="handleAdd">
+            <!-- <a-button v-hasPermi="['tpmYearMaintModifyPlanL:add']" title="添加" type="primary" @click="handleAdd">
               <template #icon>
                 <plus-outlined />
               </template>
@@ -27,7 +27,7 @@
                 <delete-outlined />
               </template>
               删除
-            </a-button>
+            </a-button> -->
           </a-space>
         </a-space>
       </template>
