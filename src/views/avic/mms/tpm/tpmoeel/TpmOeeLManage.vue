@@ -78,7 +78,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { listTpmOeeLByPage, delTpmOeeL } from '@/api/avic/mms/tpm/TpmOeeLApi'; // 引入模块API
+import { delTpmOeeL, listTpmOeeLByPage } from '@/api/avic/mms/tpm/TpmOeeLApi'; // 引入模块API
 import TpmOeeLAdd from './TpmOeeLAdd.vue'; // 引入添加页面组件
 import TpmOeeLEdit from './TpmOeeLEdit.vue'; // 引入编辑页面组件
 const { proxy } = getCurrentInstance();
@@ -310,17 +310,17 @@ function getList() {
   loading.value = true;
   queryParam.searchParams.tpmOeeId = props.mainId ? props.mainId : '-1';
   listTpmOeeLByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch((error) => {
-      proxy.$message.warning(error.message);
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch((error) => {
+        proxy.$message.warning(error.message);
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取当前用户对应的文档密级 */
@@ -358,20 +358,20 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delTpmOeeL(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch((error) => {
-          proxy.$message.warning(error.message);
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch((error) => {
+            proxy.$message.warning(error.message);
+            delLoading.value = false;
+          });
     }
   });
 }
@@ -432,18 +432,18 @@ function handleRowSelection(record) {
 }
 
 watch(
-  () => props.mainId,
-  newVal => {
-    if (newVal) {
-      console.log(props.reportDate)
-      getList(); // 查询表格数据
-    } else {
-      selectedRowKeys.value = []; // 清空选中
-      selectedRows.value = [];
-      list.value = [];
-      totalPage.value = 0;
-    }
-  },
-  { immediate: true }
+    () => props.mainId,
+    newVal => {
+      if (newVal) {
+        console.log(props.reportDate);
+        getList(); // 查询表格数据
+      } else {
+        selectedRowKeys.value = []; // 清空选中
+        selectedRows.value = [];
+        list.value = [];
+        totalPage.value = 0;
+      }
+    },
+    { immediate: true }
 );
 </script>

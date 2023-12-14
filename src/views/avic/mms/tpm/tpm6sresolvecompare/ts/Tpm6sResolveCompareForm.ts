@@ -1,38 +1,46 @@
 import type { Tpm6sResolveCompareDto } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块DTO
-import { getTpm6sResolveCompare, saveTpm6sResolveCompare, saveFormAndStartProcess } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块API
+import {
+  getTpm6sResolveCompare,
+  saveFormAndStartProcess,
+  saveTpm6sResolveCompare
+} from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块API
 import { createEditor } from '@wangeditor/editor'; // 引入富文本依赖
 import { useRichText } from '@/utils/hooks/useRichText'; // 引入富文本相关配置及方法
 import {
-  default as flowUtils,
-  startFlowByFormCode,
   closeFlowLoading,
-  openFlowDetail,
+  default as flowUtils,
   getFieldAuth,
-  getFieldVisible,
   getFieldDisabled,
-  getFieldRequired
+  getFieldRequired,
+  getFieldVisible,
+  openFlowDetail,
+  startFlowByFormCode
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import { CompassOutlined } from '@ant-design/icons-vue';
+
 export const emits = ['reloadData', 'close'];
+
 export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<Tpm6sResolveCompareDto>({});
   const formRef = ref(null);
- 
+
   const formCode = 'Tpm6sResolveCompare';
   const openType = ref('add'); // 流程表单的打开方式，add:流程中心打开, edit: 待办打开
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); //提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    problemSolvingEvaluation: [
-      { required: true, message: '问题解决评价不能为空', trigger: 'change' }
+    problemSolvingInstruction: [
+      { required: true, message: '问题解决情况不能为空', trigger: 'blur' }
     ],
     finishDate: [
       { required: true, message: '完成时间不能为空', trigger: 'change' }
     ],
     secretLevel: [
       { required: true, message: '密级不能为空', trigger: 'change' }
+    ],
+    problemSolvingEvaluation: [
+      { required: true, validator: problemSolvingEvaluationValidator, message: '问题解决评价不能为空', trigger: 'change' }
     ]
   };
 
@@ -44,7 +52,7 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
   const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
-
+  const problemDescriptionEditorRef = shallowRef(null);
   const showSaveAndPro = ref(false);
   const showSave = ref(false);
 
@@ -59,8 +67,16 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
     'tpm6sResolveCompareProblemDescription',
     'tpm6sResolveCompare'
   );
+  const editor = useRichText(problemDescriptionEditorRef,
+    'tpm6sApplyProblemDescription',
+    'tpm6sApply');
+  const SToolbarConfig = editor.toolbarConfig;
+  const SEditorConfig = editor.editorConfig;
+  const SDealRichText = editor.dealRichText;
+  const SOnCreated = editor.onCreated;
+
   const billStatusList = ref([]); // 流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过通用代码
-  const problemSolvingEvaluationList = ref([]);  //六源评价通用代码
+  const problemSolvingEvaluationList = ref([]);  //评价通用代码
   const secretLevelList = ref([]); // 密级通用代码
   const lookupParams = [
     { fieldName: 'billStatus', lookUpType: 'PLATFORM_BPM_TASK_STATE' },
@@ -75,7 +91,6 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
     }
   }
   if (bpmParams) {
-   
     // 加载流程数据
     form.value.id = bpmParams.value.id;
     openType.value = bpmParams.value.id ? 'edit' : 'add';
@@ -93,53 +108,50 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
   /** 获取通用代码 */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-    billStatusList.value = result.billStatus;
-    problemSolvingEvaluationList.value = result.evaluationStatus;
-    
+      billStatusList.value = result.billStatus;
+      problemSolvingEvaluationList.value = result.evaluationStatus;
     });
   }
- 
+
   /** 获取当前用户对应的文档密级 */
   function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
-   */
-    /**
-   * 编辑、详情页面加载数据
-   * @param {String} applyDate 行数据的id
    */
   function getFormData(id) {
     //此函数也用来处理流程的回显页面
     if (!id) {
       return;
     }
-    loading.value = true;   
+    loading.value = true;
     getTpm6sResolveCompare(id)
-      .then(async res => {       
+      .then(async res => {
         if (res.success) {
-          if (res.data) {                   
+          if (res.data) {
             form.value = res.data;
-            // 处理数据    
-             //处理多行文本
-          // await dealRichText(form.value.problemDescription);
-           // 处理富文本
-           await dealRichText(form.value.problemSolvingInstruction);
-           // 详情表单 富文本是否可编辑,下面这句指富文本不可编辑，注释掉
-           //editorRef.value.disable();
-          //form.value.applyDate.disable();
-           loading.value = false;
-           if(form.value.bpmState=="active"||form.value.bpmState=="ended"){
-                  showSave.value=true;
-                  showSaveAndPro.value=true;
-           }
+            await dealRichText(form.value.problemSolvingInstruction);
+            await SDealRichText(form.value.problemDescription);
+            problemDescriptionEditorRef.value.disable();
+            loading.value = false;
+            if (form.value.bpmState == 'active' || form.value.bpmState == 'ended') {
+              showSave.value = true;
+              showSaveAndPro.value = true;
+            }
+            if (props.infoStatus == 'detail'){
+              if (fieldDisabled('problemSolvingInstruction')){
+                editorRef.value.disable();
+              }
+            }
           } else {
             initForm();
             loading.value = false;
@@ -152,8 +164,15 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
   function saveForm(params) {
+    // 处理富文本
+    const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
+    convertImageSrc(editorHtmljsonCopy);
+    const newEditor = createEditor({ content: editorHtmljsonCopy });
+    const newEditorHtml = newEditor.getHtml();
+    form.value.problemSolvingInstruction = newEditorHtml === '<p><br></p>' ? '' : newEditorHtml;
     formRef.value
       .validate()
       .then(() => {
@@ -165,14 +184,8 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
-        // 处理富文本
-        const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
-        convertImageSrc(editorHtmljsonCopy);
-        const newEditor = createEditor({ content: editorHtmljsonCopy });
-        const newEditorHtml = newEditor.getHtml();
-       // postData.problemDescription = newEditorHtml;
         //处理富文本
-        postData.problemSolvingInstruction = newEditorHtml;
+        postData.problemSolvingInstruction = postData.problemSolvingInstruction.toString();
         // 发送请求
         saveTpm6sResolveCompare(postData)
           .then(res => {
@@ -200,6 +213,7 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -207,6 +221,7 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     // 附件密级校验
@@ -222,8 +237,15 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
       }
     });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
+    // 处理富文本
+    const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
+    convertImageSrc(editorHtmljsonCopy);
+    const newEditor = createEditor({ content: editorHtmljsonCopy });
+    const newEditorHtml = newEditor.getHtml();
+    form.value.problemSolvingInstruction = newEditorHtml === '<p><br></p>' ? '' : newEditorHtml;
     formRef.value
       .validate()
       .then(() => {
@@ -239,8 +261,10 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
           }
           loading.value = true;
           // 处理数据
+          // 处理数据
           const postData = proxy.$lodash.cloneDeep(form.value);
-          postData.version=1;
+          //处理富文本
+          postData.problemSolvingInstruction = postData.problemSolvingInstruction.toString();
           const param = {
             processDefId: params.dbid || bpmParams.value.defineId,
             formCode: formCode,
@@ -275,6 +299,7 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -296,6 +321,7 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -307,6 +333,7 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 附件上传完之后的回调函数 */
   function afterUploadEvent(successFile, errorFile) {
     if (errorFile.length > 0) {
@@ -317,37 +344,44 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
       successCallback();
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   /** 校验表单附件密级 */
   function validateUploaderFileSecret() {
     const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
@@ -357,17 +391,27 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
     }
     return true;
   }
+
   /** 表单附件是否必填(按elementId) */
   function attachmentRequired(fieldName) {
     const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
     return res;
   }
+
   /** 校验权限JSON */
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
     }
   }
+
+  async function problemSolvingEvaluationValidator(_rule) {
+
+    if (form.value.bpmState == 'active' && fieldDisabled('problemSolvingEvaluation')) {
+      return Promise.resolve();
+    }
+  };
+
   return {
     form,
     formRef,
@@ -384,6 +428,10 @@ export function useTpm6sResolveCompareForm({ props: props, emit: emit }) {
     toolbarConfig,
     editorConfig,
     editorRef,
+    SToolbarConfig,
+    SEditorConfig,
+    SOnCreated,
+    problemDescriptionEditorRef,
     onCreated,
     afterUploadEvent,
     attachmentRequired,

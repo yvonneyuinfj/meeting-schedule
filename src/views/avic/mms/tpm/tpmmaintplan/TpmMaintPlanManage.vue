@@ -201,6 +201,7 @@ import TpmMaintPlanAdd from './TpmMaintPlanAdd.vue'; // 引入添加页面组件
 import TpmMaintPlanEdit from './TpmMaintPlanEdit.vue'; // 引入编辑页面组件
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import dayjs from 'dayjs';
+import { forEach } from 'lodash';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -648,6 +649,10 @@ const approval = (bpmDefinedInfo) => {
 const handleCancelPlans = (rows, ids) => {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要取消的计划！');
+    return;
+  }
+  if (rows.filter(row => row.billStatus !== 20)?.length > 0) {
+    proxy.$message.warning('审批通过后取消计划');
     return;
   }
   proxy.$confirm({

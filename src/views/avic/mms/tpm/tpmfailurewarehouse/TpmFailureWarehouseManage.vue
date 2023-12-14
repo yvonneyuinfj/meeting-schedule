@@ -530,6 +530,7 @@ const approval = (bpmDefinedInfo, postData) => {
       approvalLoading.value = false;
       proxy.$message.success('提交成功!');
       getList();
+      handleFlowDetail(postData);
     } else {
       approvalLoading.value = false;
     }
@@ -597,6 +598,14 @@ function handleEdit() {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value[0].applyUserId !== proxy.$getLoginUser().id && selectedRows.value[0].createdBy !== proxy.$getLoginUser().id) {
+    proxy.$message.warning('只有自己的数据才可以编辑！');
+    return;
+  }
+  if (selectedRows.value[0].bpmState !== 'start' && selectedRows.value[0].bpmState !== null) {
+    proxy.$message.warning('只有拟稿中和未提交的数据才可以编辑！');
+    return;
+  }
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
@@ -617,8 +626,12 @@ function handleDelete(rows, ids) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
-  if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-    proxy.$message.warning('只有拟稿中的数据才可以删除！');
+  if (rows.filter(row => row.applyUserId !== proxy.$getLoginUser().id && row.createdBy !== proxy.$getLoginUser().id)?.length > 0) {
+    proxy.$message.warning('只有自己的数据才可以删除！');
+    return;
+  }
+  if (rows.filter(row => row.bpmState !== 'start' && row.bpmState !== null)?.length > 0) {
+    proxy.$message.warning('只有拟稿中和未提交的数据才可以删除！');
     return;
   }
   proxy.$confirm({

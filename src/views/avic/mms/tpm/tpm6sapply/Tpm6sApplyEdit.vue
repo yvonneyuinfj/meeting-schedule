@@ -45,7 +45,7 @@
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols3">
-            <a-form-item name="projectCategory" label="‘六源’问题立项">
+            <a-form-item name="projectCategory" label="问题立项">
               <a-checkbox-group v-model:value="form.projectCategory" button-style="solid" :auto-focus="true">
                 <a-checkbox
                   v-for="item in projectCategoryList"
@@ -122,7 +122,7 @@
           <a-col v-bind="colLayout.cols3">
             <a-form-item
               name="problemDescription"
-              label="‘六源’问题描述"
+              label="问题描述"
             >
               <div class="Richtext">
                   <Toolbar
@@ -144,13 +144,13 @@
           <a-col v-bind="colLayout.cols3">
             <a-form-item
               name="problemAdvice"
-              label="‘六源’问题改善建议"
+              label="问题改善建议"
             >
               <a-textarea
                 v-model:value="form.problemAdvice"
                 :rows="2"
                 :maxLength="4000"
-                placeholder="请输入‘六源’问题改善建议"
+                placeholder="请输入问题改善建议"
               />
             </a-form-item>
           </a-col>
@@ -215,7 +215,7 @@
 import { useTpm6sApplyForm, emits } from './ts/Tpm6sApplyForm'; // 引入表单ts
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
-import {useUserStore} from "@/store/user";
+import { useUserStore } from '@/store/user';
 const props = defineProps({
   formId: {
     type: String,

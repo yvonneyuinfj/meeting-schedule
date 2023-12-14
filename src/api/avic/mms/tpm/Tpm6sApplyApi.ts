@@ -51,6 +51,7 @@ export interface Tpm6sApplyDto extends BaseBeanModel {
   teamUserId?: string;
   /** 编制人姓名 */
   editUserName?: string;
+  editUserNameAlias?: string;
   /** 流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过 */
   billStatus?: string;
   billStatusName?: string;

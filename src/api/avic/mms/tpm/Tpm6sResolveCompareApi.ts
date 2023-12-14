@@ -10,6 +10,7 @@ export interface Tpm6sResolveCompareDto extends BaseBeanModel {
   tpm6sApplyId?: string;
   /** 立项单位ID(冗余) */
   editDeptId?: string;
+  editDeptIdAlias?: string;
   /** 立项单位名称(冗余) */
   editDeptName?: string;
   /** 立项时间 */

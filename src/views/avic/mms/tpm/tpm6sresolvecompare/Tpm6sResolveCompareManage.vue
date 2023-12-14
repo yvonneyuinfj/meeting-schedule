@@ -7,61 +7,61 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="立项时间(起)">
               <a-date-picker
-                v-model:value="queryForm.approvedDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择立项时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.approvedDateEnd)"
+                  v-model:value="queryForm.approvedDateBegin"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择立项时间(起)"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.approvedDateEnd)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="立项时间(止)">
               <a-date-picker
-                v-model:value="queryForm.approvedDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择立项时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.approvedDateBegin)"
+                  v-model:value="queryForm.approvedDateEnd"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择立项时间(止)"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.approvedDateBegin)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="完成时间(起)">
               <a-date-picker
-                v-model:value="queryForm.finishDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择完成时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.finishDateEnd)"
+                  v-model:value="queryForm.finishDateBegin"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择完成时间(起)"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.finishDateEnd)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="完成时间(止)">
               <a-date-picker
-                v-model:value="queryForm.finishDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择完成时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.finishDateBegin)"
+                  v-model:value="queryForm.finishDateEnd"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择完成时间(止)"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.finishDateBegin)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="流程状态">
               <a-select
-                v-model:value="queryForm.billStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择流程状态"
+                  v-model:value="queryForm.billStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择流程状态"
               >
                 <a-select-option
-                  v-for="item in billStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in billStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -71,17 +71,17 @@
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="密级">
               <a-select
-                v-model:value="queryForm.secretLevel"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择密级"
+                  v-model:value="queryForm.secretLevel"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择密级"
               >
                 <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in secretLevelList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -89,23 +89,23 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -116,92 +116,92 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpm6sResolveCompare"
-        table-key="tpm6sResolveCompare"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpm6sResolveCompare"
+          table-key="tpm6sResolveCompare"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
-         <!--
+            <!--
+               <a-button
+                 v-hasPermi="['tpm6sResolveCompare:add']"
+                 title="添加"
+                 type="primary"
+                 @click="handleAdd"
+               >
+                 <template #icon>
+                   <plus-outlined />
+                 </template>
+                 添加
+               </a-button>
+             -->
             <a-button
-              v-hasPermi="['tpm6sResolveCompare:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpm6sResolveCompare:edit']"
+                title="编辑"
+                type="primary"
+                ghost
+                @click="handleEdit"
             >
               <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-          -->
-            <a-button
-              v-hasPermi="['tpm6sResolveCompare:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
-            >
-              <template #icon>
-                <edit-outlined />
+                <edit-outlined/>
               </template>
               编辑
             </a-button>
-           <!-- <a-button
-              v-hasPermi="['tpm6sResolveCompare:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['tpm6sResolveCompare:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
-            -->
+            <!-- <a-button
+               v-hasPermi="['tpm6sResolveCompare:del']"
+               title="删除"
+               danger
+               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+               :loading="delLoading"
+               @click="handleDelete(selectedRows, selectedRowKeys)"
+             >
+               <template #icon>
+                 <delete-outlined />
+               </template>
+               删除
+             </a-button>
+             <a-button
+               v-hasPermi="['tpm6sResolveCompare:export']"
+               title="导出"
+               type="primary"
+               ghost
+               @click="handleExport">
+               <template #icon>
+                  <export-outlined />
+               </template>
+               导出
+             </a-button>
+             -->
           </a-space>
         </template>
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpm6sResolveCompare:all']"
-              :myFileAuth="['tpm6sResolveCompare:my']"
-              :defaultBpmType = 'queryForm.bpmType'
-              :defaultBpmState = 'queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['tpm6sResolveCompare:all']"
+                :myFileAuth="['tpm6sResolveCompare:my']"
+                :defaultBpmType='queryForm.bpmType'
+                :defaultBpmState='queryForm.bpmState'
+                @change="changeBpmFilter"
             />
             <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+                class="opt-btn-commonsearch"
+                style="width: 200px"
+                placeholder="请输入"
+                :allow-clear="true"
+                @search="handleKeyWordQuery"
             />
           </a-space>
         </template>
@@ -214,33 +214,50 @@
               {{ record.billNo }}
             </a>
           </template>
+          <template v-else-if="column.dataIndex === 'problemDescription'">
+            <a @click="handleAttach(record, column.dataIndex)">
+              查看
+            </a>
+          </template>
+          <template v-else-if="column.dataIndex === 'problemSolvingInstruction'">
+            <a @click="handleAttach(record, column.dataIndex)">
+              查看
+            </a>
+          </template>
         </template>
       </AvicTable>
     </div>
     <!-- 添加页面弹窗 -->
     <Tpm6sResolveCompareAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <Tpm6sResolveCompareEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
+    />
+    <AttachModal
+        :attachOpen="attachOpen"
+        :attach-form="attchForm"
+        @closeAttach="closeAttach"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import type { Tpm6sResolveCompareDto } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块DTO
-import { listTpm6sResolveCompareByPage, delTpm6sResolveCompare, exportExcel } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块API
+import { listTpm6sResolveCompareByPage } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块API
 import Tpm6sResolveCompareAdd from './Tpm6sResolveCompareAdd.vue'; // 引入添加页面组件
 import Tpm6sResolveCompareEdit from './Tpm6sResolveCompareEdit.vue'; // 引入编辑页面组件
 import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import AttachModal from './AttachModal.vue';
+
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -263,7 +280,7 @@ const columns = [
     width: 60,
     align: 'center',
     fixed: 'left'
-  }, 
+  },
   {
     title: '立项单位',
     dataIndex: 'editDeptName',
@@ -282,7 +299,7 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-   {
+  {
     title: '问题发现人',
     dataIndex: 'problemFinderName',
     ellipsis: true,
@@ -291,7 +308,7 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-   {
+  {
     title: '地点位置',
     dataIndex: 'location',
     ellipsis: true,
@@ -316,7 +333,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-   {
+  {
     title: '问题描述',
     dataIndex: 'problemDescription',
     ellipsis: true,
@@ -324,7 +341,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-   {
+  {
     title: '问题解决情况',
     dataIndex: 'problemSolvingInstruction',
     ellipsis: true,
@@ -332,7 +349,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-   {
+  {
     title: '项目组长',
     dataIndex: 'chargeUserName',
     ellipsis: true,
@@ -340,7 +357,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-   {
+  {
     title: '团队成员',
     dataIndex: 'teamUserName',
     ellipsis: true,
@@ -348,7 +365,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-   {
+  {
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
@@ -357,16 +374,16 @@ const columns = [
     align: 'center'
   },
   /**
-  {
-    title: '流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过',
-    dataIndex: 'billStatusName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  }
- ,
- **/
+   {
+   title: '流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过',
+   dataIndex: 'billStatusName',
+   ellipsis: true,
+   minWidth: 120,
+   resizable: true,
+   align: 'center'
+   }
+   ,
+   **/
   {
     title: '流程状态',
     dataIndex: 'businessstate_',
@@ -374,7 +391,7 @@ const columns = [
     width: 120,
     align: 'center',
     fixed: 'right'
-  },
+  }
   /*
   {
     title: '流程当前步骤',
@@ -394,7 +411,8 @@ const columns = [
 ];
 const queryForm = ref<Tpm6sResolveCompareDto>({
   bpmState: 'all',
-  bpmType: 'my'
+  bpmType: 'all',
+  editDeptId: proxy.$getLoginUser().deptId
 });
 // 高级查询对象
 const queryParam = reactive({
@@ -418,13 +436,18 @@ const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false); // 表格loading状态
-const delLoading = ref(false); // 删除按钮loading状态
+// const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const billStatusList = ref([]); // 流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
   { fieldName: 'billStatus', lookUpType: 'PLATFORM_BPM_TASK_STATE' }
 ];
+const attachOpen = ref(false); // 附件弹窗
+const attchForm = reactive({
+  id: '',
+  info: ''
+});
 
 onMounted(() => {
   // 加载表格数据
@@ -441,30 +464,33 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpm6sResolveCompareByPage(queryParam)
-    .then(response => {
-      
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码 */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     billStatusList.value = result.billStatus;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -472,6 +498,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -479,6 +506,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -487,31 +515,46 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
-function handleAdd() {
-  showAddModal.value = true;
-}
+// function handleAdd() {
+//   showAddModal.value = true;
+// }
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value[0].editUserId !== proxy.$getLoginUser().id) {
+    proxy.$message.warning('请选择自己的数据编辑！');
+    return;
+  }
+  if (selectedRows.value[0].createdBy !== proxy.$getLoginUser().id) {
+    proxy.$message.warning('只有自己添加的数据才可以编辑！');
+    return;
+  }
+  if (selectedRows.value[0].bpmState !== 'start' && selectedRows.value[0].bpmState !== null) {
+    proxy.$message.warning('只有拟稿中的数据和未提交审批的数据才可以编辑！');
+    return;
+  }
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -521,57 +564,59 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 删除 */
-function handleDelete(rows, ids) {
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-    proxy.$message.warning('只有拟稿中的数据才可以删除！');
-    return;
-  }
-  proxy.$confirm({
-    title: '确认要删除选择的数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      delTpm6sResolveCompare(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
-    }
-  });
-}
+// function handleDelete(rows, ids) {
+//   if (ids.length == 0) {
+//     proxy.$message.warning('请选择要删除的数据！');
+//     return;
+//   }
+//   if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
+//     proxy.$message.warning('只有拟稿中的数据才可以删除！');
+//     return;
+//   }
+//   proxy.$confirm({
+//     title: '确认要删除选择的数据吗?',
+//     okText: '确定',
+//     cancelText: '取消',
+//     onOk: () => {
+//       delLoading.value = true;
+//       delTpm6sResolveCompare(ids)
+//         .then(res => {
+//           if (res.success) {
+//             proxy.$message.success('删除成功！');
+//             getList();
+//           }
+//           delLoading.value = false;
+//         })
+//         .catch(() => {
+//           delLoading.value = false;
+//         });
+//     }
+//   });
+// }
 /** 导出 */
-function handleExport() {
-  proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
-        loading.value = false;
-        proxy.$message.info('导出成功！');
-      });
-    }
-  });
-}
+// function handleExport() {
+//   proxy.$confirm({
+//     title: '确认导出数据吗?',
+//     okText: '确定',
+//     cancelText: '取消',
+//     onOk: () => {
+//       loading.value = true;
+//       queryParam.searchParams = queryForm.value;
+//       exportExcel(queryParam).then(() => {
+//         loading.value = false;
+//         proxy.$message.info('导出成功！');
+//       });
+//     }
+//   });
+// }
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -582,4 +627,21 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
+/** 打开查看 */
+const handleAttach = (record, title) => {
+  attchForm.id = record.id;
+  if (title === 'problemDescription') {
+    attchForm.info = record.problemDescription;
+  } else if (title === 'problemSolvingInstruction'){
+    attchForm.info = record.problemSolvingInstruction;
+  }
+  attachOpen.value = true;
+};
+
+/** 关闭查看 */
+const closeAttach = () => {
+  attachOpen.value = false;
+  attchForm.id = null;
+};
 </script>

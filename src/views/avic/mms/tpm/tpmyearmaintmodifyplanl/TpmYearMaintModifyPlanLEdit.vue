@@ -188,6 +188,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'center'
   },
   {
@@ -197,6 +202,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   {
@@ -206,6 +216,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   // {
@@ -228,11 +243,16 @@ const columns = [
   // },
   {
     title: '预算组织名称',
-    dataIndex: 'budgetOrganizationName',
-    key: 'budgetOrganizationName',
+    dataIndex: 'budgetOrganizationIdAlias',
+    key: 'budgetOrganizationIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   {
@@ -242,6 +262,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   {
@@ -251,6 +276,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'center'
   },
   // {
@@ -273,11 +303,16 @@ const columns = [
   // },
   {
     title: '需求部门名称',
-    dataIndex: 'requireDeptName',
-    key: 'requireDeptName',
+    dataIndex: 'requireDeptIdAlias',
+    key: 'requireDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   {
@@ -287,6 +322,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   {
@@ -296,6 +336,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'center'
   },
   // {
@@ -318,11 +363,16 @@ const columns = [
   // },
   {
     title: '经办人姓名',
-    dataIndex: 'agentName',
-    key: 'agentName',
+    dataIndex: 'agentIdAlias',
+    key: 'agentIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'left'
   },
   // {
@@ -368,6 +418,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'center'
   },
   // {
@@ -457,6 +512,7 @@ onMounted(() => {
   getLookupList();
   // 获取当前用户对应的文档密级
   getUserFileSecretList();
+  
 });
 
 /** 查询数据  */
