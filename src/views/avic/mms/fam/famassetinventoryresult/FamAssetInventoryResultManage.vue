@@ -167,7 +167,7 @@
               title="导入"
               type="primary"
               ghost
-              @click="handleImport">
+              @click="handleImport(selectedRowKeys,'')">
               <template #icon>
                  <import-outlined />
               </template>
@@ -370,7 +370,8 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const excelParams = ref({ tableName: 'famAssetInventoryResult' }); // 必填参数tableName全局唯一，与tableKey保持一致
+// tableName: 'famAssetInventoryResult' 
+const excelParams = ref({}); // 必填参数tableName全局唯一，与tableKey保持一致
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
@@ -456,7 +457,8 @@ function handleAdd() {
   showAddModal.value = true;
 }
 /** 导入 */
-function handleImport () {
+function handleImport (id) {
+  excelParams.value ={id} ;
   showImportModal.value = true;
 }
 /** 编辑 */
