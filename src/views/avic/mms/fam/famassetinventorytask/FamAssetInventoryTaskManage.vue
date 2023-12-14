@@ -152,15 +152,17 @@
               导入
             </a-button>
             <a-button
-              v-hasPermi="['famAssetInventoryTask:export']"
               title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
+   type="primary"
+              :loading="delLoading"
+              @click="handleExport(selectedRowKeys,'')">
               <template #icon>
                  <export-outlined />
               </template>
               导出
+                         <!-- :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" -->
+<!--              type="primary"
+              ghost -->
             </a-button>
           </a-space>
             </template>
@@ -408,7 +410,16 @@ function handleImport () {
   showImportModal.value = true;
 }
 /** 导出 */
-function handleExport () {
+function handleExport (ids) {
+  debugger
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要导出的数据！');
+    return;
+  }
+  if (ids.length > 1) {
+    proxy.$message.warning('只能选择一条导出数据！');
+    return;
+  }
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -416,7 +427,7 @@ function handleExport () {
     onOk: () => {
       loading.value = true;
       queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
+      exportExcel(ids).then(() => {
         loading.value = false;
         proxy.$message.info('导出成功！');
       });
