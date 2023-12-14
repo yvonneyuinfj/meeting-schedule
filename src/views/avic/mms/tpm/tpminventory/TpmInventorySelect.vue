@@ -1275,10 +1275,10 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="注册代码">
+            <a-form-item label="特种设备注册代码">
               <a-input
                 v-model:value="queryForm.registrationCode"
-                placeholder="请输入注册代码"
+                placeholder="请输入特种设备注册代码"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
@@ -2188,6 +2188,14 @@ const columns = [
     align: 'center'
   },
   {
+    title: '是否军工重大专用资产',
+    dataIndex: 'ynMajorAssetsName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '能效',
     dataIndex: 'energyEfficiencyName',
     ellipsis: true,
@@ -2267,7 +2275,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '注册代码',
+    title: '特种设备注册代码',
     dataIndex: 'registrationCode',
     ellipsis: true,
     sorter: true,

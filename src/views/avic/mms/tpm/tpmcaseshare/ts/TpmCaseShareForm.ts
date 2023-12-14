@@ -24,6 +24,9 @@ export function useTpmCaseShareForm({ props: props, emit: emit }) {
   const rules: Record<string, Rule[]> = {
     secretLevel: [
       { required: true, message: '密级不能为空', trigger: 'change' }
+    ],
+    classicCaseType: [
+      { required: true, message: '经典案例类型不能为空', trigger: 'change' }
     ]
   };
   const layout = {
@@ -109,9 +112,15 @@ export function useTpmCaseShareForm({ props: props, emit: emit }) {
   }
   /** 保存 */
   function saveForm(params) {
+    //console.log(uploadFile.value.files['1'].length);
     formRef.value
       .validate()
       .then(() => {
+        //附件上传数量校验
+        if (uploadFile.value.files['1'].length == 0) {
+          proxy.$message.warning('附件不能为空！');
+          return;
+        }
         // 附件密级校验
         const validateResult = validateUploaderFileSecret();
         if (!validateResult) {
@@ -120,7 +129,6 @@ export function useTpmCaseShareForm({ props: props, emit: emit }) {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
-
         // 发送请求
         saveTpmCaseShare(postData)
           .then(res => {
@@ -179,6 +187,11 @@ export function useTpmCaseShareForm({ props: props, emit: emit }) {
   }
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
+    //附件上传数量校验
+    if (uploadFile.value.files['1'].length == 0) {
+      proxy.$message.warning('附件不能为空！');
+      return;
+    }
     formRef.value
       .validate()
       .then(() => {

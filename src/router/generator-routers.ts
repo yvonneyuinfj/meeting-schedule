@@ -2,7 +2,8 @@ import type { MenuDataItem, UserPermissions } from './typing';
 import type { RouteItem } from '@/api/user/login';
 import { getUserPermissions } from '@/api/user/login';
 import { routes as staticRoutes } from './index.ts';
-
+import { USER_TYPE } from '@/store/app';
+import { localStorage } from '@/utils/local-storage';
 // 根级菜单
 const rootRouter: MenuDataItem = {
   name: 'index',
@@ -155,8 +156,12 @@ export const generatorDynamicRouter = () => {
   return new Promise<UserPermissions>((resolve, reject) => {
     getUserPermissions()
       .then(response => {
-        const { menuList, permissionButtonList, permissionColumnList, roleCodeList, userInfo } =
+        const { permissionButtonList, permissionColumnList, roleCodeList, userInfo } =
           response.data;
+        let menuList  = response.data.menuList
+        if(localStorage.get(USER_TYPE)){
+          menuList  = menuList.filter(item => item.name === localStorage.get(USER_TYPE) || item.name === null)
+        }
         const routes: MenuDataItem[] = [];
         const blankRoutes: MenuDataItem[] = [];
         const menuData: MenuDataItem[] = [];

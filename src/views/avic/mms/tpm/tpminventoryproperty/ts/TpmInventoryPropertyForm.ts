@@ -1,5 +1,6 @@
 import type { TpmInventoryPropertyDto } from '@/api/avic/mms/tpm/TpmInventoryPropertyApi'; // 引入模块DTO
 import { getTpmInventoryProperty, saveTpmInventoryProperty } from '@/api/avic/mms/tpm/TpmInventoryPropertyApi'; // 引入模块API
+import { useUserStore } from '@/store/user';
 export const emits = ['reloadData', 'close'];
 export function useTpmInventoryPropertyForm({
   props: props,
@@ -20,7 +21,7 @@ export function useTpmInventoryPropertyForm({
   const colLayout = proxy.$colLayout2;; // 调用布局公共方法
   const loading = ref(false);
   const secretLevelList = ref([]); // 数据密级通用代码
-
+  const userStore = useUserStore();
 
   onMounted(() => {
     // 获取当前用户对应的文档密级
@@ -28,6 +29,9 @@ export function useTpmInventoryPropertyForm({
     if (props.formId) {
       // 编辑、详情页面加载数据
       getFormData(props.formId);
+    } else {
+      // 添加表单的初始值
+      form.value.createdBy = userStore.userInfo.name;
     }
   });
   /** 获取当前用户对应的文档密级 */

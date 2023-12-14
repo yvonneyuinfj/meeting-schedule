@@ -163,6 +163,17 @@
               删除
             </a-button>
             <a-button
+              v-hasPermi="['famAssetInventoryTask:import']"
+              title="导入"
+              type="primary"
+              ghost
+              @click="handleImport">
+              <template #icon>
+                 <import-outlined />
+              </template>
+              导入
+            </a-button>
+            <a-button
               v-hasPermi="['famAssetInventoryResult:export']"
               title="导出"
               type="primary"
@@ -232,6 +243,16 @@
         @close="showDetailModal = false"
       />
     </AvicPane>
+    <FamImport
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="模板导入"
+        importUrl="/mms/fam/famassetinventoryresults/importData/v1"
+        downloadTemplateUrl="/mms/fam/famassetinventoryresults/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
+      />
+<!--    </AvicPane> -->
     <AvicPane>
       <!--子表组件-->
       <FamAssetInventoryResultListManage
@@ -243,6 +264,7 @@
   </AvicSplit>
 </template>
 <script lang="ts" setup>
+import FamImport from '@/views/avic/mms/fam/ImportFile/famImport.vue';
 import type { FamAssetInventoryResultDto } from '@/api/avic/mms/fam/FamAssetInventoryResultApi'; // 引入模块DTO
 import { listFamAssetInventoryResultByPage, delFamAssetInventoryResult, exportExcel } from '@/api/avic/mms/fam/FamAssetInventoryResultApi'; // 引入模块API
 import FamAssetInventoryResultAdd from './FamAssetInventoryResultAdd.vue'; // 引入添加页面组件
@@ -348,6 +370,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
+const excelParams = ref({ tableName: 'famAssetInventoryResult' }); // 必填参数tableName全局唯一，与tableKey保持一致
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
@@ -359,6 +382,7 @@ const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
+const showImportModal = ref(false); // 是否展示导入弹窗
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
@@ -430,6 +454,10 @@ function handleKeyWordQuery(value) {
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
+}
+/** 导入 */
+function handleImport () {
+  showImportModal.value = true;
 }
 /** 编辑 */
 function handleEdit() {
@@ -514,4 +542,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-

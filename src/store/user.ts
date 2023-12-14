@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import ls from '@/utils/local-storage';
 import Cookies from 'js-cookie';
-import { STORAGE_TOKEN_KEY, SSO_TYPE } from './app';
+import { STORAGE_TOKEN_KEY, SSO_TYPE, USER_TYPE } from './app';
 import type { LoginParams } from '@/api/user/login';
 import { postLogout, postAccountLogin } from '@/api/user/login';
 import { getMenuList, saveMenu, deleteByMenuId } from '@/api/avic/system/CommonMenuApi';
@@ -42,6 +42,7 @@ export interface UserInfo {
   secretLevel: string;
   /** 人员密级名称 */
   secretLevelName: string;
+
   [key: string]: any;
 }
 
@@ -68,6 +69,7 @@ export interface UserState {
   roleMap?: Map<string, any>;
   // 用户收藏的菜单
   collectedMenuList?: Array<MenuDataItem>;
+
   [key: string]: any;
 }
 
@@ -210,6 +212,7 @@ export const useUserStore = defineStore('user', {
     async [LOGIN](info: LoginParams) {
       return new Promise((resolve, reject) => {
         ls.set(SSO_TYPE, '');
+        ls.set(USER_TYPE, '');
         // call ajax
         postAccountLogin(info)
           .then(res => {

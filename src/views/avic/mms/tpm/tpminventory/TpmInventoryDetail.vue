@@ -76,6 +76,27 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="equipmentType" label="设备类型">
+              <a-select
+                v-model:value="form.equipmentType"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择设备类型"
+                disabled
+              >
+                <a-select-option
+                  v-for="item in equipmentTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="equipmentNo" label="对应试验器">
               <a-input
                 v-model:value="form.equipmentNo"
@@ -86,13 +107,34 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="registrationCode" label="注册代码">
+            <a-form-item name="registrationCode" label="特种设备注册代码">
               <a-input
                 v-model:value="form.registrationCode"
                 :maxLength="64"
-                placeholder="请输入注册代码"
+                placeholder="请输入特种设备注册代码"
                 disabled
               />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="ynAnnualInspection" label="是否年检">
+              <a-select
+                v-model:value="form.ynAnnualInspection"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否年检"
+                disabled
+              >
+                <a-select-option
+                  v-for="item in ynAnnualInspectionList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <!-- 第三行 -->
@@ -102,6 +144,19 @@
                 v-model:value="form.manufactureFactoryName"
                 :maxLength="512"
                 placeholder="请输入生产厂家名称"
+                disabled
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="mdsVendorName"
+              label="供应商"
+            >
+              <a-input
+                v-model:value="form.mdsVendorName"
+                :maxLength="512"
+                placeholder="请输入供应商"
                 disabled
               />
             </a-form-item>
@@ -138,27 +193,7 @@
             </a-form-item>
           </a-col>
           <!-- 第四行 -->
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="equipmentType" label="设备类型">
-              <a-select
-                v-model:value="form.equipmentType"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择设备类型"
-                disabled
-              >
-                <a-select-option
-                  v-for="item in equipmentTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+          
           <a-col v-bind="colLayout.cols">
             <a-form-item name="abcdType" label="设备级别" has-feedback>
               <a-select
@@ -389,27 +424,7 @@
           </a-col>
 
           <!-- 第八行 -->
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="ynAnnualInspection" label="是否年检">
-              <a-select
-                v-model:value="form.ynAnnualInspection"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择是否年检"
-                disabled
-              >
-                <a-select-option
-                  v-for="item in ynAnnualInspectionList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+          
           <a-col v-bind="colLayout.cols">
             <a-form-item name="tpmAreaId" label="设备地理区域">
               <AvicTreeSelect
@@ -1526,7 +1541,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="registrationCode" label="注册代码">
+            <a-form-item name="registrationCode" label="特种设备注册代码">
               <a-input v-model:value="form.registrationCode" disabled />
             </a-form-item>
           </a-col>

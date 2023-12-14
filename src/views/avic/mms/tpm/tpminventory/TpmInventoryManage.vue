@@ -1323,10 +1323,10 @@
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="注册代码">
+                <a-form-item label="特种设备注册代码">
                   <a-input
                     v-model:value="queryForm.registrationCode"
-                    placeholder="请输入注册代码"
+                    placeholder="请输入特种设备注册代码"
                     :allow-clear="true"
                     @pressEnter="handleQuery"
                   />
@@ -1544,6 +1544,7 @@
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
 import {
   listTpmInventoryByPage,
+  listTpmInventoryByPageType,
   delTpmInventory,
   exportExcel
 } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
@@ -1650,6 +1651,14 @@ const columns = [
     align: 'left'
   },
   {
+    title: '设备类型',
+    dataIndex: 'equipmentTypeName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '对应试验器',
     dataIndex: 'equipmentNo',
     ellipsis: true,
@@ -1659,7 +1668,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '注册代码',
+    title: '特种设备注册代码',
     dataIndex: 'registrationCode',
     ellipsis: true,
     sorter: true,
@@ -1668,8 +1677,25 @@ const columns = [
     align: 'left'
   },
   {
+    title: '是否年检',
+    dataIndex: 'ynAnnualInspectionName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '生产厂家',
     dataIndex: 'manufactureFactoryName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '供应商',
+    dataIndex: 'mdsVendorName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -1697,14 +1723,6 @@ const columns = [
   {
     title: '出厂日期',
     dataIndex: 'leaveFactoryDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '设备类型',
-    dataIndex: 'equipmentTypeName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1840,6 +1858,14 @@ const columns = [
     align: 'center'
   },
   {
+    title: '是否军工重大专用资产',
+    dataIndex: 'ynMajorAssetsName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '军工关键设备专用代码',
     dataIndex: 'militaryKeyEquipCode',
     ellipsis: true,
@@ -1864,14 +1890,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '是否年检',
-    dataIndex: 'ynAnnualInspectionName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  
   // {
   //   title: '设备区域',
   //   dataIndex: 'tpmAreaId',
@@ -1901,7 +1920,7 @@ const columns = [
   },
   {
     title: '资金来源',
-    dataIndex: 'capitalSource',
+    dataIndex: 'capitalSourceName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -2569,6 +2588,11 @@ const lookupParams = [
   { fieldName: 'ynAnnualInspection', lookUpType: 'YN_FLAG' },
   { fieldName: 'capitalSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
 ];
+watchEffect(() => {
+    if (equipmentTypeList.value.length > 0) {
+      equipmentTypeList.value = equipmentTypeList.value.filter(item => item.lookupCode != 10 && item.lookupCode != 15);
+    }
+  });
 
 // 主表传入子表的id
 const mainId = computed(() => {
@@ -2589,7 +2613,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  listTpmInventoryByPage(queryParam)
+  listTpmInventoryByPageType(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;

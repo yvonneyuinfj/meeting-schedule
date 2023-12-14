@@ -4,11 +4,13 @@
 <script lang="ts" setup>
 import { localStorage } from '@/utils/local-storage';
 import { useUserStore, RESET_CURRENT_USER } from '@/store/user';
-import { SSO_TYPE } from '@/store/app';
+import { SSO_TYPE, USER_TYPE } from '@/store/app';
 import { httpheaderLoginRequest } from '@/api/avic/system/SingleSignOnApi';
+
 const { proxy } = getCurrentInstance();
 const paramName = 'username_';
 const redirect_url = 'redirect_url';
+const type = 'userType';
 const userStore = useUserStore();
 
 onBeforeMount(() => {
@@ -20,6 +22,7 @@ async function httpheaderLogin() {
   userStore[RESET_CURRENT_USER]();
   // 记单点登录类型
   localStorage.set(SSO_TYPE, 'httpheaderLogin');
+  localStorage.set(USER_TYPE, proxy.$route.query[type]);
 
   try {
     let param = proxy.$route.query[paramName];

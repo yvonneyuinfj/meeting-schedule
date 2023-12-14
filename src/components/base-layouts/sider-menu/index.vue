@@ -102,6 +102,8 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
 import { findMenuChildren } from '@/layouts/menu-util';
 import { useRoute } from 'vue-router';
 import type { RouteProps, LayoutType } from '../typing';
+import { USER_TYPE } from '@/store/app';
+import { localStorage } from '@/utils/local-storage';
 
 import type { MenuTheme } from 'ant-design-vue';
 import type { Breakpoint } from '@/typing';
@@ -170,6 +172,10 @@ const SiderMenuProps = Object.assign({}, BaseMenuProps, {
   collectedMenuList: {
     type: Array as PropType<RouteProps[]>,
     default: () => []
+  },
+  openKeys:{
+    type:Array,
+    default: () => ['/fam']
   }
 });
 
@@ -197,8 +203,15 @@ export default defineComponent({
       collapsed,
       collapsedWidth,
       siderWidth,
-      splitMenus
+      splitMenus,
+
     } = toRefs(props);
+
+    const openKeys = ref([])
+    if(localStorage.get(USER_TYPE) && localStorage.get(USER_TYPE) === 'fam'){
+      openKeys.value = ['/fam']
+    }
+
     const route = useRoute();
     const { getPrefixCls } = useProProvider();
     const prefixCls = propPrefixCls.value || getPrefixCls('sider');
@@ -230,6 +243,7 @@ export default defineComponent({
       emit('collectMenu', menu);
     };
     return {
+      openKeys,
       prefixCls,
       isMix,
       runtimeTheme,

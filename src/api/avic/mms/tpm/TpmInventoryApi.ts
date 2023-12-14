@@ -265,6 +265,12 @@ export function listTpmInventoryByPage (
 ): Promise<ResponsePageData<TpmInventoryDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
+/** 获取分页数据，页面只显示特种设备、生产设备、试验设备、其它设备类型的数据 */
+export function listTpmInventoryByPageType(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmInventoryDto>> {
+  return request.post(basePath + '/search-by-page-type/v1', param);
+}
 
 /** 根据id加载数据 */
 export function getTpmInventory (id: string): Promise<ResponseBaseData<TpmInventoryDto>> {
