@@ -245,7 +245,7 @@ const columns = [
   },
   {
     title: '设备编号',
-    dataIndex: 'equipmentCodeName',
+    dataIndex: 'equipmentCode',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
