@@ -2,29 +2,29 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable ref="tpmYearMaintModifyPlanL" table-key="tpmYearMaintModifyPlanL" :height="300" :columns="columns"
-      :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
+               :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange,
         columnWidth: 40,
         fixed: true
       }" :showTableSetting="false" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="customRow"
-      @change="handleTableChange">
+               @change="handleTableChange">
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button v-hasPermi="['tpmYearMaintModifyPlanL:add']" title="添加" type="primary" @click="handleAdd">
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
             <a-button v-hasPermi="['tpmYearMaintModifyPlanL:del']" title="删除" danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
+                      :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
                 handleDelete(selectedRowKeys, event);
               }
                 ">
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -36,17 +36,18 @@
           column.dataIndex
         )" :record="record" :column="column.dataIndex">
           <template #edit>
-            <a-input v-model:value="record[column.dataIndex]" :maxLength="64" @input="$forceUpdate()" style="width: 100%"
-              placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)">
+            <a-input v-model:value="record[column.dataIndex]" :maxLength="64" @input="$forceUpdate()"
+                     style="width: 100%"
+                     placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)">
             </a-input>
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'secretLevel'" :record="record" :column="column.dataIndex">
           <template #edit>
             <a-select v-model:value="record.secretLevel" style="width: 100%" placeholder="请选择密级"
-              @change="(value) => changeControlValue(value, record, 'secretLevel')">
+                      @change="(value) => changeControlValue(value, record, 'secretLevel')">
               <a-select-option v-for="select in secretLevelList" :key="select.sysLookupTlId" :value="select.lookupCode"
-                :title="select.lookupName" :disabled="select.disabled === true">
+                               :title="select.lookupName" :disabled="select.disabled === true">
                 {{ select.lookupName }}
               </a-select-option>
             </a-select>
@@ -56,13 +57,14 @@
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'budgetOrganizationName'" :record="record"
-          :column="column.dataIndex">
+                     :column="column.dataIndex">
           <template #edit>
             <AvicCommonSelect v-model:value="record.budgetOrganizationName"
-              :defaultShowValue="record.budgetOrganizationNameAlias" placeholder="请选择预算组织名称" type="deptSelect" @callback="(value, _selectRows) => {
+                              :defaultShowValue="record.budgetOrganizationNameAlias" placeholder="请选择预算组织名称"
+                              type="deptSelect" @callback="(value, _selectRows) => {
                 changeCommonSelect(value, record, 'budgetOrganizationName')
               }
-                " />
+                "/>
           </template>
           <template #default>
             {{ record['budgetOrganizationNameAlias'] }}
@@ -70,37 +72,39 @@
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'estContractSignDate'" :record="record" :column="column.dataIndex">
           <template #edit>
-            <a-date-picker v-model:value="record.estContractSignDate" value-format="YYYY-MM-DD" placeholder="请选择合同预计签订时间">
+            <a-date-picker v-model:value="record.estContractSignDate" value-format="YYYY-MM-DD"
+                           placeholder="请选择合同预计签订时间">
             </a-date-picker>
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'acceptanceDate'" :record="record" :column="column.dataIndex">
           <template #edit>
-            <a-date-picker v-model:value="record.acceptanceDate" value-format="YYYY-MM-DD" placeholder="请选择实际完成时间（完成验收）">
+            <a-date-picker v-model:value="record.acceptanceDate" value-format="YYYY-MM-DD"
+                           placeholder="请选择实际完成时间（完成验收）">
             </a-date-picker>
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'planType'" :record="record" :column="column.dataIndex">
           <template #edit>
             <a-select v-model:value="record.planType" style="width: 100%" placeholder="请选择计划类别"
-              @change="(value) => changeControlValue(value, record, 'planType')">
+                      @change="(value) => changeControlValue(value, record, 'planType')">
               <a-select-option v-for="select in planTypeList" :key="select.sysLookupTlId" :value="select.lookupCode"
-                :title="select.lookupName" :disabled="select.disabled === true">
+                               :title="select.lookupName" :disabled="select.disabled === true">
                 {{ select.lookupName }}
               </a-select-option>
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag :value="record.planTypeName" :options="planTypeList" />
+            <AvicDictTag :value="record.planTypeName" :options="planTypeList"/>
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'agentName'" :record="record" :column="column.dataIndex">
           <template #edit>
             <AvicCommonSelect v-model:value="record.agentName" :defaultShowValue="record.agentNameAlias"
-              placeholder="请选择经办人姓名" type="userSelect" @callback="(value, _selectRows) => {
+                              placeholder="请选择经办人姓名" type="userSelect" @callback="(value, _selectRows) => {
                 changeCommonSelect(value, record, 'agentName')
               }
-                " />
+                "/>
           </template>
           <template #default>
             {{ record['agentNameAlias'] }}
@@ -109,10 +113,10 @@
         <AvicRowEdit v-else-if="column.dataIndex === 'requireDeptName'" :record="record" :column="column.dataIndex">
           <template #edit>
             <AvicCommonSelect v-model:value="record.requireDeptName" :defaultShowValue="record.requireDeptNameAlias"
-              placeholder="请选择需求部门名称" type="deptSelect" @callback="(value, _selectRows) => {
+                              placeholder="请选择需求部门名称" type="deptSelect" @callback="(value, _selectRows) => {
                 changeCommonSelect(value, record, 'requireDeptName')
               }
-                " />
+                "/>
           </template>
           <template #default>
             {{ record['requireDeptNameAlias'] }}
@@ -120,27 +124,30 @@
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'estAcceptanceDate'" :record="record" :column="column.dataIndex">
           <template #edit>
-            <a-date-picker v-model:value="record.estAcceptanceDate" value-format="YYYY-MM-DD" placeholder="请选择计划验收时间">
+            <a-date-picker v-model:value="record.estAcceptanceDate" value-format="YYYY-MM-DD"
+                           placeholder="请选择计划验收时间">
             </a-date-picker>
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'progressStatus'" :record="record" :column="column.dataIndex">
           <template #edit>
             <a-select v-model:value="record.progressStatus" style="width: 100%" placeholder="请选择进度状态"
-              @change="(value) => changeControlValue(value, record, 'progressStatus')">
-              <a-select-option v-for="select in progressStatusList" :key="select.sysLookupTlId" :value="select.lookupCode"
-                :title="select.lookupName" :disabled="select.disabled === true">
+                      @change="(value) => changeControlValue(value, record, 'progressStatus')">
+              <a-select-option v-for="select in progressStatusList" :key="select.sysLookupTlId"
+                               :value="select.lookupCode"
+                               :title="select.lookupName" :disabled="select.disabled === true">
                 {{ select.lookupName }}
               </a-select-option>
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag :value="record.progressStatusName" :options="progressStatusList" />
+            <AvicDictTag :value="record.progressStatusName" :options="progressStatusList"/>
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'contractSignDate'" :record="record" :column="column.dataIndex">
           <template #edit>
-            <a-date-picker v-model:value="record.contractSignDate" value-format="YYYY-MM-DD" placeholder="请选择合同实际签订时间">
+            <a-date-picker v-model:value="record.contractSignDate" value-format="YYYY-MM-DD"
+                           placeholder="请选择合同实际签订时间">
             </a-date-picker>
           </template>
         </AvicRowEdit>
@@ -451,6 +458,7 @@ onMounted(() => {
   // 获取当前用户对应的文档密级
   getUserFileSecretList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -472,6 +480,7 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -479,12 +488,14 @@ function getLookupList() {
     progressStatusList.value = result.progressStatus;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -538,9 +549,10 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
-  record.editable = true;
+  record.editable = !props.readOnly;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
   newData.forEach(item => {
@@ -585,11 +597,13 @@ function customRow(record) {
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -600,10 +614,12 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
   record[column + 'Alias'] = value.names;
 }
+
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -623,10 +639,12 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -638,6 +656,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -653,6 +672,7 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData

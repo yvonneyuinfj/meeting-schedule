@@ -70,7 +70,7 @@
     <!--      :bpmParams="bpmParams" />-->
     <TpmYearMaintModifyPlanLEdit v-if="fieldVisible('TPM_YEAR_MAINT_MODIFY_PLAN_L')"
                                  ref="tpmYearMaintModifyPlanLEdit" :mainId="formId || form.id"
-                                 :bpmInstanceObject="bpmInstanceObject"
+                                 :bpmInstanceObject="bpmInstanceObject" :read-only="form.bpmState !== 'start'"
                                  :bpmParams="bpmParams"/>
     <!--子表按钮的流程解析，用于权限控制-->
     <a-button class="eform_subtable_bpm_button_auth table-handle-button" for="addSubTableButton" label="添加"
