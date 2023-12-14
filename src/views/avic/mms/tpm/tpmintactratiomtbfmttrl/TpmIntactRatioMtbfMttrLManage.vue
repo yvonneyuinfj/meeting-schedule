@@ -2,80 +2,82 @@
   <div class="content-wrapper">
     <!-- 表格组件 -->
     <div class="table-wrapper">
-      <AvicTable
-          v-if="showTable"
-          ref="tpmIntactRatioMtbfMttrL"
-          table-key="tpmIntactRatioMtbfMttrL"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="record => {
-            return {
-              Click: () => {
-                handleRowSelection(record);
-              }
-            }
-          }
-            "
-          @change="handleTableChange"
-          @refresh="getList"
-      >
-        <!-- <template #toolBarLeft>
-          <a-space>
-            <a-button
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              title="删除"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-          </a-space>
-        </template> -->
-        <template #toolBarRight>
-          <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
-          />
-        </template>
-        <template #bodyCell="{ column, text, record, index }">
-          <template v-if="column.dataIndex === 'id' && index + 1 < list.length">
-            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
-          </template>
-          <template v-else-if="column.dataIndex === 'title'">
-            {{ record.title }}
-          </template>
-          <!-- <template v-if="column.dataIndex === 'action'">
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click="handleDelete([record.id], 'row')"
-            >
-              删除
-            </a-button>
-          </template> -->
-        </template>
-      </AvicTable>
-    </div>
-  </div>
+                            <AvicTable v-if="showTable" ref="tpmIntactRatioMtbfMttrL" table-key="tpmIntactRatioMtbfMttrL" :columns="columns"
+                              :row-key="record => record.id" :data-source="list" :loading="loading" :pageParameter="queryParam.pageParameter"
+                              :total="totalPage" :customRow="record => {
+                                return {
+                                  Click: () => {
+                                    handleRowSelection(record);
+                                  }
+                                }
+                              }
+                              " @change="handleTableChange" @refresh="getList">
+                              <template #toolBarLeft>
+                                <a-space>
+                                  <!-- <a-button title="添加" type="primary" @click="handleAdd">
+                  <template #icon>
+                    <plus-outlined />
+                  </template>
+                  添加
+                </a-button> -->
+                                  <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除" :loading="delLoading"
+                                    @click="handleDelete(selectedRowKeys, '')">
+                                    <template #icon>
+                                      <delete-outlined />
+                                    </template>
+                                    删除
+                                  </a-button>
+                                  <a-button title="导入" type="primary" ghost @click="handleImport">
+                                    <template #icon>
+                                      <import-outlined />
+                                    </template>
+                                    导入
+                                  </a-button>
+                                </a-space>
+                              </template>
+                              <template #toolBarRight>
+                                <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入" :allow-clear="true"
+                                  @search="handleKeyWordQuery" />
+                              </template>
+                              <template #bodyCell="{ column, text, record, index }">
+                                <template v-if="column.dataIndex === 'id' && index + 1 < list.length">
+                                  {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+                                </template>
+                                <template v-else-if="column.dataIndex === 'title'">
+                                  {{ record.title }}
+                                </template>
+                                <template v-if="column.dataIndex === 'action'">
+                                  <a-button type="link" class="inner-btn" @click="handleDelete([record.id], 'row')">
+                                    删除
+                                  </a-button>
+                                </template>
+                              </template>
+                            </AvicTable>
+                          </div>
+                          <!-- 添加页面弹窗 -->
+                          <TpmIntactRatioMtbfMttrLAdd v-if="showAddModal" ref="addModal" :mainId="mainId" @reloadData="getList"
+                            @close="showAddModal = false" />
+                          <!-- 编辑页面弹窗 -->
+                          <TpmIntactRatioMtbfMttrLEdit v-if="showEditModal" ref="editModal" :mainId="mainId" :form-id="formId"
+                            @reloadData="getList" @close="showEditModal = false" />
+                          <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="单表模板导入"
+                            importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1"
+                            downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1" @reloadData="getList"
+                            @close="showImportModal = false" />
+            </div>
 </template>
 <script lang="ts" setup>
-import {
-  listTpmIntactRatioMtbfMttrLByPage
-  // , delTpmIntactRatioMtbfMttrL
-} from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi';
+//import { delTpmIntactRatioMtbfMttr } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi';
+import { delTpmIntactRatioMtbfMttrL, listTpmIntactRatioMtbfMttrLByPage } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi';
 import dayjs from 'dayjs'; // 引入模块API
-
+import TpmIntactRatioMtbfMttrLAdd from './TpmIntactRatioMtbfMttrLAdd.vue'; // 引入添加页面组件
+import TpmIntactRatioMtbfMttrLEdit from './TpmIntactRatioMtbfMttrLEdit.vue'; // 引入编辑页面组件
+import { $ } from 'dom7';
+const showAddModal = ref(false); // 是否展示添加弹窗
+const showEditModal = ref(false); // 是否展示编辑弹窗
+const showImportModal = ref(false); // 是否展示导入弹窗
+const formId = ref(''); // 当前行数据id
+const excelParams = ref({ tableName: 'tpmIntactRatioMtbfMttrL', tpmIntactRatioMtbfMttrId: '' });
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
@@ -88,7 +90,57 @@ const props = defineProps({
     default: ''
   }
 });
-
+/** 添加 */
+function handleAdd() {
+  if (props.mainId == '') {
+    proxy.$message.warning('请选择一条主数据');
+    return;
+  }
+  showAddModal.value = true;
+}
+/** 编辑 */
+function handleEdit(id) {
+  formId.value = id;
+  showEditModal.value = true;
+}
+/** 导入 */
+function handleImport() {
+  if (props.mainId == '') {
+    proxy.$message.warning('请选择一条主数据');
+    return;
+  }
+  excelParams.value.tpmIntactRatioMtbfMttrId = props.mainId;
+  showImportModal.value = true;
+}
+/* 子表删除 */
+function handleDelete(ids, type) {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要删除的数据！');
+    return;
+  }
+  proxy.$confirm({
+    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      delLoading.value = true;
+      delTpmIntactRatioMtbfMttrL(ids)
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('删除成功！');
+            // 清空选中
+            selectedRowKeys.value = [];
+            selectedRows.value = [];
+            getList();
+          }
+          delLoading.value = false;
+        })
+        .catch(() => {
+          delLoading.value = false;
+        });
+    }
+  });
+}
 let columns = ref([]);
 const columns1 = [
   {
@@ -478,6 +530,15 @@ const columns6 = [
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '操作',
+    dataIndex: 'action',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   }
 ] as any[];
 const queryParam = reactive({
@@ -497,12 +558,11 @@ const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
-// const delLoading = ref(false);
+const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const showTable = ref<boolean>(true);
 const reportDate = ref(dayjs(new Date()));
-
 // 非只读状态添加操作列
 // if (props.mainId) {
 //   columns.value.push({
@@ -649,6 +709,7 @@ function getList() {
       totalPage.value = 0;
       loading.value = false;
     });
+
 }
 
 /** 获取当前用户对应的文档密级 */
@@ -740,5 +801,8 @@ watch(
   },
   { immediate: true }
 );
+defineExpose({
+
+})
 </script>
 

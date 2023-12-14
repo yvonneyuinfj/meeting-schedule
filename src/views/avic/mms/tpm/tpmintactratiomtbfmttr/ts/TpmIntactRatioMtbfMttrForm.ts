@@ -2,7 +2,8 @@ import type { TpmIntactRatioMtbfMttrDto } from '@/api/avic/mms/tpm/TpmIntactRati
 import {
     getTpmIntactRatioMtbfMttr,
     saveTpmIntactRatioMtbfMttr,
-    saveFormAndStartProcess
+    saveFormAndStartProcess,
+    checkEquipmentIntegrityRateUnique
 } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi'; // 引入模块API
 import {
     startFlowByFormCode,
@@ -29,7 +30,8 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
     const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
     const rules: Record<string, Rule[]> = {
         reportDate: [
-            { required: true, message: '申报月份不能为空', trigger: 'change' }
+            { required: true, message: '申报月份不能为空', trigger: 'change' },
+            { validator: (rule, value) => validateEquipmentIntegrityRateUnique(rule, value), trigger: 'blur' }
         ],
         reportDeptId: [
             { required: true, message: '填报部门不能为空', trigger: 'change' }
@@ -131,8 +133,8 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
                             return;
                         }
                         loading.value = true;
-                        const reportDate = dayjs(form.value.reportDate);
-                        form.value.reportDate = dayjs().year(reportDate.year()).month(reportDate.month()).endOf('month').format('YYYY-MM-DD');
+                        //const reportDate = dayjs(form.value.reportDate);
+                        //form.value.reportDate = dayjs().year(reportDate.year()).month(reportDate.month()).endOf('month').format('YYYY-MM-DD');
                         const postData = proxy.$lodash.cloneDeep(form.value);
                         const subInfoList = tpmIntactRatioMtbfMttrLEdit.value.getChangedData(); // 获取子表数据
                         // 处理数据
@@ -166,6 +168,36 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
                 // 定位校验失败元素
                 proxy.$scrollToFirstErrorField(formRef, error);
             });
+    }
+    /** 保存主表*/
+    function saveFormMain(params) {
+        formRef.value
+            .validate()
+            .then(() => {
+                loading.value = true;
+                const postData = proxy.$lodash.cloneDeep(form.value);
+                // 处理数据
+                // 发送请求
+                saveTpmIntactRatioMtbfMttr(postData)
+                    .then(res => {
+                        if (res.success) {
+                            if (props.bpmInstanceObject) {
+                                bpmButtonParams.value = { params, result: res.data };
+                            }
+                            if (!form.value.id) {
+                                form.value.id = res.data;
+                            }
+                            successCallback();
+                        } else {
+                            loading.value = false;
+                        }
+                    })
+                    .catch((error) => {
+                        proxy.$message.warning(error.message);
+                        loading.value = false;
+                    });
+            })
+
     }
 
     /** 设置添加表单的初始值 */
@@ -329,7 +361,25 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
             authJson.value = getFieldAuth(props.bpmInstanceObject);
         }
     }
-
+    /** 异步校验申报月份唯一 */
+    async function validateEquipmentIntegrityRateUnique(rule, value) {
+        if (value) {
+            const res = await checkEquipmentIntegrityRateUnique({
+                id: props.formId || ''
+            });
+            if (res.success) {
+                if (res.data) {
+                    return Promise.resolve();
+                } else {
+                    return Promise.reject('申报月份已存在!');
+                }
+            } else {
+                return Promise.reject('申报月份唯一性校验失败!');
+            }
+        } else {
+            return Promise.resolve();
+        }
+    }
     return {
         form,
         formRef,
@@ -340,6 +390,7 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
         loading,
         secretLevelList,
         saveForm,
+        saveFormMain,
         saveAndStartProcess,
         closeModal,
         fieldVisible,
