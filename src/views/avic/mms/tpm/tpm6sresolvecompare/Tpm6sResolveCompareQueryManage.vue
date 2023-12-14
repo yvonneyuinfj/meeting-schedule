@@ -64,24 +64,24 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="六源问题解决情况">
+            <a-form-item label="问题解决情况">
               <a-input
                   v-model:value="queryForm.problemSolvingInstruction"
-                  placeholder="请输入六源问题解决情况"
+                  placeholder="请输入问题解决情况"
                   :allow-clear="true"
                   @pressEnter="handle"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="六源问题问题解决评价">
+            <a-form-item label="问题解决评价">
               <a-select
                   v-model:value="queryForm.problemSolvingEvaluation"
                   :get-popup-container="triggerNode => triggerNode.parentNode"
                   option-filter-prop="children"
                   :show-search="true"
                   :allow-clear="true"
-                  placeholder="请选择六源问题问题解决评价"
+                  placeholder="请选择问题解决评价"
               >
                 <a-select-option
                     v-for="item in problemSolvingEvaluationList"
@@ -179,7 +179,7 @@
             <a-input-search
                 class="opt-btn-commonsearch"
                 style="width: 200px"
-                placeholder="请输入六源问题立项申请表ID"
+                placeholder="请输入问题立项申请表ID"
                 :allow-clear="true"
                 @search="handleKeyWord"
             />
@@ -189,14 +189,25 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
+          <template v-else-if="column.dataIndex === 'problemSolvingInstruction'">
+            <a @click="handleAttach(record, column.dataIndex)">
+              查看
+            </a>
+          </template>
         </template>
       </AvicTable>
     </div>
+    <AttachModal
+        :attachOpen="attachOpen"
+        :attach-form="attchForm"
+        @closeAttach="closeAttach"
+    />
   </div>
 </template>
 <script lang="ts" setup>
 import type { Tpm6sResolveCompareDto } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块DTO
-import { exportExcel, listTpm6sResolveCompareByPage } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi'; // 引入模块API
+import { exportExcel, listTpm6sResolveCompareByPage } from '@/api/avic/mms/tpm/Tpm6sResolveCompareApi';
+import AttachModal from './AttachModal.vue';
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -214,7 +225,7 @@ const columns = [
   },
   {
     title: '立项单位',
-    dataIndex: 'editDeptIdAlias',
+    dataIndex: 'editDeptName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -237,7 +248,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '六源问题解决情况',
+    title: '问题解决情况',
     dataIndex: 'problemSolvingInstruction',
     ellipsis: true,
     sorter: true,
@@ -246,7 +257,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '六源问题问题解决评价',
+    title: '问题解决评价',
     dataIndex: 'problemSolvingEvaluationName',
     ellipsis: true,
     minWidth: 120,
@@ -308,13 +319,18 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false); // 表格loading状态
 const totalPage = ref(0);
-const problemSolvingEvaluationList = ref([]); // 六源问题问题解决评价通用代码
+const problemSolvingEvaluationList = ref([]); // 问题问题解决评价通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
   { fieldName: 'problemSolvingEvaluation', lookUpType: 'TPM_PROBLEM_SOLVING_EVALUATION' }
 ];
 const bpmState = ref();
 const bpmType = ref();
+const attachOpen = ref(false); // 附件弹窗
+const attchForm = reactive({
+  id: '',
+  info: ''
+});
 
 onMounted(() => {
   // 加载表格数据
@@ -431,4 +447,22 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
+/** 打开查看 */
+const handleAttach = (record, title) => {
+  attchForm.id = record.id;
+  if (title === 'problemDescription') {
+    attchForm.info = record.problemDescription;
+  } else if (title === 'problemSolvingInstruction'){
+    attchForm.info = record.problemSolvingInstruction;
+  }
+  console.log(attchForm);
+  attachOpen.value = true;
+};
+
+/** 关闭查看 */
+const closeAttach = () => {
+  attachOpen.value = false;
+  attchForm.id = null;
+};
 </script>

@@ -173,11 +173,10 @@
               {{ record.billNo }}
             </a>
           </template>
-          <template v-else-if="column.dataIndex === 'projectCategoryName'">
-              {{ record.projectCategoryName && record.projectCategoryName.replaceAll ? record.projectCategoryName.replaceAll(';', ',') : record.projectCategoryName }}
-          </template>
-          <template v-else-if="column.dataIndex === 'teamUserNameAlias'">
-              {{ record.teamUserNameAlias && record.teamUserNameAlias.replaceAll ? record.teamUserNameAlias.replaceAll(';', ',') : record.teamUserNameAlias }}
+          <template v-else-if="column.dataIndex === 'problemDescription'">
+            <a @click="handleAttach(record, column.dataIndex)">
+              查看
+            </a>
           </template>
         </template>
       </AvicTable>
@@ -199,6 +198,11 @@
       @reloadData="getList"
       @close="showEditModal = false"
     />
+    <AttachModal
+        :attachOpen="attachOpen"
+        :attach-form="attchForm"
+        @closeAttach="closeAttach"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -206,8 +210,10 @@ import type { Tpm6sApplyDto } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入
 import { listTpm6sApplyByPage, delTpm6sApply, approval6sApply, exportExcel } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块API
 import Tpm6sApplyAdd from './Tpm6sApplyAdd.vue'; // 引入添加页面组件
 import Tpm6sApplyEdit from './Tpm6sApplyEdit.vue'; // 引入编辑页面组件
+import AttachModal from './AttachModal.vue';
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import {useUserStore} from "@/store/user";
+import { useUserStore } from '@/store/user';
+import Tpm6sResolveCompareEdit from '@/views/avic/mms/tpm/tpm6sresolvecompare/Tpm6sResolveCompareEdit.vue';
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -240,7 +246,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '‘六源’问题立项',
+    title: '问题立项',
     dataIndex: 'projectCategoryName',
     ellipsis: true,
     minWidth: 120,
@@ -290,7 +296,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '‘六源’问题描述',
+    title: '问题描述',
     dataIndex: 'problemDescription',
     ellipsis: true,
     minWidth: 120,
@@ -298,7 +304,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '‘六源’问题改善建议',
+    title: '问题改善建议',
     dataIndex: 'problemAdvice',
     ellipsis: true,
     minWidth: 120,
@@ -347,7 +353,7 @@ const columns = [
 const userStore = useUserStore();
 const queryForm = ref<Tpm6sApplyDto>({
   bpmState: 'all',
-  bpmType: 'my',
+  bpmType: 'all',
   editDeptId: userStore.userInfo.deptId
 });
 // 高级查询对象
@@ -376,6 +382,11 @@ const delLoading = ref(false); // 删除按钮loading状态
 const approvalLoading = ref(false); // 提交审批按钮loading状态
 const totalPage = ref(0);
 const formCode = 'Tpm6sApply';
+const attachOpen = ref(false); // 附件弹窗
+const attchForm = reactive({
+  id: '',
+  info: ''
+});
 
 onMounted(() => {
   // 加载表格数据
@@ -447,6 +458,10 @@ function handleEdit() {
     proxy.$message.warning('请选择自己的数据编辑！');
     return;
   }
+  if (selectedRows.value[0].createdBy !== userStore.userInfo.id) {
+    proxy.$message.warning('只有自己添加的数据才可以编辑！');
+    return;
+  }
   if (selectedRows.value[0].bpmState !== 'start' && selectedRows.value[0].bpmState !== null) {
     proxy.$message.warning('只有拟稿中的数据和未提交审批的数据才可以编辑！');
     return;
@@ -473,8 +488,12 @@ function handleDelete(rows, ids) {
     proxy.$message.warning('只有自己的数据才可以删除！');
     return;
   }
-  if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-    proxy.$message.warning('只有拟稿中的数据才可以删除！');
+  if (rows.filter(row => row.createdBy !== userStore.userInfo.id)?.length > 0) {
+    proxy.$message.warning('只有自己添加的数据才可以删除！');
+    return;
+  }
+  if (rows.filter(row => row.bpmState !== 'start' && row.bpmState !== null)?.length > 0) {
+    proxy.$message.warning('只有拟稿中的数据和未提交审批的数据才可以删除！');
     return;
   }
   proxy.$confirm({
@@ -538,6 +557,10 @@ const handleApproval = (rows, ids) => {
     proxy.$message.warning('只有自己的数据才可以提交！');
     return;
   }
+  if (rows.filter(row => row.createdBy !== userStore.userInfo.id)?.length > 0) {
+    proxy.$message.warning('只有自己添加的数据才可以提交！');
+    return;
+  }
   if (rows.filter(row => row.bpmState !== null)?.length > 0) {
     proxy.$message.warning('只有未提交的数据才可以提交审批！');
     return;
@@ -573,12 +596,30 @@ const approval = (bpmDefinedInfo, row) => {
     if (res.success) {
       proxy.$message.success('提交成功');
       getList();
-      approvalLoding.value = false;
+      approvalLoading.value = false;
+      handleFlowDetail(row);
     } else {
       approvalLoading.value = false;
     }
   }).catch(() => {
     approvalLoading.value = false;
   });
-}
+};
+
+/** 打开查看 */
+const handleAttach = (record, title) => {
+  attchForm.id = record.id;
+  if (title === 'problemDescription') {
+    attchForm.info = record.problemDescription;
+  } else if (title === 'problemSolvingInstruction'){
+    attchForm.info = record.problemSolvingInstruction;
+  }
+  attachOpen.value = true;
+};
+
+/** 关闭查看 */
+const closeAttach = () => {
+  attachOpen.value = false;
+  attchForm.id = null;
+};
 </script>

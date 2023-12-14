@@ -65,34 +65,21 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="problemSolvingInstruction" label="六源问题解决情况">
+            <a-form-item name="problemSolvingInstruction" label="问题解决情况">
               <a-input
                 v-model:value="form.problemSolvingInstruction"
                 :maxLength="10"
-                placeholder="请输入六源问题解决情况"
+                placeholder="请输入问题解决情况"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="problemSolvingEvaluation" label="六源问题问题解决评价">
+            <a-form-item name="problemSolvingEvaluation" label="问题问题解决评价">
               <a-input
                 v-model:value="form.problemSolvingEvaluation"
                 :maxLength="2"
-                placeholder="请输入六源问题问题解决评价"
+                placeholder="请输入问题问题解决评价"
               />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="billStatus" label="流程状态，通用代码：TPM_BILL_STATUS^0-编制中,5-拟稿中 15-审批中,20审批通过">
-              <a-radio-group v-model:value="form.billStatus">
-                <a-radio
-                  v-for="item in billStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-radio>
-              </a-radio-group>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -170,7 +157,6 @@ const {
   layout,
   colLayout,
   loading,
-  billStatusList,
   secretLevelList,
   uploadFile,
   afterUploadEvent,

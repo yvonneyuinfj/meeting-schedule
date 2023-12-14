@@ -10,8 +10,8 @@ import {
   getFieldDisabled,
   getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import {useUserStore} from "@/store/user";
-import dayjs from "dayjs";
+import { useUserStore } from '@/store/user';
+import dayjs from 'dayjs';
 import { createEditor } from '@wangeditor/editor'; // 引入富文本依赖
 import { useRichText } from '@/utils/hooks/useRichText'; // 引入富文本相关配置及方法
 export const emits = ['reloadData', 'close'];
@@ -35,10 +35,10 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
       { required: true, message: '问题发现人不能为空', trigger: 'change' }
     ],
     problemDescription:[
-      { required: true, message: '‘六源’问题描述不能为空', trigger: 'blur' }
+      { required: true, message: '问题描述不能为空', trigger: 'blur' }
     ],
     projectCategory: [
-      { required: true, message: '‘六源’问题立项不能为空', trigger: 'change' }
+      { required: true, message: '问题立项不能为空', trigger: 'change' }
     ],
     projectName: [
       { required: true, message: '项目立项名称不能为空', trigger: 'change' }
@@ -70,7 +70,7 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
   const autoCode = ref(null); // 自动编码ref
-  const projectCategoryList = ref([]); // ‘六源’问题立项通用代码
+  const projectCategoryList = ref([]); // 问题立项通用代码
   const secretLevelList = ref([]); // 密级通用代码
   const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
   const lookupParams = [
@@ -179,7 +179,7 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
     convertImageSrc(editorHtmljsonCopy);
     const newEditor = createEditor({ content: editorHtmljsonCopy });
     const newEditorHtml = newEditor.getHtml();
-    form.value.problemDescription = newEditorHtml === '<p><br></p>' ? '':newEditorHtml
+    form.value.problemDescription = newEditorHtml === '<p><br></p>' ? '':newEditorHtml;
     formRef.value
       .validate()
       .then(() => {
@@ -194,7 +194,6 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         //处理富文本
-        // postData.problemDescription = newEditorHtml;
         postData.projectCategory = postData.projectCategory.toString();
         // 发送请求
         saveTpm6sApply(postData)
@@ -249,7 +248,7 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
     convertImageSrc(editorHtmljsonCopy);
     const newEditor = createEditor({ content: editorHtmljsonCopy });
     const newEditorHtml = newEditor.getHtml();
-    form.value.problemDescription = newEditorHtml === '<p><br></p>' ? '':newEditorHtml
+    form.value.problemDescription = newEditorHtml === '<p><br></p>' ? '':newEditorHtml;
     formRef.value
       .validate()
       .then(() => {
@@ -303,7 +302,7 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
     convertImageSrc(editorHtmljsonCopy);
     const newEditor = createEditor({ content: editorHtmljsonCopy });
     const newEditorHtml = newEditor.getHtml();
-    form.value.problemDescription = newEditorHtml === '<p><br></p>' ? '':newEditorHtml
+    form.value.problemDescription = newEditorHtml === '<p><br></p>' ? '':newEditorHtml;
     formRef.value
       .validate()
       .then(() => {
@@ -372,7 +371,7 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
     if (props.bpmInstanceObject) {
       closeFlowLoading(props.bpmInstanceObject);
       // 刷新表单版本
-      getFormData(form.value.id);
+      getFormData(form.value.id, props.infoStatus);
       // 回调选人等流程按钮事件
       if (bpmButtonParams.value.params.callback) {
         bpmButtonParams.value.params.callback(bpmButtonParams.value.result);

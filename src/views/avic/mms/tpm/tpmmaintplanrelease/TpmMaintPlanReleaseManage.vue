@@ -727,8 +727,8 @@ const validateRules: Record<string, Rule[]> = {
 const editingId = ref(''); // 正在编辑中的数据
 
 onMounted(() => {
-  // queryForm.value.maintenanceStatus = '5';
-  // queryParam.searchParams = { ...queryForm.value };
+  queryForm.value.maintenanceStatus = '5';
+  queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
   // 加载查询区所需通用代码
@@ -1015,6 +1015,9 @@ function handleRelease(ids, e, type) {
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
+      for (let item of selectedRows.value) {
+        item.operationType_ = 'update';
+      }
       saveTpmMaintPlan(selectedRows.value)
         .then(res => {
           if (res.success) {
