@@ -2,6 +2,7 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
+import { TpmStandardDto } from '@/api/avic/mms/tpm/TpmStandardApi';
 const basePath = '/mms/tpm/tpminventorys';
 /** TPM_INVENTORY */
 export interface TpmInventoryDto extends BaseBeanModel {
@@ -11,6 +12,8 @@ export interface TpmInventoryDto extends BaseBeanModel {
   assetsCode?: string;
   /** 设备编号 */
   equipmentCode?: string;
+  /** 设备代号 */
+  equipmentMark?: string;
   /** 设备名称 */
   equipmentName?: string;
   /** 设备类型 */
@@ -301,4 +304,9 @@ export function standardListTpmInventorySelectByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<TpmInventoryDto>> {
   return request.post(basePath + '/searchStandard-by-page/v1', param);
+}
+
+/** 批量保存表单数据 */
+export function saveTpmInventoryList(form: [TpmInventoryDto]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-list/v1', form);
 }
