@@ -102,17 +102,17 @@
                 <!--                <a-button type="primary" @click="handleCopy(selectedRows, selectedRowKeys)">-->
                 <!--                  复制-->
                 <!--                </a-button>-->
-                <!--                <a-button-->
-                <!--                    v-hasPermi="['tpmStandard:import']"-->
-                <!--                    title="导入"-->
-                <!--                    type="primary"-->
-                <!--                    ghost-->
-                <!--                    @click="handleImport">-->
-                <!--                  <template #icon>-->
-                <!--                    <import-outlined/>-->
-                <!--                  </template>-->
-                <!--                  导入-->
-                <!--                </a-button>-->
+                <a-button
+                    v-hasPermi="['tpmStandard:import']"
+                    title="导入"
+                    type="primary"
+                    ghost
+                    @click="handleImport">
+                  <template #icon>
+                    <import-outlined/>
+                  </template>
+                  导入
+                </a-button>
                 <!--                <a-button-->
                 <!--                    v-hasPermi="['tpmStandard:export']"-->
                 <!--                    title="导出"-->
