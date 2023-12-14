@@ -343,6 +343,8 @@
                 v-model:value="form.equipmentManageDeptId"
                 type="deptSelect"
                 placeholder="请选择管理部门"
+                :default-show-value="form.attribute02"
+                @callback="getSelectName($event, 'attribute02')"
                 disabled
               />
             </a-form-item>

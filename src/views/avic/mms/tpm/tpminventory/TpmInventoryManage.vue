@@ -1523,8 +1523,8 @@
         v-if="showImportModal"
         :formData="excelParams"
         title="模板导入"
-        importUrl="/mms/tpm/tpminventorys/importData/v1"
-        downloadTemplateUrl="/mms/tpm/tpminventorys/downloadTemplate/v1"
+        importUrl="/mms/tpm/tpminventorys/importData/JD/v1"
+        downloadTemplateUrl="/mms/tpm/tpminventorys/downloadTemplate/JD/v1"
         @reloadData="getList"
         @close="showImportModal = false"
       />
