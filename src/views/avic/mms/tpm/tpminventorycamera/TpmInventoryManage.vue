@@ -217,8 +217,8 @@
         v-if="showImportModal"
         :formData="excelParams"
         title="模板导入"
-        importUrl="/mms/tpm/tpminventorys/importData/v1"
-        downloadTemplateUrl="/mms/tpm/tpminventorys/downloadTemplate/v1"
+        importUrl="/mms/tpm/tpminventorys/importData/Camera/v1"
+        downloadTemplateUrl="/mms/tpm/tpminventorys/downloadTemplate/Camera/v1"
         @reloadData="getList"
         @close="showImportModal = false"
       />
@@ -430,7 +430,9 @@ const columns = [
     fixed: 'right'
   }
 ];
-const queryForm = ref<TpmInventoryDto>({});
+const queryForm = ref<TpmInventoryDto>({
+  equipmentType: '15'
+});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -438,7 +440,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -520,7 +522,7 @@ function getList() {
   loading.value = true;
   listTpmInventoryByPage(queryParam)
     .then(response => {
-      list.value = response.data.result.filter(item => item.equipmentType === '15');
+      list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       // 设置表格初始选中项
       if (list.value.length > 0) {
