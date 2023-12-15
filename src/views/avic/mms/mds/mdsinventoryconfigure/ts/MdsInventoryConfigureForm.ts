@@ -1,5 +1,5 @@
 import type { MdsInventoryConfigureDto } from '@/api/avic/mms/mds/MdsInventoryConfigureApi'; // 引入模块DTO
-import { getMdsInventoryConfigure, saveMdsInventoryConfigure, listMdsInventoryConfigure } from '@/api/avic/mms/mds/MdsInventoryConfigureApi'; // 引入模块API
+import { getMdsInventoryConfigure, saveMdsInventoryConfigure, listMdsInventoryConfigure, saveMdsInventoryConfigure2 } from '@/api/avic/mms/mds/MdsInventoryConfigureApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 export function useMdsInventoryConfigureForm({
   props: props,
@@ -44,13 +44,55 @@ export function useMdsInventoryConfigureForm({
     ],
     secretLevel: [
       { required: true, message: '密级不能为空', trigger: 'change' }
-    ]
+    ],
+    ynOilSealWarn: [
+      { required: true, message: '是否参与油封期预警不能为空', trigger: 'change' }
+    ],
+    oilSealWarnDays: [
+      { required: true, message: '油封期提前预警天数不能为空', trigger: 'change' }
+    ],
+    ynRecheckWarn: [
+      { required: true, message: '是否参与复验期预警不能为空', trigger: 'change' }
+    ],
+    recheckWarnDays: [
+      { required: true, message: '复验期提前预警天数不能为空', trigger: 'change' }
+    ],
+    ynEffectStockWarn: [
+      { required: true, message: '是否参与保管期预警不能为空', trigger: 'change' }
+    ],
+    effectStockWarnDays: [
+      { required: true, message: '保管期提前预警天数不能为空', trigger: 'change' }
+    ],
+    ynBacklogWarn: [
+      { required: true, message: '是否参与积压预警不能为空', trigger: 'change' }
+    ],
+    backlogWarnDays: [
+      { required: true, message: '积压提前预警天数不能为空', trigger: 'change' }
+    ],
+    ynOverstockWarn: [
+      { required: true, message: '是否参与超储预警不能为空', trigger: 'change' }
+    ],
+    overstockWarnRatio: [
+      { required: true, message: '超储警戒系数不能为空', trigger: 'change' }
+    ],
+    ynLackWarn: [
+      { required: true, message: '是否参与缺货预警不能为空', trigger: 'change' }
+    ],
+    lackWarnRatio: [
+      { required: true, message: '缺货警戒系数不能为空', trigger: 'change' }
+    ],
+    ynOrderPointWarn: [
+      { required: true, message: '是否参与订货点预警不能为空', trigger: 'change' }
+    ],
+    orderPointWarnRatio: [
+      { required: true, message: '订货点警戒系数不能为空', trigger: 'change' }
+    ],
   };
   const layout = {
     labelCol: { flex: '0 0 140px' },
     wrapperCol: { flex: '1 1 0' }
   };
-  const colLayout = proxy.$colLayout2; // 调用布局公共方法
+  const colLayout = proxy.$colLayout3; // 调用布局公共方法
   const loading = ref(false);
   const balanceTypeList = ref([]); // 库房盘点方法通用代码
   const yNFlagList = ref([]); // 是否通用代码
@@ -125,8 +167,8 @@ export function useMdsInventoryConfigureForm({
         loading.value = true;
         // 处理数据
         form.value.mdsInventoryId = props.formId;
-        //alert(props.formId);
         const postData = proxy.$lodash.cloneDeep(form.value);
+        console.log(postData);
         // 发送请求
         saveMdsInventoryConfigure(postData)
           .then((res) => {
@@ -145,6 +187,7 @@ export function useMdsInventoryConfigureForm({
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 数据保存成功的回调 */
   function successCallback() {
     proxy.$message.success('保存成功！');
