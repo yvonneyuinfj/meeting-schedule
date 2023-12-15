@@ -210,33 +210,33 @@
             </template>
           </AvicRowEdit>
 
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'businessStatus'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
-                v-model:value="record.businessStatus"
-                style="width: 100%"
-                placeholder="请选择制单状态"
-                @change="(value)=>changeControlValue(value,record,'businessStatus')"
-              >
-                <a-select-option
-                  v-for="select in businessStatusList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              {{ record['businessStatusName'] }}
-            </template>
-          </AvicRowEdit>
+<!--          <AvicRowEdit-->
+<!--            v-else-if="column.dataIndex === 'businessStatus'"-->
+<!--            :record="record"-->
+<!--            :column="column.dataIndex"-->
+<!--          >-->
+<!--            <template #edit>-->
+<!--              <a-select-->
+<!--                v-model:value="record.businessStatus"-->
+<!--                style="width: 100%"-->
+<!--                placeholder="请选择制单状态"-->
+<!--                @change="(value)=>changeControlValue(value,record,'businessStatus')"-->
+<!--              >-->
+<!--                <a-select-option-->
+<!--                  v-for="select in businessStatusList"-->
+<!--                  :key="select.sysLookupTlId"-->
+<!--                  :value="select.lookupCode"-->
+<!--                  :title="select.lookupName"-->
+<!--                  :disabled="select.disabled === true"-->
+<!--                >-->
+<!--                  {{ select.lookupName }}-->
+<!--                </a-select-option>-->
+<!--              </a-select>-->
+<!--            </template>-->
+<!--            <template #default>-->
+<!--              {{ record['businessStatusName'] }}-->
+<!--            </template>-->
+<!--          </AvicRowEdit>-->
 
           <template v-else-if="column.dataIndex === 'attach'">
             <a @click="handleAttach(record)">
@@ -324,8 +324,8 @@ const columns = [
   },
   {
     title: '预算组织',
-    dataIndex: 'budgetOrganizationId',
-    key: 'budgetOrganizationId',
+    dataIndex: 'budgetOrganizationIdAlias',
+    key: 'budgetOrganizationIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -342,8 +342,8 @@ const columns = [
   },
   {
     title: '计划类别',
-    dataIndex: 'planType',
-    key: 'planType',
+    dataIndex: 'planTypeName',
+    key: 'planTypeName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -351,8 +351,8 @@ const columns = [
   },
   {
     title: '需求部门',
-    dataIndex: 'requireDeptId',
-    key: 'requireDeptId',
+    dataIndex: 'requireDeptIdAlias',
+    key: 'requireDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -369,8 +369,8 @@ const columns = [
   },
   {
     title: '需求申请人',
-    dataIndex: 'applyUserId',
-    key: 'applyUserId',
+    dataIndex: 'applyUserIdAlias',
+    key: 'applyUserIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -405,8 +405,8 @@ const columns = [
   },
   {
     title: '是否使用型号经费',
-    dataIndex: 'ynUseModelFunding',
-    key: 'ynUseModelFunding',
+    dataIndex: 'ynUseModelFundingName',
+    key: 'ynUseModelFundingName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -448,15 +448,6 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  // {
-  //   title: '制单状态',
-  //   dataIndex: 'businessStatus',
-  //   key: 'businessStatus',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
   // {
   //   title: '合同预计签订时间',
   //   dataIndex: 'estContractSignDate',
@@ -540,20 +531,13 @@ const columns = [
   },
   {
     title: '制单状态',
-    dataIndex: 'businessStatus',
-    key: 'businessStatus',
+    dataIndex: 'businessStatusName',
+    key: 'businessStatusName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   }
-  // {
-  //   title: '操作',
-  //   dataIndex: 'action',
-  //   width: 120,
-  //   align: 'center',
-  //   fixed: 'right'
-  // }
 ];
 const queryForm = ref<TpmTempMaintModifyPlanDto>({});
 const queryParam = reactive({
