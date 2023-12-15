@@ -85,3 +85,7 @@ export function exportExcel(param) {
   } as downloadParam;
   return downloadSysFile(download);
 }
+/** 校验设备完好率(%)唯一性 */
+export function checkEquipmentIntegrityRateUnique(param: any): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/check-equipment-integrity-rate-unique/v1', param);
+}
