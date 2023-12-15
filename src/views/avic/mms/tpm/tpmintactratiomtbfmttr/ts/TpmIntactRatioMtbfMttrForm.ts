@@ -365,6 +365,7 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
     async function validateEquipmentIntegrityRateUnique(rule, value) {
         if (value) {
             const res = await checkEquipmentIntegrityRateUnique({
+                reportDate: value,
                 id: props.formId || ''
             });
             if (res.success) {

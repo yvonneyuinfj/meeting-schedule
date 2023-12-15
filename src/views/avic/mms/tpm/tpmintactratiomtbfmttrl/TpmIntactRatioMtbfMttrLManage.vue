@@ -2,69 +2,73 @@
   <div class="content-wrapper">
     <!-- 表格组件 -->
     <div class="table-wrapper">
-                            <AvicTable v-if="showTable" ref="tpmIntactRatioMtbfMttrL" table-key="tpmIntactRatioMtbfMttrL" :columns="columns"
-                              :row-key="record => record.id" :data-source="list" :loading="loading" :pageParameter="queryParam.pageParameter"
-                              :total="totalPage" :customRow="record => {
-                                return {
-                                  Click: () => {
-                                    handleRowSelection(record);
-                                  }
-                                }
-                              }
-                              " @change="handleTableChange" @refresh="getList">
-                              <template #toolBarLeft>
-                                <a-space>
-                                  <!-- <a-button title="添加" type="primary" @click="handleAdd">
+          <AvicTable v-if="showTable" ref="tpmIntactRatioMtbfMttrL" table-key="tpmIntactRatioMtbfMttrL" :columns="columns"
+            :row-key="record => record.id" :data-source="list" :loading="loading" :pageParameter="queryParam.pageParameter"
+            :total="totalPage" :row-selection="{
+              selectedRowKeys: selectedRowKeys,
+              columnWidth: 40,
+              fixed: true
+            }" :customRow="record => {
+  return {
+    Click: () => {
+      handleRowSelection(record);
+    }
+  }
+}
+" @change="handleTableChange" @refresh="getList">
+            <template #toolBarLeft>
+              <a-space>
+                <!-- <a-button title="添加" type="primary" @click="handleAdd">
                   <template #icon>
                     <plus-outlined />
                   </template>
                   添加
                 </a-button> -->
-                                  <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除" :loading="delLoading"
-                                    @click="handleDelete(selectedRowKeys, '')">
-                                    <template #icon>
-                                      <delete-outlined />
-                                    </template>
-                                    删除
-                                  </a-button>
-                                  <a-button title="导入" type="primary" ghost @click="handleImport">
-                                    <template #icon>
-                                      <import-outlined />
-                                    </template>
-                                    导入
-                                  </a-button>
-                                </a-space>
-                              </template>
-                              <template #toolBarRight>
-                                <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入" :allow-clear="true"
-                                  @search="handleKeyWordQuery" />
-                              </template>
-                              <template #bodyCell="{ column, text, record, index }">
-                                <template v-if="column.dataIndex === 'id' && index + 1 < list.length">
-                                  {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
-                                </template>
-                                <template v-else-if="column.dataIndex === 'title'">
-                                  {{ record.title }}
-                                </template>
-                                <template v-if="column.dataIndex === 'action'">
-                                  <a-button type="link" class="inner-btn" @click="handleDelete([record.id], 'row')">
-                                    删除
-                                  </a-button>
-                                </template>
-                              </template>
-                            </AvicTable>
-                          </div>
-                          <!-- 添加页面弹窗 -->
-                          <TpmIntactRatioMtbfMttrLAdd v-if="showAddModal" ref="addModal" :mainId="mainId" @reloadData="getList"
-                            @close="showAddModal = false" />
-                          <!-- 编辑页面弹窗 -->
-                          <TpmIntactRatioMtbfMttrLEdit v-if="showEditModal" ref="editModal" :mainId="mainId" :form-id="formId"
-                            @reloadData="getList" @close="showEditModal = false" />
-                          <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="单表模板导入"
-                            importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1"
-                            downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1" @reloadData="getList"
-                            @close="showImportModal = false" />
-            </div>
+                <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除" :loading="delLoading"
+                  @click="handleDelete(selectedRowKeys, '')">
+                  <template #icon>
+                    <delete-outlined />
+                  </template>
+                  删除
+                </a-button>
+                <a-button title="导入" type="primary" ghost @click="handleImport">
+                  <template #icon>
+                    <import-outlined />
+                  </template>
+                  导入
+                </a-button>
+              </a-space>
+            </template>
+            <template #toolBarRight>
+              <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入设备编号或设备名称" :allow-clear="true"
+                @search="handleKeyWordQuery" />
+            </template>
+            <template #bodyCell="{ column, text, record, index }">
+              <template v-if="column.dataIndex === 'id' && index + 1 < list.length">
+                {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+              </template>
+              <template v-else-if="column.dataIndex === 'title'">
+                {{ record.title }}
+              </template>
+              <template v-if="column.dataIndex === 'action'">
+                <a-button type="link" class="inner-btn" @click="handleDelete([record.id], 'row')">
+                  删除
+                </a-button>
+              </template>
+            </template>
+          </AvicTable>
+        </div>
+        <!-- 添加页面弹窗 -->
+        <TpmIntactRatioMtbfMttrLAdd v-if="showAddModal" ref="addModal" :mainId="mainId" @reloadData="getList"
+          @close="showAddModal = false" />
+        <!-- 编辑页面弹窗 -->
+        <TpmIntactRatioMtbfMttrLEdit v-if="showEditModal" ref="editModal" :mainId="mainId" :form-id="formId"
+          @reloadData="getList" @close="showEditModal = false" />
+        <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="单表模板导入"
+          importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1"
+          downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1" @reloadData="getList"
+          @close="showImportModal = false" />
+      </div>
 </template>
 <script lang="ts" setup>
 //import { delTpmIntactRatioMtbfMttr } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrApi';
@@ -530,16 +534,16 @@ const columns6 = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
   }
+  // {
+  //   title: '操作',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // }
 ] as any[];
 const queryParam = reactive({
   // 请求表格数据参数
@@ -721,7 +725,7 @@ function getUserFileSecretList() {
 
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {};
+  const keyWord = { equipmentCode: value, equipmentName: value };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
@@ -802,7 +806,7 @@ watch(
   { immediate: true }
 );
 defineExpose({
-
+  list
 })
 </script>
 
