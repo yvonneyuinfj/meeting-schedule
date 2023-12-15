@@ -934,7 +934,7 @@ function handleSave(record) {
 }
 
 /** 批量保存 */
-async function handleSaveAll(type, callback) {
+function handleSaveAll(type, callback) {
   // 规避正在保存时连续点击
   if (saveLoading.value) return;
   // 开始处理数据
@@ -945,7 +945,7 @@ async function handleSaveAll(type, callback) {
     proxy.$message.warning('请先修改数据！');
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
-    await saveTpmMaintPlan(changedData)
+    saveTpmMaintPlan(changedData)
       .then(res => {
         if (res.success) {
           if (type === 'release') callback();
@@ -1109,7 +1109,6 @@ function handleSet(ids, e) {
 
 /** 批量设置保存 */
 function handleOk(type) {
-  console.log(type);
   for (let item in selectedRowKeys.value) {
     let it = list.value.filter(i => i.id === selectedRowKeys.value[item])[0];
     if (it.ynSelfMaintenance === 'Y' && actrualMaintUserId.value && (type === 'actrualMaintUserId' || type === null)) {
@@ -1124,10 +1123,12 @@ function handleOk(type) {
       it.vendorName = vendorName.value;
     }
   }
-  // handleSaveAll()
-  // if (type === null) {
-  //
-  // }
+  handleSaveAll('release', () => {
+    if (type === null) {
+      batchSettings.value = false
+    }
+  });
+
 }
 
 
