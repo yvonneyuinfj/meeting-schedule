@@ -8,142 +8,142 @@
             <a-row :gutter="16">
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="申报月份(起)">
-                                <a-date-picker v-model:value="queryForm.reportDateBegin" format="YYYY-MM" value-format="YYYY-MM"
-                                  placeholder="请选择申报月份(起)"
-                                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportDateEnd)"
-                                  picker="month" />
-                              </a-form-item>
-                            </a-col>
-                            <a-col v-bind="colLayout.cols">
-                              <a-form-item label="申报月份(止)">
-                                <a-date-picker v-model:value="queryForm.reportDateEnd" format="YYYY-MM" value-format="YYYY-MM"
-                                  placeholder="请选择申报月份(止)"
-                                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportDateBegin)"
-                                  picker="month" />
-                              </a-form-item>
-                            </a-col>
-                            <a-col v-bind="colLayout.cols">
-                              <a-form-item label="填报部门">
-                                <AvicCommonSelect v-model:value="queryForm.reportDeptId" type="deptSelect" placeholder="请选择填报部门"
-                                  :defaultShowValue="queryForm.reportDeptIdAlias" @callback="result => {
-                                    queryForm.reportDeptIdAlias = result.names;
-                                  }
-                                  " />
-                              </a-form-item>
-                            </a-col>
-                            <a-col v-bind="colLayout.cols" style="margin-left: auto">
-                              <div class="table-page-search-submitButtons">
-                                <a-space>
-                                  <a-button type="primary" @click="handleQuery">
-                                    <search-outlined />
-                                    查询
-                                  </a-button>
-                                  <a-button type="primary" @click="resetQuery" ghost>
-                                    <redo-outlined />
-                                    重置
-                                  </a-button>
-                                  <a-button type="link" @click="toggleAdvanced" style="margin: 0">
-                                    {{ advanced ? '收起' : '展开' }}
-                                    <up-outlined v-if="advanced" />
-                                    <down-outlined v-else />
-                                  </a-button>
-                                </a-space>
-                              </div>
-                            </a-col>
-                          </a-row>
-                        </a-form>
-                      </div>
-                      <!-- 表格组件 -->
-                      <div class="table-wrapper">
-                        <AvicTable ref="tpmIntactRatioMtbfMttr" table-key="tpmIntactRatioMtbfMttr" :columns="columns"
-                          :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
-                            selectedRowKeys: selectedRowKeys,
-                            onChange: onSelectChange,
-                            columnWidth: 40,
-                            fixed: true
-                          }" rowClickSelectionType="radio" :pageParameter="queryParam.pageParameter" :total="totalPage"
-                          @change="handleTableChange" @refresh="getList">
-                          <template #toolBarLeft>
-                            <a-space>
-                              <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:add']" title="添加" type="primary" @click="handleAdd">
-                                <template #icon>
-                                  <plus-outlined />
-                                </template>
-                                添加
-                              </a-button>
-                              <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:edit']" title="编辑" type="primary" ghost
-                                @click="handleEdit">
-                                <template #icon>
-                                  <edit-outlined />
-                                </template>
-                                编辑
-                              </a-button>
-                              <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:del']" title="删除" danger
-                                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
-                                @click="handleDelete(selectedRows, selectedRowKeys)">
-                                <template #icon>
-                                  <delete-outlined />
-                                </template>
-                                删除
-                              </a-button>
-                              <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:export']" title="导出" type="primary" ghost
-                                @click="handleExport">
-                                <template #icon>
-                                  <export-outlined />
-                                </template>
-                                导出
-                              </a-button>
-                              <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:startFlow']" title="提交流程" type="primary" ghost
-                                @click="handleStartFlow(selectedRows, selectedRowKeys)">
-                                <template #icon>
-                                  <avic-icon svg='avic-arrow-up-circle-line' />
-                                </template>
-                                提交流程
-                              </a-button>
-                            </a-space>
+                          <a-date-picker v-model:value="queryForm.reportDateBegin" format="YYYY-MM" value-format="YYYY-MM"
+                            placeholder="请选择申报月份(起)"
+                            :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportDateEnd)"
+                            picker="month" />
+                        </a-form-item>
+                      </a-col>
+                      <a-col v-bind="colLayout.cols">
+                        <a-form-item label="申报月份(止)">
+                          <a-date-picker v-model:value="queryForm.reportDateEnd" format="YYYY-MM" value-format="YYYY-MM"
+                            placeholder="请选择申报月份(止)"
+                            :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportDateBegin)"
+                            picker="month" />
+                        </a-form-item>
+                      </a-col>
+                      <a-col v-bind="colLayout.cols">
+                        <a-form-item label="填报部门">
+                          <AvicCommonSelect v-model:value="queryForm.reportDeptId" type="deptSelect" placeholder="请选择填报部门"
+                            :defaultShowValue="queryForm.reportDeptIdAlias" @callback="result => {
+                              queryForm.reportDeptIdAlias = result.names;
+                            }
+                            " />
+                        </a-form-item>
+                      </a-col>
+                      <a-col v-bind="colLayout.cols" style="margin-left: auto">
+                        <div class="table-page-search-submitButtons">
+                          <a-space>
+                            <a-button type="primary" @click="handleQuery">
+                              <search-outlined />
+                              查询
+                            </a-button>
+                            <a-button type="primary" @click="resetQuery" ghost>
+                              <redo-outlined />
+                              重置
+                            </a-button>
+                            <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                              {{ advanced ? '收起' : '展开' }}
+                              <up-outlined v-if="advanced" />
+                              <down-outlined v-else />
+                            </a-button>
+                          </a-space>
+                        </div>
+                      </a-col>
+                    </a-row>
+                  </a-form>
+                </div>
+                <!-- 表格组件 -->
+                <div class="table-wrapper">
+                  <AvicTable ref="tpmIntactRatioMtbfMttr" table-key="tpmIntactRatioMtbfMttr" :columns="columns"
+                    :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
+                      selectedRowKeys: selectedRowKeys,
+                      onChange: onSelectChange,
+                      columnWidth: 40,
+                      fixed: true
+                    }" rowClickSelectionType="radio" :pageParameter="queryParam.pageParameter" :total="totalPage"
+                    @change="handleTableChange" @refresh="getList">
+                    <template #toolBarLeft>
+                      <a-space>
+                        <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:add']" title="添加" type="primary" @click="handleAdd">
+                          <template #icon>
+                            <plus-outlined />
                           </template>
-                          <template #toolBarRight>
-                            <a-space>
-                              <AvicBpmFilter :allFileAuth="['tpmIntactRatioMtbfMttr:all']" :myFileAuth="['tpmIntactRatioMtbfMttr:my']"
-                                :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
-                              <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入" :allow-clear="true"
-                                @search="handleKeyWordQuery" />
-                            </a-space>
+                          添加
+                        </a-button>
+                        <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:edit']" title="编辑" type="primary" ghost
+                          @click="handleEdit(selectedRows, selectedRowKeys)">
+                          <template #icon>
+                            <edit-outlined />
                           </template>
-                          <template #bodyCell="{ column, text, record, index }">
-                            <template v-if="column.dataIndex === 'id'">
-                              {{
-                                index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
-                              }}
-                            </template>
-                            <template v-else-if="column.dataIndex === 'reportDate'">
-                              <template v-if="record.bpmState !== null">
-                                <a @click="handleFlowDetail(record)">
-                                  {{ dayjs(record.reportDate).format('YYYY-MM') }}
-                                </a>
-                              </template>
-                              <template v-else>
-                                {{ dayjs(record.reportDate).format('YYYY-MM') }}
-                              </template>
-                            </template>
+                          编辑
+                        </a-button>
+                        <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:del']" title="删除" danger
+                          :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
+                          @click="handleDelete(selectedRows, selectedRowKeys)">
+                          <template #icon>
+                            <delete-outlined />
                           </template>
-                        </AvicTable>
-                      </div>
-                    </div>
-                    <!-- 添加页面弹窗 -->
-                    <TpmIntactRatioMtbfMttrAdd v-if="showAddModal" ref="addModal" :readOnly="readOnly" :startLoading="startLoading"
-                      :saveLoading="saveLoading" :bpmOperatorRefresh="getList" @reloadData="getList" @close="showAddModal = false" />
-                    <!-- 编辑页面弹窗 -->
-                    <TpmIntactRatioMtbfMttrEdit v-if="showEditModal" ref="editModal" :form-id="formId" :readOnly="readOnly"
-                      :startLoading="startLoading" :saveLoading="saveLoading" @reloadData="getList" @close="showEditModal = false" />
-                    <!-- 详情页面弹窗 -->
-                    <TpmIntactRatioMtbfMttrDetail v-if="showDetailModal" ref="detailModal" :form-id="formId"
-                      @close="showDetailModal = false" />
-                  </AvicPane>
-                  <AvicPane>
-                    <!--子表组件-->
-                    <TpmIntactRatioMtbfMttrLManage key="tpmIntactRatioMtbfMttrLManage" ref="tpmIntactRatioMtbfMttrLManage"
-                      :mainId="mainId" :reportDate="reportDate"  @reloadData="getList" />
+                          删除
+                        </a-button>
+                        <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:export']" title="导出" type="primary" ghost
+                          @click="handleExport">
+                          <template #icon>
+                            <export-outlined />
+                          </template>
+                          导出
+                        </a-button>
+                        <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:startFlow']" title="提交流程" type="primary" ghost
+                          @click="handleStartFlow(selectedRows, selectedRowKeys)">
+                          <template #icon>
+                            <avic-icon svg='avic-arrow-up-circle-line' />
+                          </template>
+                          提交流程
+                        </a-button>
+                      </a-space>
+                    </template>
+                    <template #toolBarRight>
+                      <a-space>
+                        <AvicBpmFilter :allFileAuth="['tpmIntactRatioMtbfMttr:all']" :myFileAuth="['tpmIntactRatioMtbfMttr:my']"
+                          :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
+                        <!-- <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入" :allow-clear="true"
+                                @search="handleKeyWordQuery" /> -->
+                      </a-space>
+                    </template>
+                    <template #bodyCell="{ column, text, record, index }">
+                      <template v-if="column.dataIndex === 'id'">
+                        {{
+                          index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
+                        }}
+                      </template>
+                      <template v-else-if="column.dataIndex === 'reportDate'">
+                        <template v-if="record.bpmState !== null">
+                          <a @click="handleFlowDetail(record)">
+                            {{ dayjs(record.reportDate).format('YYYY-MM') }}
+                          </a>
+                        </template>
+                        <template v-else>
+                          {{ dayjs(record.reportDate).format('YYYY-MM') }}
+                        </template>
+                      </template>
+                    </template>
+                  </AvicTable>
+                </div>
+              </div>
+              <!-- 添加页面弹窗 -->
+              <TpmIntactRatioMtbfMttrAdd v-if="showAddModal" ref="addModal" :readOnly="readOnly" :startLoading="startLoading"
+                :saveLoading="saveLoading" :bpmOperatorRefresh="getList" @reloadData="getList" @close="showAddModal = false" />
+              <!-- 编辑页面弹窗 -->
+              <TpmIntactRatioMtbfMttrEdit v-if="showEditModal" ref="editModal" :form-id="formId" :readOnly="readOnly"
+                :startLoading="startLoading" :saveLoading="saveLoading" @reloadData="getList" @close="showEditModal = false" />
+              <!-- 详情页面弹窗 -->
+              <TpmIntactRatioMtbfMttrDetail v-if="showDetailModal" ref="detailModal" :form-id="formId"
+                @close="showDetailModal = false" />
+            </AvicPane>
+            <AvicPane>
+              <!--子表组件-->
+              <TpmIntactRatioMtbfMttrLManage key="tpmIntactRatioMtbfMttrLManage" ref="tpmIntactRatioMtbfMttrLManage"
+                :mainId="mainId" :reportDate="reportDate" @reloadData="getList" />
             </AvicPane>
           </AvicSplit>
 </template>
@@ -164,6 +164,7 @@ import { startFlowByFormCode, openFlowDetail } from '@/views/avic/bpm/bpmutils/F
 
 import dayjs from 'dayjs';
 import { useUserStore } from '@/store/user';
+import { index } from '@antv/x6-common/lib/dom/elem';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -171,6 +172,7 @@ const layout = {
   wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
+const tpmIntactRatioMtbfMttrLManage = ref(null);
 const columns = [
   {
     title: '序号',
@@ -414,7 +416,7 @@ function handleAdd() {
 }
 
 /** 编辑 */
-function handleEdit() {
+function handleEdit(rows, ids) {
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
@@ -423,6 +425,10 @@ function handleEdit() {
     proxy.$message.warning('只有自己的数据才可以编辑！');
     return;
   }
+  // if (rows.filter(row => row.bpmState !== 'start' && row.bpmState !== null)?.length > 0) {
+  //   proxy.$message.warning('只有拟稿中和未提交的数据才可以编辑！');
+  //   return;
+  // }
   if (selectedRows.value[0].bpmState === 'start') {
     readOnly.value = false;
     startLoading.value = false;
@@ -538,6 +544,11 @@ function handleTableChange(pagination, filters, sorter) {
 }
 /** 提交流程 */
 function handleStartFlow(rows, ids) {
+  console.log(tpmIntactRatioMtbfMttrLManage.value.list.length);
+  if (tpmIntactRatioMtbfMttrLManage.value.list.length == 1) {
+    proxy.$message.warning('请编辑设备信息再提交流程！');
+    return;
+  }
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要提交流程的数据！');
     return;
@@ -546,7 +557,6 @@ function handleStartFlow(rows, ids) {
     proxy.$message.warning('流程已存在，不能重复提交！');
     return;
   }
-
   startFlowByFormCode({
     formCode: 'TpmIntactRatioMtbfMttr',
     formData: selectedRows.value[0],
@@ -577,8 +587,8 @@ function handleStartFlow(rows, ids) {
     }
   });
 
-
 }
+
 
 </script>
 

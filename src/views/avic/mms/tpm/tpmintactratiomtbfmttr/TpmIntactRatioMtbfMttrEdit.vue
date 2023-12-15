@@ -118,10 +118,10 @@
                                    :reportDate="reportDate" :readOnly="props.readOnly"/>
     </a-spin>
     <template #footer>
-      <a-button title="保存并启动流程" v-if="startLoading" type="primary" :loading="loading"
+            <!-- <a-button title="保存并启动流程" v-if="startLoading" type="primary" :loading="loading"
                 @click="saveAndStartProcess">保存并启动流程
-      </a-button>
-      <a-button title="保存并返回" v-if="saveLoading" type="primary" :loading="loading" @click="saveForm">保存并返回
+      </a-button> -->
+          <a-button title="保存" v-if="saveLoading" type="primary" :loading="loading" @click="saveForm">保存
       </a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>

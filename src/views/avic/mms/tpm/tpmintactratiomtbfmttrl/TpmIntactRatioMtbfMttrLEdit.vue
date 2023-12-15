@@ -1312,8 +1312,11 @@ const handleOk = () => {
 };
 
 function calculateMTBFOrMTTR(record) {
+  //设备运行时间
   let equipmentRunTime = isNaN(parseFloat(record.equipmentRunTime)) ? 0 : parseFloat(record.equipmentRunTime);
+  //设备修复时间
   let repairTime = isNaN(parseFloat(record.repairTime)) ? 0 : parseFloat(record.repairTime);
+  //设备故障次数
   let failureNumber = isNaN(parseFloat(record.failureNumber)) ? 0 : parseFloat(record.failureNumber);
   let mtbf = equipmentRunTime / failureNumber;
   let mttr = repairTime / failureNumber;
