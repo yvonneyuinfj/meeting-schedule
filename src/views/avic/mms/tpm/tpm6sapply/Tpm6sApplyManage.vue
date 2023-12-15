@@ -187,7 +187,6 @@
       ref="addModal"
       :bpmOperatorRefresh="getList"
       @reloadData="getList"
-      :form-id="formId"
       @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
