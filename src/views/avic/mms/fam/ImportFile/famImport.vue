@@ -254,7 +254,8 @@ function afterUpload(successFile, errorFiles) {
   }
   let result = successFile[successFile.length - 1].response.responseBody;
   if (result) {
-    proxy.$message.info(result.message);
+    proxy.$message.info("上传成功");
+    $emit('close');
     getList();
     $emit('reloadData');
   } else {

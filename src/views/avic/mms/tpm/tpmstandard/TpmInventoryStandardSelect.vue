@@ -104,6 +104,19 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
+          <AvicRowEdit
+              v-else-if="column.dataIndex === 'equipmentMark'"
+              :record="record"
+              :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-input
+                  v-model:value="record.equipmentMark"
+                  placeholder="请选择设备编号"
+              >
+              </a-input>
+            </template>
+          </AvicRowEdit>
         </template>
       </AvicTable>
     </div>
@@ -111,7 +124,7 @@
 </template>
 <script lang="ts" setup>
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
-import { listTpmInventoryByPage, standardListTpmInventorySelectByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
+import { standardListTpmInventorySelectByPage } from '@/api/avic/mms/tpm/TpmInventoryApi';
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const tpmInventorySelect = ref();
 const { proxy } = getCurrentInstance();
@@ -132,6 +145,15 @@ const columns = [
   {
     title: '设备编号',
     dataIndex: 'equipmentCode',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '设备代号',
+    dataIndex: 'equipmentMark',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -318,13 +340,31 @@ function handleTableChange(pagination, _filters, sorter) {
 
 /** 行双击事件 */
 function customRow(record) {
-  return {
-    on: {
-      dblclick: (event, record, index) => {
-        $emit('handleRowDblClick', [record]);
+    return {
+      onClick: () => {
+        handleEdit(record);
       }
+    };
+    // return {
+    //   on: {
+    //     dblclick: (event, record, index) => {
+    //       $emit('handleRowDblClick', [record]);
+    //     }
+    //   }
+    // };
+}
+
+/** 编辑 */
+function handleEdit(record) {
+  record.editable = true;
+  record.operationType_ = record.operationType_ || 'update';
+  const newData = [...list.value];
+  newData.forEach(item => {
+    if (item.id !== record.id) {
+      item.editable = false;
     }
-  };
+  });
+  list.value = newData;
 }
 
 const selectedRow = () => {
@@ -340,7 +380,9 @@ const selectedRow = () => {
 
 defineExpose({
   selectedRow,
-  selectedRowKeys
+  selectedRows,
+  selectedRowKeys,
+  getList
 });
 </script>
 

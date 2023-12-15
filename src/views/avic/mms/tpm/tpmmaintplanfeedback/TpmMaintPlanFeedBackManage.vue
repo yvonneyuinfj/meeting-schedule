@@ -199,6 +199,7 @@
                   @input="$forceUpdate()"
                   style="width: 100%"
                   placeholder="请输入问题说明"
+                  @click="handleOpen(record)"
                   @blur="blurInput($event, record, column.dataIndex)"
               >
               </a-input>
@@ -207,6 +208,12 @@
         </template>
       </AvicTable>
     </div>
+    <!--问题说明弹窗-->
+    <a-modal :visible="open" title="问题说明" @ok="handleOk" @cancel="handleCancel" width="40%" style="top: 20px">
+      <div style="height: 400px;overflow: auto">
+        <Attach-modal ref="attachModal"></Attach-modal>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
@@ -217,6 +224,7 @@ import {
   saveTpmMaintPlan,
   exportExcel, approvalMaintPlanFeedBack
 } from '@/api/avic/mms/tpm/TpmMaintPlanReleaseApi';
+import AttachModal from './AttachModal.vue';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -571,6 +579,9 @@ const validateRules = {
   ]
 }; // 必填列,便于保存和新增数据时校验
 const editingId = ref(''); // 正在编辑中的数据
+const open = ref(false); // 附件弹窗
+const attachModal = ref(null);
+const currentRecord = ref<TpmMaintPlanReleaseDto>({});
 
 onMounted(() => {
   queryForm.value.maintenanceStatus = '10';
@@ -886,5 +897,20 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
+function handleOpen(record) {
+  open.value = true;
+  currentRecord.value = record;
+  attachModal.value.note = record.problemDescription;
+}
+
+const handleCancel = () => {
+  open.value = false;
+};
+
+const handleOk = () => {
+  currentRecord.value.problemDescription = attachModal.value.note;
+  open.value = false;
+};
 </script>
 

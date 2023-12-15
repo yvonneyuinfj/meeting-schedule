@@ -144,6 +144,9 @@
                   {{ record.tpmInventoryId }}
                 </a>
               </template>
+              <template v-else-if="column.dataIndex === 'leaveFactoryDate'">
+                {{ record.leaveFactoryDate != null ? dayjs(record.leaveFactoryDate).format('YYYY-MM-DD') : '' }}
+              </template>
             </template>
           </AvicTable>
         </div>
@@ -214,11 +217,13 @@ import {
   exportExcel,
   saveTpmStandardByTpmInventoryIds
 } from '@/api/avic/mms/tpm/TpmStandardApi'; // 引入模块API
+import { saveTpmInventoryList } from '@/api/avic/mms/tpm/TpmInventoryApi';
 import TpmStandardAdd from './TpmStandardAdd.vue'; // 引入添加页面组件
 import TpmStandardEdit from './TpmStandardEdit.vue'; // 引入编辑页面组件
 import TpmStandardDetail from './TpmStandardDetail.vue'; // 引入详情页面组件
 import TpmStandardMaintenanceManage from '../tpmstandardmaintenance/TpmStandardMaintenanceManage.vue';
 import TpmInventoryStandardSelect from './TpmInventoryStandardSelect.vue';
+import dayjs from 'dayjs';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -236,6 +241,14 @@ const columns = [
     fixed: 'left'
   },
   {
+    title: '设备代号',
+    dataIndex: 'equipmentMark',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }, {
     title: '设备编号',
     dataIndex: 'equipmentCode',
     ellipsis: true,
@@ -419,6 +432,7 @@ function handleAdd() {
 /** 批量添加 */
 function handleOpenAdd() {
   open.value = true;
+  tpmInventoryStandardSelect.value.getList();
 }
 
 /** 复制 */
@@ -443,6 +457,15 @@ const handleOk = () => {
     proxy.$message.warning('请选择要操作的数据！');
     return;
   }
+  console.log(selectedKeys);
+  console.log(tpmInventoryStandardSelect.value.selectedRows);
+  saveTpmInventoryList(tpmInventoryStandardSelect.value.selectedRows).then(res => {
+    if (res.success) {
+      proxy.$message.success('修改成功！');
+    }
+  }).catch((error) => {
+    proxy.$message.warning(error.message);
+  });
   open.value = false;
   saveTpmStandardByTpmInventoryIds(selectedKeys).then(res => {
     if (res.success) {

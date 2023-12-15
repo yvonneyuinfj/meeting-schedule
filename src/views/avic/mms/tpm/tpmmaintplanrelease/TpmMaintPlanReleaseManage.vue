@@ -332,9 +332,9 @@
         </template>
       </AvicTable>
     </div>
-    <a-modal :visible="batchSettings" title='批量设置' @ok="handleOk" @cancel="batchSettings = false">
-      <div style="display: flex;justify-content: center;align-items: center;">
-        <div style="margin-right: 10px">
+    <a-modal :visible="batchSettings" title='批量设置' @cancel="batchSettings = false" @ok="handleOk(null)">
+      <div class="box">
+        <div class="labelClass">
           保养负责人
         </div>
         <AvicCommonSelect
@@ -347,9 +347,11 @@
                   }
                 "
         />
+        <a-button type="primary" style="margin-left: 20px" @click="handleOk('maintUserId')" :loading="setLoading">设置
+        </a-button>
       </div>
-      <div style="display: flex;margin-top: 10px;justify-content: center;align-items: center;">
-        <div style="margin-right: 10px">
+      <div class="box">
+        <div class="labelClass">
           实际保养人
         </div>
         <AvicCommonSelect
@@ -362,7 +364,25 @@
                   }
                 "
         />
+        <a-button type="primary" style="margin-left: 20px" @click="handleOk('actrualMaintUserId')"
+                  :loading="setLoading">设置
+        </a-button>
       </div>
+      <div class="box">
+        <div class="labelClass">
+          外委专业厂家
+        </div>
+        <a-input
+          v-model:value="vendorName"
+          :maxLength="256"
+          style="width: 222px"
+          @input="$forceUpdate()"
+          placeholder="请输入"
+        ></a-input>
+        <a-button type="primary" style="margin-left: 20px" @click="handleOk('vendorName')" :loading="setLoading">设置
+        </a-button>
+      </div>
+      <div style="height: 20px"></div>
     </a-modal>
     <avic-excel-import
       v-if="showImportModal"
@@ -393,10 +413,12 @@ const layout = {
   wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 调用布局公共方法
-const maintUserId = ref();
-const actrualMaintUserId = ref();
+const maintUserId = ref(); //保养负责人
+const actrualMaintUserId = ref(); // 实际保养人
 const maintUserIdAlias = ref();
-const actrualMaintUserIdAlias = ref()
+const vendorName = ref();// 外委厂家
+const actrualMaintUserIdAlias = ref();
+const setLoading = ref(false);
 const columns = [
   {
     title: '计划编号',
@@ -912,7 +934,7 @@ function handleSave(record) {
 }
 
 /** 批量保存 */
-function handleSaveAll(type, callback) {
+async function handleSaveAll(type, callback) {
   // 规避正在保存时连续点击
   if (saveLoading.value) return;
   // 开始处理数据
@@ -923,7 +945,7 @@ function handleSaveAll(type, callback) {
     proxy.$message.warning('请先修改数据！');
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
-    saveTpmMaintPlan(changedData)
+    await saveTpmMaintPlan(changedData)
       .then(res => {
         if (res.success) {
           if (type === 'release') callback();
@@ -1086,20 +1108,26 @@ function handleSet(ids, e) {
 }
 
 /** 批量设置保存 */
-function handleOk() {
+function handleOk(type) {
+  console.log(type);
   for (let item in selectedRowKeys.value) {
     let it = list.value.filter(i => i.id === selectedRowKeys.value[item])[0];
-    if (it.ynSelfMaintenance === 'Y' && actrualMaintUserId.value){
+    if (it.ynSelfMaintenance === 'Y' && actrualMaintUserId.value && (type === 'actrualMaintUserId' || type === null)) {
       it.actrualMaintUserId = actrualMaintUserId.value;
-      it.actrualMaintUserIdAlias = actrualMaintUserIdAlias.value
+      it.actrualMaintUserIdAlias = actrualMaintUserIdAlias.value;
     }
-    if (maintUserId.value){
+    if (maintUserId.value && (type === 'maintUserId' || type === null)) {
       it.maintUserId = maintUserId.value;
       it.maintUserIdAlias = maintUserIdAlias.value;
     }
+    if (it.ynSelfMaintenance === 'N' && vendorName.value && (type === 'vendorName' || type === null)) {
+      it.vendorName = vendorName.value;
+    }
   }
-  handleSaveAll()
-  batchSettings.value = false;
+  // handleSaveAll()
+  // if (type === null) {
+  //
+  // }
 }
 
 
@@ -1118,8 +1146,8 @@ function changeCommonSelect(value, record, column) {
 }
 
 function changeCommonSelectSet(value, column) {
-  if(column === 'maintUserId') maintUserIdAlias.value = value.names
-  if(column === 'actrualMaintUserId') actrualMaintUserIdAlias.value = value.names
+  if (column === 'maintUserId') maintUserIdAlias.value = value.names;
+  if (column === 'actrualMaintUserId') actrualMaintUserIdAlias.value = value.names;
 }
 
 /** 控件变更事件  */
@@ -1188,3 +1216,18 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
+<style lang="less" scoped>
+.box {
+  display: flex;
+  margin-top: 10px;
+  align-content: center;
+  text-align: center;
+}
+
+.labelClass {
+  margin-right: 10px;
+  width: 100px;
+  text-align: right;
+  line-height: 32px;
+}
+</style>

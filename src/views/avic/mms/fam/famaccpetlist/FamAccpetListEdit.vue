@@ -87,7 +87,6 @@
             [
               'assetSource',
               'fundSource',
-              'equipType',
               'firstDepreciationValue',
               'installLocation',
               'ownershipCertNo',
@@ -99,9 +98,7 @@
               'warrantyPeriod',
               'assetName',
               'producer',
-              'equipNo',
               'invoiceNo',
-              'assetSecretLevel',
               'deviceStandby1',
               'deviceStandby2',
               'deviceStandby3',
@@ -131,11 +128,19 @@
                      :record="record"
                      :column="column.dataIndex"
         >
-          <template #edit>
+<!--          <template #edit>
             <a-month-picker v-model:value="record[column.dataIndex]"
-                            format="YYYY-MM"
+                            format="YYYY-MM-DD"
                             placeholder="请选择月份"
-                            valueFormat="YYYY-MM"/>
+                            valueFormat="YYYY-MM-DD"/>
+          </template> -->
+          <template #edit>
+            <a-date-picker
+              v-model:value="record.monthProposed"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择月份"
+              :disabled="props.accpetType === '2' && props.assetClass === '1'"
+            ></a-date-picker>
           </template>
         </AvicRowEdit>
 
@@ -158,7 +163,9 @@
         <template v-else-if="column.dataIndex === 'assetNo'">
           {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
         </template>
-        
+        <template v-else-if="column.dataIndex === 'equipNo'">
+          {{ props.accpetType === '1' ? '提交后自动生成' : record.equipNo }}
+        </template>
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetClass'"
           :record="record"
@@ -191,7 +198,7 @@
           <template #edit>
             <a-input
               v-if="props.accpetType === '1'"
-              v-model:value="record.equipClass"
+              v-model:value="record.equipClassName"
               @click="equipClassClick(record)"
               placeholder="请选择设备类别"
             >
@@ -201,10 +208,11 @@
                 </a-tooltip>
               </template>
             </a-input>
-            <div v-else>
-              {{ record.equipClass }}
-            </div>
+             
           </template>
+           <template #default>
+             {{ record.equipClassName }}
+           </template>
         </AvicRowEdit>
         
         
@@ -250,6 +258,66 @@
             <AvicDictTag :value="record.importedOrNotName" :options="importedOrNotList"/>
           </template>
         </AvicRowEdit>
+        
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'equipType'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record.equipType"
+              style="width: 100%"
+              placeholder="请选择是否为进口设备"
+              :disabled="props.accpetType === '2' && props.assetClass === '1'"
+              @change="value => changeControlValue(value, record, 'equipType')"
+            >
+              <a-select-option
+                v-for="select in equipTypeList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag :value="record.equipTypeName" :options="equipTypeList"/>
+          </template>
+        </AvicRowEdit>
+        
+        
+        
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'assetSecretLevel'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record.assetSecretLevel"
+              style="width: 100%"
+              placeholder="请选择资产密级"
+              @change="value => changeControlValue(value, record, 'assetSecretLevel')"
+            >
+              <a-select-option
+                v-for="select in assetSecretLevelList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag :value="record.assetSecretLevelName" :options="assetSecretLevelList"/>
+          </template>
+        </AvicRowEdit>
+        
         <AvicRowEdit
           v-else-if="column.dataIndex === 'ynMilitaryKeyEquip'"
           :record="record"
@@ -602,31 +670,42 @@ const columns1 = [
     align: 'left'
   },
   {
+    title: '设备大类',
+    dataIndex: 'equipClass',
+    key: 'equipClass',
+    width: 120,
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left',
+    hidden: true,
+  },
+  // {
+  //   title: '设备大类',
+  //   dataIndex: 'equipClassName',
+  //   key: 'equipClassName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
+  {
     title: '设备编号',
     dataIndex: 'equipNo',
     key: 'equipNo',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '设备大类',
-    dataIndex: 'equipClass',
-    key: 'equipClass',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1004,33 +1083,33 @@ const columns1 = [
 ] as any[];
 
 const columns2 = [
-  {
-    title: '设备备用字段1',
-    dataIndex: 'deviceStandby1',
-    key: 'deviceStandby1',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '设备备用字段2',
-    dataIndex: 'deviceStandby2',
-    key: 'deviceStandby2',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '设备备用字段3',
-    dataIndex: 'deviceStandby3',
-    key: 'deviceStandby3',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  }
+  // {
+  //   title: '设备备用字段1',
+  //   dataIndex: 'deviceStandby1',
+  //   key: 'deviceStandby1',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '设备备用字段2',
+  //   dataIndex: 'deviceStandby2',
+  //   key: 'deviceStandby2',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '设备备用字段3',
+  //   dataIndex: 'deviceStandby3',
+  //   key: 'deviceStandby3',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // }
 ] as any[];
 
 const queryForm = ref<FamAccpetListDto>({});
@@ -1071,16 +1150,19 @@ const equiphClassRecord = ref();
 const ynMilitaryKeyEquipList = ref([]);
 const assetsUseList = ref([]);
 const geographicalAreaList = ref([]);
+const equipTypeList = ref([]);
+const assetSecretLevelList = ref([]);
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'assetsUse', lookUpType: 'FAM_ASSETS_USE' },
+   { fieldName: 'equipType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
+    { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' },
   { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' }
 ];
 const validateRules = {
   assetClass: [{ required: true, message: '资产类别列不能为空' }],
-  equipNo: [{ required: true, message: '设备编号列不能为空' }],
   equipClass: [{ required: props.isLand, message: '设备大类列不能为空' }],
   assetName: [{ required: true, message: '资产名称不能为空' }],
   assetModel: [{ required: true, message: '资产型号不能为空' }],
@@ -1155,7 +1237,7 @@ function handleCancel() {
 
 /** 关闭类别树弹窗 */
 function equiphandleCancel() {
-  assetClassOpen.value = false;
+  equipClassOpen.value = false;
 }
 
 
@@ -1246,7 +1328,7 @@ function equiphandleSummit() {
       if (res.success) {
         const record = list.value.filter(item => item.id === equiphClassRecord.value.id)[0];
         record.equipClass = res.data.classCode;
-        record.equiphClassName = res.data.className;
+        record.equipClassName = res.data.className;
         equipClassOpen.value = false;
         equiphClassRecord.value = null;
       }
@@ -1297,6 +1379,8 @@ function getLookupList() {
     ynMilitaryKeyEquipList.value = result.importedOrNot;
     assetsUseList.value = result.assetsUse;
     geographicalAreaList.value = result.geographicalArea;
+    equipTypeList.value  = result.equipType;
+    assetSecretLevelList.value = result.assetSecretLevel;
   });
 }
 
