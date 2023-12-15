@@ -305,7 +305,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '维修单位',
+    title: '维修/改造单位',
     dataIndex: 'repairDept',
     ellipsis: true,
     sorter: true,
@@ -355,7 +355,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '维修金额',
+    title: '维修/改造金额',
     dataIndex: 'repairMoney',
     ellipsis: true,
     sorter: true,
@@ -388,7 +388,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '维修内容',
+    title: '维修/改造内容',
     dataIndex: 'repairContent',
     ellipsis: true,
     minWidth: 120,

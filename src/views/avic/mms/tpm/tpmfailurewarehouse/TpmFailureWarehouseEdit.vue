@@ -34,6 +34,7 @@
                   :maxLength="128"
                   :auto-focus="true"
                   placeholder="请输入设备名称"
+                  :readonly="true"
               />
             </a-form-item>
           </a-col>
@@ -43,6 +44,7 @@
                   v-model:value="form.model"
                   :maxLength="128"
                   placeholder="请输入设备型号"
+                  :readonly="true"
               />
             </a-form-item>
           </a-col>
@@ -52,6 +54,7 @@
                   v-model:value="form.specs"
                   :maxLength="128"
                   placeholder="请输入设备规格"
+                  :readonly="true"
               />
             </a-form-item>
           </a-col>
@@ -61,6 +64,7 @@
                   v-model:value="form.useDeptName"
                   :maxLength="128"
                   placeholder="请输入使用部门名称"
+                  :readonly="true"
               />
             </a-form-item>
           </a-col>
@@ -84,11 +88,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="repairDept" label="维修单位">
+            <a-form-item name="repairDept" label="维修/改造单位">
               <a-input
                   v-model:value="form.repairDept"
                   :maxLength="128"
-                  placeholder="请输入维修单位"
+                  placeholder="请输入维修/改造单位"
               />
             </a-form-item>
           </a-col>
@@ -123,11 +127,12 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="repairMoney" label="维修金额">
+            <a-form-item name="repairMoney" label="维修/改造金额">
               <a-input
                   v-model:value="form.repairMoney"
                   :maxLength="20"
-                  placeholder="请输入维修金额"
+                  placeholder="请输入维修/改造金额"
+                  suffix="元"
               />
             </a-form-item>
           </a-col>
@@ -191,13 +196,13 @@
           <a-col v-bind="colLayout.cols3">
             <a-form-item
                 name="repairContent"
-                label="维修内容"
+                label="维修/改造内容"
             >
               <a-textarea
                   v-model:value="form.repairContent"
                   :rows="2"
                   :maxLength="4000"
-                  placeholder="请输入维修内容"
+                  placeholder="请输入维修/改造内容"
               />
             </a-form-item>
           </a-col>

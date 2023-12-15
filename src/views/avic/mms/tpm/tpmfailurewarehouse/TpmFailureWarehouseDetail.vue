@@ -79,7 +79,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('repairDept')">
-          <a-form-item name="repairDept" label="维修单位" :rules="fieldRequired('repairDept')" has-feedback>
+          <a-form-item name="repairDept" label="维修/改造单位" :rules="fieldRequired('repairDept')" has-feedback>
             <a-input
                 v-model:value="form.repairDept"
                 :disabled="fieldDisabled('repairDept')"
@@ -117,10 +117,11 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('repairMoney')">
-          <a-form-item name="repairMoney" label="维修金额" :rules="fieldRequired('repairMoney')" has-feedback>
+          <a-form-item name="repairMoney" label="维修/改造金额" :rules="fieldRequired('repairMoney')" has-feedback>
             <a-input
                 v-model:value="form.repairMoney"
                 :disabled="fieldDisabled('repairMoney')"
+                suffix="元"
             />
           </a-form-item>
         </a-col>
@@ -175,7 +176,7 @@
       </a-row>
       <a-row>
         <a-col v-bind="colLayout.cols3" v-if="fieldVisible('repairContent')">
-          <a-form-item name="repairContent" label="维修内容" :rules="fieldRequired('repairContent')" has-feedback>
+          <a-form-item name="repairContent" label="维修/改造内容" :rules="fieldRequired('repairContent')" has-feedback>
             <a-textarea v-model:value="form.repairContent" :rows="2" :disabled="fieldDisabled('repairContent')"/>
           </a-form-item>
         </a-col>

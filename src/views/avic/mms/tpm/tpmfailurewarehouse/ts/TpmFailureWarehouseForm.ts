@@ -34,18 +34,18 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
     equipmentCode: [
       { required: true, message: '设备编号不能为空', trigger: 'change' }
     ],
-    equipmentName: [
-      { required: true, message: '设备名称不能为空', trigger: 'change' }
-    ],
-    model: [
-      { required: true, message: '设备型号不能为空', trigger: 'change' }
-    ],
-    specs: [
-      { required: true, message: '设备规格不能为空', trigger: 'change' }
-    ],
-    useDeptName: [
-      { required: true, message: '使用部门名称不能为空', trigger: 'change' }
-    ],
+    // equipmentName: [
+    //   { required: true, message: '设备名称不能为空', trigger: 'change' }
+    // ],
+    // model: [
+    //   { required: true, message: '设备型号不能为空', trigger: 'change' }
+    // ],
+    // specs: [
+    //   { required: true, message: '设备规格不能为空', trigger: 'change' }
+    // ],
+    // useDeptName: [
+    //   { required: true, message: '使用部门名称不能为空', trigger: 'change' }
+    // ],
     applyUserName: [
       { required: true, message: '申请人姓名不能为空', trigger: 'change' }
     ],
