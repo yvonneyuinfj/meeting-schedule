@@ -16,7 +16,7 @@
               <template #icon>
                 <plus-outlined/>
               </template>
-              添加1
+              添加
             </a-button>
             <a-button v-hasPermi="['tpmYearMaintModifyPlanL:del']" title="删除" danger
                       :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
@@ -32,7 +32,7 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-        <AvicRowEdit v-if="['note', 'agentId', 'changeReason', 'agentCode', 'contractNo', 'projectMoney', 'requireDeptId', 'budgetBreakdownItems', 'budgetItems', 'requireDeptCode', 'budgetOrganizationId', 'applyNo', 'budgetOrganizationCode', 'projectName'].includes(
+        <AvicRowEdit v-if="['planNo','budgetOrganizationIdAlias','requireDeptIdAlias','agentIdAlias','note', 'agentId', 'changeReason', 'agentCode', 'contractNo', 'projectMoney', 'requireDeptId', 'budgetBreakdownItems', 'budgetItems', 'requireDeptCode', 'budgetOrganizationId', 'applyNo', 'budgetOrganizationCode', 'projectName'].includes(
           column.dataIndex
         )" :record="record" :column="column.dataIndex">
           <template #edit>
