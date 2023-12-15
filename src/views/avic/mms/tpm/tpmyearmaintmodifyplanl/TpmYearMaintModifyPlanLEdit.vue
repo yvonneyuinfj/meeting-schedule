@@ -16,7 +16,7 @@
               <template #icon>
                 <plus-outlined/>
               </template>
-              添加
+              添加1
             </a-button>
             <a-button v-hasPermi="['tpmYearMaintModifyPlanL:del']" title="删除" danger
                       :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
@@ -182,7 +182,7 @@ const props = defineProps({
 });
 const columns = [
   {
-    title: '计划编号',
+    title: '计划编号1',
     dataIndex: 'planNo',
     key: 'planNo',
     ellipsis: true,
