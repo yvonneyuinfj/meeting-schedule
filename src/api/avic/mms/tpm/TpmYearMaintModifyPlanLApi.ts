@@ -46,6 +46,7 @@ export interface TpmYearMaintModifyPlanLDto extends BaseBeanModel {
   planType?: any;
   /** 需求部门ID */
   requireDeptId?: string;
+  requireDeptIdAlias?: string;
   /** 需求部门编码 */
   requireDeptCode?: string;
   /** 需求部门名称 */
@@ -63,6 +64,7 @@ export interface TpmYearMaintModifyPlanLDto extends BaseBeanModel {
   estAcceptanceDateEnd?: any;
   /** 经办人ID */
   agentId?: string;
+  agentIdAlias?: string;
   /** 经办人编码 */
   agentCode?: string;
   /** 经办人姓名 */
