@@ -28,7 +28,7 @@
               >
                 <template #suffix>
                   <a-tooltip title="Extra information">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                   </a-tooltip>
                 </template>
               </a-input>
@@ -55,7 +55,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="equipmentName" label="设备名称">
-              <a-input v-model:value="form.equipmentName" disabled placeholder="请输入设备名称" />
+              <a-input v-model:value="form.equipmentName" disabled placeholder="请输入设备名称"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -81,12 +81,12 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="model" label="型号">
-              <a-input v-model:value="form.model" disabled placeholder="请输入型号" />
+              <a-input v-model:value="form.model" disabled placeholder="请输入型号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="specs" label="设备规格">
-              <a-input v-model:value="form.specs" disabled placeholder="请输入设备规格" />
+              <a-input v-model:value="form.specs" disabled placeholder="请输入设备规格"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -167,7 +167,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="maintenanceHours" label="小时数">
-              <a-input v-model:value="form.maintenanceHours" disabled placeholder="请输入小时数" />
+              <a-input v-model:value="form.maintenanceHours" disabled placeholder="请输入小时数"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -224,6 +224,7 @@ const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
 const codeModalOpen = ref<boolean>(false);
 const tpmStandardMaintenanceSelect = ref(null);
+
 function tpmInventoryCodeClick() {
   codeModalOpen.value = true;
 }
@@ -244,13 +245,17 @@ function handleSummit() {
     maintenanceCycle,
     maintenanceHours,
     ynSelfMaintenanceName,
+    ynSelfMaintenance,
     secretLevelName,
     equipmentName,
     model,
     specs,
     maintenanceItems,
     maintenancePosition,
-    maintenanceBasis
+    maintenanceBasis,
+    tpmStandardId,
+    tpmStandardMaintenanceId,
+    tpmInventoryId
   } = selectRows[0];
   form.value.tpmInventoryCode = equipmentCode;
   form.value.maintenanceContent = maintenanceContent;
@@ -260,6 +265,7 @@ function handleSummit() {
   form.value.maintenanceCycle = maintenanceCycle;
   form.value.maintenanceHours = maintenanceHours;
   form.value.secretLevelName = secretLevelName;
+  form.value.secretLevel = secretLevel;
   form.value.equipmentName = equipmentName;
   form.value.model = model;
   form.value.specs = specs;
@@ -267,6 +273,10 @@ function handleSummit() {
   form.value.maintenancePosition = maintenancePosition;
   form.value.maintenanceBasis = maintenanceBasis;
   form.value.ynSelfMaintenanceName = ynSelfMaintenanceName;
+  form.value.ynSelfMaintenance = ynSelfMaintenance;
+  form.value.tpmStandardId = tpmStandardId;
+  form.value.tpmStandardMaintenanceId = tpmStandardMaintenanceId;
+  form.value.tpmInventoryId = tpmInventoryId;
 }
 
 // const tpmStandardMaintenanceSelectComponent = tpmStandardMaintenanceSelect; // 自定义选择
