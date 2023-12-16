@@ -67,18 +67,18 @@
               </template>
               导入
             </a-button>
-            <a-button
-              v-hasPermi="['tpmCamerasInventory:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport"
-            >
-              <template #icon>
-                <export-outlined />
-              </template>
-              导出
-            </a-button>
+<!--            <a-button-->
+<!--              v-hasPermi="['tpmCamerasInventory:export']"-->
+<!--              title="导出"-->
+<!--              type="primary"-->
+<!--              ghost-->
+<!--              @click="handleExport"-->
+<!--            >-->
+<!--              <template #icon>-->
+<!--                <export-outlined />-->
+<!--              </template>-->
+<!--              导出-->
+<!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>
@@ -369,20 +369,20 @@ function handleImport() {
   showImportModal.value = true;
 }
 /** 导出 */
-function handleExport() {
-  proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      exportExcel(queryParam).then(() => {
-        loading.value = false;
-        proxy.$message.info('导出成功！');
-      });
-    }
-  });
-}
+// function handleExport() {
+//   proxy.$confirm({
+//     title: '确认导出数据吗?',
+//     okText: '确定',
+//     cancelText: '取消',
+//     onOk: () => {
+//       loading.value = true;
+//       exportExcel(queryParam).then(() => {
+//         loading.value = false;
+//         proxy.$message.info('导出成功！');
+//       });
+//     }
+//   });
+// }
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
