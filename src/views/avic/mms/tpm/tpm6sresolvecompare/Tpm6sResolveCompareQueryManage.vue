@@ -189,6 +189,11 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
+          <template v-else-if="column.dataIndex === 'problemDescription'">
+            <a @click="handleAttach(record, column.dataIndex)">
+              查看
+            </a>
+          </template>
           <template v-else-if="column.dataIndex === 'problemSolvingInstruction'">
             <a @click="handleAttach(record, column.dataIndex)">
               查看
@@ -227,13 +232,41 @@ const columns = [
     title: '立项单位',
     dataIndex: 'editDeptName',
     ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '项目立项名称',
+    dataIndex: 'projectName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '问题发现人',
+    dataIndex: 'problemFinderName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '地点位置',
+    dataIndex: 'location',
+    ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '立项时间',
-    dataIndex: 'approvedDate',
+    dataIndex: 'applyDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -248,17 +281,41 @@ const columns = [
     align: 'center'
   },
   {
+    title: '问题描述',
+    dataIndex: 'problemDescription',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '问题解决情况',
     dataIndex: 'problemSolvingInstruction',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '项目组长',
+    dataIndex: 'chargeUserName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '问题解决评价',
     dataIndex: 'problemSolvingEvaluationName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '团队成员',
+    dataIndex: 'teamUserName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -456,7 +513,6 @@ const handleAttach = (record, title) => {
   } else if (title === 'problemSolvingInstruction'){
     attchForm.info = record.problemSolvingInstruction;
   }
-  console.log(attchForm);
   attachOpen.value = true;
 };
 

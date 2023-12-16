@@ -55,25 +55,13 @@
           <template v-else-if="column.dataIndex === 'title'">
             {{ record.title }}
           </template>
-          <!-- <template v-if="column.dataIndex === 'action'">
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click="handleDelete([record.id], 'row')"
-            >
-              删除
-            </a-button>
-          </template> -->
         </template>
       </AvicTable>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import {
-  listTpmIntactRatioMtbfMttrLByPage
-  // , delTpmIntactRatioMtbfMttrL
-} from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi';
+import { listTpmIntactRatioMtbfMttrLByPage } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi';
 import dayjs from 'dayjs'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
@@ -660,7 +648,7 @@ function getUserFileSecretList() {
 
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {};
+  const keyWord = { equipmentCode: value, equipmentName: value };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();

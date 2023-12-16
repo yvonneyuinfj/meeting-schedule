@@ -20,10 +20,10 @@
                   v-model:value="queryForm.editDeptId"
                   type="deptSelect"
                   placeholder="请选择立项单位名称"
-                  :defaultShowValue="queryForm.editDeptIdAlias"
+                  :defaultShowValue="queryForm.editDeptNameAlias"
                   @callback="
                   result => {
-                    queryForm.editDeptIdAlias = result.names;
+                    queryForm.editDeptNameAlias = result.names;
                   }
                 "
               />
@@ -75,10 +75,10 @@
                   v-model:value="queryForm.problemFinderId"
                   type="userSelect"
                   placeholder="请选择问题发现人姓名"
-                  :defaultShowValue="queryForm.problemFinderIdAlias"
+                  :defaultShowValue="queryForm.problemFinderNameAlias"
                   @callback="
                   result => {
-                    queryForm.problemFinderIdAlias = result.names;
+                    queryForm.problemFinderNameAlias = result.names;
                   }
                 "
               />
@@ -90,10 +90,10 @@
                   v-model:value="queryForm.editUserId"
                   type="userSelect"
                   placeholder="请选择编制人姓名"
-                  :defaultShowValue="queryForm.editUserIdAlias"
+                  :defaultShowValue="queryForm.editUserNameAlias"
                   @callback="
                   result => {
-                    queryForm.editUserIdAlias = result.names;
+                    queryForm.editUserNameAlias = result.names;
                   }
                 "
               />
@@ -159,10 +159,10 @@
                   v-model:value="queryForm.chargeUserId"
                   type="userSelect"
                   placeholder="请选择项目组长姓名"
-                  :defaultShowValue="queryForm.chargeUserIdAlias"
+                  :defaultShowValue="queryForm.chargeUserNameAlias"
                   @callback="
                   result => {
-                    queryForm.chargeUserIdAlias = result.names;
+                    queryForm.chargeUserNameAlias = result.names;
                   }
                 "
               />
@@ -174,10 +174,10 @@
                   v-model:value="queryForm.teamUserId"
                   type="userSelect"
                   placeholder="请选择团队成员姓名"
-                  :defaultShowValue="queryForm.teamUserIdAlias"
+                  :defaultShowValue="queryForm.teamUserNameAlias"
                   @callback="
                   result => {
-                    queryForm.teamUserIdAlias = result.names;
+                    queryForm.teamUserNameAlias = result.names;
                   }
                 "
               />
@@ -279,16 +279,27 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
+          <template v-else-if="column.dataIndex === 'problemDescription'">
+            <a @click="handleAttach(record, column.dataIndex)">
+              查看
+            </a>
+          </template>
         </template>
       </AvicTable>
     </div>
+    <AttachModal
+        :attachOpen="attachOpen"
+        :attach-form="attchForm"
+        @closeAttach="closeAttach"
+    />
   </div>
 </template>
 <script lang="ts" setup>
 import type { Tpm6sApplyDto } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块DTO
 import { exportExcel, listTpm6sApplyByPage } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块API
-import { isUndefined } from 'lodash-es';
 
+import AttachModal from './AttachModal.vue';
+import { isUndefined } from 'lodash-es';
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -311,18 +322,18 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '立项单位名称',
-    dataIndex: 'editDeptIdAlias',
+    title: '立项单位',
+    dataIndex: 'editDeptNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '六源问题立项',
+    title: '问题立项',
     dataIndex: 'projectCategoryName',
     ellipsis: true,
     sorter: true,
@@ -350,7 +361,7 @@ const columns = [
   },
   {
     title: '问题发现人姓名',
-    dataIndex: 'problemFinderIdAlias',
+    dataIndex: 'problemFinderName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -358,7 +369,7 @@ const columns = [
   },
   {
     title: '编制人姓名',
-    dataIndex: 'editUserIdAlias',
+    dataIndex: 'editUserName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -381,7 +392,15 @@ const columns = [
     align: 'center'
   },
   {
-    title: '六源问题改善建议',
+    title: '问题描述',
+    dataIndex: 'problemDescription',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '问题改善建议',
     dataIndex: 'problemAdvice',
     ellipsis: true,
     sorter: true,
@@ -390,8 +409,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '项目组长姓名',
-    dataIndex: 'chargeUserIdAlias',
+    title: '项目组长',
+    dataIndex: 'chargeUserNameAlias',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -400,7 +419,7 @@ const columns = [
   },
   {
     title: '团队成员姓名',
-    dataIndex: 'teamUserIdAlias',
+    dataIndex: 'teamUserNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -468,6 +487,11 @@ const lookupParams = [
 ];
 const bpmState = ref();
 const bpmType = ref();
+const attachOpen = ref(false); // 附件弹窗
+const attchForm = reactive({
+  id: '',
+  info: ''
+});
 
 onMounted(() => {
   // 获取通用代码
@@ -597,5 +621,21 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+/** 打开查看 */
+const handleAttach = (record, title) => {
+  attchForm.id = record.id;
+  if (title === 'problemDescription') {
+    attchForm.info = record.problemDescription;
+  } else if (title === 'problemSolvingInstruction'){
+    attchForm.info = record.problemSolvingInstruction;
+  }
+  attachOpen.value = true;
+};
+
+/** 关闭查看 */
+const closeAttach = () => {
+  attachOpen.value = false;
+  attchForm.id = null;
+};
 
 </script>
