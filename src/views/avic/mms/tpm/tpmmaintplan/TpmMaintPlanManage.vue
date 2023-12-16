@@ -379,6 +379,14 @@ const columns = [
     align: 'center'
   },
   {
+    title: '保养计划类型',
+    dataIndex: 'maintenPlanTypeName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '驳回原因',
     dataIndex: 'backReason',
     ellipsis: true,
