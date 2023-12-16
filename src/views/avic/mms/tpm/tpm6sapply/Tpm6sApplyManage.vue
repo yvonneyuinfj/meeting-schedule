@@ -212,7 +212,6 @@ import Tpm6sApplyEdit from './Tpm6sApplyEdit.vue'; // 引入编辑页面组件
 import AttachModal from './AttachModal.vue';
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import { useUserStore } from '@/store/user';
-import Tpm6sResolveCompareEdit from '@/views/avic/mms/tpm/tpm6sresolvecompare/Tpm6sResolveCompareEdit.vue';
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
