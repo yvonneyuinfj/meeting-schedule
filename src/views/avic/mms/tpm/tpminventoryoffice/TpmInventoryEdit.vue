@@ -214,9 +214,9 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="storageMediaSecretLevel" label="存储介质密级">
+            <a-form-item name="storageMediaNameSecretLevel" label="存储介质密级">
               <a-select
-                v-model:value="form.storageMediaSecretLevel"
+                v-model:value="form.storageMediaNameSecretLevel"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
