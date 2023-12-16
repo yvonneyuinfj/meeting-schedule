@@ -7,6 +7,7 @@
             :total="totalPage" :row-selection="{
               selectedRowKeys: selectedRowKeys,
               columnWidth: 40,
+              onChange: onSelectChange,
               fixed: true
             }" :customRow="record => {
   return {
@@ -761,10 +762,10 @@ function handleKeyWordQuery(value) {
 //   });
 // }
 /** 勾选复选框时触发 */
-// function onSelectChange(rowKeys, rows) {
-//   selectedRowKeys.value = rowKeys;
-//   selectedRows.value = rows;
-// }
+function onSelectChange(rowKeys, rows) {
+  selectedRowKeys.value = rowKeys;
+  selectedRows.value = rows;
+}
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
