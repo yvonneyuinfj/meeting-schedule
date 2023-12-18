@@ -2,7 +2,6 @@ import request from '@/utils/request';
 import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
-import { TpmStandardDto } from '@/api/avic/mms/tpm/TpmStandardApi';
 const basePath = '/mms/tpm/tpminventorys';
 /** TPM_INVENTORY */
 export interface TpmInventoryDto extends BaseBeanModel {
@@ -309,4 +308,13 @@ export function standardListTpmInventorySelectByPage(
 /** 批量保存表单数据 */
 export function saveTpmInventoryList(form: [TpmInventoryDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-list/v1', form);
+}
+
+export function exportInventoryCameraExcel (param: any) {
+  const download = {
+    url: basePath + '/exportInventoryCameraData/v1',
+    data: param,
+    method: 'post'
+  } as downloadParam;
+  return downloadSysFile(download);
 }

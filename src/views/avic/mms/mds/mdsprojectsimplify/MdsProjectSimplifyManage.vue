@@ -1046,7 +1046,7 @@ const lookupParams = [
   { fieldName: 'projectSecretClass', lookUpType: 'MDS_SECRET_CLASS' },
   { fieldName: 'projectStatus', lookUpType: 'MDS_PROJECT_STATUS' },
   { fieldName: 'currencyType', lookUpType: 'MDS_CURRENDY_TYPE' },
-  { fieldName: 'ynProduction', lookUpType: 'MDS_YN_PRODUCTION' },
+  { fieldName: 'ynProduction', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'industryType', lookUpType: 'MDS_INDUSTRY_TYPE' },
   { fieldName: 'businessArea', lookUpType: 'MDS_BUSINESS_AREA' },
   { fieldName: 'balanceFlag', lookUpType: 'MDS_BALANCE_FLAG' },
