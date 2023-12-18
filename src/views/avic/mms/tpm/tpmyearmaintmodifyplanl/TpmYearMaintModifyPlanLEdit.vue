@@ -210,7 +210,7 @@ const props = defineProps({
 });
 const columns = [
   {
-    title: '计划编号1',
+    title: '计划编号',
     dataIndex: 'planNo',
     key: 'planNo',
     ellipsis: true,
