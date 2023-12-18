@@ -501,7 +501,7 @@ function getBpmDefine(rows) {
 }
 
 function getSonList(v){
-  sonnum.value = v
+  sonnum.value = v;
 }
 
 const approval = (bpmDefinedInfo, postData) => {
@@ -515,6 +515,7 @@ const approval = (bpmDefinedInfo, postData) => {
       approvalLoading.value = false;
       proxy.$message.success('提交成功!');
       getList();
+      handleFlowDetail(postData);
     } else {
       approvalLoading.value = false;
     }
@@ -602,7 +603,7 @@ function handleTableChange(pagination, filters, sorter) {
 }
 defineExpose({
   getSonList
-})
+});
 
 </script>
 
