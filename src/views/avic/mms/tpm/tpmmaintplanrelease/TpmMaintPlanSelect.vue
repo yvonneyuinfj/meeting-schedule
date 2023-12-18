@@ -565,7 +565,7 @@ const secretLevelList = ref([]); // 密级通用代码
 const maintConclusionList = ref([]); // 保养结论通用代码
 const lookupParams = [
   { fieldName: 'maintenanceStatus', lookUpType: 'TPM_MAINTEN_STATUS' },
-  { fieldName: 'goodConditionFlag', lookUpType: 'TPM_YN_FALG' },
+  { fieldName: 'goodConditionFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'maintenPlanType', lookUpType: 'TPM_MAINTEN_PLAN_TYPE' },
   { fieldName: 'maintConclusion', lookUpType: 'TPM_MAINT_CONCLUSION' }
  ];
