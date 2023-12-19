@@ -91,8 +91,8 @@ const columns = [
   // },
   {
     title: '预算组织名称',
-    dataIndex: 'budgetOrganizationNameAlias',
-    key: 'budgetOrganizationNameAlias',
+    dataIndex: 'budgetOrganizationIdAlias',
+    key: 'budgetOrganizationIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -136,8 +136,8 @@ const columns = [
   // },
   {
     title: '需求部门名称',
-    dataIndex: 'requireDeptNameAlias',
-    key: 'requireDeptNameAlias',
+    dataIndex: 'requireDeptIdAlias',
+    key: 'requireDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -181,8 +181,8 @@ const columns = [
   // },
   {
     title: '经办人姓名',
-    dataIndex: 'agentNameAlias',
-    key: 'agentNameAlias',
+    dataIndex: 'agentIdAlias',
+    key: 'agentIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

@@ -1,5 +1,5 @@
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
-import { getTpmInventory, saveTpmInventory } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
+import { getTpmInventory, saveTpmInventory,getCodeById } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
 import { useUserStore } from '@/store/user';
 export const emits = ['reloadData', 'close'];
 export function useTpmInventoryForm({
@@ -386,6 +386,17 @@ export function useTpmInventoryForm({
   const getTreeNodeTitle = (nodeTitle, name) => {
     form.value[name] = nodeTitle;
   };
+
+  const getTreeChangeId = (id) =>{
+    if(!id) return
+    getCodeById(id).then(res =>{
+      if (res.success){
+        form.value.equipmentCode = res.data
+      }
+    })
+
+  }
+
   return {
     form,
     formRef,
@@ -420,6 +431,7 @@ export function useTpmInventoryForm({
     saveForm,
     closeModal,
     getSelectName,
-    getTreeNodeTitle
+    getTreeNodeTitle,
+    getTreeChangeId,
   };
 }
