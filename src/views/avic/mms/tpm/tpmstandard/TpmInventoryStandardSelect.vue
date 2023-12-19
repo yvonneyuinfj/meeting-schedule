@@ -112,7 +112,7 @@
             <template #edit>
               <a-input
                   v-model:value="record.equipmentMark"
-                  placeholder="请选择设备编号"
+                  placeholder="请选择设备代号"
               >
               </a-input>
             </template>
