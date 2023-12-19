@@ -318,11 +318,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -729,7 +724,7 @@ function handleRelease(ids, type) {
     if (!validateRecordData([target], '')) {
       return;
     }
-    if (target.filter(row => row.businessStatus === '10')?.length > 0){
+    if (target.businessStatus === '10') {
       proxy.$message.warning('选择的数据已下达');
       return;
     }
