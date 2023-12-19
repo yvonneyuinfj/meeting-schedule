@@ -400,7 +400,7 @@ export function useTpmInventoryForm({
   async function validateEquipmentCodeUnique(rule, value) {
     if (value) {
       const res = await checkEquipmentCodeUnique({
-        reportDate: value,
+        equipmentCode: value,
         id: props.formId || form.value.id || ''
       });
       if (res.success) {
