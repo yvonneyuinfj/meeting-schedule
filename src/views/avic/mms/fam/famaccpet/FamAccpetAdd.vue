@@ -276,7 +276,7 @@
           :mainId="formId || form.id"
         />
       </a-form>
-      <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal"
+      <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal" :assetClasst="form.assetClasst"
                        @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
     </a-spin>
     <template #footer>

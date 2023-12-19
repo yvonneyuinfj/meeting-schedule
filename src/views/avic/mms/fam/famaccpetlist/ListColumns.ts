@@ -505,8 +505,6 @@ export const HouseColumns = [
   }
 ];
 
-
-
 /** 设备列  */
 export const DeviceColumns = [
   {
@@ -1112,11 +1110,6 @@ export const CarColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1149,11 +1142,6 @@ export const CarColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1282,7 +1270,6 @@ export const CarColumns = [
     align: 'center'
   }
 ];
-
 
 /** 办公家具列 （8）*/
 export const OfficialColumns = [
@@ -1434,6 +1421,20 @@ export const OfficialColumns = [
     align: 'left'
   },
   {
+    title: '权属证号',
+    dataIndex: 'ownershipCertNo',
+    key: 'ownershipCertNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
     title: '入账时累计折旧',
     dataIndex: 'firstDepreciationValue',
     key: 'firstDepreciationValue',
@@ -1537,11 +1538,6 @@ export const OfficialColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1574,11 +1570,6 @@ export const OfficialColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1632,7 +1623,6 @@ export const OfficialColumns = [
     align: 'center'
   }
 ];
-
 
 /** IT列 (6) */
 export const ITColumns = [
@@ -1784,6 +1774,20 @@ export const ITColumns = [
     align: 'left'
   },
   {
+    title: '权属证号',
+    dataIndex: 'ownershipCertNo',
+    key: 'ownershipCertNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
     title: '入账时累计折旧',
     dataIndex: 'firstDepreciationValue',
     key: 'firstDepreciationValue',
@@ -1887,11 +1891,6 @@ export const ITColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -1924,11 +1923,6 @@ export const ITColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -2015,7 +2009,6 @@ export function backColumnsObj() {
   const { proxy } = getCurrentInstance();
   /** 获取房屋的对象 */
   const getHouseObj = (props) => {
-    console.log(props)
     return {
       id: 'newLine' + proxy.$uuid(),
       operationType_: 'insert',
@@ -2060,12 +2053,120 @@ export function backColumnsObj() {
       currentYearDepreciation: '',
       importedOrNot: undefined,
       editable: true, // true为编辑中, false为未编辑
-      assetNum: '',
+      assetNum: '1',
       note: ''
+    };
+  };
+
+  /** 获取车辆的对象 */
+  const getCarsObj = (props) => {
+    return {
+      id: 'newLine' + proxy.$uuid(),
+      operationType_: 'insert',
+      isNewAsset: undefined,
+      assetClass: props ? props.classCode : '',
+      assetClassName: props ? props.className : '',
+      useTime: props ? props.useTime : '',
+      assetNo: '',
+      equipClass: '',
+      equipNo: '',
+      assetNum: '',
+      factoryNo: '',
+      equipType: '',
+      geographicalArea: '',
+      installLocation: '',
+      managerDeptId: '',
+      liablePerson: '',
+      firstDepreciationValue: '',
+      monthProposed: '',
+      assetModel: '',
+      producer: '',
+      procureOrder: '',
+      assetSecretLevel: '',
+      ynMilitaryKeyEquip: '',
+      receiveDeptId: '',
+      invoiceNo: '',
+      assetSpec: '',
+      assetUnit: '',
+      warrantyPeriod: '',
+      parentAssetNo: '',
+      productionDate: '',
+      vehicleUsage: '',
+      vehicleNumber: '',
+      brand: '',
+      licensePlateNumber: '',
+      airDisplacement: '',
+      engineNo: '',
+      importedOrNot: undefined,
+      editable: true // true为编辑中, false为未编辑
+    };
+  };
+
+  /** 获取家具的对象 */
+  const getOfficialObject = (props) => {
+    return {
+      id: 'newLine' + proxy.$uuid(),
+      operationType_: 'insert',
+      isNewAsset: undefined,
+      assetClass: props ? props.classCode : '',
+      assetClassName: props ? props.className : '',
+      useTime: props ? props.useTime : '',
+      assetName: '',
+      assetsUse: '',
+      assetOriginalValue: '',
+      equipType: '',
+      geographicalArea: '',
+      installLocation: '',
+      managerDeptId: '',
+      liablePerson: '',
+      assetModel: '',
+      producer: '',
+      assetNum: '1',
+      ownershipCertNo: '',
+      assetSecretLevel: '',
+      ynMilitaryKeyEquip: '',
+      receiveDeptId: '',
+      assetUnit: '',
+      productionDate: '',
+      importedOrNot: undefined,
+      editable: true // true为编辑中, false为未编辑
+    };
+  };
+
+  /** 获取IT的对象 */
+  const getITObj = (props) => {
+    return {
+      id: 'newLine' + proxy.$uuid(),
+      operationType_: 'insert',
+      isNewAsset: undefined,
+      assetClass: props ? props.classCode : '',
+      assetClassName: props ? props.className : '',
+      useTime: props ? props.useTime : '',
+      assetOriginalValue:'',
+      equipType:'',
+      geographicalArea:'',
+      installLocation:'',
+      managerDeptId:'',
+      liablePerson:'',
+      assetModel:'',
+      producer:'',
+      ownershipCertNo:'',
+      assetSecretLevel:'',
+      ynMilitaryKeyEquip:'',
+      receiveDeptId:'',
+      assetUnit:'',
+      productionDate:'',
+      usePosition:'',
+      factoryNo:'',
+      importedOrNot: undefined,
+      editable: true // true为编辑中, false为未编辑
     }
   };
   return {
-    getHouseObj
+    getHouseObj,
+    getCarsObj,
+    getOfficialObject,
+    getITObj
   };
 }
 

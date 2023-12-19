@@ -261,7 +261,7 @@
         </a-row>
         <FamAccpetListEdit
           ref="famAccpetListEdit"
-          :isLand="isLand"
+          :assetClasst="form.assetClasst"
           :assetClasstObj="assetClasstObj"
           :accpetType="accpetType"
           :asset-class="assetClass"
@@ -311,7 +311,6 @@ import { useFamAccpetForm, emits } from './ts/FamAccpetForm'; // 引入表单ts
 import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入子表组件
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
-import { getTreeParent } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
 import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
 
 const props = defineProps({
@@ -336,9 +335,6 @@ const props = defineProps({
 
 onMounted(() => {
   getTreeList();
-  setTimeout(() => {
-    getParent();
-  }, 300);
 });
 
 const { proxy } = getCurrentInstance();
@@ -350,7 +346,6 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-const isLand = ref(false); //是否为土地及房屋
 const assetClasstObj = ref();
 const emit = defineEmits(emits);
 const maintPlanModal = ref<boolean>(false);
@@ -445,8 +440,6 @@ function handleSummit() {
   getFamAssetClass(treeNodeId.value)
     .then(async res => {
       if (res.success) {
-        const parentId = getParentId();
-        isLand.value = res.data.treePath.split('/').includes(parentId);
         assetClasstObj.value = res.data;
         form.value.assetClasst = res.data.classCode;
         assetClasstOpen.value = false;
@@ -458,11 +451,6 @@ function handleSummit() {
     });
 }
 
-function getParent() {
-  getTreeParent(form.value.assetClasst).then(res => {
-    isLand.value = Boolean(res.data);
-  });
-}
 
 const {
   form,
