@@ -333,3 +333,12 @@ export function exportInventoryCameraExcel(param: any) {
   } as downloadParam;
   return downloadSysFile(download);
 }
+
+export function exportBGSExcel(param: any) {
+  const download = {
+    url: basePath + '/exportBGSData/v1',
+    data: param,
+    method: 'post'
+  } as downloadParam;
+  return downloadSysFile(download);
+}

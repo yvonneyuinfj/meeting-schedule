@@ -20,6 +20,7 @@ export const emits = ['reloadData', 'close'];
 
 export function useFamAccpetForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
+  console.log(getCurrentInstance)
   const form = ref<FamAccpetDto>({});
   const formRef = ref(null);
   const formCode = 'FamAccpet';

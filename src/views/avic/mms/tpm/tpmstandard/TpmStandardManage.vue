@@ -241,14 +241,6 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '设备代号',
-    dataIndex: 'equipmentMark',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  }, {
     title: '设备编号',
     dataIndex: 'equipmentCode',
     ellipsis: true,
@@ -256,7 +248,17 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
+    title: '设备代号',
+    dataIndex: 'equipmentMark',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '设备名称',
     dataIndex: 'equipmentName',
     ellipsis: true,
@@ -264,7 +266,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '设备规格',
     dataIndex: 'specs',
     ellipsis: true,
@@ -272,7 +275,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '设备型号',
     dataIndex: 'model',
     ellipsis: true,
@@ -280,7 +284,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '设备大类',
     dataIndex: 'className',
     ellipsis: true,
@@ -288,7 +293,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '出厂日期',
     dataIndex: 'leaveFactoryDate',
     ellipsis: true,
@@ -296,7 +302,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '使用单位',
     dataIndex: 'useDeptName',
     ellipsis: true,
@@ -304,7 +311,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '地理区域',
     dataIndex: 'areaName',
     ellipsis: true,
@@ -312,7 +320,8 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  }, {
+  },
+  {
     title: '具体位置',
     dataIndex: 'storageLocation',
     ellipsis: true,
@@ -457,26 +466,24 @@ const handleOk = () => {
     proxy.$message.warning('请选择要操作的数据！');
     return;
   }
-  console.log(selectedKeys);
-  console.log(tpmInventoryStandardSelect.value.selectedRows);
   saveTpmInventoryList(tpmInventoryStandardSelect.value.selectedRows).then(res => {
     if (res.success) {
-      proxy.$message.success('修改成功！');
+      open.value = false;
+      saveTpmStandardByTpmInventoryIds(selectedKeys).then(res => {
+        if (res.success) {
+          proxy.$message.success('添加成功！');
+          // 清空选中
+          selectedRowKeys.value = [];
+          selectedRows.value = [];
+          getList();
+        }
+      }).catch(() => {
+      });
     }
   }).catch((error) => {
     proxy.$message.warning(error.message);
   });
-  open.value = false;
-  saveTpmStandardByTpmInventoryIds(selectedKeys).then(res => {
-    if (res.success) {
-      proxy.$message.success('添加成功！');
-      // 清空选中
-      selectedRowKeys.value = [];
-      selectedRows.value = [];
-      getList();
-    }
-  }).catch(() => {
-  });
+
 };
 
 /** 编辑 */

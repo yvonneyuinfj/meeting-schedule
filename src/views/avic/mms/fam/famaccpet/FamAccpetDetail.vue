@@ -316,6 +316,7 @@
     </a-form>
     <FamAccpetListEdit
       v-if="fieldVisible('FAM_ACCPET_LIST')"
+      :assetClasst="form.assetClasst"
       ref="famAccpetListEdit"
       :mainId="formId || form.id"
       :bpmInstanceObject="bpmInstanceObject"
