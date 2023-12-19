@@ -599,8 +599,8 @@ const getPlanNo = (v) => {
   form.value.maintPlan = v.planNo;
   form.value.budgetProject = v.budgetItems;
   form.value.budgetSubitem = v.budgetBreakdownItems;
-  form.value.budgetOrg = v.budgetOrganizationName;
-  form.value.budgetOrgAlias = v.budgetOrganizationNameAlias;
+  form.value.budgetOrg = v.budgetOrganizationId;
+  form.value.budgetOrgAlias = v.budgetOrganizationIdAlias;
   form.value.projectAmount = v.projectMoney;
   form.value.maintCategory = v.planType;
   maintPlanModal.value = false;

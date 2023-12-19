@@ -434,7 +434,7 @@ const totalPage = ref(0);
 const ynSelfMaintenanceList = ref([]); // 是否自主维护通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
-  { fieldName: 'ynSelfMaintenance', lookUpType: 'TPM_YN_FALG' }
+  { fieldName: 'ynSelfMaintenance', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 
 onMounted(() => {

@@ -41,7 +41,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
   const secretLevelList = ref([]); // 密级通用代码
   const lookupParams = [
     { fieldName: 'maintenanceStatus', lookUpType: 'TPM_MAINTEN_STATUS' },
-    { fieldName: 'goodConditionFlag', lookUpType: 'TPM_YN_FALG' }
+    { fieldName: 'goodConditionFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' }
   ];
   const authJson = ref(null);
   if (props.params) {

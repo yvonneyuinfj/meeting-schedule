@@ -1,35 +1,37 @@
-import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
+import type { PmsDeliveryDetailDesignerDto } from '@/api/avic/mms/pms/PmsDeliveryDetailDesignerApi'; // 引入模块DTO
 import {
-  getTpmMaintPlan,
-  saveTpmMaintPlan,
-  saveAddTpmMaintPlan,
+  getPmsDeliveryDetailDesigner,
   saveFormAndStartProcess,
-  saveTpmMaintPlanBad
-} from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
+  savePmsDeliveryDetailDesigner
+} from '@/api/avic/mms/pms/PmsDeliveryDetailDesignerApi'; // 引入模块API
 import {
-  startFlowByFormCode,
   closeFlowLoading,
-  openFlowDetail,
+  default as flowUtils,
   getFieldAuth,
-  getFieldVisible,
   getFieldDisabled,
-  getFieldRequired
+  getFieldRequired,
+  getFieldVisible,
+  openFlowDetail,
+  startFlowByFormCode
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 export const emits = ['reloadData', 'close'];
 
-export function useTpmMaintPlanForm({ props: props, emit: emit }) {
+export function usePmsDeliveryDetailDesignerForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<TpmMaintPlanDto>({});
+  const form = ref<PmsDeliveryDetailDesignerDto>({});
   const formRef = ref(null);
-  const formCode = 'TpmMaintPlan';
+  const formCode = 'PmsDeliveryDetailDesigner';
   const openType = ref('add'); // 流程表单的打开方式，add:流程中心打开, edit: 待办打开
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); //提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
+  const ynApproverList = ref([]); // 合并标识通用代码
+  const mainId = ref(null);
   const rules: Record<string, Rule[]> = {
-    tpmInventoryCode: [{ required: true, message: '设备编号不能为空', trigger: 'change' }],
-    planMaintenanceDate: [{ required: true, message: '保养日期不能为空', trigger: 'change' }]
+    secretLevel: [
+      { required: true, message: '密级不能为空', trigger: 'change' }
+    ]
   };
   const layout = {
     labelCol: { flex: '0 0 140px' },
@@ -37,14 +39,12 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
   };
   const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
-  const maintenanceStatusList = ref([]); // 保养状态通用代码
-  const goodConditionFlagList = ref([]); // 完好标识通用代码
+  const uploadFile = ref(null); // 附件ref
   const secretLevelList = ref([]); // 密级通用代码
-  const lookupParams = [
-    { fieldName: 'maintenanceStatus', lookUpType: 'TPM_MAINTEN_STATUS' },
-    { fieldName: 'goodConditionFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' }
-  ];
   const authJson = ref(null);
+  const lookupParams = [
+    { fieldName: 'ynApprover', lookUpType: 'PMS_YN_APPROVER' }
+  ];
   if (props.params) {
     bpmParams.value = props.params;
   } else {
@@ -59,7 +59,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
   }
 
   onMounted(() => {
-    // 获取通用代码
+    // 加载查询区所需通用代码
     getLookupList();
     // 获取当前用户对应的文档密级
     getUserFileSecretList();
@@ -72,11 +72,10 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     }
   });
 
-  /** 获取通用代码 */
+  /** 获取通用代码  */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-      maintenanceStatusList.value = result.maintenanceStatus;
-      goodConditionFlagList.value = result.goodConditionFlag;
+      ynApproverList.value = result.ynApprover;
     });
   }
 
@@ -96,11 +95,12 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
       return;
     }
     loading.value = true;
-    getTpmMaintPlan(id)
+    getPmsDeliveryDetailDesigner(id)
       .then(async res => {
         if (res.success) {
           if (res.data) {
             form.value = res.data;
+            mainId.value = form.value.pmsPlanId;
             // 处理数据
             loading.value = false;
           } else {
@@ -118,49 +118,24 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
 
   /** 保存 */
   function saveForm(params) {
+    if (mainId.value != null){
+      form.value.pmsPlanId = mainId;
+    } else {
+      form.value.pmsPlanId = props.mainId;
+    }
     formRef.value
       .validate()
       .then(() => {
-        loading.value = true;
-        // 处理数据
-        const postData = proxy.$lodash.cloneDeep(form.value);
-        // 发送请求
-        saveTpmMaintPlanBad(postData)
-          .then(res => {
-            if (res.success) {
-              if (props.bpmInstanceObject) {
-                bpmButtonParams.value = { params, result: res.data };
-              }
-              if (!form.value.id) {
-                form.value.id = res.data;
-              }
-              successCallback();
-            } else {
-              errorCallback();
-            }
-          })
-          .catch(() => {
-            errorCallback();
-          });
-      })
-      .catch(error => {
-        if (props.bpmInstanceObject) {
-          closeFlowLoading(props.bpmInstanceObject);
+        // 附件密级校验
+        const validateResult = validateUploaderFileSecret();
+        if (!validateResult) {
+          return;
         }
-        // 定位校验失败元素
-        proxy.$scrollToFirstErrorField(formRef, error);
-      });
-  }
-
-  function saveFormAdd(params) {
-    formRef.value
-      .validate()
-      .then(() => {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        saveAddTpmMaintPlan(postData)
+        savePmsDeliveryDetailDesigner(postData)
           .then(res => {
             if (res.success) {
               if (props.bpmInstanceObject) {
@@ -169,7 +144,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
               if (!form.value.id) {
                 form.value.id = res.data;
               }
-              successCallback();
+              uploadFile.value.upload(form.value.id || res.data); // 附件上传
             } else {
               errorCallback();
             }
@@ -197,6 +172,11 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
 
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
+    // 附件密级校验
+    const validateResult = validateUploaderFileSecret();
+    if (!validateResult) {
+      return;
+    }
     startFlowByFormCode({
       formCode: formCode,
       formData: form.value,
@@ -208,6 +188,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
 
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
+    form.value.pmsPlanId = props.mainId;
     formRef.value
       .validate()
       .then(() => {
@@ -216,6 +197,11 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
           // 校验表单并选择需要启动的流程模板
           getBpmDefine();
         } else {
+          // 附件密级校验
+          const validateResult = validateUploaderFileSecret();
+          if (!validateResult) {
+            return;
+          }
           loading.value = true;
           // 处理数据
           const postData = proxy.$lodash.cloneDeep(form.value);
@@ -235,7 +221,7 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
                 if (!form.value.id) {
                   form.value.id = res.data.formId;
                 }
-                successCallback();
+                uploadFile.value.upload(form.value.id || res.data.formId); // 附件上传
               } else {
                 errorCallback();
               }
@@ -288,6 +274,17 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     }
   }
 
+  /** 附件上传完之后的回调函数 */
+  function afterUploadEvent(successFile, errorFile) {
+    if (errorFile.length > 0) {
+      // 有附件保存失败的处理
+      errorCallback();
+    } else {
+      // 所有附件都保存成功的处理
+      successCallback();
+    }
+  }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
@@ -325,6 +322,22 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
 
+  /** 校验表单附件密级 */
+  function validateUploaderFileSecret() {
+    const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
+    if (errorMessage) {
+      closeFlowLoading(props.bpmInstanceObject);
+      return false;
+    }
+    return true;
+  }
+
+  /** 表单附件是否必填(按elementId) */
+  function attachmentRequired(fieldName) {
+    const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
+    return res;
+  }
+
   /** 校验权限JSON */
   function checkAuthJson() {
     if (authJson.value == null) {
@@ -339,11 +352,12 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
-    maintenanceStatusList,
-    goodConditionFlagList,
     secretLevelList,
+    uploadFile,
+    ynApproverList,
+    afterUploadEvent,
+    attachmentRequired,
     saveForm,
-    saveFormAdd,
     saveAndStartProcess,
     closeModal,
     fieldVisible,

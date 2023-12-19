@@ -1,5 +1,7 @@
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
-import { getTpmInventory, saveTpmInventory, checkEquipmentCodeUnique } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
+
+import { getTpmInventory, saveTpmInventory,getCodeById,checkEquipmentCodeUnique } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
+
 import { useUserStore } from '@/store/user';
 export const emits = ['reloadData', 'close'];
 export function useTpmInventoryForm({
@@ -386,7 +388,15 @@ export function useTpmInventoryForm({
   const getTreeNodeTitle = (nodeTitle, name) => {
     form.value[name] = nodeTitle;
   };
-  /** 异步校验申报月份唯一 */
+  const getTreeChangeId = (id) =>{
+    if(!id) return
+    getCodeById(id).then(res =>{
+      if (res.success){
+        form.value.equipmentCode = res.data
+      }
+    })
+  }
+  /** 异步校验设备编号唯一 */
   async function validateEquipmentCodeUnique(rule, value) {
     if (value) {
       const res = await checkEquipmentCodeUnique({
@@ -397,15 +407,16 @@ export function useTpmInventoryForm({
         if (res.data) {
           return Promise.resolve();
         } else {
-          return Promise.reject('申报月份已存在!');
+          return Promise.reject('设备编号已存在!');
         }
       } else {
-        return Promise.reject('申报月份唯一性校验失败!');
+        return Promise.reject('设备编号唯一性校验失败!');
       }
     } else {
       return Promise.resolve();
     }
   }
+  
   return {
     form,
     formRef,
@@ -440,6 +451,7 @@ export function useTpmInventoryForm({
     saveForm,
     closeModal,
     getSelectName,
-    getTreeNodeTitle
+    getTreeNodeTitle,
+    getTreeChangeId,
   };
 }

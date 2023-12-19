@@ -1,4 +1,4 @@
- <template>
+<template>
   <AvicModal
     :visible="true"
     title="添加设备台账"
@@ -21,6 +21,7 @@
                 baseUrl="/mms/tpm/tpmassetclasss"
                 :allowSelectNonIsLeaf="false"
                 @select="getTreeNodeTitle($event, 'className')"
+                @change="getTreeChangeId"
                 placeholder="请选择设备大类"
               ></AvicTreeSelect>
             </a-form-item>
@@ -77,12 +78,12 @@
           <!-- 第二行 -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="specs" label="设备规格" :rules="rules.specs">
-              <a-input v-model:value="form.specs" :maxLength="128" placeholder="请输入设备规格" />
+              <a-input v-model:value="form.specs" :maxLength="128" placeholder="请输入设备规格"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="model" label="设备型号">
-              <a-input v-model:value="form.model" :maxLength="128" placeholder="请输入设备型号" />
+              <a-input v-model:value="form.model" :maxLength="128" placeholder="请输入设备型号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -298,7 +299,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="netValue" label="净值(元)" has-feedback>
-              <a-input v-model:value="form.netValue" :maxLength="20" placeholder="请输入净值(元)" />
+              <a-input v-model:value="form.netValue" :maxLength="20" placeholder="请输入净值(元)"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -413,7 +414,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="ynBottleneckEquipment" label="是否瓶颈设备">
               <a-select
@@ -526,8 +527,8 @@
           </a-col> -->
 
           <!-- 第九行 -->
-          
-          
+
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="ynMaintain" label="是否保养">
               <a-select
@@ -633,13 +634,13 @@
           </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item label="创建时间">
-              <a-input :value="$dayjs().format('YYYY-MM-DD')" disabled />
+              <a-input :value="$dayjs().format('YYYY-MM-DD')" disabled/>
             </a-form-item>
           </a-col>
 
           <a-col v-bind="colLayout.cols">
             <a-form-item label="创建人">
-              <a-input v-model:value="form.attribute01" disabled />
+              <a-input v-model:value="form.attribute01" disabled/>
             </a-form-item>
           </a-col>
 
@@ -667,7 +668,7 @@
           <!-- 第十二行 -->
           <a-col v-bind="colLayout.cols4">
             <a-form-item name="note" label="备注">
-              <a-textarea v-model:value="form.note" :maxLength="512" placeholder="请输入备注" />
+              <a-textarea v-model:value="form.note" :maxLength="512" placeholder="请输入备注"/>
             </a-form-item>
           </a-col>
 
@@ -1349,7 +1350,8 @@ const {
   saveForm,
   closeModal,
   getSelectName,
-  getTreeNodeTitle
+  getTreeNodeTitle,
+  getTreeChangeId
 } = useTpmInventoryForm({
   props: props,
   emit: emit

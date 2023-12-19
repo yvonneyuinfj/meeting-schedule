@@ -9,13 +9,13 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="计划年度">
                   <a-date-picker v-model:value="queryForm.applyYear" placeholder="请输入计划年度" :allow-clear="true"
-                    format="YYYY" value-format="YYYY" picker="year" @pressEnter="handleQuery" />
+                                 format="YYYY" value-format="YYYY" picker="year" @pressEnter="handleQuery"/>
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="单据号">
                   <a-input v-model:value="queryForm.billNo" placeholder="请输入单据号" :allow-clear="true"
-                    @pressEnter="handleQuery" />
+                           @pressEnter="handleQuery"/>
                 </a-form-item>
               </a-col>
               <!-- <a-col v-bind="colLayout.cols">
@@ -100,17 +100,17 @@
                 <div class="table-page-search-submitButtons">
                   <a-space>
                     <a-button type="primary" @click="handleQuery">
-                      <search-outlined />
+                      <search-outlined/>
                       查询
                     </a-button>
                     <a-button type="primary" @click="resetQuery" ghost>
-                      <redo-outlined />
+                      <redo-outlined/>
                       重置
                     </a-button>
                     <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                       {{ advanced ? '收起' : '展开' }}
-                      <up-outlined v-if="advanced" />
-                      <down-outlined v-else />
+                      <up-outlined v-if="advanced"/>
+                      <down-outlined v-else/>
                     </a-button>
                   </a-space>
                 </div>
@@ -121,54 +121,57 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable ref="tpmYearMaintModifyPlan" table-key="tpmYearMaintModifyPlan" :columns="columns"
-            :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
+                     :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }" rowClickSelectionType="radio" :pageParameter="queryParam.pageParameter" :total="totalPage"
-            @change="handleTableChange" @refresh="getList">
+                     @change="handleTableChange" @refresh="getList">
             <template #toolBarLeft>
               <a-space>
                 <a-button v-hasPermi="['tpmYearMaintModifyPlan:add']" title="添加" type="primary" @click="handleAdd">
                   <template #icon>
-                    <plus-outlined />
+                    <plus-outlined/>
                   </template>
                   添加
                 </a-button>
                 <a-button v-hasPermi="['tpmYearMaintModifyPlan:edit']" title="编辑" type="primary" ghost
-                  @click="handleEdit">
+                          @click="handleEdit">
                   <template #icon>
-                    <edit-outlined />
+                    <edit-outlined/>
                   </template>
                   编辑
                 </a-button>
-                <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)" :loading="approvalLoading">
+                <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)"
+                          :loading="approvalLoading">
                   提交审批
                 </a-button>
                 <a-button v-hasPermi="['tpmYearMaintModifyPlan:del']" title="删除" danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
-                  @click="handleDelete(selectedRows, selectedRowKeys)">
+                          :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
+                          @click="handleDelete(selectedRows, selectedRowKeys)">
                   <template #icon>
-                    <delete-outlined />
+                    <delete-outlined/>
                   </template>
                   删除
                 </a-button>
-                <a-button v-hasPermi="['tpmYearMaintModifyPlan:export']" title="导出" type="primary" ghost
-                  @click="handleExport">
-                  <template #icon>
-                    <export-outlined />
-                  </template>
-                  导出
-                </a-button>
+                <!--                <a-button v-hasPermi="['tpmYearMaintModifyPlan:export']" title="导出" type="primary" ghost-->
+                <!--                          @click="handleExport">-->
+                <!--                  <template #icon>-->
+                <!--                    <export-outlined/>-->
+                <!--                  </template>-->
+                <!--                  导出-->
+                <!--                </a-button>-->
               </a-space>
             </template>
             <template #toolBarRight>
               <a-space>
                 <AvicBpmFilter :allFileAuth="['tpmYearMaintModifyPlan:all']" :myFileAuth="['tpmYearMaintModifyPlan:my']"
-                  :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
-                <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入单据号" :allow-clear="true"
-                  @search="handleKeyWordQuery" />
+                               :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState'
+                               @change="changeBpmFilter"/>
+                <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入单据号"
+                                :allow-clear="true"
+                                @search="handleKeyWordQuery"/>
               </a-space>
             </template>
             <template #bodyCell="{ column, text, record, index }">
@@ -188,18 +191,18 @@
       </div>
       <!-- 添加页面弹窗 -->
       <TpmYearMaintModifyPlanAdd v-if="showAddModal" ref="addModal" :bpmOperatorRefresh="getList" @reloadData="getList"
-        @close="showAddModal = false" />
+                                 @close="showAddModal = false"/>
       <!-- 编辑页面弹窗 -->
       <TpmYearMaintModifyPlanEdit v-if="showEditModal" ref="editModal" :form-id="formId" @reloadData="getList"
-        @close="showEditModal = false" />
+                                  @close="showEditModal = false"/>
       <!-- 详情页面弹窗 -->
       <TpmYearMaintModifyPlanDetail v-if="showDetailModal" ref="detailModal" :form-id="formId" :mainForm="mainForm"
-        @close="showDetailModal = false" />
+                                    @close="showDetailModal = false"/>
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
       <TpmYearMaintModifyPlanLManage key="tpmYearMaintModifyPlanLManage" ref="tpmYearMaintModifyPlanLManage"
-        :mainId="mainId" :mainForm="mainForm" @getSonList="getSonList" />
+                                     :mainId="mainId" :mainForm="mainForm" @getSonList="getSonList"/>
     </AvicPane>
   </AvicSplit>
 </template>
@@ -366,24 +369,24 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmYearMaintModifyPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      // 设置表格初始选中项
-      if (list.value.length > 0) {
-        selectedRowKeys.value = [list.value[0]['id']];
-        selectedRows.value = [list.value[0]];
-      } else {
-        selectedRowKeys.value = [];
-        selectedRows.value = [];
-      }
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        // 设置表格初始选中项
+        if (list.value.length > 0) {
+          selectedRowKeys.value = [list.value[0]['id']];
+          selectedRows.value = [list.value[0]];
+        } else {
+          selectedRowKeys.value = [];
+          selectedRows.value = [];
+        }
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码  */
@@ -457,6 +460,7 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 // 提交审批
 const handleApproval = (rows, ids) => {
   if (ids.length == 0) {
@@ -500,8 +504,8 @@ function getBpmDefine(rows) {
   }
 }
 
-function getSonList(v){
-  sonnum.value = v
+function getSonList(v) {
+  sonnum.value = v;
 }
 
 const approval = (bpmDefinedInfo, postData) => {
@@ -515,6 +519,7 @@ const approval = (bpmDefinedInfo, postData) => {
       approvalLoading.value = false;
       proxy.$message.success('提交成功!');
       getList();
+      handleFlowDetail(postData);
     } else {
       approvalLoading.value = false;
     }
@@ -567,19 +572,19 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delTpmYearMaintModifyPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
@@ -600,9 +605,10 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
 defineExpose({
   getSonList
-})
+});
 
 </script>
 

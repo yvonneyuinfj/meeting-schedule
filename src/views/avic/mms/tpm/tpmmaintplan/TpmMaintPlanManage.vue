@@ -7,27 +7,27 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="设备编号">
               <a-input
-                  v-model:value="queryForm.equipmentCode"
-                  placeholder="请输入设备编号"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.equipmentCode"
+                placeholder="请输入设备编号"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="保养状态">
               <a-select
-                  v-model:value="queryForm.maintenanceStatus"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择保养状态"
+                v-model:value="queryForm.maintenanceStatus"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择保养状态"
               >
                 <a-select-option
-                    v-for="item in maintenanceStatusList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in maintenanceStatusList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -35,8 +35,8 @@
             </a-form-item>
           </a-col>
           <a-col
-              v-bind="colLayout.cols"
-              style="margin-left: auto"
+            v-bind="colLayout.cols"
+            style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
@@ -62,22 +62,22 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="tpmMaintPlan"
-          table-key="tpmMaintPlan"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
+        ref="tpmMaintPlan"
+        table-key="tpmMaintPlan"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          @change="handleTableChange"
-          @refresh="getList"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -108,12 +108,12 @@
               提交审批
             </a-button>
             <a-button
-                v-hasPermi="['tpmMaintPlan:del']"
-                title="删除"
-                danger
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                :loading="delLoading"
-                @click="handleDelete(selectedRows, selectedRowKeys)"
+              v-hasPermi="['tpmMaintPlan:del']"
+              title="删除"
+              danger
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="delLoading"
+              @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
                 <delete-outlined/>
@@ -124,10 +124,10 @@
               取消计划
             </a-button>
             <a-button
-                v-hasPermi="['tpmMaintPlan:add']"
-                title="添加"
-                type="primary"
-                @click="handleAdd"
+              v-hasPermi="['tpmMaintPlan:add']"
+              title="添加"
+              type="primary"
+              @click="handleAdd"
             >
               <template #icon>
                 <plus-outlined/>
@@ -150,11 +150,11 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-                :allFileAuth="['tpmMaintPlan:all']"
-                :myFileAuth="['tpmMaintPlan:my']"
-                :defaultBpmType='queryForm.bpmType'
-                :defaultBpmState='queryForm.bpmState'
-                @change="changeBpmFilter"
+              :allFileAuth="['tpmMaintPlan:all']"
+              :myFileAuth="['tpmMaintPlan:my']"
+              :defaultBpmType='queryForm.bpmType'
+              :defaultBpmState='queryForm.bpmState'
+              @change="changeBpmFilter"
             />
           </a-space>
         </template>
@@ -172,19 +172,19 @@
     </div>
     <!-- 添加页面弹窗 -->
     <TpmMaintPlanAdd
-        v-if="showAddModal"
-        ref="addModal"
-        :bpmOperatorRefresh="getList"
-        @reloadData="getList"
-        @close="showAddModal = false"
+      v-if="showAddModal"
+      ref="addModal"
+      :bpmOperatorRefresh="getList"
+      @reloadData="getList"
+      @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <TpmMaintPlanEdit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
+      v-if="showEditModal"
+      ref="editModal"
+      :form-id="formId"
+      @reloadData="getList"
+      @close="showEditModal = false"
     />
   </div>
 </template>
@@ -463,7 +463,7 @@ const goodConditionFlagList = ref([]); // 完好标识通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
   { fieldName: 'maintenanceStatus', lookUpType: 'TPM_MAINTEN_STATUS' },
-  { fieldName: 'goodConditionFlag', lookUpType: 'TPM_YN_FALG' }
+  { fieldName: 'goodConditionFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 
 onMounted(() => {
@@ -518,16 +518,16 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmMaintPlanByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 获取通用代码 */
@@ -636,6 +636,7 @@ function getBpmDefine(row) {
 }
 
 const approval = (bpmDefinedInfo) => {
+  console.log(bpmDefinedInfo);
   const param = {
     processDefId: bpmDefinedInfo.dbid,
     formCode: 'TpmMaintPlan'
@@ -643,6 +644,12 @@ const approval = (bpmDefinedInfo) => {
   approvalMaintPlan(param).then(res => {
     if (res.success) {
       approvalLoading.value = false;
+      if (res.data.formId) {
+        flowUtils.detailByOptions({
+          formId: res.data.formId,
+          bpmOperatorRefresh: getList
+        });
+      }
       proxy.$message.success('提交成功!');
       getList();
     } else {
@@ -669,14 +676,14 @@ const handleCancelPlans = (rows, ids) => {
     cancelText: '取消',
     onOk: () => {
       cancelTpmMaintPlan(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('取消成功！');
-              getList();
-            }
-          })
-          .catch(() => {
-          });
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('取消成功！');
+            getList();
+          }
+        })
+        .catch(() => {
+        });
     }
   });
 };
