@@ -3,7 +3,7 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable ref="tpmYearMaintModifyPlanL" table-key="tpmYearMaintModifyPlanL" :columns="columns"
-        :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
+                 :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
@@ -19,24 +19,26 @@
         <template #toolBarLeft>
           <a-space>
             <a-button v-hasPermi="['tpmYearMaintModifyPlanL:import']" title="导入" type="primary" ghost
-              @click="handleImport">
+                      @click="handleImport">
               <template #icon>
-                <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
-            <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除" :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')">
+            <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除"
+                      :loading="delLoading"
+                      @click="handleDelete(selectedRowKeys, '')">
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
-          <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入计划编号" :allow-clear="true"
-            @search="handleKeyWordQuery" />
+          <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入计划编号"
+                          :allow-clear="true"
+                          @search="handleKeyWordQuery"/>
         </template>
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
@@ -56,13 +58,16 @@
       title="单表模板导入"
       importUrl="/mms/tpm/tpmyearmaintmodifyplanls/importData/v1"
       downloadTemplateUrl="/mms/tpm/tpmyearmaintmodifyplanls/downloadTemplate/v1"
-      @reloadData="getList"
+      @reloadData="reloadList"
       @close="showImportModal = false"
     />
   </div>
 </template>
 <script lang="ts" setup>
-import { listTpmYearMaintModifyPlanLByPage, delTpmYearMaintModifyPlanL } from '@/api/avic/mms/tpm/TpmYearMaintModifyPlanLApi'; // 引入模块API
+import {
+  listTpmYearMaintModifyPlanLByPage,
+  delTpmYearMaintModifyPlanL
+} from '@/api/avic/mms/tpm/TpmYearMaintModifyPlanLApi'; // 引入模块API
 const showImportModal = ref(false); // 是否展示导入弹窗
 const excelParams = ref({ tableName: 'tpmYearMaintModifyPlanL', tpmYearMaintModifyPlanId: '' });
 const { proxy } = getCurrentInstance();
@@ -216,7 +221,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const emit = defineEmits(['getSonList']);
+const emit = defineEmits(['getSonList', 'getTableList']);
 const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -249,7 +254,7 @@ function getList() {
   listTpmYearMaintModifyPlanLByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
-      emit('getSonList',list.value.length)
+      emit('getSonList', list.value.length);
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
     })
@@ -259,6 +264,12 @@ function getList() {
       loading.value = false;
     });
 }
+
+function reloadList() {
+  getList();
+  emit('getTableList');
+}
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -266,12 +277,14 @@ function getLookupList() {
     progressStatusList.value = result.progressStatus;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -281,6 +294,7 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 子表导入 */
 function handleImport() {
   if (props.mainId == '') {
@@ -294,6 +308,7 @@ function handleImport() {
   excelParams.value.tpmYearMaintModifyPlanId = props.mainId;
   showImportModal.value = true;
 }
+
 /** 子表删除 */
 function handleDelete(ids, type) {
   if (ids.length == 0) {
@@ -327,11 +342,13 @@ function handleDelete(ids, type) {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -342,6 +359,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 表格行选中 */
 function handleRowSelection(record) {
   let selectIds = [...selectedRowKeys.value];

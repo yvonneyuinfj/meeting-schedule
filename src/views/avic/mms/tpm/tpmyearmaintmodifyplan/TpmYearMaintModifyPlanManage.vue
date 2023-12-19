@@ -201,7 +201,7 @@
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
-      <TpmYearMaintModifyPlanLManage key="tpmYearMaintModifyPlanLManage" ref="tpmYearMaintModifyPlanLManage"
+      <TpmYearMaintModifyPlanLManage key="tpmYearMaintModifyPlanLManage" ref="tpmYearMaintModifyPlanLManage" @getTableList="getList"
                                      :mainId="mainId" :mainForm="mainForm" @getSonList="getSonList"/>
     </AvicPane>
   </AvicSplit>
