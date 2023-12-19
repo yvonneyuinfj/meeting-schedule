@@ -46,6 +46,7 @@
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
+                @change="inventoryChange"
                 placeholder="请选择目的库房 "
               >
                 <a-select-option
@@ -232,5 +233,10 @@ const {
   props: props,
   emit: emit
 });
+const inventoryChange = inventoryId => {
+  let inventory = toRaw(props.inventoryList.find(i => i.id === inventoryId));
+  form.value.mdsInventoryName = inventory.inventoryName;
+  form.value.mdsInventoryCode = inventory.inventoryCode;
+}
 </script>
 
