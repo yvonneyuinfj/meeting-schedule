@@ -43,6 +43,18 @@
               添加
             </a-button>
             <a-button
+              v-hasPermi="['pmsReceiveLDetail:edit']"
+              title="保存"
+              type="primary"
+              :loading="saveLoading"
+              @click="handleSaveAll"
+            >
+              <template #icon>
+                <save-outlined />
+              </template>
+              保存
+            </a-button>
+            <a-button
               v-hasPermi="['pmsReceiveLDetail:del']"
               title="删除"
               danger
@@ -95,7 +107,7 @@
           <a-input-search
             class="opt-btn-commonsearch"
             style="width: 200px"
-            placeholder="请输入目的库房或采购物资到货明细表ID"
+            placeholder="请输入目的库房"
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />
@@ -104,14 +116,82 @@
           <template v-if="column.dataIndex  === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
+          <AvicRowEdit
+            v-else-if="column.dataIndex === 'mdsInventoryId'"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-select
+                v-model:value="record.mdsInventoryId"
+                style="width: 100%"
+                placeholder="请选择目的库房"
+                @change="(value)=>inventoryChange(value,record)"
+              >
+
+                <a-select-option
+                  v-for="select in inventoryList"
+                  :key="select.id"
+                  :value="select.id"
+                  :title="select.inventoryName"
+                  :disabled="select.disabled === true"
+                >
+                  {{ select.inventoryName }}
+                </a-select-option>
+              </a-select>
+            </template>
+            <template #default>
+              {{ record['mdsInventoryName'] }}
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit
+            v-else-if="column.dataIndex === 'receiverUserId'"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <AvicCommonSelect
+                v-model:value="record.receiverUserId"
+                :defaultShowValue="record.receiverUserName"
+                placeholder="请选择待验员"
+                type="userSelect"
+                @callback="
+                  (value, _selectRows) => {
+                    changeCommonSelect(value,record,'receiverUserName')
+                  }
+                "
+              />
+            </template>
+            <template #default>
+              {{ record['receiverUserName'] }}
+            </template>
+          </AvicRowEdit>
           <template v-else-if="column.dataIndex  === 'action'">
             <a-button
+              v-if="record.editable"
               type="link"
               class="inner-btn"
-              @click.stop="handleEdit(record.id)"
+              :disable="editingId !== ''"
+              @click.stop="handleSave(record)"
+            >
+              保存
+            </a-button>
+            <a-button
+              v-else
+              type="link"
+              class="inner-btn"
+              :disable="editingId !== ''"
+              @click.stop="handleEdit(record)"
             >
               编辑
             </a-button>
+<!--            <a-button-->
+<!--              type="link"-->
+<!--              class="inner-btn"-->
+<!--              @click.stop="handleEdit(record.id)"-->
+<!--            >-->
+<!--              编辑-->
+<!--            </a-button>-->
             <a-button
               v-hasPermi="['pmsReceiveLDetail:del']"
               type="link"
@@ -160,11 +240,15 @@ import {
   delPmsReceiveLDetail,
   exportExcel,
   splitPmsReceiveLDetail,
-  getInventory
+  getInventory, savePmsReceiveLDetail
 } from '@/api/avic/mms/pms/PmsReceiveLDetailApi'; // 引入模块API
 import PmsReceiveLDetailAdd from './PmsReceiveLDetailAdd.vue'; // 引入添加页面组件
 import PmsReceiveLDetailEdit from './PmsReceiveLDetailEdit.vue'; // 引入编辑页面组件
 const {proxy} = getCurrentInstance();
+const saveLoading = ref(false); // 统一保存按钮loading 状态
+const editingId = ref(''); // 正在编辑中的数据
+const initialList = ref([]); // 记录每次刷新得到的表格的数据
+
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
@@ -236,7 +320,7 @@ const columns = [
   },
   {
     title: '待验员姓名',
-    dataIndex: 'receiverUserName',
+    dataIndex: 'receiverUserId',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -344,6 +428,12 @@ const splitLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级 通用代码
 const inventoryList = ref([]); // 库房列表
+const pmsReceiveLDetail = ref(null);
+const validateRules = {
+  secretLevel: [
+    { required:true, message: '密级不能为空' }
+  ]
+}; // 必填列,便于保存和新增数据时校验
 
 onMounted(() => {
   //重载子表数据
@@ -369,6 +459,7 @@ function getList() {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
+      initialList.value = proxy.$lodash.cloneDeep(list.value);
     })
     .catch(() => {
       list.value = [];
@@ -405,9 +496,47 @@ function handleAdd() {
 }
 
 /** 编辑 */
-function handleEdit(id) {
-  formId.value = id;
-  showEditModal.value = true;
+function handleEdit(record) {
+  // formId.value = id;
+  // showEditModal.value = true;
+
+  record.editable = true;
+  record.operationType_ = record.operationType_ || 'update';
+  const newData = [...list.value];
+  editingId.value = record.id;
+  newData.forEach(item => {
+    if (item.id !== record.id) {
+      item.editable = false;
+    }
+  });
+  list.value = newData;
+}
+
+function handleSave (record) {
+  let target = proxy.$lodash.cloneDeep(record);
+  // 单数据校验
+  if (!validateRecordData([target])) {
+    return;
+  }
+  // 保存前数据处理
+  for (let key in target) {
+    // 多选控件的数据，数组转化为字符串，
+    if (Array.isArray(target[key])) {
+      target[key] = target[key].join(',');
+    }
+    if (key.endsWith('Date')) {
+      target[key] = null
+    }
+  }
+  editingId.value = '';
+  savePmsReceiveLDetail([target]).then(res => {
+    if (res.success) {
+      getList();
+      proxy.$message.success('保存成功！');
+    } else {
+      proxy.$message.error('保存失败！');
+    }
+  });
 }
 
 /* 子表删除 */
@@ -539,4 +668,81 @@ watch(
   },
   {immediate: true}
 );
+
+/** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
+function changeCommonSelect(value, record, column) {
+  record[column] = value.names;
+  record.receiverUserId = value.ids;
+  record.receiverUserCode = value.ids;
+}
+
+/** 控件变更事件  */
+function changeControlValue(values, record, column) {
+  let labels = [];
+  if (Array.isArray(values)) {
+    // 多选处理
+    for (let i = 0; i < values.length; i++) {
+      // 从对应的通用代码中查询对应的label
+      const target = proxy[column + 'List'].find(item => values[i] === item.lookupCode);
+      labels.push(target.lookupName);
+    }
+  } else {
+    // 单选处理
+    const target = proxy[column + 'List'].find(item => values === item.lookupCode);
+    labels.push(target.lookupName);
+  }
+  if (record) {
+    record[column + 'Name'] = labels.join(',');
+  }
+}
+
+function inventoryChange(inventoryId, record) {
+  let inventory = toRaw(inventoryList.value.find(i => i.id === inventoryId));
+  record.mdsInventoryName = inventory.inventoryName;
+  record.mdsInventoryCode = inventory.inventoryCode;
+  console.log(inventory, record, '<<inventoryChange')
+}
+
+/** 批量保存 */
+function handleSaveAll () {
+  // 规避正在保存时连续点击
+  if (saveLoading.value) return;
+  // 开始处理数据
+  saveLoading.value = true;
+  // 获取改变和新增的数据
+  const changedData = proxy.$getChangeRecords(list, initialList);
+  if (changedData && changedData.length == 0) {
+    proxy.$message.warning('请先修改数据！');
+    saveLoading.value = false;
+  } else if (changedData && validateRecordData(changedData)) {
+    savePmsReceiveLDetail(changedData).then(res => {
+      if (res.success) {
+        getList();
+        proxy.$message.success('保存成功！');
+        saveLoading.value = false;
+      } else {
+        proxy.$message.error('保存失败！');
+        saveLoading.value = false;
+      }
+    })
+      .catch(() => {
+        saveLoading.value = false;
+      });
+  } else {
+    saveLoading.value = false;
+  }
+}
+
+function validateRecordData (records) {
+  let flag = true;
+  for (let index in records) {
+    flag = proxy.$validateRecordData(records[index], validateRules, list.value, pmsReceiveLDetail);
+    if (!flag) {
+      break;
+    }
+  }
+  return flag;
+}
+
+
 </script>

@@ -46,6 +46,7 @@
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
+                @change="inventoryChange"
                 placeholder="请选择目的库房 "
               >
                 <a-select-option
@@ -96,10 +97,16 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="receiverUserName" label="待验员姓名">
-              <a-input
-                v-model:value="form.receiverUserName"
-                :maxLength="128"
-                placeholder="请输入待验员姓名"
+              <AvicCommonSelect
+                v-model:value="form.receiverUserId"
+                :defaultShowValue="form.receiverUserName"
+                placeholder="请选择待验员"
+                type="userSelect"
+                @callback="
+                  (value, _selectRows) => {
+                    userSelect(value)
+                  }
+                "
               />
             </a-form-item>
           </a-col>
@@ -201,7 +208,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { usePmsReceiveLDetailForm, emits } from './ts/PmsReceiveLDetailForm'; // 引入表单ts
+import {usePmsReceiveLDetailForm, emits} from './ts/PmsReceiveLDetailForm'; // 引入表单ts
 const props = defineProps({
   formId: {
     type: String,
@@ -217,6 +224,7 @@ const props = defineProps({
     default: null
   }
 });
+
 const emit = defineEmits(emits);
 const {
   form,
@@ -232,4 +240,16 @@ const {
   props: props,
   emit: emit
 });
+
+function inventoryChange(inventoryId) {
+  let inventory = toRaw(props.inventoryList.find(i => i.id === inventoryId));
+  form.value.mdsInventoryName = inventory.inventoryName;
+  form.value.mdsInventoryCode = inventory.inventoryCode;
+}
+
+function userSelect(value) {
+  form.value.receiverUserName = value.names;
+  form.value.receiverUserId = value.ids;
+  form.value.receiverUserCode = value.ids;
+}
 </script>

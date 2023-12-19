@@ -198,7 +198,7 @@ export function getPmsReceiveLDetail (id: string): Promise<ResponseBaseData<PmsR
 }
 
 /** 保存表单数据 */
-export function savePmsReceiveLDetail (form: PmsReceiveLDetailDto): Promise<ResponseBaseData<any>> {
+export function savePmsReceiveLDetail (form: [PmsReceiveLDetailDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
