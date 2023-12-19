@@ -59,6 +59,7 @@ export interface TpmInventoryDto extends BaseBeanModel {
   mdsUnitName?: string;
   /** 责任人ID */
   responseUserId?: string;
+  responseUserIdAlias?: string;
   /** 责任人NAME */
   responseUserName?: string;
   /** 原值(元) */

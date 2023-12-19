@@ -1621,7 +1621,7 @@ const columns = [
   },
   {
     title: '责任人',
-    dataIndex: 'responseUserName',
+    dataIndex: 'responseUserIdAlias',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
