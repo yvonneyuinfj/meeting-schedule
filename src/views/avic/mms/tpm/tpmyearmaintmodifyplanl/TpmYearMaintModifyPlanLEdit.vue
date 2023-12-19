@@ -16,7 +16,7 @@
               <template #icon>
                 <plus-outlined/>
               </template>
-              添加1
+              添加
             </a-button>
             <a-button v-hasPermi="['tpmYearMaintModifyPlanL:del']" title="删除" danger
                       :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
@@ -32,13 +32,20 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-        <AvicRowEdit v-if="['note', 'agentId', 'changeReason', 'agentCode', 'contractNo', 'projectMoney', 'requireDeptId', 'budgetBreakdownItems', 'budgetItems', 'requireDeptCode', 'budgetOrganizationId', 'applyNo', 'budgetOrganizationCode', 'projectName'].includes(
+        <AvicRowEdit v-if="['budgetOrganizationIdAlias','note', 'agentName', 'changeReason', 'agentCode', 'contractNo', 'projectMoney', 'requireDeptName', 'budgetBreakdownItems', 'budgetItems', 'requireDeptCode', 'budgetOrganizationName', 'applyNo', 'budgetOrganizationCode', 'projectName'].includes(
           column.dataIndex
         )" :record="record" :column="column.dataIndex">
           <template #edit>
             <a-input v-model:value="record[column.dataIndex]" :maxLength="64" @input="$forceUpdate()"
                      style="width: 100%"
                      placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)">
+            </a-input>
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit v-else-if="column.dataIndex === 'planNo'" :record="record" :column="column.dataIndex">
+          <template #edit>
+            <a-input v-model:value="record[column.dataIndex]" :maxLength="64"
+                     style="width: 100%" :disabled="true">
             </a-input>
           </template>
         </AvicRowEdit>
@@ -56,18 +63,27 @@
             {{ record['secretLevelName'] }}
           </template>
         </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'budgetOrganizationName'" :record="record"
+        <AvicRowEdit v-else-if="column.dataIndex === 'budgetOrganizationId'" :record="record"
                      :column="column.dataIndex">
           <template #edit>
-            <AvicCommonSelect v-model:value="record.budgetOrganizationName"
-                              :defaultShowValue="record.budgetOrganizationNameAlias" placeholder="请选择预算组织名称"
-                              type="deptSelect" @callback="(value, _selectRows) => {
-                changeCommonSelect(value, record, 'budgetOrganizationName')
-              }
-                "/>
+            <!--            <AvicCommonSelect v-model:value="record.budgetOrganizationName"-->
+            <!--                              :defaultShowValue="record.budgetOrganizationNameAlias" placeholder="请选择预算组织名称"-->
+            <!--                              type="deptSelect" @callback="(value, _selectRows) => {-->
+            <!--                changeCommonSelect(value, record, 'budgetOrganizationName')-->
+            <!--              }-->
+            <!--                "/>-->
+            <AvicCommonSelect
+                v-model:value="record.budgetOrganizationId"
+                type="deptSelect"
+                placeholder="请选择预算组织名称"
+                :defaultShowValue="record.budgetOrganizationIdAlias"
+                @callback="(value, _selectRows) => {
+                changeCommonSelect(value, record, 'budgetOrganizationId')
+                }"
+            />
           </template>
           <template #default>
-            {{ record['budgetOrganizationNameAlias'] }}
+            {{ record['budgetOrganizationIdAlias'] }}
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'estContractSignDate'" :record="record" :column="column.dataIndex">
@@ -98,28 +114,47 @@
             <AvicDictTag :value="record.planTypeName" :options="planTypeList"/>
           </template>
         </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'agentName'" :record="record" :column="column.dataIndex">
+        <AvicRowEdit v-else-if="column.dataIndex === 'agentId'" :record="record" :column="column.dataIndex">
           <template #edit>
-            <AvicCommonSelect v-model:value="record.agentName" :defaultShowValue="record.agentNameAlias"
-                              placeholder="请选择经办人姓名" type="userSelect" @callback="(value, _selectRows) => {
-                changeCommonSelect(value, record, 'agentName')
-              }
-                "/>
+            <!--            <AvicCommonSelect v-model:value="record.agentName" :defaultShowValue="record.agentNameAlias"-->
+            <!--                              placeholder="请选择经办人姓名" type="userSelect" @callback="(value, _selectRows) => {-->
+            <!--                changeCommonSelect(value, record, 'agentName')-->
+            <!--              }-->
+            <!--                "/>-->
+
+            <AvicCommonSelect
+                v-model:value="record.agentId"
+                type="userSelect"
+                placeholder="请选择经办人姓名"
+                :defaultShowValue="record.agentIdAlias"
+                @callback="(value, _selectRows) => {
+                changeCommonSelect(value, record, 'agentId')
+                }"
+            />
           </template>
           <template #default>
-            {{ record['agentNameAlias'] }}
+            {{ record['agentIdAlias'] }}
           </template>
         </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'requireDeptName'" :record="record" :column="column.dataIndex">
+        <AvicRowEdit v-else-if="column.dataIndex === 'requireDeptId'" :record="record" :column="column.dataIndex">
           <template #edit>
-            <AvicCommonSelect v-model:value="record.requireDeptName" :defaultShowValue="record.requireDeptNameAlias"
-                              placeholder="请选择需求部门名称" type="deptSelect" @callback="(value, _selectRows) => {
-                changeCommonSelect(value, record, 'requireDeptName')
-              }
-                "/>
+            <!--            <AvicCommonSelect v-model:value="record.requireDeptName" :defaultShowValue="record.requireDeptNameAlias"-->
+            <!--                              placeholder="请选择需求部门名称" type="deptSelect" @callback="(value, _selectRows) => {-->
+            <!--                changeCommonSelect(value, record, 'requireDeptName')-->
+            <!--              }-->
+            <!--                "/>-->
+            <AvicCommonSelect
+                v-model:value="record.requireDeptId"
+                type="deptSelect"
+                placeholder="请选择需求部门名称"
+                :defaultShowValue="record.requireDeptIdAlias"
+                @callback="(value, _selectRows) => {
+                changeCommonSelect(value, record, 'requireDeptId')
+                }"
+            />
           </template>
           <template #default>
-            {{ record['requireDeptNameAlias'] }}
+            {{ record['requireDeptIdAlias'] }}
           </template>
         </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'estAcceptanceDate'" :record="record" :column="column.dataIndex">
@@ -182,17 +217,12 @@ const props = defineProps({
 });
 const columns = [
   {
-    title: '计划编号1',
+    title: '计划编号',
     dataIndex: 'planNo',
     key: 'planNo',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'center'
   },
   {
@@ -223,28 +253,10 @@ const columns = [
     },
     align: 'left'
   },
-  // {
-  //   title: '预算组织ID',
-  //   dataIndex: 'budgetOrganizationId',
-  //   key: 'budgetOrganizationId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '预算组织编码',
-  //   dataIndex: 'budgetOrganizationCode',
-  //   key: 'budgetOrganizationCode',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
-    title: '预算组织名称',
-    dataIndex: 'budgetOrganizationIdAlias',
-    key: 'budgetOrganizationIdAlias',
+    title: '预算组织',
+    dataIndex: 'budgetOrganizationId',
+    key: 'budgetOrganizationId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -255,6 +267,29 @@ const columns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '预算组织编码',
+  //   dataIndex: 'budgetOrganizationCode',
+  //   key: 'budgetOrganizationCode',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '预算组织名称',
+  //   dataIndex: 'budgetOrganizationIdAlias',
+  //   key: 'budgetOrganizationIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '项目名称',
     dataIndex: 'projectName',
@@ -283,28 +318,10 @@ const columns = [
     },
     align: 'center'
   },
-  // {
-  //   title: '需求部门ID',
-  //   dataIndex: 'requireDeptId',
-  //   key: 'requireDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '需求部门编码',
-  //   dataIndex: 'requireDeptCode',
-  //   key: 'requireDeptCode',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
-    title: '需求部门名称',
-    dataIndex: 'requireDeptIdAlias',
-    key: 'requireDeptIdAlias',
+    title: '需求部门',
+    dataIndex: 'requireDeptId',
+    key: 'requireDeptId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -315,6 +332,29 @@ const columns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '需求部门编码',
+  //   dataIndex: 'requireDeptCode',
+  //   key: 'requireDeptCode',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '需求部门名称',
+  //   dataIndex: 'requireDeptIdAlias',
+  //   key: 'requireDeptIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '项目金额（万元）',
     dataIndex: 'projectMoney',
@@ -343,28 +383,10 @@ const columns = [
     },
     align: 'center'
   },
-  // {
-  //   title: '经办人ID',
-  //   dataIndex: 'agentId',
-  //   key: 'agentId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '经办人编码',
-  //   dataIndex: 'agentCode',
-  //   key: 'agentCode',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
-    title: '经办人姓名',
-    dataIndex: 'agentIdAlias',
-    key: 'agentIdAlias',
+    title: '经办人',
+    dataIndex: 'agentId',
+    key: 'agentId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -375,6 +397,29 @@ const columns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '经办人编码',
+  //   dataIndex: 'agentCode',
+  //   key: 'agentCode',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '经办人姓名',
+  //   dataIndex: 'agentIdAlias',
+  //   key: 'agentIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   // {
   //   title: '申请单号',
   //   dataIndex: 'applyNo',
@@ -487,6 +532,36 @@ const lookupParams = [
   { fieldName: 'progressStatus', lookUpType: 'TPM_PROGRESS_STATUS' }
 ];
 const validateRules = {
+  budgetItems: [
+    { required: true, message: '预算项目列不能为空' }
+  ],
+  budgetBreakdownItems: [
+    { required: true, message: '预算分项列不能为空' }
+  ],
+  budgetOrganizationId: [
+    { required: true, message: '预算组织列不能为空' }
+  ],
+  projectName: [
+    { required: true, message: '项目名称列不能为空' }
+  ],
+  planType: [
+    { required: true, message: '计划类别列不能为空' }
+  ],
+  requireDeptId: [
+    { required: true, message: '需求部门列不能为空' }
+  ],
+  projectMoney: [
+    { required: true, message: '项目金额（万元）列不能为空' }
+  ],
+  estContractSignDate: [
+    { required: true, message: '合同预计签订时间列不能为空' }
+  ],
+  agentId: [
+    { required: true, message: '经办人列不能为空' }
+  ],
+  estAcceptanceDate: [
+    { required: true, message: '计划验收时间列不能为空' }
+  ],
   secretLevel: [
     { required: true, message: '密级列不能为空' }
   ]
@@ -512,7 +587,7 @@ onMounted(() => {
   getLookupList();
   // 获取当前用户对应的文档密级
   getUserFileSecretList();
-  
+
 });
 
 /** 查询数据  */
@@ -523,18 +598,18 @@ function getList() {
   queryForm.value.tpmYearMaintModifyPlanId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
   listTpmYearMaintModifyPlanLByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码  */

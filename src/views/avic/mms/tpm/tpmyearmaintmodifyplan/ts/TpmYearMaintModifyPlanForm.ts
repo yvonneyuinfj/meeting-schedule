@@ -150,42 +150,42 @@ export function useTpmYearMaintModifyPlanForm({props: props, emit: emit}) {
   }
 
   /** 添加页保存 */
-  function saveFormAdd(params) {
-    formRef.value.validate().then(async () => {
-      const validateResult = validateUploaderFileSecret();
-      if (!validateResult) {
-        return;
-      }
-      loading.value = true;
-      const postData = proxy.$lodash.cloneDeep(form.value);
-      // 处理数据
-      if (autoCode.value) {
-        // 获取编码码段值
-        postData.billNo = autoCode.value.getSegmentValue();
-      }
-      // 发送请求
-      saveTpmYearMaintModifyPlan(postData)
-        .then(res => {
-          if (res.success) {
-            if (props.bpmInstanceObject) {
-              bpmButtonParams.value = {params, result: res.data};
-            }
-            if (!form.value.id) {
-              form.value.id = res.data;
-            }
-            uploadFile.value.upload(form.value.id || res.data); // 附件上传
-          } else {
-            loading.value = false;
-          }
-        }).catch((error) => {
-        loading.value = false;
-        proxy.$message.error(error.message);
-      });
-    }).catch(error => {
-      // 定位校验失败元素
-      proxy.$scrollToFirstErrorField(formRef, error);
-    });
-  }
+  // function saveFormAdd(params) {
+  //   formRef.value.validate().then(async () => {
+  //     const validateResult = validateUploaderFileSecret();
+  //     if (!validateResult) {
+  //       return;
+  //     }
+  //     loading.value = true;
+  //     const postData = proxy.$lodash.cloneDeep(form.value);
+  //     // 处理数据
+  //     if (autoCode.value) {
+  //       // 获取编码码段值
+  //       postData.billNo = autoCode.value.getSegmentValue();
+  //     }
+  //     // 发送请求
+  //     saveTpmYearMaintModifyPlan(postData)
+  //       .then(res => {
+  //         if (res.success) {
+  //           if (props.bpmInstanceObject) {
+  //             bpmButtonParams.value = {params, result: res.data};
+  //           }
+  //           if (!form.value.id) {
+  //             form.value.id = res.data;
+  //           }
+  //           uploadFile.value.upload(form.value.id || res.data); // 附件上传
+  //         } else {
+  //           loading.value = false;
+  //         }
+  //       }).catch((error) => {
+  //       loading.value = false;
+  //       proxy.$message.error(error.message);
+  //     });
+  //   }).catch(error => {
+  //     // 定位校验失败元素
+  //     proxy.$scrollToFirstErrorField(formRef, error);
+  //   });
+  // }
 
   /** 设置添加表单的初始值 */
   function initForm() {
@@ -242,6 +242,10 @@ export function useTpmYearMaintModifyPlanForm({props: props, emit: emit}) {
         return;
       }
       const subInfoList = tpmYearMaintModifyPlanLEdit.value.getChangedData(); // 获取子表数据
+      if (subInfoList) {
+        proxy.$message.warning('年度维修改造计划明细不能为空');
+        return;
+      }
       loading.value = true;
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
@@ -393,7 +397,6 @@ export function useTpmYearMaintModifyPlanForm({props: props, emit: emit}) {
     attachmentRequired,
     autoCode,
     saveForm,
-    saveFormAdd,
     saveAndStartProcess,
     closeModal,
     fieldVisible,

@@ -244,7 +244,7 @@ import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // �
 import {
   listTpmInventoryByPage,
   delTpmInventory,
-  exportExcel
+  exportInventoryCameraExcel
 } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
 import TpmInventoryAdd from './TpmInventoryAdd.vue'; // 引入添加页面组件
 import TpmInventoryEdit from './TpmInventoryEdit.vue'; // 引入编辑页面组件
@@ -621,7 +621,7 @@ function handleExport() {
     onOk: () => {
       loading.value = true;
       queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
+      exportInventoryCameraExcel(queryParam).then(() => {
         loading.value = false;
         proxy.$message.info('导出成功！');
       });

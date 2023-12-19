@@ -92,8 +92,8 @@
                 v-model:value="form.responseUserId"
                 type="userSelect"
                 placeholder="请选择责任人"
-                :default-show-value="form.responseUserName"
-                @callback="res => (form.responseUserName = res.names)"
+                :default-show-value="form.responseUserIdAlias"
+                @callback="res => (form.responseUserIdAlias = res.names)"
               />
             </a-form-item>
           </a-col>
@@ -214,9 +214,9 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="storageMediaSecretLevel" label="存储介质密级">
+            <a-form-item name="storageMediaNameSecretLevel" label="存储介质密级">
               <a-select
-                v-model:value="form.storageMediaSecretLevel"
+                v-model:value="form.storageMediaNameSecretLevel"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"

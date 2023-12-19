@@ -1621,7 +1621,7 @@ const columns = [
   },
   {
     title: '责任人',
-    dataIndex: 'responseUserName',
+    dataIndex: 'responseUserIdAlias',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -1776,7 +1776,9 @@ const columns = [
     fixed: 'right'
   }
 ];
-const queryForm = ref<TpmInventoryDto>({});
+const queryForm = ref<TpmInventoryDto>({
+  equipmentType: '10'
+});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -1784,7 +1786,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -1846,9 +1848,9 @@ const lookupParams = [
 ];
 
 // 主表传入子表的id
-const mainId = computed(() => {
-  return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : '';
-});
+// const mainId = computed(() => {
+//   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : '';
+// });
 
 onMounted(() => {
   // 加载表格数据
@@ -1867,7 +1869,7 @@ function getList() {
   listTpmInventoryByPage(queryParam)
     .then(response => {
       // 只查询办公自动化设备
-      list.value = response.data.result.filter(item => item.equipmentType === '10');
+      list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       // 设置表格初始选中项
       if (list.value.length > 0) {
