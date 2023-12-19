@@ -193,10 +193,11 @@
         @cancel="() => (codeModalOpen = false)"
         @ok="handleSummit"
     >
-      <tpm-standard-maintenance-select
-          ref="tpmStandardMaintenanceSelect"
-          style="min-height: 450px"
-      />
+      <div style="height: 450px;overflow: auto">
+        <tpm-standard-maintenance-select
+            ref="tpmStandardMaintenanceSelect"
+        />
+      </div>
     </a-modal>
   </AvicModal>
 </template>
