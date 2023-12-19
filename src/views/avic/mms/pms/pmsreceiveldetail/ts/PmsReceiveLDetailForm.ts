@@ -65,7 +65,7 @@ export function usePmsReceiveLDetailForm({
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        savePmsReceiveLDetail (postData)
+        savePmsReceiveLDetail ([postData])
           .then(res => {
           if (res.success) {
               successCallback();

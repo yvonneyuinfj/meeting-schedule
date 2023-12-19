@@ -48,11 +48,19 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="mdsVendorName" label="供应商" has-feedback>
-              <a-input
-                v-model:value="form.mdsVendorName"
-                :maxLength="256"
-                placeholder="请输入供应商"
-              />
+              <a-select
+                v-model:value="form.mdsVendorId"
+                @change="vendorChange"
+                placeholder="请选择供应商"
+              >
+                <a-select-option
+                  v-for="item in vendorList"
+                  :key="item.id"
+                  :value="item.id"
+                >
+                  {{ item.inventoryName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
         </a-row>
@@ -65,11 +73,15 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { usePmsReceiveForm, emits } from './ts/PmsReceiveForm'; // 引入表单ts
+import {usePmsReceiveForm, emits} from './ts/PmsReceiveForm'; // 引入表单ts
 const props = defineProps({
   formId: {
     type: String,
     default: ''
+  },
+  vendorList: {
+    type: Object,
+    default: null
   }
 });
 const emit = defineEmits(emits);
@@ -87,4 +99,10 @@ const {
   props: props,
   emit: emit
 });
+
+function vendorChange(inventoryId) {
+  let inventory = toRaw(props.vendorList.find(i => i.id === inventoryId));
+  form.value.mdsVendorName= inventory.inventoryName;
+}
+
 </script>

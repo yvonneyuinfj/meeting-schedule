@@ -187,6 +187,7 @@
         ref="addModal"
         @reloadData="getList"
         @close="showAddModal = false"
+        :vendorList="vendorList"
       />
       <!-- 编辑页面弹窗 -->
       <pms-receive-edit
@@ -195,6 +196,7 @@
         :form-id="formId"
         @reloadData="getList"
         @close="showEditModal = false"
+        :vendorList="vendorList"
       />
       <!-- 详情页面弹窗 -->
       <pms-receive-detail
@@ -202,6 +204,7 @@
         ref="detailModal"
         :form-id="formId"
         @close="showDetailModal = false"
+        :vendorList="vendorList"
       />
       <AvicExcelImport
         v-if="showImportModal"
@@ -226,7 +229,8 @@ import { listPmsReceiveByPage, delPmsReceive, exportExcel } from '@/api/avic/mms
 import PmsReceiveAdd from './PmsReceiveAdd.vue'; // 引入添加页面组件
 import PmsReceiveEdit from './PmsReceiveEdit.vue'; // 引入编辑页面组件
 import PmsReceiveDetail from './PmsReceiveDetail.vue'; // 引入详情页面组件
-import PmsReceiveLDetailManage from '../pmsreceiveldetail/PmsReceiveLDetailManage.vue'; // 引入子表页面组件
+import PmsReceiveLDetailManage from '../pmsreceiveldetail/PmsReceiveLDetailManage.vue';
+import {getInventory} from "@/api/avic/mms/pms/PmsReceiveLDetailApi"; // 引入子表页面组件
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '120px' },
@@ -313,6 +317,7 @@ const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级 通用代码
+const vendorList = ref([]); // 供应商列表
 
 // 主表传入子表的id
 const mainId = computed(() => {
@@ -324,6 +329,11 @@ onMounted(() => {
   getList();
   // 获取当前用户对应的文档密级
   getUserFileSecretList();
+  getInventory().then(res => {
+    if (res.code === '200') {
+      vendorList.value = res.data
+    }
+  });
 });
 
 /** 查询数据  */
