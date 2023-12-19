@@ -310,3 +310,7 @@ export function standardListTpmInventorySelectByPage(
 export function saveTpmInventoryList(form: [TpmInventoryDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-list/v1', form);
 }
+/**校验设备编码唯一性 */
+export function checkEquipmentCodeUnique(param: any): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/check-equipment-code-unique/v1', param);
+}
