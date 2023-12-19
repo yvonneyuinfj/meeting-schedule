@@ -270,7 +270,6 @@
         </a-row>
         <FamAccpetListEdit
           ref="famAccpetListEdit"
-          :isLand="isLand"
           :assetClasstObj="assetClasstObj"
           :accpetType="accpetType"
           :asset-class="assetClass"
@@ -359,7 +358,6 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-const isLand = ref(false); //是否为土地及房屋
 const assetClasstObj = ref();
 const emit = defineEmits(emits);
 const {
@@ -423,10 +421,10 @@ function handleSummit() {
     .then(async res => {
       if (res.success) {
         if (res.data.treeLeaf === 'Y') {
-          const parentId = getParentId();
-          console.log(getParentId())
-          isLand.value = res.data.treePath.split('/').includes(parentId);
-          console.log(isLand.value)
+          // const parentId = getParentId();
+          // console.log(getParentId())
+          // isLand.value = res.data.treePath.split('/').includes(parentId);
+          // console.log(isLand.value)
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           assetClasstOpen.value = false;
@@ -476,18 +474,6 @@ function getTreeList() {
     treeData.value = response.data;
     treeLoading.value = false;
   });
-}
-
-/** 获取土地及房屋的id */
-function getParentId() {
-  let id = '';
-  treeData.value[0].children.map(item => {
-    console.log(item)
-    if (item.title === '土地房屋') {
-      id = item.id;
-    }
-  });
-  return id;
 }
 
 /** 资产类别弹窗 */
