@@ -102,8 +102,8 @@
                 v-model:value="form.responseUserId"
                 type="userSelect"
                 placeholder="请选择责任人"
-                :default-show-value="form.responseUserName"
-                @callback="res => (form.responseUserName = res.names)"
+                :default-show-value="form.responseUserIdAlias"
+                @callback="res => (form.responseUserIdAlias = res.names)"
                 disabled
               />
             </a-form-item>
