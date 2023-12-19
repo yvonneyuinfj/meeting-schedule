@@ -806,7 +806,8 @@ function validate(callback) {
 
 defineExpose({
   validate,
-  getChangedData
+  getChangedData,
+  list
 });
 </script>
 
