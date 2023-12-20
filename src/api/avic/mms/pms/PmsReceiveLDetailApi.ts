@@ -209,6 +209,9 @@ export function delPmsReceiveLDetail (ids: [string]): Promise<ResponseBaseData<a
 export function splitPmsReceiveLDetail (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/split',  ids);
 }
+export function checkPmsReceiveLDetail (ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/checkBill',  ids);
+}
 
 export function getInventory (): Promise<ResponseBaseData<any>> {
   return request.get(basePath + '/getInventory');

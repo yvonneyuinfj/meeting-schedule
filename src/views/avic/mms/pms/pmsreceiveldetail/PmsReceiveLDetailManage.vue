@@ -43,6 +43,28 @@
               添加
             </a-button>
             <a-button
+              v-hasPermi="['pmsReceiveLDetail:add']"
+              title="按合同添加"
+              type="primary"
+              @click="handleAdd"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              按合同添加
+            </a-button>
+            <a-button
+              v-hasPermi="['pmsReceiveLDetail:add']"
+              title="按交付明细添加"
+              type="primary"
+              @click="handleAdd"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              按交付明细添加
+            </a-button>
+            <a-button
               v-hasPermi="['pmsReceiveLDetail:edit']"
               title="保存"
               type="primary"
@@ -50,7 +72,7 @@
               @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined />
+                <save-outlined/>
               </template>
               保存
             </a-button>
@@ -91,7 +113,7 @@
             </a-button>
             <a-button
               v-hasPermi="['pmsReceiveLDetail:add']"
-              title="拆分"
+              title="按到货数量拆分"
               type="primary"
               :loading="splitLoading"
               @click="handleSplit(selectedRowKeys, '')"
@@ -99,7 +121,19 @@
               <template #icon>
                 <plus-outlined/>
               </template>
-              拆分
+              按到货数量拆分
+            </a-button>
+            <a-button
+              v-hasPermi="['pmsReceiveLDetail:edit']"
+              title="提交送检"
+              type="primary"
+              :loading="checkLoading"
+              @click="handleCheck(selectedRowKeys, '')"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              提交送检
             </a-button>
           </a-space>
         </template>
@@ -166,6 +200,25 @@
               {{ record['receiverUserName'] }}
             </template>
           </AvicRowEdit>
+          <AvicRowEdit
+            v-else-if="['stoveNo','batchNo','itemSerialNo'].includes(
+               column.dataIndex
+              )"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-input
+                v-model:value="record[column.dataIndex]"
+                :maxLength="400"
+                @input="$forceUpdate()"
+                style="width: 100%"
+                placeholder="请输入"
+                @blur="blurInput($event, record, column.dataIndex)"
+              >
+              </a-input>
+            </template>
+          </AvicRowEdit>
           <template v-else-if="column.dataIndex  === 'action'">
             <a-button
               v-if="record.editable"
@@ -185,13 +238,13 @@
             >
               编辑
             </a-button>
-<!--            <a-button-->
-<!--              type="link"-->
-<!--              class="inner-btn"-->
-<!--              @click.stop="handleEdit(record.id)"-->
-<!--            >-->
-<!--              编辑-->
-<!--            </a-button>-->
+            <!--            <a-button-->
+            <!--              type="link"-->
+            <!--              class="inner-btn"-->
+            <!--              @click.stop="handleEdit(record.id)"-->
+            <!--            >-->
+            <!--              编辑-->
+            <!--            </a-button>-->
             <a-button
               v-hasPermi="['pmsReceiveLDetail:del']"
               type="link"
@@ -240,7 +293,7 @@ import {
   delPmsReceiveLDetail,
   exportExcel,
   splitPmsReceiveLDetail,
-  getInventory, savePmsReceiveLDetail
+  getInventory, savePmsReceiveLDetail, checkPmsReceiveLDetail
 } from '@/api/avic/mms/pms/PmsReceiveLDetailApi'; // 引入模块API
 import PmsReceiveLDetailAdd from './PmsReceiveLDetailAdd.vue'; // 引入添加页面组件
 import PmsReceiveLDetailEdit from './PmsReceiveLDetailEdit.vue'; // 引入编辑页面组件
@@ -425,13 +478,14 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const splitLoading = ref(false);
+const checkLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级 通用代码
 const inventoryList = ref([]); // 库房列表
 const pmsReceiveLDetail = ref(null);
 const validateRules = {
   secretLevel: [
-    { required:true, message: '密级不能为空' }
+    {required: true, message: '密级不能为空'}
   ]
 }; // 必填列,便于保存和新增数据时校验
 
@@ -512,7 +566,7 @@ function handleEdit(record) {
   list.value = newData;
 }
 
-function handleSave (record) {
+function handleSave(record) {
   let target = proxy.$lodash.cloneDeep(record);
   // 单数据校验
   if (!validateRecordData([target])) {
@@ -593,6 +647,38 @@ function handleSplit(ids, type) {
         })
         .catch(() => {
           splitLoading.value = false;
+        });
+    }
+  });
+}
+
+/**
+ * 提交送检
+ */
+function handleCheck(ids, type) {
+  if (!ids || ids.length == 0) {
+    proxy.$message.warning('请选择提交的数据！');
+    return;
+  }
+  proxy.$confirm({
+    title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      checkLoading.value = true;
+      checkPmsReceiveLDetail(ids)
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('提交成功！');
+            // 清空选中
+            selectedRowKeys.value = [];
+            selectedRows.value = [];
+            getList();
+          }
+          checkLoading.value = false;
+        })
+        .catch(() => {
+          checkLoading.value = false;
         });
     }
   });
@@ -700,11 +786,10 @@ function inventoryChange(inventoryId, record) {
   let inventory = toRaw(inventoryList.value.find(i => i.id === inventoryId));
   record.mdsInventoryName = inventory.inventoryName;
   record.mdsInventoryCode = inventory.inventoryCode;
-  console.log(inventory, record, '<<inventoryChange')
 }
 
 /** 批量保存 */
-function handleSaveAll () {
+function handleSaveAll() {
   // 规避正在保存时连续点击
   if (saveLoading.value) return;
   // 开始处理数据
@@ -733,7 +818,7 @@ function handleSaveAll () {
   }
 }
 
-function validateRecordData (records) {
+function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
     flag = proxy.$validateRecordData(records[index], validateRules, list.value, pmsReceiveLDetail);
@@ -744,5 +829,8 @@ function validateRecordData (records) {
   return flag;
 }
 
-
+/** 输入框的值失去焦点 */
+function blurInput(e, record, column) {
+  proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
+}
 </script>
