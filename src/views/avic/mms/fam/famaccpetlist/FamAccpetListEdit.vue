@@ -437,7 +437,7 @@
       </template>
     </AvicTable>
 
-    <a-modal :visible="assetClassOpen" @cancel="handleCancel" @ok="handleSummit">
+    <a-modal :visible="assetClassOpen" :body-style="bodyStyle" @cancel="handleCancel" @ok="handleSummit">
       <a-spin :spinning="treeLoading">
         <a-tree
           v-if="treeData && treeData.length > 0"
@@ -468,7 +468,7 @@
       </a-spin>
     </a-modal>
 
-    <a-modal :visible="equipClassOpen" @cancel="equiphandleCancel" @ok="equiphandleSummit">
+    <a-modal :visible="equipClassOpen" :body-style="bodyStyle" @cancel="equiphandleCancel" @ok="equiphandleSummit">
       <a-spin :spinning="treeLoading">
         <a-tree
           v-if="equipsetreeData && equipsetreeData.length > 0"
@@ -541,6 +541,10 @@ import {
 const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
 const equipClassOpen = ref<boolean>(false);
+const bodyStyle = {
+  overflow:'hidden',
+  overflowY:'scroll'
+}
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {

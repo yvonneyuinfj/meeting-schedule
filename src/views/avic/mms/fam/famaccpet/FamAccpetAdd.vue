@@ -191,7 +191,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input
-                v-model:value="form.assetClasst"
+                v-model:value="form.assetClasstName"
                 placeholder="请输入资产类别"
                 @click="assetClasstClick"
               >
@@ -230,11 +230,6 @@
               label="维修改造单号"
               has-feedback
             >
-     <!--         <a-input v-if="annual === '2'"
-                       v-model:value="form.overhaulRequireCode"
-                       :maxLength="32"
-                       placeholder="请输入选择维修改造"
-              /> -->
               <a-input
                 v-model:value="form.overhaulRequireCode"
                 @click="overhaulRequireCodeClick"
@@ -289,7 +284,7 @@
     </template>
   </AvicModal>
   <!-- 树节点 -->
-  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" @ok="handleSummit">
+  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
     <a-spin :spinning="treeLoading">
       <a-tree
         v-if="treeData && treeData.length > 0"
@@ -375,6 +370,7 @@ const {
   purchWayList,
   fundSourceList,
   uploadFile,
+  bodyStyle,
   afterUploadEvent,
   equipmentTypeList,
   autoCode,
@@ -428,6 +424,7 @@ function handleSummit() {
           // console.log(isLand.value)
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
+          form.value.assetClasstName = res.data.className
           assetClasstOpen.value = false;
         } else {
           proxy.$message.warning('该数据不属于末级节点请重新选择！');
