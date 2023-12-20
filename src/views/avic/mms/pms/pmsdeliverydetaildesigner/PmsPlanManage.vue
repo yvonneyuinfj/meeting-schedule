@@ -543,7 +543,7 @@ const columns = [
 ];
 const queryForm = ref<PmsPlanDto>({
   managerUserId: proxy.$getLoginUser().id,
-  planStatus: '0'
+  planStatus: '5'
 });
 const queryParam = reactive({
   // 请求表格数据参数

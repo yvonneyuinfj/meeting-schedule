@@ -204,7 +204,7 @@ export function useTpmYearMaintModifyPlanForm({ props: props, emit: emit }) {
                 return;
             }
             const subInfoList = tpmYearMaintModifyPlanLEdit.value.getChangedData(); // 获取子表数据
-            if (subInfoList) {
+            if (tpmYearMaintModifyPlanLEdit.value.list.length === 0) {
                 proxy.$message.warning('年度维修改造计划明细不能为空');
                 return;
             }

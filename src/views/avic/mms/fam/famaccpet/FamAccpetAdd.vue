@@ -274,6 +274,7 @@
           :accpetType="accpetType"
           :asset-class="assetClass"
           :mainId="formId || form.id"
+          :equipmentType="form.equipmentType"
         />
       </a-form>
       <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal" :assetClasst="form.assetClasst"

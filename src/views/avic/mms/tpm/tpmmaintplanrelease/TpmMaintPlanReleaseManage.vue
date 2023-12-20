@@ -7,10 +7,10 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划编号">
               <a-input
-                v-model:value="queryForm.billNo"
-                placeholder="请输入计划编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.billNo"
+                  placeholder="请输入计划编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
@@ -59,23 +59,23 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmMaintPlan"
-        table-key="tpmMaintPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmMaintPlan"
+          table-key="tpmMaintPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        :customRow="customRow"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          :customRow="customRow"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -91,11 +91,11 @@
             <!--              添加-->
             <!--            </a-button>-->
             <a-button
-              v-hasPermi="['tpmMaintPlan:save']"
-              title="保存"
-              type="primary"
-              :loading="saveLoading"
-              @click="handleSaveAll"
+                v-hasPermi="['tpmMaintPlan:save']"
+                title="保存"
+                type="primary"
+                :loading="saveLoading"
+                @click="handleSaveAll"
             >
               <template #icon>
                 <save-outlined/>
@@ -103,10 +103,10 @@
               保存
             </a-button>
             <a-button
-              title="下达"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
+                title="下达"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="
                 event => {
                   handleRelease(selectedRowKeys, event, '');
                 }
@@ -116,11 +116,11 @@
               下达
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:save']"
-              title="批量设置"
-              type="primary"
-              :loading="saveLoading"
-              @click="
+                v-hasPermi="['tpmMaintPlan:save']"
+                title="批量设置"
+                type="primary"
+                :loading="saveLoading"
+                @click="
                 event => {
                   handleSet(selectedRowKeys, event);
                 }
@@ -158,17 +158,17 @@
         <!--        </template>-->
         <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-            v-if="column.dataIndex === 'maintUserId'"
-            :record="record"
-            :column="column.dataIndex"
+              v-if="column.dataIndex === 'maintUserId'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <AvicCommonSelect
-                v-model:value="record.maintUserId"
-                :defaultShowValue="record.maintUserIdAlias"
-                placeholder="请选择保养负责人"
-                type="userSelect"
-                @callback="
+                  v-model:value="record.maintUserId"
+                  :defaultShowValue="record.maintUserIdAlias"
+                  placeholder="请选择保养负责人"
+                  type="userSelect"
+                  @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value, record, 'maintUserId');
                   }
@@ -180,23 +180,23 @@
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'goodConditionFlag'"
-            :record="record"
-            :column="column.dataIndex"
+              v-else-if="column.dataIndex === 'goodConditionFlag'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                v-model:value="record.goodConditionFlag"
-                style="width: 100%"
-                placeholder="请选择完好标识"
-                @change="value => changeControlValue(value, record, 'goodConditionFlag')"
+                  v-model:value="record.goodConditionFlag"
+                  style="width: 100%"
+                  placeholder="请选择完好标识"
+                  @change="value => changeControlValue(value, record, 'goodConditionFlag')"
               >
                 <a-select-option
-                  v-for="select in goodConditionFlagList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
+                    v-for="select in goodConditionFlagList"
+                    :key="select.sysLookupTlId"
+                    :value="select.lookupCode"
+                    :title="select.lookupName"
+                    :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
@@ -207,33 +207,33 @@
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="['note', 'problemDescription', 'vendorName'].includes(column.dataIndex)"
-            :record="record"
-            :column="column.dataIndex"
+              v-else-if="['note', 'problemDescription', 'vendorName'].includes(column.dataIndex)"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="256"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
+                  v-model:value="record[column.dataIndex]"
+                  :maxLength="256"
+                  @input="$forceUpdate()"
+                  style="width: 100%"
+                  placeholder="请输入"
+                  @blur="blurInput($event, record, column.dataIndex)"
               ></a-input>
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'actrualMaintUserId'"
-            :record="record"
-            :column="column.dataIndex"
+              v-else-if="column.dataIndex === 'actrualMaintUserId'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <AvicCommonSelect
-                v-model:value="record.actrualMaintUserId"
-                :defaultShowValue="record.actrualMaintUserIdAlias"
-                placeholder="请选择实际保养人"
-                type="userSelect"
-                @callback="
+                  v-model:value="record.actrualMaintUserId"
+                  :defaultShowValue="record.actrualMaintUserIdAlias"
+                  placeholder="请选择实际保养人"
+                  type="userSelect"
+                  @callback="
                   (value, _selectRows) => {
                     changeCommonSelect(value, record, 'actrualMaintUserId');
                   }
@@ -272,23 +272,23 @@
           <!--            </template>-->
           <!--          </AvicRowEdit>-->
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'maintConclusion'"
-            :record="record"
-            :column="column.dataIndex"
+              v-else-if="column.dataIndex === 'maintConclusion'"
+              :record="record"
+              :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                v-model:value="record.maintConclusion"
-                style="width: 100%"
-                placeholder="请选择保养结论"
-                @change="value => changeControlValue(value, record, 'maintConclusion')"
+                  v-model:value="record.maintConclusion"
+                  style="width: 100%"
+                  placeholder="请选择保养结论"
+                  @change="value => changeControlValue(value, record, 'maintConclusion')"
               >
                 <a-select-option
-                  v-for="select in maintConclusionList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
+                    v-for="select in maintConclusionList"
+                    :key="select.sysLookupTlId"
+                    :value="select.lookupCode"
+                    :title="select.lookupName"
+                    :disabled="select.disabled === true"
                 >
                   {{ select.lookupName }}
                 </a-select-option>
@@ -338,10 +338,10 @@
           保养负责人
         </div>
         <AvicCommonSelect
-          v-model:value="maintUserId"
-          placeholder="请选择保养负责人"
-          type="userSelect"
-          @callback="
+            v-model:value="maintUserId"
+            placeholder="请选择保养负责人"
+            type="userSelect"
+            @callback="
                   (value, _selectRows) => {
                     changeCommonSelectSet(value, 'maintUserId');
                   }
@@ -355,10 +355,10 @@
           实际保养人
         </div>
         <AvicCommonSelect
-          v-model:value="actrualMaintUserId"
-          placeholder="请选择实际保养人"
-          type="userSelect"
-          @callback="
+            v-model:value="actrualMaintUserId"
+            placeholder="请选择实际保养人"
+            type="userSelect"
+            @callback="
                   (value, _selectRows) => {
                     changeCommonSelectSet(value,'actrualMaintUserId');
                   }
@@ -373,11 +373,11 @@
           外委专业厂家
         </div>
         <a-input
-          v-model:value="vendorName"
-          :maxLength="256"
-          style="width: 222px"
-          @input="$forceUpdate()"
-          placeholder="请输入"
+            v-model:value="vendorName"
+            :maxLength="256"
+            style="width: 222px"
+            @input="$forceUpdate()"
+            placeholder="请输入"
         ></a-input>
         <a-button type="primary" style="margin-left: 20px" @click="handleOk('vendorName')" :loading="setLoading">设置
         </a-button>
@@ -385,26 +385,25 @@
       <div style="height: 20px"></div>
     </a-modal>
     <avic-excel-import
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="导入"
-      importUrl="/mms/tpm/tpmmaintplans/importData/v1"
-      downloadTemplateUrl="/mms/tpm/tpmmaintplans/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="导入"
+        importUrl="/mms/tpm/tpmmaintplans/importData/v1"
+        downloadTemplateUrl="/mms/tpm/tpmmaintplans/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
     ></avic-excel-import>
   </div>
 </template>
 <script lang="ts" setup>
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanReleaseApi'; // 引入模块DTO
 import {
-  listTpmMaintPlanByPage,
-  saveTpmMaintPlan,
   delTpmMaintPlan,
+  exportExcel,
+  listTpmMaintPlanByPage,
   releaseTpmMaintPlan,
-  exportExcel
+  saveTpmMaintPlan
 } from '@/api/avic/mms/tpm/TpmMaintPlanReleaseApi';
-import { checkDemoUniqueUnique } from '@/api/avic/demo/DemoMainInsideApi';
 
 
 const { proxy } = getCurrentInstance();
@@ -794,18 +793,18 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listTpmMaintPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码  */
@@ -946,20 +945,20 @@ function handleSaveAll(type, callback) {
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
     saveTpmMaintPlan(changedData)
-      .then(res => {
-        if (res.success) {
-          if (type === 'release') callback();
-          getList();
-          proxy.$message.success('保存成功！');
+        .then(res => {
+          if (res.success) {
+            if (type === 'release') callback();
+            getList();
+            proxy.$message.success('保存成功！');
+            saveLoading.value = false;
+          } else {
+            proxy.$message.error('保存失败！');
+            saveLoading.value = false;
+          }
+        })
+        .catch(() => {
           saveLoading.value = false;
-        } else {
-          proxy.$message.error('保存失败！');
-          saveLoading.value = false;
-        }
-      })
-      .catch(() => {
-        saveLoading.value = false;
-      });
+        });
   } else {
     saveLoading.value = false;
   }
@@ -1006,12 +1005,12 @@ function handleDelete(ids, e, type) {
       const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
       if (deleteIds.length > 0) {
         return delTpmMaintPlan(deleteIds)
-          .then(() => {
-            removeRecordByIds(ids);
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
+            .then(() => {
+              removeRecordByIds(ids);
+            })
+            .catch(() => {
+              delLoading.value = false;
+            });
       } else {
         removeRecordByIds(ids);
       }
@@ -1041,21 +1040,21 @@ function handleRelease(ids, e, type) {
         item.operationType_ = 'update';
       }
       saveTpmMaintPlan(selectedRows.value)
-        .then(res => {
-          if (res.success) {
-            releaseTpmMaintPlan(ids)
-              .then(res => {
-                if (res.success) {
-                  proxy.$message.success('下达成功！');
-                  getList();
-                }
-              });
-            getList();
-          } else {
-            proxy.$message.error('保存失败！');
-            saveLoading.value = false;
-          }
-        });
+          .then(res => {
+            if (res.success) {
+              releaseTpmMaintPlan(ids)
+                  .then(res => {
+                    if (res.success) {
+                      proxy.$message.success('下达成功！');
+                      getList();
+                    }
+                  });
+              getList();
+            } else {
+              proxy.$message.error('保存失败！');
+              saveLoading.value = false;
+            }
+          });
     }
   });
 }
@@ -1068,7 +1067,7 @@ function removeRecordByIds(deleteIds) {
   for (let i = 0; i < deleteIds.length; i++) {
     newData = newData.filter(item => item['id'] !== deleteIds[i]);
     delUpdateData = updateList.filter(
-      item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
+        item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
     );
   }
   // 清空表格选中项
@@ -1109,6 +1108,7 @@ function handleSet(ids, e) {
 
 /** 批量设置保存 */
 function handleOk(type) {
+  let vendorEditStatus = false;
   for (let item in selectedRowKeys.value) {
     let it = list.value.filter(i => i.id === selectedRowKeys.value[item])[0];
     if (it.ynSelfMaintenance === 'Y' && actrualMaintUserId.value && (type === 'actrualMaintUserId' || type === null)) {
@@ -1121,11 +1121,18 @@ function handleOk(type) {
     }
     if (it.ynSelfMaintenance === 'N' && vendorName.value && (type === 'vendorName' || type === null)) {
       it.vendorName = vendorName.value;
+    } else if (it.ynSelfMaintenance === 'Y' && vendorName.value && (type === 'vendorName' || type === null)) {
+      vendorEditStatus = true;
+    }
+    it.operationType_ = 'update';
+    if (vendorEditStatus) {
+      proxy.$message.warning('自主维护状态为否，外委专业厂家不可以批量设置');
+      return;
     }
   }
   handleSaveAll('release', () => {
     if (type === null) {
-      batchSettings.value = false
+      batchSettings.value = false;
     }
   });
 

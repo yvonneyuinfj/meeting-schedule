@@ -346,7 +346,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '维修类型：自主/外委',
+    title: '维修类型',
     dataIndex: 'repairTypeName',
     ellipsis: true,
     sorter: true,

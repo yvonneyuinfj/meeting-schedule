@@ -16,6 +16,7 @@ export interface PmsDeliveryDetailDesignerDto extends BaseBeanModel {
   fileName?: string;
   /** 上传人 */
   uplink?: string;
+  uplinkName?: string;
   /** 上传时间 */
   uploadTime?: any;
   uploadTimeBegin?: any;
