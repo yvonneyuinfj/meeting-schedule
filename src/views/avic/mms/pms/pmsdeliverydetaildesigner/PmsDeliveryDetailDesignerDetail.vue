@@ -47,8 +47,10 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('uplink')">
           <a-form-item name="uplink" label="上传人" :rules="fieldRequired('uplink')" has-feedback>
-            <a-input
+            <AvicCommonSelect
                 v-model:value="form.uplink"
+                type="userSelect"
+                :defaultShowValue="form.uplinkName"
                 :disabled="fieldDisabled('uplink')"
             />
           </a-form-item>
