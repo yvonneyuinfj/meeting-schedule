@@ -82,11 +82,11 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
+        <!-- input输入框 -->
         <AvicRowEdit
           v-if="
             [
               'assetSource',
-              'fundSource',
               'firstDepreciationValue',
               'installLocation',
               'ownershipCertNo',
@@ -118,8 +118,14 @@
               'licensePlateNumber',
               'vehicleNumber',
               'usePosition',
-            ].includes(column.dataIndex) &&
-            (props.accpetType === '1' || (props.accpetType === '2' && props.assetClass === '2'))
+              'importedEquipment',
+              'supplier',
+              'equipmentNo',
+              'assetNetValue',
+              'storageLocation',
+              'registrationCode',
+              'militaryKeyEquipCode',
+            ].includes(column.dataIndex)
           "
           :record="record"
           :column="column.dataIndex"
@@ -136,9 +142,8 @@
           </template>
         </AvicRowEdit>
 
-        <!-- 已提月份-->
-        <AvicRowEdit v-else-if="column.dataIndex === 'monthProposed' &&
-         (props.accpetType === '1' || (props.accpetType === '2' && props.assetClass === '2'))"
+        <!-- 已提月份 (月选择)-->
+        <AvicRowEdit v-else-if="column.dataIndex === 'monthProposed'"
                      :record="record"
                      :column="column.dataIndex"
         >
@@ -149,219 +154,6 @@
               placeholder="请选择月份"
               :disabled="props.accpetType === '2' && props.assetClass === '1'"
             ></a-date-picker>
-          </template>
-        </AvicRowEdit>
-
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetOriginalValue'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-model:value="record[column.dataIndex]"
-              :maxLength="32"
-              @input="$forceUpdate()"
-              style="width: 100%"
-              placeholder="请输入"
-              @blur="blurInput($event, record, column.dataIndex)"
-            ></a-input>
-          </template>
-        </AvicRowEdit>
-        <template v-else-if="column.dataIndex === 'assetNo'">
-          {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
-        </template>
-        <template v-else-if="column.dataIndex === 'equipNo'">
-          {{ props.accpetType === '1' ? '提交后自动生成' : record.equipNo }}
-        </template>
-
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetClass'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-if="props.accpetType === '1'"
-              v-model:value="record.assetClass"
-              @click="assetClassClick(record)"
-              placeholder="请选择资产类别"
-            >
-              <template #suffix>
-                <a-tooltip title="Extra information">
-                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
-                </a-tooltip>
-              </template>
-            </a-input>
-            <div v-else>
-              {{ record.assetClass }}
-            </div>
-          </template>
-        </AvicRowEdit>
-
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'equipClass'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-input
-              v-if="props.accpetType === '1'"
-              v-model:value="record.equipClassName"
-              @click="equipClassClick(record)"
-              placeholder="请选择设备类别"
-            >
-              <template #suffix>
-                <a-tooltip title="Extra information">
-                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
-                </a-tooltip>
-              </template>
-            </a-input>
-
-          </template>
-          <template #default>
-            {{ record.equipClassName }}
-          </template>
-        </AvicRowEdit>
-        <!--        -->
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'vehicleUsage'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record.vehicleUsage"
-              style="width: 100%"
-              placeholder="请选择"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-              @change="value => changeControlValue(value, record, 'vehicleUsage')"
-            >
-              <a-select-option
-                v-for="select in vehicleUsageList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag :value="record.vehicleUsage" :options="vehicleUsageList"/>
-          </template>
-        </AvicRowEdit>
-
-        <AvicRowEdit
-          v-else-if="
-            [
-              'productionDate',
-              'commencementTime',
-              'timeCompletion',
-              'issuanceTime'
-            ].includes(column.dataIndex)"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-date-picker
-              v-model:value="record[column.dataIndex]"
-              value-format="YYYY-MM-DD"
-              placeholder="请选择日期"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-            ></a-date-picker>
-          </template>
-        </AvicRowEdit>
-
-        <AvicRowEdit
-          v-else-if="
-            [
-              'importedOrNot',
-              'ynMilitaryKeyEquip',
-              'isFactoryBuilding',
-            ].includes(column.dataIndex)"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record[column.dataIndex]"
-              style="width: 100%"
-              placeholder="请选择是否"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-              @change="value => changeControlValue(value, record, column.dataIndex)"
-            >
-              <a-select-option
-                v-for="select in importedOrNotList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag :value="record[column.dataIndex]" :matchField="'lookupCode'" :options="importedOrNotList"/>
-          </template>
-        </AvicRowEdit>
-
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'equipType'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record.equipType"
-              style="width: 100%"
-              placeholder="请选择"
-              :disabled="props.accpetType === '2' && props.assetClass === '1'"
-              @change="value => changeControlValue(value, record, 'equipType')"
-            >
-              <a-select-option
-                v-for="select in equipTypeList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag :value="record.equipTypeName" :options="equipTypeList"/>
-          </template>
-        </AvicRowEdit>
-
-        <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetSecretLevel'"
-          :record="record"
-          :column="column.dataIndex"
-        >
-          <template #edit>
-            <a-select
-              v-model:value="record.assetSecretLevel"
-              style="width: 100%"
-              placeholder="请选择资产密级"
-              @change="value => changeControlValue(value, record, 'assetSecretLevel')"
-            >
-              <a-select-option
-                v-for="select in assetSecretLevelList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag :value="record.assetSecretLevelName" :options="assetSecretLevelList"/>
           </template>
         </AvicRowEdit>
 
@@ -437,6 +229,67 @@
           </template>
         </AvicRowEdit>
 
+        <!-- 日期选择器-->
+        <AvicRowEdit
+          v-else-if="
+            [
+              'productionDate',
+              'commencementTime',
+              'timeCompletion',
+              'issuanceTime',
+              'purchaseDate',
+              'recordDate',
+              'commissionDate',
+            ].includes(column.dataIndex)"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-date-picker
+              v-model:value="record[column.dataIndex]"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择日期"
+              :disabled="props.accpetType === '2' && props.assetClass === '1'"
+            ></a-date-picker>
+          </template>
+        </AvicRowEdit>
+
+        <!-- 是否选择器-->
+        <AvicRowEdit
+          v-else-if="
+            [
+              'importedOrNot',
+              'ynMilitaryKeyEquip',
+              'isFactoryBuilding',
+              'ynMaintainName',
+              'ynAnnualInspection','ynMajorAssets','ynBottleneckEquipmentName'
+            ].includes(column.dataIndex)"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-select
+              v-model:value="record[column.dataIndex]"
+              style="width: 100%"
+              placeholder="请选择是否"
+              @change="value => changeControlValue(value, record, column.dataIndex)"
+            >
+              <a-select-option
+                v-for="select in importedOrNotList"
+                :key="select.sysLookupTlId"
+                :value="select.lookupCode"
+                :title="select.lookupName"
+                :disabled="select.disabled === true"
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag :value="record[column.dataIndex]" :matchField="'lookupCode'" :options="importedOrNotList"/>
+          </template>
+        </AvicRowEdit>
+
         <!--  备注-->
         <AvicRowEdit
           v-else-if="column.dataIndex === 'note'"
@@ -454,48 +307,105 @@
           </template>
         </AvicRowEdit>
 
+        <!--  资产类别-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'geographicalArea'"
+          v-else-if="column.dataIndex === 'assetClass'"
           :record="record"
           :column="column.dataIndex"
         >
           <template #edit>
-            <a-select
-              v-model:value="record.geographicalArea"
-              style="width: 100%"
-              placeholder="请选择地理区域"
-              @change="value => changeControlValue(value, record, 'geographicalArea')"
+            <a-input
+              v-if="props.accpetType === '1'"
+              v-model:value="record.assetClass"
+              @click="assetClassClick(record)"
+              placeholder="请选择资产类别"
             >
-              <a-select-option
-                v-for="select in geographicalAreaList"
-                :key="select.sysLookupTlId"
-                :value="select.lookupCode"
-                :title="select.lookupName"
-                :disabled="select.disabled === true"
-              >
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            <AvicDictTag :value="record.geographicalAreaName" :options="geographicalAreaList"/>
+              <template #suffix>
+                <a-tooltip title="Extra information">
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                </a-tooltip>
+              </template>
+            </a-input>
+            <div v-else>
+              {{ record.assetClass }}
+            </div>
           </template>
         </AvicRowEdit>
 
+        <!--  设备类别-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetsUse'"
+          v-else-if="column.dataIndex === 'equipClass'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-if="props.accpetType === '1'"
+              v-model:value="record.equipClass"
+              @click="equipClassClick(record)"
+              placeholder="请选择设备类别"
+            >
+              <template #suffix>
+                <a-tooltip title="Extra information">
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                </a-tooltip>
+              </template>
+            </a-input>
+            <div v-else>
+              {{ record.equipClassName }}
+            </div>
+          </template>
+        </AvicRowEdit>
+
+        <!-- 资产原值-->
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'assetOriginalValue'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="32"
+              @input="$forceUpdate()"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            ></a-input>
+          </template>
+        </AvicRowEdit>
+        <template v-else-if="column.dataIndex === 'assetNo'">
+          {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
+        </template>
+        <template v-else-if="column.dataIndex === 'equipNo'">
+          {{ props.accpetType === '1' ? '提交后自动生成' : record.equipNo }}
+        </template>
+
+        <!-- 选择框-->
+        <AvicRowEdit
+          v-else-if="
+            [
+              'vehicleUsage',
+              'ABCDType',
+              'energyefficiencyName',
+              'fundSource',
+              'equipType',
+              'assetSecretLevel',
+              'geographicalArea',
+              'assetsUse',
+            ].includes(column.dataIndex)"
           :record="record"
           :column="column.dataIndex"
         >
           <template #edit>
             <a-select
-              v-model:value="record.assetsUse"
+              v-model:value="record[column.dataIndex]"
               style="width: 100%"
-              placeholder="请选择资产用途"
-              @change="value => changeControlValue(value, record, 'assetsUse')"
+              placeholder="请选择"
+              @change="value => changeControlValue(value, record, column.dataIndex)"
             >
               <a-select-option
-                v-for="select in assetsUseList"
+                v-for="select in tableSelectList(column.dataIndex)"
                 :key="select.sysLookupTlId"
                 :value="select.lookupCode"
                 :title="select.lookupName"
@@ -506,7 +416,8 @@
             </a-select>
           </template>
           <template #default>
-            <AvicDictTag :value="record.assetsUseName" :options="assetsUseList"/>
+            <AvicDictTag :value="record[column.dataIndex]" :matchField="'lookupCode'"
+                         :options="tableSelectList(column.dataIndex)"/>
           </template>
         </AvicRowEdit>
 
@@ -622,7 +533,7 @@ import {
   backColumnsObj
 } from './ListColumns';
 import {
-  CarValidateRules,
+  CarValidateRules, DeviceValidateRules,
   HouseValidateRules,
   ITValidateRules, OfficialValidateRules
 } from '@/views/avic/mms/fam/famaccpetlist/ValidateRules';
@@ -656,11 +567,23 @@ const props = defineProps({
   assetClasst: {
     type: String,
     default: ''
+  },
+  bpmParams: {
+    type: Object,
+    default: {}
+  },
+  bpmInstanceObject: {
+    type: Object,
+    default: {}
+  },
+  equipmentType: {
+    type: String,
+    default: ''
   }
 });
 let columns = ref([]);
 
-const { getHouseObj, getCarsObj, getOfficialObject, getITObj } = backColumnsObj();
+const { getHouseObj, getCarsObj, getOfficialObject, getITObj, getDeviceObj } = backColumnsObj();
 
 const queryForm = ref<FamAccpetListDto>({});
 const queryParam = reactive({
@@ -704,6 +627,9 @@ const equipTypeList = ref([]);
 const vehicleUsageList = ref([]);
 const isFactoryBuildingList = ref([]);
 const assetSecretLevelList = ref([]);
+const ABCDTypeList = ref([]);
+const energyefficiencyNameList = ref([]);
+const fundSourceList = ref([]);
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
   { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
@@ -712,7 +638,10 @@ const lookupParams = [
   { fieldName: 'equipType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
   { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' },
   { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' },
-  { fieldName: 'vehicleUsage', lookUpType: 'FAM_VEHICLE_USAGE' }
+  { fieldName: 'vehicleUsage', lookUpType: 'FAM_VEHICLE_USAGE' },
+  { fieldName: 'ABCDType', lookUpType: 'TPM_ABCD_TYPE' },
+  { fieldName: 'energyefficiencyName', lookUpType: 'TPM_ENERGY_EFFICIENCY' },
+  { fieldName: 'fundSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
 ];
 let validateRules = {};
 const addObj = ref();
@@ -733,6 +662,10 @@ if (!props.readOnly) {
   });
 }
 
+console.log(props.bpmParams);
+console.log(props.bpmInstanceObject);
+console.log(props.readOnly);
+
 onMounted(() => {
   allocationColumn('1');
   // 加载表格数据
@@ -742,6 +675,17 @@ onMounted(() => {
   //获取树
   getTreeList();
 });
+
+function tableSelectList(columns) {
+  if (columns === 'vehicleUsage') return vehicleUsageList.value;
+  if (columns === 'ABCDType') return ABCDTypeList.value;
+  if (columns === 'energyefficiencyName') return energyefficiencyNameList.value;
+  if (columns === 'fundSource') return fundSourceList.value;
+  if (columns === 'equipType') return equipTypeList.value;
+  if (columns === 'assetSecretLevel') return assetSecretLevelList.value;
+  if (columns === 'geographicalArea') return geographicalAreaList.value;
+  if (columns === 'assetsUse') return assetsUseList.value;
+}
 
 /** 树节点展开事件 */
 function handleExpand(keys) {
@@ -910,17 +854,20 @@ function getLookupList() {
     assetSecretLevelList.value = result.assetSecretLevel;
     vehicleUsageList.value = result.vehicleUsage;
     isFactoryBuildingList.value = result.importedOrNot;
+    ABCDTypeList.value = result.ABCDType;
+    energyefficiencyNameList.value = result.energyefficiencyName;
+    fundSourceList.value = result.fundSource;
   });
 }
 
 /** 获取修改的数据 */
 function getChangedData() {
-  // deletedData.value.forEach(item => {
-  //   item['operationType_'] = 'delete';
-  // });
+  deletedData.value.forEach(item => {
+    item['operationType_'] = 'delete';
+  });
   const changedData = proxy.$getChangeRecords(list, initialList);
-  // return deletedData.value.concat(changedData);
-  return changedData;
+  return deletedData.value.concat(changedData);
+  // return changedData;
 }
 
 /** 批量添加 */
@@ -1061,7 +1008,6 @@ function handleTableChange(pagination, _filters, sorter) {
 
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
-  console.log(column);
   let labels = [];
   if (Array.isArray(values)) {
     // 多选处理
@@ -1082,6 +1028,7 @@ function changeControlValue(values, record, column) {
 
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
+  //todo 如果code 是设备 输入资产原值将值同步给资产净值
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
 
@@ -1089,7 +1036,7 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    console.log(records[index]);
+    console.log(validateRules);
     flag = proxy.$validateRecordData(records[index], validateRules, list.value, famAccpetList);
     if (!flag) {
       break;
@@ -1129,6 +1076,7 @@ function getAddObj(code) {
       addObj.value = getOfficialObject(props.assetClasstObj);
       break;
     default:
+      addObj.value = getDeviceObj(props.assetClasstObj);
       break;
   }
 }
@@ -1144,29 +1092,115 @@ function allocationColumn(code) {
     case'4':
       columns.value = [...CarColumns];
       validateRules = CarValidateRules;
-      console.log(validateRules);
       break;
     case'6':
       columns.value = [...ITColumns];
       validateRules = ITValidateRules;
-      console.log('IT');
       break;
     case'8':
       columns.value = [...OfficialColumns];
       validateRules = OfficialValidateRules;
-      console.log('办公');
       break;
     default:
       columns.value = [...DeviceColumns];
-      console.log('设备');
+      validateRules = DeviceValidateRules;
+      // 提交流程
+      if (props.readOnly) {
+        if (props.bpmInstanceObject.bpmModel.activityname  && props.bpmInstanceObject.bpmModel.activityname !== 'task3') return;
+        const list = [
+          {
+            title: '是否瓶颈设备',
+            dataIndex: 'ynBottleneckEquipmentName',
+            key: 'ynBottleneckEquipmentName',
+            ellipsis: true,
+            minWidth: 120,
+            resizable: true,
+            align: 'left'
+          },
+          {
+            title: '军工关键设备专用代码',
+            dataIndex: 'militaryKeyEquipCode',
+            key: 'militaryKeyEquipCode',
+            ellipsis: true,
+            minWidth: 120,
+            resizable: true,
+            align: 'left'
+          },
+          {
+            title: '是否重大军工设备',
+            dataIndex: 'ynMajorAssets',
+            key: 'ynMajorAssets',
+            ellipsis: true,
+            minWidth: 120,
+            resizable: true,
+            align: 'left'
+          }
+        ];
+        validateRules['militaryKeyEquipCode'] = [{
+          validator: validatorMilitaryKeyEquipCode,
+          trigger: 'blur'
+        }];
+        // 特种设备
+        const list1 = [
+          {
+            title: '是否年检',
+            dataIndex: 'ynAnnualInspection',
+            key: 'ynAnnualInspection',
+            ellipsis: true,
+            minWidth: 120,
+            resizable: true,
+            customHeaderCell() {
+              return {
+                ['class']: 'required-table-title'
+              };
+            },
+            align: 'left'
+          },
+          {
+            title: '特种设备注册码',
+            dataIndex: 'registrationCode',
+            key: 'registrationCode',
+            ellipsis: true,
+            minWidth: 120,
+            resizable: true,
+            customHeaderCell() {
+              return {
+                ['class']: 'required-table-title'
+              };
+            },
+            align: 'left'
+          }
+        ];
+        columns.value = [...columns.value, ...list];
+        if (props.equipmentType === '1') {
+          columns.value = [...columns.value, ...list1];
+          validateRules['ynAnnualInspection'] = [{ required: true, message: '是否年检不能为空' }];
+          validateRules['registrationCode'] = [{ required: true, message: '特种设备注册码不能为空' }];
+
+        }
+      }
       break;
   }
   getAddObj(code);
   setTimeout(() => {
     showTable.value = true;
-  }, 100);
+  }, 500);
 
 }
+
+function validatorMilitaryKeyEquipCode(value, record) {
+  if (record.ynMilitaryKeyEquip === '1' && !value) {
+    return {
+      flag: false,
+      message: '军工关键设备专用代码必填！'
+    };
+  } else {
+    return {
+      flag: true
+    };
+  }
+}
+
 
 watch(
   () => props.accpetType,
@@ -1192,13 +1226,8 @@ watch(
 
 watch(
   () => props.assetClasst, newV => {
-    console.log(newV)
-    showTable.value = false;
     code.value = props.assetClasst.charAt(0);
     allocationColumn(code.value);
-    setTimeout(() => {
-      showTable.value = true;
-    }, 1000);
   }
 );
 

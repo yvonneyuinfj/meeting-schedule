@@ -51,22 +51,8 @@ export const DeviceValidateRules = {
   productionDate: [{ required: true, message: '出厂日期不能为空' }],
   equipClass: [{ required: true, message: '设备大类不能为空' }],
   storageLocation: [{ required: true, message: '具体位置不能为空' }],
-  // militaryKeyEquipCode: [{ validator: validatorMilitaryKeyEquipCode }]
 };
 
-// function validatorMilitaryKeyEquipCode(_rule, value, record) {
-//   console.log(value)
-//   console.log(record)
-//   if (form.value.maintCategory === '1') {
-//     if (!value) {
-//       return Promise.reject(new Error('故障时间不能为空'));
-//     } else {
-//       return Promise.resolve();
-//     }
-//   } else {
-//     return Promise.resolve();
-//   }
-// }
 
 /** 车辆列验收 */
 export const CarValidateRules = {
