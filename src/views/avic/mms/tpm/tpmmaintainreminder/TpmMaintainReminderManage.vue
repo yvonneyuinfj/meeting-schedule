@@ -67,6 +67,28 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '上次保养日期',
+    dataIndex: 'lastMaintenDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  }, {
+    title: '保养周期(月)',
+    dataIndex: 'maintenanceCycle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
+  }, {
+    title: '小时数',
+    dataIndex: 'maintenanceHours',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
   }, {
     title: '计划保养日期',
     dataIndex: 'planMaintenDate',

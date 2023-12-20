@@ -218,7 +218,7 @@
 </template>
 <script lang="ts" setup>
 import type { TpmMaintPlanReleaseDto } from '@/api/avic/mms/tpm/TpmMaintPlanReleaseApi'; // 引入模块DTO
-import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import flowUtils, { openFlowDetail, startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import {
   listTpmMaintPlanFeedBackByPage,
   saveTpmMaintPlan,
@@ -582,6 +582,11 @@ const editingId = ref(''); // 正在编辑中的数据
 const open = ref(false); // 附件弹窗
 const attachModal = ref(null);
 const currentRecord = ref<TpmMaintPlanReleaseDto>({});
+const props = defineProps({
+  bpmOperatorRefresh: {
+    type: Function
+  }
+});
 
 onMounted(() => {
   queryForm.value.maintenanceStatus = '10';
@@ -674,12 +679,12 @@ function getBpmDefine(rows, ids) {
     formCode: 'TpmMaintPlanFeedBack',
     formData: rows,
     callback: bpmDefinedInfo => {
-      approval(bpmDefinedInfo, ids);
+      approval(bpmDefinedInfo, ids, rows);
     }
   });
 }
 
-const approval = (bpmDefinedInfo, ids) => {
+const approval = (bpmDefinedInfo, ids, rows) => {
   const param = {
     processDefId: bpmDefinedInfo.dbid,
     formCode: 'TpmMaintPlanFeedBack',
@@ -690,6 +695,9 @@ const approval = (bpmDefinedInfo, ids) => {
       approvalLoading.value = false;
       proxy.$message.success('提交成功!');
       getList();
+      if (res.data) {
+        openFlowDetail(res.data, props.bpmOperatorRefresh);
+      }
     } else {
       approvalLoading.value = false;
     }
@@ -901,7 +909,9 @@ function handleTableChange(pagination, filters, sorter) {
 function handleOpen(record) {
   open.value = true;
   currentRecord.value = record;
-  attachModal.value.note = record.problemDescription;
+  if (record.problemDescription && record.problemDescription != null){
+    attachModal.value.note = record.problemDescription;
+  }
 }
 
 const handleCancel = () => {

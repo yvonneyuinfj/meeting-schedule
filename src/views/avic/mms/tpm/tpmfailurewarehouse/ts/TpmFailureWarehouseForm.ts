@@ -118,6 +118,7 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
       form.value.applyUserId = userStore.userInfo.id;
       form.value.applyUserName = userStore.userInfo.name;
       form.value.applyUserCode = userStore.userInfo.code;
+      form.value.repairType = '0';
       initForm();
     }
   });
