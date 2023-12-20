@@ -638,10 +638,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customRender: text => {
-      return text.value ? proxy.$formatZero(Number(text.value), 2) : '';
-    },
-    align: 'right'
+    align: 'left'
   },
   {
     title: '是否需要评审',

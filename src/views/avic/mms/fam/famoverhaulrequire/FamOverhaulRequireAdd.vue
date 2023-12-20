@@ -280,7 +280,7 @@
               label="项目金额（万元）"
               has-feedback
             >
-              <a-input-number
+       <!--       <a-input-number
                 v-model:value="form.projectAmount"
                 :disabled="annual === '1'"
                 :min="0"
@@ -288,6 +288,11 @@
                 :precision="2"
                 :step="0.01"
                 placeholder="请输入项目金额（万元）"
+              /> -->
+              <a-input
+                v-model:value="form.projectAmount"
+                :maxLength="64"
+                placeholder="请输入课题号"
               />
             </a-form-item>
           </a-col>
@@ -315,6 +320,21 @@
               </a-select>
             </a-form-item>
           </a-col>
+          
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="projectName"
+              label="项目名称"
+              has-feedback
+            >
+              <a-input
+                v-model:value="form.projectName"
+                :maxLength="64"
+                placeholder="请输入项目名称"
+              />
+            </a-form-item>
+          </a-col>
+          
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols2">
