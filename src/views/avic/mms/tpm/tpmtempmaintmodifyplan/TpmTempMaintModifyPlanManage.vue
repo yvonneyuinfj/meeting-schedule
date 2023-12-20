@@ -646,7 +646,7 @@ function handleCommit(ids, type) {
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     planTypeList.value = result.planType;
-    businessStatusList.value = result.businessStatus;
+    businessStatusList.value = result.businessStatus.filter(row => row.lookupCode === '0' || row.lookupCode === '15');
   });
 }
 
