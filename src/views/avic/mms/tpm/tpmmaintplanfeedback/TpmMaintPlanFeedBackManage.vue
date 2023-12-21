@@ -590,6 +590,8 @@ const props = defineProps({
 
 onMounted(() => {
   queryForm.value.maintenanceStatus = '10';
+  //当前登陆人为保养负责人
+  queryForm.value.maintUserId = proxy.$getLoginUser().id;
   queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
