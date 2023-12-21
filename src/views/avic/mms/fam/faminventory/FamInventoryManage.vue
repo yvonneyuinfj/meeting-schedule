@@ -1431,6 +1431,178 @@ const columns = [
     resizable: true,
     align: 'left'
   },
+
+  // =================================================
+  // =================================================
+  // =================================================
+  {
+    title: '地理区域',
+    dataIndex: 'geographicalArea',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '开工时间',
+    dataIndex: 'commencementTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '竣工时间',
+    dataIndex: 'timeCompletion',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '所属土地',
+    dataIndex: 'belongingLand',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '不动产权证书',
+    dataIndex: 'certificateTitle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '不动产权证书面积',
+    dataIndex: 'certificateTitleArea',
+    ellipsis: true,
+    minWidth: 150,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '发证时间',
+    dataIndex: 'issuanceTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '竣工备案书档案编号',
+    dataIndex: 'recordNumber',
+    ellipsis: true,
+    minWidth: 150,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '工程规划许可证',
+    dataIndex: 'planningPermit',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '通知书',
+    dataIndex: 'notice',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '附图档案编号',
+    dataIndex: 'attachedFileNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '是否为科研厂房',
+    dataIndex: 'isFactoryBuilding',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '进口设备国别',
+    dataIndex: 'importedEquipment',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '车辆用途',
+    dataIndex: 'vehicleUsageName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '车辆识别号',
+    dataIndex: 'vehicleNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '车牌号',
+    dataIndex: 'licensePlateNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '排气量/ml',
+    dataIndex: 'airDisplacement',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '发动机号',
+    dataIndex: 'engineNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '使用位置',
+    dataIndex: 'usePosition',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '建筑面积',
+    dataIndex: 'floorspace',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '供应商',
+    dataIndex: 'supplier',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
   {
     title: '操作',
     dataIndex: 'action',

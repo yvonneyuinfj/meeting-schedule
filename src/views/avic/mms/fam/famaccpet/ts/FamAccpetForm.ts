@@ -72,6 +72,10 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' }
   ];
   const authJson = ref(null);
+  const bodyStyle = {
+    overflow:'hidden',
+    overflowY:'scroll'
+  }
 
   if (props.params) {
     bpmParams.value = props.params;
@@ -466,6 +470,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     accpetTypeList,
     assetTypeList,
     purchWayList,
+    bodyStyle,
     fundSourceList,
     equipmentTypeList,
     uploadFile,

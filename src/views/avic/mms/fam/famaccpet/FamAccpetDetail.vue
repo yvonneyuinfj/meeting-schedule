@@ -378,6 +378,7 @@ const {
   secretLevelList,
   assetTypeList,
   accpetTypeList,
+  bodyStyle,
   uploadFile,
   afterUploadEvent,
   attachmentRequired,

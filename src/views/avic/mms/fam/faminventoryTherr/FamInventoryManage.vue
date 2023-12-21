@@ -990,7 +990,7 @@ const columns = [
   },
   {
     title: '接收部门',
-    dataIndex: 'receiveDeptId',
+    dataIndex: 'receiveDeptNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

@@ -664,6 +664,243 @@
                 />
               </a-form-item>
             </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="geographicalArea"
+                label="地理区域"
+              >
+                <a-input
+                  v-model:value="form.geographicalArea"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="commencementTime"
+                label="开工时间"
+              >
+                <a-date-picker
+                  v-model:value="form.commencementTime"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="timeCompletion"
+                label="竣工时间"
+              >
+                <a-date-picker
+                  v-model:value="form.timeCompletion"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="belongingLand"
+                label="所属土地"
+              >
+                <a-input
+                  v-model:value="form.belongingLand"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="certificateTitle"
+                label="不动产权证书"
+              >
+                <a-input
+                  v-model:value="form.certificateTitle"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="certificateTitleArea"
+                label="不动产权证书面积"
+              >
+                <a-input
+                  v-model:value="form.certificateTitleArea"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="issuanceTime"
+                label="发证时间"
+              >
+                <a-date-picker
+                  v-model:value="form.issuanceTime"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="recordNumber"
+                label="竣工备案书档案编号"
+              >
+                <a-input
+                  v-model:value="form.recordNumber"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="planningPermit"
+                label="工程规划许可证"
+              >
+                <a-input
+                  v-model:value="form.planningPermit"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="notice"
+                label="通知书"
+              >
+                <a-input
+                  v-model:value="form.notice"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="attachedFileNumber"
+                label="附图档案编号"
+              >
+                <a-input
+                  v-model:value="form.attachedFileNumber"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="isFactoryBuilding"
+                label="是否为科研厂房"
+              >
+                <a-input
+                  v-model:value="form.isFactoryBuilding"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="importedEquipment"
+                label="进口设备国别"
+              >
+                <a-input
+                  v-model:value="form.importedEquipment"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="vehicleUsageName"
+                label="车辆用途"
+              >
+                <a-input
+                  v-model:value="form.vehicleUsageName"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="vehicleNumber"
+                label="车辆识别号"
+              >
+                <a-input
+                  v-model:value="form.vehicleNumber"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="licensePlateNumber"
+                label="车牌号"
+              >
+                <a-input
+                  v-model:value="form.licensePlateNumber"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="airDisplacement"
+                label="排气量/ml"
+              >
+                <a-input
+                  v-model:value="form.airDisplacement"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="engineNo"
+                label="发动机号"
+              >
+                <a-input
+                  v-model:value="form.engineNo"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="usePosition"
+                label="使用位置"
+              >
+                <a-input
+                  v-model:value="form.usePosition"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="floorspace"
+                label="建筑面积"
+              >
+                <a-input
+                  v-model:value="form.floorspace"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
+            <a-col v-bind="colLayout.cols">
+              <a-form-item
+                name="supplier"
+                label="供应商"
+              >
+                <a-input
+                  v-model:value="form.supplier"
+                  disabled
+                />
+              </a-form-item>
+            </a-col>
           </a-row>
         </a-form>
       </a-spin>
