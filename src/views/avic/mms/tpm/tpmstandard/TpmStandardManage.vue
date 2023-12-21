@@ -347,7 +347,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -382,6 +382,9 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  if (proxy.$getLoginUser().entityDeptCode !== 'C410'){
+    queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
+  }
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

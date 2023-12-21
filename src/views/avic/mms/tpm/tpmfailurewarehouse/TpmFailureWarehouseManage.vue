@@ -4,16 +4,16 @@
       <!-- 高级查询 -->
       <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="使用部门名称">
-              <a-input
-                  v-model:value="queryForm.useDeptName"
-                  placeholder="请输入使用部门名称"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item label="使用部门名称">-->
+<!--              <a-input-->
+<!--                  v-model:value="queryForm.useDeptName"-->
+<!--                  placeholder="请输入使用部门名称"-->
+<!--                  :allow-clear="true"-->
+<!--                  @pressEnter="handleQuery"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item label="申请人姓名">
               <AvicCommonSelect
@@ -29,27 +29,27 @@
               />
             </a-form-item>
           </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item label="流程状态">-->
+<!--              <a-select-->
+<!--                  v-model:value="queryForm.billStatus"-->
+<!--                  :get-popup-container="triggerNode => triggerNode.parentNode"-->
+<!--                  option-filter-prop="children"-->
+<!--                  :show-search="true"-->
+<!--                  :allow-clear="true"-->
+<!--                  placeholder="请选择流程状态"-->
+<!--              >-->
+<!--                <a-select-option-->
+<!--                    v-for="item in billStatusList"-->
+<!--                    :key="item.sysLookupTlId"-->
+<!--                    :value="item.lookupCode"-->
+<!--                >-->
+<!--                  {{ item.lookupName }}-->
+<!--                </a-select-option>-->
+<!--              </a-select>-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="流程状态">
-              <a-select
-                  v-model:value="queryForm.billStatus"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择流程状态"
-              >
-                <a-select-option
-                    v-for="item in billStatusList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="故障库类型">
               <a-select
                   v-model:value="queryForm.failureWarehouseType"
@@ -279,7 +279,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '使用部门名称',
+    title: '使用部门',
     dataIndex: 'useDeptName',
     ellipsis: true,
     sorter: true,
@@ -321,14 +321,14 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '流程状态',
-    dataIndex: 'billStatusName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  // {
+  //   title: '流程状态',
+  //   dataIndex: 'billStatusName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
   {
     title: '故障发生时间',
     dataIndex: 'faultDate',
@@ -465,6 +465,7 @@ onMounted(() => {
 
 /** 查询数据 */
 function getList() {
+  queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

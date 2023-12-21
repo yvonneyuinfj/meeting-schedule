@@ -73,26 +73,26 @@
                   />
                 </a-form-item>
               </a-col>
-              <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="设备类型">
-                  <a-select
-                    v-model:value="queryForm.equipmentType"
-                    :get-popup-container="triggerNode => triggerNode.parentNode"
-                    option-filter-prop="children"
-                    :show-search="true"
-                    :allow-clear="true"
-                    placeholder="请选择设备类型"
-                  >
-                    <a-select-option
-                      v-for="item in equipmentTypeList"
-                      :key="item.sysLookupTlId"
-                      :value="item.lookupCode"
-                    >
-                      {{ item.lookupName }}
-                    </a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
+<!--              <a-col v-bind="colLayout.cols" v-show="advanced">-->
+<!--                <a-form-item label="设备类型">-->
+<!--                  <a-select-->
+<!--                    v-model:value="queryForm.equipmentType"-->
+<!--                    :get-popup-container="triggerNode => triggerNode.parentNode"-->
+<!--                    option-filter-prop="children"-->
+<!--                    :show-search="true"-->
+<!--                    :allow-clear="true"-->
+<!--                    placeholder="请选择设备类型"-->
+<!--                  >-->
+<!--                    <a-select-option-->
+<!--                      v-for="item in equipmentTypeList"-->
+<!--                      :key="item.sysLookupTlId"-->
+<!--                      :value="item.lookupCode"-->
+<!--                    >-->
+<!--                      {{ item.lookupName }}-->
+<!--                    </a-select-option>-->
+<!--                  </a-select>-->
+<!--                </a-form-item>-->
+<!--              </a-col>-->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="设备规格">
                   <a-input
@@ -1863,6 +1863,9 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  if (proxy.$getLoginUser().entityDeptCode !== 'C410'){
+    queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
+  }
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

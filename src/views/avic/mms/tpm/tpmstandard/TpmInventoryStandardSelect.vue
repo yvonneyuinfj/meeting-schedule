@@ -236,7 +236,9 @@ const columns = [
     align: 'center'
   }
 ];
-const queryForm = ref<TpmInventoryDto>({});
+const queryForm = ref<TpmInventoryDto>({
+  useDeptId: proxy.$getLoginUser().entityDeptId
+});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -244,7 +246,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段

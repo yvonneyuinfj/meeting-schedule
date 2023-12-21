@@ -2,7 +2,6 @@ import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // �
 
 import { getTpmInventory, saveTpmInventory,getCodeById,checkEquipmentCodeUnique } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
 
-import { useUserStore } from '@/store/user';
 export const emits = ['reloadData', 'close'];
 export function useTpmInventoryForm({
   props: props,
@@ -143,7 +142,6 @@ export function useTpmInventoryForm({
   const ynAnnualInspectionList = ref([]); // 是否年检通用代码
   const ynMajorAssetsList = ref([]); // 是否军工重大专用资产
   const capitalSourceList = ref([]);  // 资金来源通用代码
-  const userStore = useUserStore();
   const lookupParams = [
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
     { fieldName: 'abcdType', lookUpType: 'TPM_ABCD_TYPE' },
@@ -254,13 +252,13 @@ export function useTpmInventoryForm({
     }
     // 初始化管理部门，默认为当前登录人部门
     if (!form.value.equipmentManageDeptId) {
-      form.value.equipmentManageDeptId = proxy.$getLoginUser().deptId;
-      form.value.attribute02 = proxy.$getLoginUser().deptName;
+      form.value.equipmentManageDeptId = proxy.$getLoginUser().entityDeptId;
+      form.value.attribute02 = proxy.$getLoginUser().entityDeptName;
     }
     // 初始化使用部门，默认为当前登录人部门
     if (!form.value.useDeptId) {
-      form.value.useDeptId = proxy.$getLoginUser().deptId;
-      form.value.useDeptName = proxy.$getLoginUser().deptName;
+      form.value.useDeptId = proxy.$getLoginUser().entityDeptId;
+      form.value.useDeptName = proxy.$getLoginUser().entityDeptName;
     }
   };
 

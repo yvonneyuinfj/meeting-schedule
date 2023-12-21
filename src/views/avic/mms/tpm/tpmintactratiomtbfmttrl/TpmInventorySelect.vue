@@ -78,7 +78,6 @@
 <script lang="ts" setup>
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
 import { listTpmInventoryByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
-import { useUserStore } from '@/store/user';
 
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const tpmInventorySelect = ref();
@@ -182,9 +181,8 @@ const columns = [
     align: 'center'
   }
 ];
-const userStore = useUserStore();
 const queryForm = ref<TpmInventoryDto>({
-  useDeptId: userStore.userInfo.deptId
+  useDeptId: proxy.$getLoginUser().entityDeptId
 });
 const queryParam = reactive({
   // 请求表格数据参数
@@ -219,16 +217,16 @@ function getList() {
   selectedRows.value = null; // 清空选中
   loading.value = true;
   listTpmInventoryByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取当前用户对应的文档密级 */

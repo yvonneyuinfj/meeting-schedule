@@ -670,6 +670,10 @@ const handleCancelPlans = (rows, ids) => {
     proxy.$message.warning('审批通过后取消计划');
     return;
   }
+  if (rows.filter(row => row.businessstate_ != '结束')?.length > 0) {
+    proxy.$message.warning('审批通过后才可以取消计划');
+    return;
+  }
   proxy.$confirm({
     title: '确认要取消选择的计划吗?',
     okText: '确定',

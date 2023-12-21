@@ -57,6 +57,8 @@ export interface TpmStandardDto extends BaseBeanModel {
   /** 出厂日期 */
   leaveFactoryDate?: any;
   /** 使用单位 */
+  useDeptId?: string;
+  /** 使用单位 */
   useDeptName?: string;
   /** 地理区域 */
   areaName?: string;
