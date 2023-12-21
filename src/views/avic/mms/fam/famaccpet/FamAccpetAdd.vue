@@ -260,6 +260,7 @@
           :accpetType="accpetType"
           :asset-class="assetClass"
           :mainId="formId || form.id"
+          :assetClasst="form.assetClasst"
           :equipmentType="form.equipmentType"
         />
       </a-form>

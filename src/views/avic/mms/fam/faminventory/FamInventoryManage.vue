@@ -38,7 +38,7 @@
               />
             </a-form-item>
           </a-col>
-            <a-col
+          <a-col
             v-bind="colLayout.cols"
             v-show="advanced"
           >
@@ -736,7 +736,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-        
+
           <a-col
             v-bind="colLayout.cols"
             v-show="advanced"
@@ -760,7 +760,7 @@
                   type="primary"
                   @click="handleQuery"
                 >
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button
@@ -768,7 +768,7 @@
                   @click="resetQuery"
                   ghost
                 >
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button
@@ -777,8 +777,8 @@
                   style="margin: 0"
                 >
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -843,7 +843,7 @@
               @click="handleImport"
             >
               <template #icon>
-                <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
@@ -855,7 +855,7 @@
               @click="handleExport"
             >
               <template #icon>
-                <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
@@ -865,7 +865,7 @@
               @click="handleExport"
             >
               <template #icon>
-                <import-outlined />
+                <import-outlined/>
               </template>
               打印卡片
             </a-button>
@@ -874,7 +874,7 @@
               type="primary"
             >
               <template #icon>
-                <import-outlined />
+                <import-outlined/>
               </template>
               同步浪潮折旧信息
             </a-button>
@@ -1798,15 +1798,34 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 
-const selectedRow = () => {
+/**
+ *  批量添加返回勾选数据
+ */
+
+const selectedRow = (code) => {
   let rows = [];
+  let lastRow = '';
+  let canGo = true;
   selectedRowKeys.value.map(item => {
+    let row = list.value.filter(i => item === i.id)[0];
+    // 从第二个数据开始和上一个数据对比 如果属于不同资产类别不添加
+    if (props.assetClass === '2' && lastRow && lastRow !== row.assetClass.charAt(0)) {
+      if (['1', '4', '6', '8'].includes(lastRow) !== ['1', '4', '6', '8'].includes(row.assetClass.charAt(0))) canGo = false;
+    }
+    // 如果列别中已经有了资产类别 判断是否添加的数据相同
+    if (props.assetClass === '2' && code && ['1', '4', '6', '8'].includes(row.assetClass.charAt(0)) !== ['1', '4', '6', '8'].includes(code)) canGo = false;
+    lastRow = row.assetClass.charAt(0);
     rows.push({
-      ...list.value.filter(i => item === i.id)[0],
+      ...row,
       operationType_: 'inside'
     });
   });
-  return rows;
+  if (canGo) {
+    return rows;
+  } else {
+    proxy.$message.warning('请选择相同的资产类别');
+  }
+
 };
 
 watch(
@@ -1815,7 +1834,7 @@ watch(
     if (newV === '1') {
       queryForm.value.assetType = props.assetClass;
       handleQuery();
-    }else{
+    } else {
       queryForm.value.assetType = null;
       handleQuery();
     }

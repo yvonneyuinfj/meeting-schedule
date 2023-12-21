@@ -2526,7 +2526,6 @@ export const AllColumns = [
     resizable: true,
     align: 'left'
   },
-
   {
     title: '备注',
     key: 'note',
@@ -2537,11 +2536,23 @@ export const AllColumns = [
     align: 'center'
   },
   {
-    title: '操作',
-    dataIndex: 'action',
+    title: '使用位置',
+    dataIndex: 'usePosition',
+    key: 'usePosition',
     ellipsis: true,
-    width: 120,
-    fixed: 'right'
+    minWidth: 120,
+    resizable: true,
+
+    align: 'center'
+  },
+  {
+    title: '建筑面积',
+    dataIndex: 'floorspace',
+    key: 'floorspace',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   }
 ];
 
