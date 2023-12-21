@@ -82,6 +82,7 @@
                 v-model:value="form.expectedMaintenance"
                 :maxLength="32"
                 placeholder="请输入预计维修/改造金额"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
               />
             </a-form-item>
           </a-col>
@@ -280,19 +281,11 @@
               label="项目金额（万元）"
               has-feedback
             >
-       <!--       <a-input-number
-                v-model:value="form.projectAmount"
-                :disabled="annual === '1'"
-                :min="0"
-                :max="9999999999.99"
-                :precision="2"
-                :step="0.01"
-                placeholder="请输入项目金额（万元）"
-              /> -->
               <a-input
                 v-model:value="form.projectAmount"
                 :maxLength="64"
-                placeholder="请输入课题号"
+                placeholder="请输入项目金额（万元）"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
               />
             </a-form-item>
           </a-col>

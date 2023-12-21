@@ -69,13 +69,13 @@
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="采购部门名称">
                   <AvicCommonSelect
-                    v-model:value="queryForm.procureDeptName"
+                    v-model:value="queryForm.procureIdName"
                     type="deptSelect"
                     placeholder="请选择采购部门名称"
-                    :defaultShowValue="queryForm.procureDeptNameAlias"
+                    :defaultShowValue="queryForm.procureDeptIdAlias"
                     @callback="
                       result => {
-                        queryForm.procureDeptNameAlias = result.names;
+                        queryForm.procureDeptIdAlias = result.names;
                       }
                     "
                   />
@@ -210,13 +210,13 @@
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="经办人名称">
                   <AvicCommonSelect
-                    v-model:value="queryForm.handlePersonName"
+                    v-model:value="queryForm.handlePersonId"
                     type="userSelect"
                     placeholder="请选择经办人名称"
-                    :defaultShowValue="queryForm.handlePersonNameAlias"
+                    :defaultShowValue="queryForm.handlePersonIdAlias"
                     @callback="
                       result => {
-                        queryForm.handlePersonNameAlias = result.names;
+                        queryForm.handlePersonIdAlias = result.names;
                       }
                     "
                   />
@@ -459,7 +459,7 @@ const columns = [
   },
   {
     title: '采购部门名称',
-    dataIndex: 'procureDeptNameAlias',
+    dataIndex: 'procureDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -492,15 +492,6 @@ const columns = [
     align: 'left'
   },
   {
-    title: '其他事项',
-    dataIndex: 'otherMatter',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '购置方式',
     dataIndex: 'purchWayName',
     ellipsis: true,
@@ -520,7 +511,7 @@ const columns = [
   },
   {
     title: '经办人名称',
-    dataIndex: 'handlePersonNameAlias',
+    dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
