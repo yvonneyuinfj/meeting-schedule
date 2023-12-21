@@ -103,7 +103,7 @@ import {
   saveTpmTempMaintModifyPlan,
   delTpmTempMaintModifyPlan,
   commitTpmTempMaintModifyPlan,
-  exportReleaseExcel,
+  exportReleaseQueryExcel,
   releaseTpmTempMaintModifyPlan,
   backTpmTempMaintModifyPlan
 } from '@/api/avic/mms/tpm/TpmTempMaintModifyPlanApi'; // 引入模块API
@@ -726,7 +726,7 @@ function handleExport() {
     onOk: () => {
       loading.value = true;
       queryParam.searchParams = queryForm.value;
-      exportReleaseExcel(queryParam).then(() => {
+      exportReleaseQueryExcel(queryParam).then(() => {
         loading.value = false;
         proxy.$message.info('导出成功！');
       });
