@@ -989,9 +989,9 @@ const ynMilitaryKeyEquipList = ref([]);
 const assetsUseList = ref([]);
 const geographicalAreaList = ref([]);
 const lookupParams = [
-  { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'assetsUse', lookUpType: 'FAM_ASSETS_USE' },
   { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' }
 ];

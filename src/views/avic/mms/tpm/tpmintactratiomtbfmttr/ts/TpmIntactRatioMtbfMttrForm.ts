@@ -14,7 +14,6 @@ import {
     getFieldDisabled,
     getFieldRequired
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import { useUserStore } from '@/store/user';
 import dayjs from 'dayjs';
 
 export const emits = ['reloadData', 'close'];
@@ -55,7 +54,6 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
     const loading = ref(false);
     const secretLevelList = ref([]); // 密级通用代码
     const authJson = ref(null);
-    const userStore = useUserStore();
 
     if (props.params) {
         bpmParams.value = props.params;
@@ -79,10 +77,10 @@ export function useTpmIntactRatioMtbfMttrForm({ props: props, emit: emit }) {
         } else {
             // 添加表单的初始值
             initForm();
-            form.value.reportDeptId = userStore.userInfo.deptId;
-            form.value.reportDeptName = userStore.userInfo.deptName;
-            form.value.applyUserId = userStore.userInfo.id;
-            form.value.applyUserName = userStore.userInfo.name;
+            form.value.reportDeptId = proxy.$getLoginUser().entityDeptId;
+            form.value.reportDeptName = proxy.$getLoginUser().entityDeptName;
+            form.value.applyUserId = proxy.$getLoginUser().id;
+            form.value.applyUserName = proxy.$getLoginUser().name;
             form.value.applyDate = dayjs(new Date());
         }
     });

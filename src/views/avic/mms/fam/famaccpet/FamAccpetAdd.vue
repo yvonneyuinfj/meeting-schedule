@@ -56,7 +56,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderNo" label="合同编号" has-feedback>
-              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号" />
+              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -87,16 +87,6 @@
               />
             </a-form-item>
           </a-col>
-          <!-- <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptName" label="主管部门名称" has-feedback>
-              <AvicCommonSelect v-model:value="form.managerDeptName" type="deptSelect" placeholder="请选择主管部门名称" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="receiveDeptName" label="接收部门名称" has-feedback>
-              <AvicCommonSelect v-model:value="form.receiveDeptName" type="deptSelect" placeholder="请选择接收部门名称" />
-            </a-form-item>
-          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClass" label="资产属性" has-feedback>
               <a-select
@@ -188,7 +178,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input
                 v-model:value="form.assetClasstName"
@@ -197,13 +187,14 @@
               >
                 <template #suffix>
                   <a-tooltip title="Extra information">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                   </a-tooltip>
                 </template>
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols"
+                 v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
             <a-form-item name="equipmentType" label="设备类型" has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -226,9 +217,9 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item v-if="annual === '2'"
-              name="overhaulRequireCode"
-              label="维修改造单号"
-              has-feedback
+                         name="overhaulRequireCode"
+                         label="维修改造单号"
+                         has-feedback
             >
               <a-input
                 v-model:value="form.overhaulRequireCode"
@@ -272,8 +263,9 @@
           :equipmentType="form.equipmentType"
         />
       </a-form>
-      <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal" :assetClasst="form.assetClasst"
-                       @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
+      <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal"
+                                :assetClasst="form.assetClasst"
+                                @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="addForm">保存</a-button>
@@ -298,8 +290,8 @@
         @select="handleSelect"
       >
         <template #icon="{ expanded, dataRef }">
-          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff" />
-          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800" />
+          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
           <AvicIcon
             v-if="expanded && !dataRef.isLeaf"
             svg="avic-folder-open-fill"
@@ -424,7 +416,7 @@ function handleSummit() {
           // console.log(isLand.value)
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
-          form.value.assetClasstName = res.data.className
+          form.value.assetClasstName = res.data.className;
           assetClasstOpen.value = false;
         } else {
           proxy.$message.warning('该数据不属于末级节点请重新选择！');
@@ -447,9 +439,9 @@ const annualChange = (v) => {
 };
 const getPlanNo = (v) => {
   form.value.overhaulRequireCode = v.billNo;
-  form.value.overhaulRequireId =  v.id;
-  if(v.maintCategory ==='1'){
-     proxy.$message.warning(' 请选择改造申请！');
+  form.value.overhaulRequireId = v.id;
+  if (v.maintCategory === '1') {
+    proxy.$message.warning(' 请选择改造申请！');
   }
 
   maintPlanModal.value = false;

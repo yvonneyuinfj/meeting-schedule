@@ -576,7 +576,7 @@ const totalPage = ref(0);
 const secretLevelList = ref([]); // SECRET_LEVEL通用代码
 const isUsedScientificrsList = ref([]); // 是否科研用通用代码
 const lookupParams = [
-  { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'isUsedScientificrs', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id

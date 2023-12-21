@@ -56,7 +56,7 @@ export function useFamHandleForm({ props: props, emit: emit }) {
   const secretLevelList = ref([]); // SECRET_LEVEL通用代码
   const isUsedScientificrsList = ref([]); // 是否科研用通用代码
   const lookupParams = [
-    { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' }
+    { fieldName: 'isUsedScientificrs', lookUpType: 'PLATFORM_YES_NO_FLAG' }
     ];
   const authJson = ref(null);
 

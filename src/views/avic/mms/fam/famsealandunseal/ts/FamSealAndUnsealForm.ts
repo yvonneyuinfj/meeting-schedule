@@ -70,7 +70,7 @@ export function useFamSealAndUnsealForm({ props: props, emit: emit }) {
   const isAssetIntactList = ref([]); // 资产是否完好（是/否）通用代码
   const sealingTypeList = ref([]); // 封存类型 通用代码
   const lookupParams = [
-    { fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' },
+    { fieldName: 'isAssetIntact', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'sealingType', lookUpType: 'FAM_SEALING_TYPE' }
   ];
   const authJson = ref(null);

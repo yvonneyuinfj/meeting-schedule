@@ -193,7 +193,7 @@ const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const lookupParams = [
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 
 onMounted(() => {

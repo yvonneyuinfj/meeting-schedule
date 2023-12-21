@@ -25,13 +25,13 @@ export function useFamScrapLedgerForm({
   const approvedOrNotList = ref([]); // 科工局是否已批复通用代码
   const completedOrNotList = ref([]); // 是否完成通用代码
   const lookupParams = [
-    { fieldName: 'isAttend', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'reportToGroup', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'hasBeenApproved', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'isMilitaryIndustry', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'isIndustry', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'approvedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'completedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+    { fieldName: 'isAttend', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'reportToGroup', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'hasBeenApproved', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'isMilitaryIndustry', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'isIndustry', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'approvedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'completedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
     ];
 
   onMounted(() => {

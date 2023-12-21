@@ -42,6 +42,12 @@ export interface UserInfo {
   secretLevel: string;
   /** 人员密级名称 */
   secretLevelName: string;
+  /** 部门部级Id */
+  entityDeptId: string;
+  /** 部门部级Code */
+  entityDeptCode: string;
+  /** 部门部级名称 */
+  entityDeptName: string;
 
   [key: string]: any;
 }

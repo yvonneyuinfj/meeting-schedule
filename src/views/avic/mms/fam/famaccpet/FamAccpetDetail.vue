@@ -250,7 +250,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetClasst')">
+        <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1' && fieldVisible('assetClasst')">
           <a-form-item
             name="assetClasst"
             label="资产类别"
@@ -260,7 +260,9 @@
             <a-input v-model:value="form.assetClasst" :disabled="fieldDisabled('assetClasst')"/>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('equipmentType')">
+        <a-col v-bind="colLayout.cols"
+               v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) && fieldVisible('equipmentType')"
+        >
           <a-form-item
             name="equipmentType"
             label="设备类型"

@@ -517,6 +517,9 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  if (proxy.$getLoginUser().entityDeptCode !== 'C410'){
+    queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
+  }
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

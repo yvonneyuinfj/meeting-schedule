@@ -340,8 +340,8 @@ const excelParams = ref({ tableName: 'famAssetClass' }); // 导入Excel数据过
 const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const lookupParams = [
-  { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 
 onMounted(() => {

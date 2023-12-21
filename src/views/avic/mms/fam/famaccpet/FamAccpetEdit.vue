@@ -19,7 +19,7 @@
         <a-row :gutter="0">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="accpetApplyNo" label="验收申请单号" has-feedback>
-              <a-input v-model:value="form.accpetApplyNo" disabled />
+              <a-input v-model:value="form.accpetApplyNo" disabled/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -55,7 +55,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderNo" label="合同编号" has-feedback>
-              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号" />
+              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -192,18 +192,19 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input v-model:value="form.assetClasst" @click="assetClasstClick">
                 <template #suffix>
                   <a-tooltip title="Extra information">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                   </a-tooltip>
                 </template>
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols"
+                 v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
             <a-form-item name="equipmentType" label="设备类型" has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -294,8 +295,8 @@
         @select="handleSelect"
       >
         <template #icon="{ expanded, dataRef }">
-          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff" />
-          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800" />
+          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
           <AvicIcon
             v-if="expanded && !dataRef.isLeaf"
             svg="avic-folder-open-fill"

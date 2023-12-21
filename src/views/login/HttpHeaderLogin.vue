@@ -28,7 +28,8 @@ async function httpheaderLogin() {
     let param = proxy.$route.query[paramName];
     if (param) {
       const loginParam = {
-        username_: param
+        username_: param,
+        encryptFlag: '1'
       };
       const response = await httpheaderLoginRequest(loginParam);
       // const response = await httpheaderLoginRequest(`${paramName}=${param}`);
@@ -37,7 +38,7 @@ async function httpheaderLogin() {
         userStore.SET_TOKEN(data.token);
         if (proxy.$route.fullPath.indexOf(redirect_url) > -1) {
           proxy.$router.push(
-            decodeURIComponent(proxy.$route.fullPath.split(redirect_url + '=')[1])
+              decodeURIComponent(proxy.$route.fullPath.split(redirect_url + '=')[1])
           );
         } else {
           proxy.$router.push('/');

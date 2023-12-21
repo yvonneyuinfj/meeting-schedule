@@ -71,10 +71,10 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const isImproveList = ref([]); // 是否提高固定资产性能
   const lookupParams = [
     { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
-    { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' },
+    { fieldName: 'isUsedScientificrs', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
-    { fieldName: 'isNeedReview', lookUpType: 'FAM_PROGRAM_VERSION' },
-    { fieldName: 'isImprove', lookUpType: 'FAM_PROGRAM_VERSION' }
+    { fieldName: 'isNeedReview', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'isImprove', lookUpType: 'PLATFORM_YES_NO_FLAG' }
   ];
   const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
   const { toolbarConfig, editorConfig, onCreated, dealRichText, convertImageSrc } = useRichText(
