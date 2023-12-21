@@ -616,6 +616,8 @@ function handleCommit(ids, type) {
     proxy.$message.warning('请选择要提交的数据！');
     return;
   }
+  //提交前保存
+  handleSaveAll();
   for (let item in ids) {
     let target = proxy.$lodash.cloneDeep(list.value.filter(i => i.id === ids[item])[0]);
     if (!validateRecordData([target])) {

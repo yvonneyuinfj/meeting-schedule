@@ -95,6 +95,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           ws: false,
           changeOrigin: true
         },
+	'/api/mms/wms': {
+          target: 'http://127.0.0.1:10013',
+          ws: false,
+          changeOrigin: true
+        },
         '/api': {
           target: 'http://127.0.0.1:10001',
           ws: false,
