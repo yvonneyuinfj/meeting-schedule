@@ -87,14 +87,12 @@
           v-if="
             [
               'assetSource',
-              'firstDepreciationValue',
               'installLocation',
               'ownershipCertNo',
               'assetModel',
               'factoryNo',
               'procureOrder',
               'assetSpec',
-              'assetUnit',
               'warrantyPeriod',
               'assetName',
               'producer',
@@ -103,7 +101,6 @@
               'deviceStandby2',
               'deviceStandby3',
               'brand',
-              'parentAssetNo',
               'floorspace',
               'belongingLand',
               'certificateTitle',
@@ -112,7 +109,6 @@
               'planningPermit',
               'notice',
               'attachedFileNumber',
-              'currentYearDepreciation',
               'engineNo',
               'airDisplacement',
               'licensePlateNumber',
@@ -121,7 +117,6 @@
               'importedEquipment',
               'supplier',
               'equipmentNo',
-              'assetNetValue',
               'storageLocation',
               'registrationCode',
               'militaryKeyEquipCode',
@@ -245,8 +240,7 @@
               'purchaseDate',
               'recordDate',
               'commissionDate',
-            ].includes(column.dataIndex)
-&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
+            ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -313,6 +307,29 @@
           </template>
         </AvicRowEdit>
 
+        <!--  父资产号-->
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'parentAssetNo'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <AvicModalSelect
+              v-model:value="record.parentAssetNo"
+              title="选择弹窗"
+              placeholder="请选择弹窗"
+              valueField="assetsCode"
+              showField="assetsCode"
+              :defaultShowValue="record.parentAssetNo"
+              :selectComponent="FamInventoryManageComponent"
+              :isMultiSelection="false"
+              :allow-clear="true"
+            />
+          </template>
+          <template #default>
+            {{ record.parentAssetNo }}
+          </template>
+        </AvicRowEdit>
         <!--  资产类别-->
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetClass'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
@@ -362,6 +379,35 @@
           </template>
         </AvicRowEdit>
 
+        <!-- 数字输入框-->
+        <AvicRowEdit
+          v-if="
+            [
+              'firstDepreciationValue',
+              'assetUnit',
+              'currentYearDepreciation',
+              'assetNetValue',
+            ].includes(column.dataIndex)
+            && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
+          "
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input-number
+              v-model:value="record[column.dataIndex]"
+              :max="999999999999"
+              :min="-999999999999"
+              :precision="2"
+              :step="0.01"
+              @input="$forceUpdate()"
+              @blur="blurInput($event, record, column.dataIndex)"
+              placeholder="请输入"
+              style="width: 100%"
+            ></a-input-number>
+          </template>
+        </AvicRowEdit>
+
         <!-- 资产原值-->
         <AvicRowEdit
           v-else-if="column.dataIndex === 'assetOriginalValue'"
@@ -369,14 +415,17 @@
           :column="column.dataIndex"
         >
           <template #edit>
-            <a-input
+            <a-input-number
               v-model:value="record[column.dataIndex]"
-              :maxLength="32"
+              :max="999999999999"
+              :min="-999999999999"
+              :precision="2"
+              :step="0.01"
               @input="$forceUpdate()"
-              style="width: 100%"
-              placeholder="请输入"
               @blur="blurInput($event, record, column.dataIndex)"
-            ></a-input>
+              placeholder="请输入"
+              style="width: 100%"
+            ></a-input-number>
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'assetNo'">
@@ -553,6 +602,7 @@ const bodyStyle = {
   overflowY: 'scroll',
   height: '600px'
 };
+const FamInventoryManageComponent = FamInventoryManage;
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
@@ -1213,7 +1263,7 @@ function allocationColumn(code) {
         }
         break;
     }
-    if(props.accpetType === '2' && props.assetClass === '2')
+    if (props.accpetType === '2' && props.assetClass === '2')
       validateRules['parentAssetNo'] = [{ required: true, message: '父资产编号不能为空' }];
     getAddObj(code);
   } else {

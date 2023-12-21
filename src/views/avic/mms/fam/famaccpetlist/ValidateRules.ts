@@ -51,6 +51,7 @@ export const DeviceValidateRules = {
   productionDate: [{ required: true, message: '出厂日期不能为空' }],
   equipClass: [{ required: true, message: '设备大类不能为空' }],
   storageLocation: [{ required: true, message: '具体位置不能为空' }],
+  abcdType: [{ required: true, message: '设备级别不能为空' }]
 };
 
 

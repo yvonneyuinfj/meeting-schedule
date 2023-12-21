@@ -60,11 +60,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderValue" label="合同金额" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.orderValue"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入合同金额"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -283,29 +287,29 @@
   <!-- 树节点 -->
   <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
     <div style="height: 100%;overflow: scroll">
-    <a-spin :spinning="treeLoading">
-      <a-tree
-        v-if="treeData && treeData.length > 0"
-        v-model:expanded-keys="expandedKeys"
-        :tree-data="treeData"
-        :load-data="onLoadData"
-        :show-icon="true"
-        :show-line="true && { showLeafIcon: false }"
-        :default-expand-all="true"
-        @expand="handleExpand"
-        @select="handleSelect"
-      >
-        <template #icon="{ expanded, dataRef }">
-          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
-          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
-          <AvicIcon
-            v-if="expanded && !dataRef.isLeaf"
-            svg="avic-folder-open-fill"
-            color="#ffb800"
-          />
-        </template>
-      </a-tree>
-    </a-spin>
+      <a-spin :spinning="treeLoading">
+        <a-tree
+          v-if="treeData && treeData.length > 0"
+          v-model:expanded-keys="expandedKeys"
+          :tree-data="treeData"
+          :load-data="onLoadData"
+          :show-icon="true"
+          :show-line="true && { showLeafIcon: false }"
+          :default-expand-all="true"
+          @expand="handleExpand"
+          @select="handleSelect"
+        >
+          <template #icon="{ expanded, dataRef }">
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+            <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
+            <AvicIcon
+              v-if="expanded && !dataRef.isLeaf"
+              svg="avic-folder-open-fill"
+              color="#ffb800"
+            />
+          </template>
+        </a-tree>
+      </a-spin>
     </div>
   </a-modal>
 </template>
