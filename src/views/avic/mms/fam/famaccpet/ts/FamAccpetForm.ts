@@ -2,7 +2,7 @@ import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入�
 import {
   getFamAccpet,
   saveFamAccpet,
-  saveFormAndStartProcess,
+  saveFormAndStartProcess
 } from '@/api/avic/mms/fam/FamAccpetApi'; // 引入模块API
 
 import {
@@ -20,7 +20,7 @@ export const emits = ['reloadData', 'close'];
 
 export function useFamAccpetForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  console.log(getCurrentInstance)
+  console.log(getCurrentInstance);
   const form = ref<FamAccpetDto>({});
   const formRef = ref(null);
   const formCode = 'FamAccpet';
@@ -46,8 +46,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
-    equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
-    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }]
+    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }],
+    equipmentType: [{ validator: validatorEquipmentType, trigger: 'change' }]
   };
   const famAccpetListEdit = ref();
   const layout = {
@@ -73,9 +73,9 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   ];
   const authJson = ref(null);
   const bodyStyle = {
-    overflow:'hidden',
-    overflowY:'scroll'
-  }
+    overflow: 'hidden',
+    overflowY: 'scroll'
+  };
 
   if (props.params) {
     bpmParams.value = props.params;
@@ -101,6 +101,21 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
+  async function validatorEquipmentType(_rule, value, _record) {
+    const codeList = ['1', '4', '6', '8'];
+    if (form.value.assetClasst) {
+      if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
+        console.log('走了');
+        return Promise.reject(new Error('设备类型必填！'));
+      } else {
+        return Promise.resolve();
+      }
+    } else {
+      return Promise.resolve();
+    }
+  }
+
 
   /** 获取通用代码  */
   function getLookupList() {

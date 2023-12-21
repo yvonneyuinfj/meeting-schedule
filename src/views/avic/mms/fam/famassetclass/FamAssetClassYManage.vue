@@ -161,9 +161,9 @@ const isNeedReviewList = ref([]); // 是否需要评审通用代码
 const emit = defineEmits(['getTree']);
 const lookupParams = [
   { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
-  { fieldName: 'isUsedScientificrs', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'isUsedScientificrs', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
-  { fieldName: 'isNeedReview', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'isNeedReview', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id

@@ -24,19 +24,19 @@ export const HouseColumns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   key: 'assetClass',
+  //   minWidth: 120,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   }
+  // },
   {
     title: '资产类别',
-    dataIndex: 'assetClass',
-    key: 'assetClass',
-    minWidth: 120,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    }
-  },
-  {
-    title: '资产类别名称',
     dataIndex: 'assetClassName',
     key: 'assetClassName',
     minWidth: 120
@@ -522,19 +522,19 @@ export const DeviceColumns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   key: 'assetClass',
+  //   minWidth: 120,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   }
+  // },
   {
     title: '资产类别',
-    dataIndex: 'assetClass',
-    key: 'assetClass',
-    minWidth: 120,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    }
-  },
-  {
-    title: '资产类别名称',
     dataIndex: 'assetClassName',
     key: 'assetClassName',
     minWidth: 120
@@ -884,8 +884,8 @@ export const DeviceColumns = [
   },
   {
     title: '设备级别',
-    dataIndex: 'ABCDType',
-    key: 'ABCDType',
+    dataIndex: 'abcdType',
+    key: 'abcdType',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -973,17 +973,17 @@ export const DeviceColumns = [
 
 /** 车辆列  （4）*/
 export const CarColumns = [
-  {
-    title: '资产类别',
-    dataIndex: 'assetClass',
-    key: 'assetClass',
-    minWidth: 120,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    }
-  },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   key: 'assetClass',
+  //   minWidth: 120,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   }
+  // },
   {
     title: '资产名称',
     dataIndex: 'assetName',
@@ -999,7 +999,7 @@ export const CarColumns = [
     align: 'left'
   },
   {
-    title: '资产类别名称',
+    title: '资产类别',
     dataIndex: 'assetClassName',
     key: 'assetClassName',
     minWidth: 120
@@ -1430,19 +1430,19 @@ export const OfficialColumns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   key: 'assetClass',
+  //   minWidth: 120,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   }
+  // },
   {
     title: '资产类别',
-    dataIndex: 'assetClass',
-    key: 'assetClass',
-    minWidth: 120,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    }
-  },
-  {
-    title: '资产类别名称',
     dataIndex: 'assetClassName',
     key: 'assetClassName',
     minWidth: 120
@@ -1783,19 +1783,19 @@ export const ITColumns = [
     },
     align: 'left'
   },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   key: 'assetClass',
+  //   minWidth: 120,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   }
+  // },
   {
     title: '资产类别',
-    dataIndex: 'assetClass',
-    key: 'assetClass',
-    minWidth: 120,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    }
-  },
-  {
-    title: '资产类别名称',
     dataIndex: 'assetClassName',
     key: 'assetClassName',
     minWidth: 120
@@ -2149,15 +2149,15 @@ export const AllColumns = [
     align: 'center',
     fixed: 'left'
   },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '资产类别',
+  //   dataIndex: 'assetClass',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '资产编号',
     dataIndex: 'assetNo',
@@ -2714,6 +2714,7 @@ export function backColumnsObj() {
       useTime: props ? props.useTime : '',
       assetName: '',
       assetsUse: '',
+      abcdType: '',
       assetOriginalValue: '',
       geographicalArea: '',
       installLocation: '',
@@ -2727,11 +2728,11 @@ export function backColumnsObj() {
       fundSource: '',
       assetUnit: '',
       productionDate: '',
-      militaryKeyEquipCode:'',
+      militaryKeyEquipCode: '',
       equipClass: '',
       storageLocation: '',
-      ynAnnualInspection:'',
-      registrationCode:'',
+      ynAnnualInspection: '',
+      registrationCode: '',
       assetNum: '1',
       importedOrNot: undefined,
       editable: true // true为编辑中, false为未编辑

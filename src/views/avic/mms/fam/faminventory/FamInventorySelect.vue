@@ -1164,8 +1164,8 @@ const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const assetTypeList = ref([]); // 资产分类通用代码
 const lookupParams = [
   { fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS' },
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_YN_FLAG' },
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' }
  ];
 

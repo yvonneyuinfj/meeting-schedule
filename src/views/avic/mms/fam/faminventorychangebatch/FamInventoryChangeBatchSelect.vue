@@ -1158,8 +1158,8 @@ const secretLevelList = ref([]); // 数据密级通用代码
 const ynMilitaryKeyEquipList = ref([]); // 是否军工关键设备通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const lookupParams = [
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
  ];
 
 onMounted(() => {

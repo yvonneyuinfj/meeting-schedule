@@ -219,7 +219,7 @@ const totalPage = ref(0);
 const secretLevelList = ref([]); // SECRET_LEVEL通用代码
 const isAssetIntactList = ref([]); // 资产是否完好通用代码
 const lookupParams = [
-  { fieldName: 'isAssetIntact', lookUpType: 'FAM_PROGRAM_VERSION' }
+  { fieldName: 'isAssetIntact', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
 
 onMounted(() => {

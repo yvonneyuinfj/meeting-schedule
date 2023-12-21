@@ -168,7 +168,7 @@
               v-model:value="record.liablePerson"
               type="userSelect"
               placeholder="请选择责任人名称"
-              :defaultShowValue="record.liablePersonAlias"
+              :defaultShowValue="record.liablePersonIdAlias"
               @callback="
                 (value, _selectRows) => {
                   changeCommonSelect(value, record, 'liablePerson');
@@ -177,7 +177,7 @@
             />
           </template>
           <template #default>
-            {{ record.liablePersonAlias }}
+            {{ record.liablePersonIdAlias }}
           </template>
         </AvicRowEdit>
 
@@ -341,7 +341,7 @@
           <template #edit>
             <a-input
               v-if="props.accpetType === '1'"
-              v-model:value="record.equipClass"
+              v-model:value="record.equipClassName"
               @click="equipClassClick(record)"
               placeholder="请选择设备类别"
             >
@@ -351,9 +351,9 @@
                 </a-tooltip>
               </template>
             </a-input>
-            <div v-else>
-              {{ record.equipClassName }}
-            </div>
+          </template>
+          <template #default>
+            {{ record.equipClassName}}
           </template>
         </AvicRowEdit>
 
@@ -386,7 +386,7 @@
           v-else-if="
             [
               'vehicleUsage',
-              'ABCDType',
+              'abcdType',
               'energyefficiencyName',
               'fundSource',
               'equipType',
@@ -631,19 +631,19 @@ const equipTypeList = ref([]);
 const vehicleUsageList = ref([]);
 const isFactoryBuildingList = ref([]);
 const assetSecretLevelList = ref([]);
-const ABCDTypeList = ref([]);
+const abcdTypeList = ref([]);
 const energyefficiencyNameList = ref([]);
 const fundSourceList = ref([]);
 const lookupParams = [
-  { fieldName: 'isNewAsset', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'importedOrNot', lookUpType: 'FAM_PROGRAM_VERSION' },
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'FAM_PROGRAM_VERSION' },
+  { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'assetsUse', lookUpType: 'FAM_ASSETS_USE' },
   { fieldName: 'equipType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
   { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' },
   { fieldName: 'geographicalArea', lookUpType: 'FAM_GEOGRAPHICAL_AREA' },
   { fieldName: 'vehicleUsage', lookUpType: 'FAM_VEHICLE_USAGE' },
-  { fieldName: 'ABCDType', lookUpType: 'TPM_ABCD_TYPE' },
+  { fieldName: 'abcdType', lookUpType: 'TPM_ABCD_TYPE' },
   { fieldName: 'energyefficiencyName', lookUpType: 'TPM_ENERGY_EFFICIENCY' },
   { fieldName: 'fundSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
 ];
@@ -682,7 +682,7 @@ onMounted(() => {
 
 function tableSelectList(columns) {
   if (columns === 'vehicleUsage') return vehicleUsageList.value;
-  if (columns === 'ABCDType') return ABCDTypeList.value;
+  if (columns === 'abcdType') return abcdTypeList.value;
   if (columns === 'energyefficiencyName') return energyefficiencyNameList.value;
   if (columns === 'fundSource') return fundSourceList.value;
   if (columns === 'equipType') return equipTypeList.value;
@@ -858,7 +858,7 @@ function getLookupList() {
     assetSecretLevelList.value = result.assetSecretLevel;
     vehicleUsageList.value = result.vehicleUsage;
     isFactoryBuildingList.value = result.importedOrNot;
-    ABCDTypeList.value = result.ABCDType;
+    abcdTypeList.value = result.abcdType;
     energyefficiencyNameList.value = result.energyefficiencyName;
     fundSourceList.value = result.fundSource;
   });
