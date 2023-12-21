@@ -262,6 +262,7 @@
               'ynMilitaryKeyEquip',
               'isFactoryBuilding',
               'ynMaintainName',
+              'importedOrNotName',
               'ynAnnualInspection','ynMajorAssets','ynBottleneckEquipmentName'
             ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"

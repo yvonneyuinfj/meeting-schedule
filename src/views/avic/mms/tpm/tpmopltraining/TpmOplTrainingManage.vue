@@ -7,168 +7,173 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="活动编号">
               <a-input
-                v-model:value="queryForm.billNo"
-                placeholder="请输入活动编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.billNo"
+                  placeholder="请输入活动编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="培训单位ID">
-              <AvicCommonSelect
-                v-model:value="queryForm.oplDeptId"
-                type="deptSelect"
-                placeholder="请选择培训单位ID"
-                :defaultShowValue="queryForm.oplDeptIdAlias"
-                @callback="
-                  result => {
-                    queryForm.oplDeptIdAlias = result.names;
-                  }
-                "
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="培训单位名称">
-              <a-input
-                v-model:value="queryForm.oplDeptName"
-                placeholder="请输入培训单位名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="培训单位">-->
+          <!--              <AvicCommonSelect-->
+          <!--                v-model:value="queryForm.oplDeptId"-->
+          <!--                type="deptSelect"-->
+          <!--                placeholder="请选择培训单位"-->
+          <!--                :defaultShowValue="queryForm.oplDeptIdAlias"-->
+          <!--                @callback="-->
+          <!--                  result => {-->
+          <!--                    queryForm.oplDeptIdAlias = result.names;-->
+          <!--                  }-->
+          <!--                "-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="培训单位名称">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.oplDeptName"-->
+          <!--                placeholder="请输入培训单位名称"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="主题">
               <a-input
-                v-model:value="queryForm.subject"
-                placeholder="请输入主题"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.subject"
+                  placeholder="请输入主题"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="小组名称">
               <a-input
-                v-model:value="queryForm.groupName"
-                placeholder="请输入小组名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.groupName"
+                  placeholder="请输入小组名称"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="课题分类">
               <a-select
-                v-model:value="queryForm.subjectCategory"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择课题分类"
+                  v-model:value="queryForm.subjectCategory"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择课题分类"
               >
                 <a-select-option
-                  v-for="item in subjectCategoryList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in subjectCategoryList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="编制人">
-              <a-input
-                v-model:value="queryForm.editUserId"
-                placeholder="请输入编制人"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="编制人姓名">
-              <a-input
-                v-model:value="queryForm.editUserName"
-                placeholder="请输入编制人姓名"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="编制人">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.editUserId"-->
+          <!--                placeholder="请输入编制人"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="编制人姓名">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.editUserName"-->
+          <!--                placeholder="请输入编制人姓名"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="培训目的">
               <a-input
-                v-model:value="queryForm.trainingPurpose"
-                placeholder="请输入培训目的"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.trainingPurpose"
+                  placeholder="请输入培训目的"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="培训要点">
               <a-input
-                v-model:value="queryForm.trainingFocus"
-                placeholder="请输入培训要点"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.trainingFocus"
+                  placeholder="请输入培训要点"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="培训时间(起)">
               <a-date-picker
-                v-model:value="queryForm.trainingDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择培训时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.trainingDateEnd)"
+                  v-model:value="queryForm.trainingDateBegin"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择培训时间(起)"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.trainingDateEnd)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="培训时间(止)">
               <a-date-picker
-                v-model:value="queryForm.trainingDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择培训时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.trainingDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="培训人员id">
-              <a-input
-                v-model:value="queryForm.trainingPersonId"
-                placeholder="请输入培训人员id"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.trainingDateEnd"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择培训时间(止)"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.trainingDateBegin)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="培训人员">
-              <a-input
-                v-model:value="queryForm.trainingPersonName"
-                placeholder="请输入培训人员"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+              <AvicCommonSelect
+                  v-model:value="queryForm.trainingPersonId"
+                  type="userSelect"
+                  placeholder="请选择培训人员"
+                  :defaultShowValue="queryForm.trainingPersonName"
+                  @callback="
+                  result => {
+                    queryForm.trainingPersonName = result.names;
+                  }
+                "
               />
             </a-form-item>
           </a-col>
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="培训人员">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.trainingPersonName"-->
+          <!--                placeholder="请输入培训人员"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="讲师id">
+            <a-form-item label="讲师">
               <AvicCommonSelect
-                v-model:value="queryForm.lecturerUserId"
-                type="userSelect"
-                placeholder="请选择讲师id"
-                :defaultShowValue="queryForm.lecturerUserIdAlias"
-                @callback="
+                  v-model:value="queryForm.lecturerUserId"
+                  type="userSelect"
+                  placeholder="请选择讲师"
+                  :defaultShowValue="queryForm.lecturerUserIdAlias"
+                  @callback="
                   result => {
                     queryForm.lecturerUserIdAlias = result.names;
                   }
@@ -176,30 +181,30 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="讲师姓名">
-              <a-input
-                v-model:value="queryForm.lecturerUserName"
-                placeholder="请输入讲师姓名"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
+          <!--            <a-form-item label="讲师姓名">-->
+          <!--              <a-input-->
+          <!--                v-model:value="queryForm.lecturerUserName"-->
+          <!--                placeholder="请输入讲师姓名"-->
+          <!--                :allow-clear="true"-->
+          <!--                @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="密级">
               <a-select
-                v-model:value="queryForm.secretLevel"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择密级"
+                  v-model:value="queryForm.secretLevel"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择密级"
               >
                 <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in secretLevelList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -207,23 +212,23 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -234,140 +239,147 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmOplTraining"
-        table-key="tpmOplTraining"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmOplTraining"
+          table-key="tpmOplTraining"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-          
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
             <a-button
-              v-hasPermi="['tpmOplTraining:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-                    @click="handleDelete(selectedRowKeys, '')"
-              >
-                <template #icon>
-                  <delete-outlined />
-                </template>
-                删除
-              </a-button>
-              <a-button
+                v-hasPermi="['tpmOplTraining:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRowKeys, '')"
+            >
+              <template #icon>
+                <delete-outlined/>
+              </template>
+              删除
+            </a-button>
+            <a-button
                 v-hasPermi="['tpmOplTraining:import']"
                 title="导入"
                 type="primary"
                 ghost
                 @click="handleImport">
-                <template #icon>
-                   <import-outlined />
-                </template>
-                导入
-              </a-button>
-              <a-button
+              <template #icon>
+                <import-outlined/>
+              </template>
+              导入
+            </a-button>
+            <a-button
                 v-hasPermi="['tpmOplTraining:export']"
                 title="导出"
                 type="primary"
                 ghost
                 @click="handleExport">
-                <template #icon>
-                   <export-outlined />
-                </template>
-                导出
-              </a-button>
-            </a-space>
-          </template>
-          <template #toolBarRight>
-            <a-input-search
+              <template #icon>
+                <export-outlined/>
+              </template>
+              导出
+            </a-button>
+          </a-space>
+        </template>
+        <template #toolBarRight>
+          <a-input-search
               class="opt-btn-commonsearch"
               style="width: 200px"
               placeholder="请输入活动编号"
               :allow-clear="true"
               @search="handleKeyWordQuery"
-            />
+          />
+        </template>
+        <template #bodyCell="{ column, text, record, index }">
+          <template v-if="column.dataIndex === 'id'">
+            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template #bodyCell="{ column, text, record, index }">
-            <template v-if="column.dataIndex === 'id'">
-              {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
-            </template>
-            <template v-else-if="column.dataIndex === 'billNo'">
-              <a @click="handleDetail(record)">
-                {{ record.billNo }}
-              </a>
-            </template>
-            <template v-else-if="column.dataIndex === 'subjectCategoryName'">
-                {{ record.subjectCategoryName && record.subjectCategoryName.replaceAll ? record.subjectCategoryName.replaceAll(';', ',') : record.subjectCategoryName }}
-            </template>
-            <template v-else-if="column.dataIndex === 'trainingPersonName'">
-                {{ record.trainingPersonName && record.trainingPersonName.replaceAll ? record.trainingPersonName.replaceAll(';', ',') : record.trainingPersonName }}
-            </template>
-            <template v-else-if="column.dataIndex === 'action'">
-              <a-button
+          <template v-else-if="column.dataIndex === 'billNo'">
+            <a @click="handleDetail(record)">
+              {{ record.billNo }}
+            </a>
+          </template>
+          <template v-else-if="column.dataIndex === 'subjectCategoryName'">
+            {{ record.subjectCategoryName && record.subjectCategoryName.replaceAll ? record.subjectCategoryName.replaceAll(';', ',') : record.subjectCategoryName
+            }}
+          </template>
+          <template v-else-if="column.dataIndex === 'trainingPersonName'">
+            {{ record.trainingPersonName && record.trainingPersonName.replaceAll ? record.trainingPersonName.replaceAll(';', ',') : record.trainingPersonName
+            }}
+          </template>
+          <template v-else-if="column.dataIndex === 'trainingPurpose'">
+            <a @click="handleAttach(record)">
+              查看
+            </a>
+          </template>
+          <template v-else-if="column.dataIndex === 'action'">
+            <a-button
                 type="link"
                 class="inner-btn"
                 @click.stop="handleEdit(record)">
-                编辑
-              </a-button>
-              <a-button
+              编辑
+            </a-button>
+            <a-button
                 v-hasPermi="['tpmOplTraining:del']"
                 type="link"
                 class="inner-btn"
                 @click.stop="handleDelete([record.id], 'row')">
-                删除
-              </a-button>
-            </template>
+              删除
+            </a-button>
           </template>
-        </AvicTable>
-      </div>
-      <!-- 添加页面弹窗 -->
-      <tpm-opl-training-add
+        </template>
+      </AvicTable>
+    </div>
+    <!-- 添加页面弹窗 -->
+    <tpm-opl-training-add
         v-if="showAddModal"
         ref="addModal"
         @reloadData="getList"
         @close="showAddModal = false"
-      />
-      <!-- 编辑页面弹窗 -->
-      <tpm-opl-training-edit
+    />
+    <!-- 编辑页面弹窗 -->
+    <tpm-opl-training-edit
         v-if="showEditModal"
         ref="editModal"
         :form-id="formId"
         :info-status="infoStatus"
         @reloadData="getList"
         @close="showEditModal = false"
-      />
-      <!-- 详情页面弹窗 -->
-      <tpm-opl-training-detail
+    />
+    <!-- 详情页面弹窗 -->
+    <tpm-opl-training-detail
         v-if="showDetailModal"
         ref="detailModal"
         :form-id="formId"
         :info-status="infoStatus"
         @close="showDetailModal = false"
-      />
-      <AvicExcelImport
+    />
+    <AvicExcelImport
         v-if="showImportModal"
         :formData="excelParams"
         title="单表模板导入"
@@ -375,16 +387,21 @@
         downloadTemplateUrl="/mms/tpm/tpmopltrainings/downloadTemplate/v1"
         @reloadData="getList"
         @close="showImportModal = false"
-      />
-    </div>
+    />
+    <AttachModal
+        :attachOpen="attachOpen"
+        :attach-form="attchForm"
+        @closeAttach="closeAttach"
+    />
+  </div>
 </template>
 <script lang="ts" setup>
 import type { TpmOplTrainingDto } from '@/api/avic/mms/tpm/TpmOplTrainingApi'; // 引入模块DTO
-import { listTpmOplTrainingByPage, delTpmOplTraining, exportExcel } from '@/api/avic/mms/tpm/TpmOplTrainingApi'; // 引入模块API
+import { delTpmOplTraining, exportExcel, listTpmOplTrainingByPage } from '@/api/avic/mms/tpm/TpmOplTrainingApi'; // 引入模块API
 import TpmOplTrainingAdd from './TpmOplTrainingAdd.vue'; // 引入添加页面组件
 import TpmOplTrainingEdit from './TpmOplTrainingEdit.vue'; // 引入编辑页面组件
-import TpmOplTrainingDetail from './TpmOplTrainingDetail.vue'; // 引入详情页面组件
-import { useUserStore } from "@/store/user";
+import TpmOplTrainingDetail from './TpmOplTrainingDetail.vue';
+import AttachModal from './AttachModal.vue'; // 引入详情页面组件
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -512,10 +529,7 @@ const columns = [
     fixed: 'right'
   }
 ];
-const userStore = useUserStore();
-const queryForm = ref<TpmOplTrainingDto>({
-  oplDeptId: userStore.userInfo.deptId
-});
+const queryForm = ref<TpmOplTrainingDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -546,6 +560,11 @@ const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
   { fieldName: 'subjectCategory', lookUpType: 'TPM_OPL_SUBJECT_CATEGORY' }
 ];
+const attachOpen = ref(false); // 附件弹窗
+const attchForm = reactive({
+  id: '',
+  info: ''
+});
 
 onMounted(() => {
   // 加载表格数据
@@ -558,32 +577,36 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  queryParam.searchParams.oplDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   loading.value = true;
   listTpmOplTrainingByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     subjectCategoryList.value = result.subjectCategory;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -591,15 +614,18 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -609,10 +635,12 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   if (record.editUserId !== proxy.$getLoginUser().id) {
@@ -623,16 +651,19 @@ function handleEdit(record) {
   infoStatus.value = 'edit';
   showEditModal.value = true;
 }
+
 /** 详细 */
 function handleDetail(record) {
   formId.value = record.id;
   infoStatus.value = 'detail';
   showDetailModal.value = true;
 }
+
 /** 导入 */
 function handleImport() {
   showImportModal.value = true;
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -649,6 +680,7 @@ function handleExport() {
     }
   });
 }
+
 /** 删除 */
 function handleDelete(ids, type) {
   if (ids.length == 0) {
@@ -666,26 +698,28 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delTpmOplTraining(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
-function handleTableChange (pagination, filters, sorter) {
+function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
@@ -695,5 +729,17 @@ function handleTableChange (pagination, filters, sorter) {
   getList();
 }
 
+/** 打开查看 */
+const handleAttach = (record) => {
+  attchForm.id = record.id;
+  attchForm.info = record.trainingPurpose;
+  attachOpen.value = true;
+};
+
+/** 关闭查看 */
+const closeAttach = () => {
+  attachOpen.value = false;
+  attchForm.id = null;
+};
 </script>
 

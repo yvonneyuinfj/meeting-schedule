@@ -3,7 +3,6 @@ import { getTpmOplTraining, saveTpmOplTraining } from '@/api/avic/mms/tpm/TpmOpl
 import { createEditor } from '@wangeditor/editor'; // 引入富文本依赖
 import { useRichText } from '@/utils/hooks/useRichText'; // 引入富文本相关配置及方法
 export const emits = ['reloadData', 'close'];
-import {useUserStore} from "@/store/user";
 
 export function useTpmOplTrainingForm({
   props: props,
@@ -34,9 +33,9 @@ export function useTpmOplTrainingForm({
     trainingDate: [
       { required: true, message: '培训时间不能为空', trigger: 'change' }
     ],
-    // trainingPurpose: [
-    //   { required: true, message: '培训目的不能为空', trigger: 'change' }
-    // ],
+    trainingPurpose: [
+      { required: true, message: '培训目的不能为空', trigger: 'blur' }
+    ],
     trainingFocus: [
       { required: true, message: '培训要点不能为空', trigger: 'change' }
     ],
@@ -57,7 +56,6 @@ export function useTpmOplTrainingForm({
   const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
   const subjectCategoryList = ref([]); // 课题分类通用代码
   const secretLevelList = ref([]); // 密级通用代码
-  const userStore = useUserStore();
   const lookupParams = [
     { fieldName: 'subjectCategory', lookUpType: 'TPM_OPL_SUBJECT_CATEGORY' }
     ];
@@ -83,11 +81,11 @@ export function useTpmOplTrainingForm({
       // 编辑、详情页面加载数据
       getFormData(props.formId, props.infoStatus);
     } else {
-      form.value.editUserId = userStore.userInfo.id;
-      form.value.editUserName = userStore.userInfo.name;
-      form.value.oplDeptId = userStore.userInfo.deptId;
-      form.value.oplDeptName = userStore.userInfo.deptName;
-      form.value.oplDeptIdAlias = userStore.userInfo.deptName;
+      form.value.editUserId = proxy.$getLoginUser().id;
+      form.value.editUserName = proxy.$getLoginUser().name;
+      form.value.oplDeptId = proxy.$getLoginUser().entityDeptId;
+      form.value.oplDeptName = proxy.$getLoginUser().entityDeptName;
+      form.value.oplDeptIdAlias = proxy.$getLoginUser().entityDeptName;
     }
   });
 
@@ -131,6 +129,12 @@ export function useTpmOplTrainingForm({
   }
   /** 保存 */
   function saveForm () {
+    // 处理富文本
+    const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
+    convertImageSrc(editorHtmljsonCopy);
+    const newEditor = createEditor({ content: editorHtmljsonCopy });
+    const newEditorHtml = newEditor.getHtml();
+    form.value.trainingPurpose = newEditorHtml === '<p><br></p>' ? '':newEditorHtml;
     formRef.value
       .validate()
       .then( () => {
@@ -144,13 +148,6 @@ export function useTpmOplTrainingForm({
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
-        // 处理富文本
-        const editorHtmljsonCopy = proxy.$lodash.cloneDeep(editorRef.value.children);
-        convertImageSrc(editorHtmljsonCopy);
-        const newEditor = createEditor({ content: editorHtmljsonCopy });
-        const newEditorHtml = newEditor.getHtml();
-        //处理富文本
-        postData.trainingPurpose = newEditorHtml;
         postData.subjectCategory = postData.subjectCategory.join(',');
         // 发送请求
         saveTpmOplTraining(postData)
