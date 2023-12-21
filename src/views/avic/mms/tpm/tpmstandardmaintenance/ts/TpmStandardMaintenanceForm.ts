@@ -145,8 +145,7 @@ export function useTpmStandardMaintenanceForm({
 
   /** 保养周期(月)验证 */
   async function validateActrualMaintenanceCycle(_rule, value) {
-    console.log(value);
-    if (!value && form.value.maintenanceHours === undefined && form.value.maintenanceHours === null) {
+    if (!value && (form.value.maintenanceHours === undefined || form.value.maintenanceHours === null)) {
       return Promise.reject(new Error('保养周期(月)不能为空'));
     } else {
       return Promise.resolve();
@@ -155,8 +154,7 @@ export function useTpmStandardMaintenanceForm({
 
   /** 小时数验证 */
   async function validateActrualMaintenanceHours(_rule, value) {
-    console.log(value);
-    if (!value && form.value.maintenanceCycle === undefined && form.value.maintenanceCycle === null) {
+    if (!value && (form.value.maintenanceCycle === undefined || form.value.maintenanceCycle === null)) {
       return Promise.reject(new Error('小时数不能为空'));
     } else {
       return Promise.resolve();
