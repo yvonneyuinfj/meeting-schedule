@@ -188,7 +188,7 @@ const props = defineProps({
   /** 是否自动上传 */
   autoUpload: { type: Boolean, default: false },
   /** 是否加密 */
-  allowEncry: { type: Boolean, default: false },
+  allowEncry: { type: Boolean, default: true },
   /** 所有附件ID，根据这些ID加载附件 */
   attIds: { type: String },
   /** 文件分类，一般配置业务的通用代码 */
