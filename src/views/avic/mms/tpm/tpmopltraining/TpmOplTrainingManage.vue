@@ -270,7 +270,7 @@
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               :loading="delLoading"
-                    @click="handleDelete(selectedRows, selectedRowKeys)"
+                    @click="handleDelete(selectedRowKeys, '')"
               >
                 <template #icon>
                   <delete-outlined />
