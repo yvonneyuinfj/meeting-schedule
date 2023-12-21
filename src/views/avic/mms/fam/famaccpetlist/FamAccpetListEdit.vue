@@ -130,7 +130,7 @@
           :record="record"
           :column="column.dataIndex"
         >
-<!--          && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2')-->
+          <!--          && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2')-->
           <template #edit>
             <a-input
               v-model:value="record[column.dataIndex]"
@@ -470,34 +470,36 @@
     </a-modal>
 
     <a-modal :visible="equipClassOpen" :body-style="bodyStyle" @cancel="equiphandleCancel" @ok="equiphandleSummit">
-      <a-spin :spinning="treeLoading">
-        <a-tree
-          v-if="equipsetreeData && equipsetreeData.length > 0"
-          v-model:expanded-keys="equipselexpandedKeys"
-          v-model:selectedKeys="equipselectedKeys"
-          :tree-data="equipsetreeData"
-          :load-data="equipseonLoadData"
-          :show-icon="true"
-          :show-line="true && { showLeafIcon: false }"
-          :default-expand-all="true"
-          @expand="handleExpand"
-          @select="handleSelect"
-        >
-          <template #icon="{ expanded, dataRef }">
-            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
-            <AvicIcon
-              v-if="!expanded && !dataRef.isLeaf"
-              svg="avic-folder-3-fill"
-              color="#ffb800"
-            />
-            <AvicIcon
-              v-if="expanded && !dataRef.isLeaf"
-              svg="avic-folder-open-fill"
-              color="#ffb800"
-            />
-          </template>
-        </a-tree>
-      </a-spin>
+      <div style="height: 100%;overflow: scroll">
+        <a-spin :spinning="treeLoading">
+          <a-tree
+            v-if="equipsetreeData && equipsetreeData.length > 0"
+            v-model:expanded-keys="equipselexpandedKeys"
+            v-model:selectedKeys="equipselectedKeys"
+            :tree-data="equipsetreeData"
+            :load-data="equipseonLoadData"
+            :show-icon="true"
+            :show-line="true && { showLeafIcon: false }"
+            :default-expand-all="true"
+            @expand="handleExpand"
+            @select="handleSelect"
+          >
+            <template #icon="{ expanded, dataRef }">
+              <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+              <AvicIcon
+                v-if="!expanded && !dataRef.isLeaf"
+                svg="avic-folder-3-fill"
+                color="#ffb800"
+              />
+              <AvicIcon
+                v-if="expanded && !dataRef.isLeaf"
+                svg="avic-folder-open-fill"
+                color="#ffb800"
+              />
+            </template>
+          </a-tree>
+        </a-spin>
+      </div>
     </a-modal>
 
     <a-modal
@@ -544,7 +546,8 @@ const assetClassOpen = ref<boolean>(false);
 const equipClassOpen = ref<boolean>(false);
 const bodyStyle = {
   overflow: 'hidden',
-  overflowY: 'scroll'
+  overflowY: 'scroll',
+  height: '600px'
 };
 const props = defineProps({
   // 主表选中项的keys集合
@@ -885,6 +888,7 @@ const handleOk = () => {
   open.value = false;
   const selectRow = famInventoryManage.value.selectedRow();
   selectRow.map(item => {
+    console.log(item);
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['assetCode'] = item.assetsCode;

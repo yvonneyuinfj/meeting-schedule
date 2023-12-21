@@ -277,29 +277,31 @@
   </AvicModal>
   <!-- 树节点 -->
   <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
-    <a-spin :spinning="treeLoading">
-      <a-tree
-        v-if="treeData && treeData.length > 0"
-        v-model:expanded-keys="expandedKeys"
-        :tree-data="treeData"
-        :load-data="onLoadData"
-        :show-icon="true"
-        :show-line="true && { showLeafIcon: false }"
-        :default-expand-all="true"
-        @expand="handleExpand"
-        @select="handleSelect"
-      >
-        <template #icon="{ expanded, dataRef }">
-          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
-          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
-          <AvicIcon
-            v-if="expanded && !dataRef.isLeaf"
-            svg="avic-folder-open-fill"
-            color="#ffb800"
-          />
-        </template>
-      </a-tree>
-    </a-spin>
+    <div style="height: 100%;overflow: scroll">
+      <a-spin :spinning="treeLoading">
+        <a-tree
+          v-if="treeData && treeData.length > 0"
+          v-model:expanded-keys="expandedKeys"
+          :tree-data="treeData"
+          :load-data="onLoadData"
+          :show-icon="true"
+          :show-line="true && { showLeafIcon: false }"
+          :default-expand-all="true"
+          @expand="handleExpand"
+          @select="handleSelect"
+        >
+          <template #icon="{ expanded, dataRef }">
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+            <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
+            <AvicIcon
+              v-if="expanded && !dataRef.isLeaf"
+              svg="avic-folder-open-fill"
+              color="#ffb800"
+            />
+          </template>
+        </a-tree>
+      </a-spin>
+    </div>
   </a-modal>
 </template>
 <script lang="ts" setup>
@@ -486,3 +488,8 @@ watch(
   }
 );
 </script>
+<style lang="less" scoped>
+::v-deep .ant-modal-wrap {
+  overflow: auto !important;
+}
+</style>

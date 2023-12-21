@@ -76,11 +76,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="useDeptName" label="使用部门名称" has-feedback>
+            <a-form-item name="useDeptName" label="使用部门" has-feedback>
               <a-input
                   v-model:value="form.useDeptName"
                   :maxLength="128"
-                  placeholder="请输入使用部门名称"
+                  placeholder="请输入使用部门"
                   :readonly="true"
               />
             </a-form-item>
@@ -317,7 +317,6 @@ const handleCancel = () => {
 
 const handleOk = () => {
   const info = tpmInventoryFailureSelect.value.info;
-  console.log(info);
   form.value.equipmentCode = info.equipmentCode;
   form.value.equipmentName = info.equipmentName;
   form.value.specs = info.specs;

@@ -324,6 +324,7 @@
       :bpmInstanceObject="bpmInstanceObject"
       read-only="true"
       :bpmParams="bpmParams"
+      :accpetType="form.accpetType"
       :equipmentType="form.equipmentType"
     />
     <!--子表按钮的流程解析，用于权限控制-->
