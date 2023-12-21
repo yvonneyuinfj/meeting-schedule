@@ -270,113 +270,113 @@
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['tpmOplTraining:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
-              <template #icon>
-                 <import-outlined />
-              </template>
-              导入
-            </a-button>
-            <a-button
-              v-hasPermi="['tpmOplTraining:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
-          </a-space>
-        </template>
-        <template #toolBarRight>
-          <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入活动编号"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
-          />
-        </template>
-        <template #bodyCell="{ column, text, record, index }">
-          <template v-if="column.dataIndex === 'id'">
-            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+                    @click="handleDelete(selectedRows, selectedRowKeys)"
+              >
+                <template #icon>
+                  <delete-outlined />
+                </template>
+                删除
+              </a-button>
+              <a-button
+                v-hasPermi="['tpmOplTraining:import']"
+                title="导入"
+                type="primary"
+                ghost
+                @click="handleImport">
+                <template #icon>
+                   <import-outlined />
+                </template>
+                导入
+              </a-button>
+              <a-button
+                v-hasPermi="['tpmOplTraining:export']"
+                title="导出"
+                type="primary"
+                ghost
+                @click="handleExport">
+                <template #icon>
+                   <export-outlined />
+                </template>
+                导出
+              </a-button>
+            </a-space>
           </template>
-          <template v-else-if="column.dataIndex === 'billNo'">
-            <a @click="handleDetail(record)">
-              {{ record.billNo }}
-            </a>
+          <template #toolBarRight>
+            <a-input-search
+              class="opt-btn-commonsearch"
+              style="width: 200px"
+              placeholder="请输入活动编号"
+              :allow-clear="true"
+              @search="handleKeyWordQuery"
+            />
           </template>
-          <template v-else-if="column.dataIndex === 'subjectCategoryName'">
-              {{ record.subjectCategoryName && record.subjectCategoryName.replaceAll ? record.subjectCategoryName.replaceAll(';', ',') : record.subjectCategoryName  }}
+          <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.dataIndex === 'id'">
+              {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+            </template>
+            <template v-else-if="column.dataIndex === 'billNo'">
+              <a @click="handleDetail(record)">
+                {{ record.billNo }}
+              </a>
+            </template>
+            <template v-else-if="column.dataIndex === 'subjectCategoryName'">
+                {{ record.subjectCategoryName && record.subjectCategoryName.replaceAll ? record.subjectCategoryName.replaceAll(';', ',') : record.subjectCategoryName }}
+            </template>
+            <template v-else-if="column.dataIndex === 'trainingPersonName'">
+                {{ record.trainingPersonName && record.trainingPersonName.replaceAll ? record.trainingPersonName.replaceAll(';', ',') : record.trainingPersonName }}
+            </template>
+            <template v-else-if="column.dataIndex === 'action'">
+              <a-button
+                type="link"
+                class="inner-btn"
+                @click.stop="handleEdit(record)">
+                编辑
+              </a-button>
+              <a-button
+                v-hasPermi="['tpmOplTraining:del']"
+                type="link"
+                class="inner-btn"
+                @click.stop="handleDelete([record.id], 'row')">
+                删除
+              </a-button>
+            </template>
           </template>
-          <template v-else-if="column.dataIndex === 'trainingPersonName'">
-              {{ record.trainingPersonName && record.trainingPersonName.replaceAll ? record.trainingPersonName.replaceAll(';', ',') : record.trainingPersonName }}
-          </template>
-          <template v-else-if="column.dataIndex === 'action'">
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click.stop="handleEdit(record)">
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['tpmOplTraining:del']"
-              type="link"
-              class="inner-btn"
-              @click.stop="handleDelete([record.id], 'row')">
-              删除
-            </a-button>
-          </template>
-        </template>
-      </AvicTable>
+        </AvicTable>
+      </div>
+      <!-- 添加页面弹窗 -->
+      <tpm-opl-training-add
+        v-if="showAddModal"
+        ref="addModal"
+        @reloadData="getList"
+        @close="showAddModal = false"
+      />
+      <!-- 编辑页面弹窗 -->
+      <tpm-opl-training-edit
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        :info-status="infoStatus"
+        @reloadData="getList"
+        @close="showEditModal = false"
+      />
+      <!-- 详情页面弹窗 -->
+      <tpm-opl-training-detail
+        v-if="showDetailModal"
+        ref="detailModal"
+        :form-id="formId"
+        :info-status="infoStatus"
+        @close="showDetailModal = false"
+      />
+      <AvicExcelImport
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="单表模板导入"
+        importUrl="/mms/tpm/tpmopltrainings/importData/v1"
+        downloadTemplateUrl="/mms/tpm/tpmopltrainings/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
+      />
     </div>
-    <!-- 添加页面弹窗 -->
-    <tpm-opl-training-add
-      v-if="showAddModal"
-      ref="addModal"
-      @reloadData="getList"
-      @close="showAddModal = false"
-    />
-    <!-- 编辑页面弹窗 -->
-    <tpm-opl-training-edit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      :info-status="infoStatus"
-      @reloadData="getList"
-      @close="showEditModal = false"
-    />
-    <!-- 详情页面弹窗 -->
-    <tpm-opl-training-detail
-      v-if="showDetailModal"
-      ref="detailModal"
-      :form-id="formId"
-      :info-status="infoStatus"
-      @close="showDetailModal = false"
-    />
-    <AvicExcelImport
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="单表模板导入"
-      importUrl="/mms/tpm/tpmopltrainings/importData/v1"
-      downloadTemplateUrl="/mms/tpm/tpmopltrainings/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
-    />
-  </div>
 </template>
 <script lang="ts" setup>
 import type { TpmOplTrainingDto } from '@/api/avic/mms/tpm/TpmOplTrainingApi'; // 引入模块DTO
@@ -384,7 +384,7 @@ import { listTpmOplTrainingByPage, delTpmOplTraining, exportExcel } from '@/api/
 import TpmOplTrainingAdd from './TpmOplTrainingAdd.vue'; // 引入添加页面组件
 import TpmOplTrainingEdit from './TpmOplTrainingEdit.vue'; // 引入编辑页面组件
 import TpmOplTrainingDetail from './TpmOplTrainingDetail.vue'; // 引入详情页面组件
-import {useUserStore} from "@/store/user";
+import { useUserStore } from "@/store/user";
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -514,7 +514,7 @@ const columns = [
 ];
 const userStore = useUserStore();
 const queryForm = ref<TpmOplTrainingDto>({
-    oplDeptId: userStore.userInfo.deptId
+  oplDeptId: userStore.userInfo.deptId
 });
 const queryParam = reactive({
   // 请求表格数据参数
@@ -537,6 +537,7 @@ const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
 const infoStatus = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
+const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
@@ -556,7 +557,7 @@ onMounted(() => {
 });
 
 /** 查询数据  */
-function getList () {
+function getList() {
   selectedRowKeys.value = []; // 清空选中
   loading.value = true;
   listTpmOplTrainingByPage(queryParam)
@@ -572,35 +573,35 @@ function getList () {
     });
 }
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     subjectCategoryList.value = result.subjectCategory;
   });
 }
 /** 获取当前用户对应的文档密级 */
-function getUserFileSecretList () {
+function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
 /** 高级查询 查询按钮操作 */
-function handleQuery () {
+function handleQuery() {
   queryParam.searchParams = queryForm.value;
   queryParam.keyWord = '';
   queryParam.pageParameter.page = 1;
   getList();
 }
 /** 高级查询 重置按钮操作 */
-function resetQuery () {
+function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
 /** 高级查询 展开/收起 */
-function toggleAdvanced () {
+function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
 /** 快速查询逻辑 */
-function handleKeyWordQuery (value) {
+function handleKeyWordQuery(value) {
   const keyWord = {
     billNo: value
   };
@@ -609,11 +610,11 @@ function handleKeyWordQuery (value) {
   getList();
 }
 /** 添加 */
-function handleAdd () {
+function handleAdd() {
   showAddModal.value = true;
 }
 /** 编辑 */
-function handleEdit (record) {
+function handleEdit(record) {
   if (record.editUserId !== proxy.$getLoginUser().id) {
     proxy.$message.warning('只能编辑自己的数据！');
     return;
@@ -623,17 +624,17 @@ function handleEdit (record) {
   showEditModal.value = true;
 }
 /** 详细 */
-function handleDetail (record) {
+function handleDetail(record) {
   formId.value = record.id;
   infoStatus.value = 'detail';
   showDetailModal.value = true;
 }
 /** 导入 */
-function handleImport () {
+function handleImport() {
   showImportModal.value = true;
 }
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -649,7 +650,7 @@ function handleExport () {
   });
 }
 /** 删除 */
-function handleDelete (ids, type) {
+function handleDelete(ids, type) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
@@ -679,8 +680,9 @@ function handleDelete (ids, type) {
   });
 }
 /** 勾选复选框时触发 */
-function onSelectChange (rowKeys) {
+function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
+  selectedRows.value = rows;
 }
 /** 表格排序 */
 function handleTableChange (pagination, filters, sorter) {
