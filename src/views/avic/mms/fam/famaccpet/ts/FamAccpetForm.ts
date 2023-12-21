@@ -183,6 +183,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famAccpetListList = subInfoList; // 挂载子表数据
+              if (postData.famAccpetListList.length === 0) {
+                loading.value = false;
+                proxy.$message.warning('请添加子表数据');
+                return;
+              }
             }
             // 发送请求
             saveFamAccpet(postData)
@@ -248,6 +253,12 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famAccpetListList = subInfoList; // 挂载子表数据
+            }
+
+            if (postData.famAccpetListList.length === 0) {
+              loading.value = false;
+              proxy.$message.warning('请添加子表数据');
+              return;
             }
             // 发送请求
             saveFamAccpet(postData)
@@ -345,6 +356,12 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famAccpetListList = subInfoList; // 挂载子表数据
+
+      if (postData.famAccpetListList.length === 0) {
+        proxy.$message.warning('请添加子表数据');
+        loading.value = false;
+        return;
+      }
       if (autoCode.value) {
         // 获取编码码段值
         postData.accpetApplyNo = autoCode.value.getSegmentValue();
@@ -354,6 +371,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
         formCode: formCode,
         postData
       };
+
       // 发送请求
       saveFormAndStartProcess(param)
         .then(res => {

@@ -151,8 +151,7 @@
             <a-button
                 v-hasPermi="['tpm6sResolveCompare:edit']"
                 title="编辑"
-                type="primary"
-                ghost
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 @click="handleEdit"
             >
               <template #icon>
@@ -411,8 +410,7 @@ const columns = [
 ];
 const queryForm = ref<Tpm6sResolveCompareDto>({
   bpmState: 'all',
-  bpmType: 'all',
-  editDeptId: proxy.$getLoginUser().deptId
+  bpmType: 'all'
 });
 // 高级查询对象
 const queryParam = reactive({
@@ -460,12 +458,12 @@ onMounted(() => {
 
 /** 查询数据 */
 function getList() {
+  queryParam.searchParams.editDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   listTpm6sResolveCompareByPage(queryParam)
       .then(response => {
-
         list.value = response.data.result;
         totalPage.value = response.data.pageParameter.totalCount;
         loading.value = false;

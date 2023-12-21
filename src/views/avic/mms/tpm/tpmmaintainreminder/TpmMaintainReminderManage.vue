@@ -24,8 +24,8 @@
 import type { TpmMaintainReminderDto } from '@/api/avic/mms/tpm/TpmMaintainReminderApi.js'; // 引入模块DTO
 import { listTpmStandardByPage } from '@/api/avic/mms/tpm/TpmMaintainReminderApi.js'; // 引入模块API
 import dayjs from 'dayjs';
-import { useUserStore } from '@/store/user';
 
+const { proxy } = getCurrentInstance();
 const columns = [
   {
     title: '序号',
@@ -115,9 +115,8 @@ const columns = [
     align: 'left'
   }
 ];
-const userStore = useUserStore();
 const queryForm = ref<TpmMaintainReminderDto>({
-  useDeptId: userStore.userInfo.deptId
+  useDeptId: proxy.$getLoginUser().entityDeptId
 });
 const queryParam = reactive({
   // 请求表格数据参数
@@ -158,7 +157,7 @@ function getList() {
 const rowClassName = (record: any) => {
   const newDate = dayjs(new Date());
   const timeDifference = newDate.diff(record.planMaintenDate, 'day');
-  if (record.maintenanceHours > 0 || timeDifference >= 7) {
+  if (timeDifference >= 7) {
     return 'row-color';
   } else {
     return '';

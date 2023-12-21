@@ -789,6 +789,7 @@ function validateVendor(value, record) {
 
 /** 查询数据  */
 function getList() {
+  queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

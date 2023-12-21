@@ -38,7 +38,7 @@
               添加
             </a-button>
             <a-button
-              v-if="props.accpetType === '2'"
+              v-if="props.accpetType === '2' && props.assetClass"
               v-hasPermi="['famAccpetList:add']"
               title="添加"
               type="primary"
@@ -126,11 +126,11 @@
               'registrationCode',
               'militaryKeyEquipCode',
             ].includes(column.dataIndex)
+            && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
           "
           :record="record"
           :column="column.dataIndex"
         >
-          <!--          && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2')-->
           <template #edit>
             <a-input
               v-model:value="record[column.dataIndex]"
@@ -144,7 +144,9 @@
         </AvicRowEdit>
 
         <!-- 已提月份 (月选择)-->
-        <AvicRowEdit v-else-if="column.dataIndex === 'monthProposed'"
+        <AvicRowEdit v-else-if="column.dataIndex === 'monthProposed'
+            && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
+        "
                      :record="record"
                      :column="column.dataIndex"
         >
@@ -160,7 +162,9 @@
 
         <!-- 责任人-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'liablePerson'"
+          v-else-if="column.dataIndex === 'liablePerson'
+          && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
+          "
           :record="record"
           :column="column.dataIndex"
         >
@@ -184,7 +188,7 @@
 
         <!-- 主管部门-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'managerDeptId'"
+          v-else-if="column.dataIndex === 'managerDeptId'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -208,7 +212,7 @@
 
         <!-- 使用部门-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'receiveDeptId'"
+          v-else-if="column.dataIndex === 'receiveDeptId'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -241,7 +245,8 @@
               'purchaseDate',
               'recordDate',
               'commissionDate',
-            ].includes(column.dataIndex)"
+            ].includes(column.dataIndex)
+&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -264,7 +269,7 @@
               'isFactoryBuilding',
               'ynMaintainName',
               'ynAnnualInspection','ynMajorAssets','ynBottleneckEquipmentName'
-            ].includes(column.dataIndex)"
+            ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -293,7 +298,7 @@
 
         <!--  备注-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'note'"
+          v-else-if="column.dataIndex === 'note'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -310,7 +315,7 @@
 
         <!--  资产类别-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'assetClass'"
+          v-else-if="column.dataIndex === 'assetClass'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -335,13 +340,12 @@
 
         <!--  设备类别-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'equipClass'"
+          v-else-if="column.dataIndex === 'equipClass'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
           <template #edit>
             <a-input
-              v-if="props.accpetType === '1'"
               v-model:value="record.equipClassName"
               @click="equipClassClick(record)"
               placeholder="请选择设备类别"
@@ -394,7 +398,7 @@
               'assetSecretLevel',
               'geographicalArea',
               'assetsUse',
-            ].includes(column.dataIndex)"
+            ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
@@ -670,10 +674,6 @@ if (!props.readOnly) {
   });
 }
 
-console.log(props.bpmParams);
-console.log(props.bpmInstanceObject);
-console.log(props.readOnly);
-
 onMounted(() => {
   allocationColumn('1');
   // 加载表格数据
@@ -874,8 +874,11 @@ function getChangedData() {
     item['operationType_'] = 'delete';
   });
   const changedData = proxy.$getChangeRecords(list, initialList);
+  if (deletedData.value.length === 0 && changedData.length === 0) {
+    return list.value;
+  }
   return deletedData.value.concat(changedData);
-  // return changedData;
+
 }
 
 /** 批量添加 */
@@ -886,9 +889,12 @@ function handleMostAdd() {
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  const selectRow = famInventoryManage.value.selectedRow();
+  let code = '';
+  if (props.assetClass === '2' && list.value.length > 0) {
+    code = list.value[0].assetClass.charAt(0);
+  }
+  const selectRow = famInventoryManage.value.selectedRow(code);
   selectRow.map(item => {
-    console.log(item);
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['assetCode'] = item.assetsCode;
@@ -902,7 +908,16 @@ const handleOk = () => {
     item['producer'] = item.factoryOwner;
     item['liablePerson'] = item.responseUserName;
   });
+  if (props.assetClass === '2') allocationColumn(selectRow[0].assetClass.charAt(0));
   list.value = [...list.value, ...selectRow];
+  // 批量新增数组合并去重
+  let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));
+  let obj = {};
+  array = array.reduce((cur, next) => {
+    obj[next.id] ? '' : (obj[next.id] = true && cur.push(next));
+    return cur;
+  }, []);
+  list.value = array;
 };
 
 /** 添加 */
@@ -952,6 +967,10 @@ function handleCopy(ids, e) {
 
 /** 编辑 */
 function handleEdit(record) {
+  if (props.readOnly)
+    if (props.bpmInstanceObject.bpmModel.activityname !== 'task2' && props.bpmInstanceObject.bpmModel.activityname !== 'task3')
+      return;
+
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
@@ -1037,7 +1056,7 @@ function changeControlValue(values, record, column) {
 
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
-  //todo 如果code 是设备 输入资产原值将值同步给资产净值
+  if (code.value && !(['1', '4', '6', '8'].includes(code.value)) && column === 'assetOriginalValue') record.assetNetValue = record.assetOriginalValue;
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
 
@@ -1045,7 +1064,6 @@ function blurInput(e, record, column) {
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    console.log(validateRules);
     flag = proxy.$validateRecordData(records[index], validateRules, list.value, famAccpetList);
     if (!flag) {
       break;
@@ -1070,6 +1088,7 @@ function validate(callback) {
   }
 }
 
+/** 分配对象 */
 function getAddObj(code) {
   switch (code) {
     case'1':
@@ -1093,7 +1112,10 @@ function getAddObj(code) {
 /** 分配列 */
 function allocationColumn(code) {
   showTable.value = false;
-  if (props.accpetType === '1') {
+  if (code) {
+    /**
+     * 新增
+     */
     switch (code) {
       case'1':
         columns.value = [...HouseColumns];
@@ -1191,9 +1213,17 @@ function allocationColumn(code) {
         }
         break;
     }
+    if(props.accpetType === '2' && props.assetClass === '2')
+      validateRules['parentAssetNo'] = [{ required: true, message: '父资产编号不能为空' }];
     getAddObj(code);
   } else {
+    /**
+     *  改造 固定资产
+     */
     columns.value = [...AllColumns];
+    validateRules = {
+      assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
+    };
   }
 
   setTimeout(() => {
@@ -1214,35 +1244,47 @@ function validatorMilitaryKeyEquipCode(value, record) {
   }
 }
 
-
+/**
+ * 验收类型监控
+ */
 watch(
   () => props.accpetType,
-  (_newV, oldV) => {
+  (newV, oldV) => {
+    if (newV === '2') {
+      allocationColumn('');
+      if (oldV) {
+        list.value = [];
+      }
+    } else {
+      allocationColumn(props.assetClasst.charAt(0));
+      if (oldV) {
+        list.value = [];
+      }
+    }
+  }
+);
+
+/**
+ * 资产类别监控
+ */
+watch(
+  () => props.assetClasst, (newV, oldV) => {
+    code.value = props.assetClasst.charAt(0);
+    allocationColumn(code.value);
     if (oldV) {
       list.value = [];
     }
   }
 );
 
-watch(
-  () => props.assetClasstObj,
-  newV => {
-    code.value = props.assetClasstObj.classCode.charAt(0);
-    allocationColumn(code.value);
-    list.value.map(item => {
-      item.assetClass = newV.classCode;
-      item.assetClassName = newV.className;
-      item.useTime = newV.useTime;
-    });
+/**
+ * 资产属性监控
+ */
+watch(() => props.assetClass, (newV, oldV) => {
+  if (props.accpetType === '2' && newV && oldV) {
+    list.value = [];
   }
-);
-
-watch(
-  () => props.assetClasst, newV => {
-    code.value = props.assetClasst.charAt(0);
-    allocationColumn(code.value);
-  }
-);
+});
 
 defineExpose({
   validate,

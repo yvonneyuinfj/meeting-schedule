@@ -78,7 +78,6 @@
 <script lang="ts" setup>
 import type { TpmInventoryDto } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块DTO
 import { listTpmInventoryByPage } from '@/api/avic/mms/tpm/TpmInventoryApi'; // 引入模块API
-import { useUserStore } from '@/store/user';
 
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const tpmInventorySelect = ref();
@@ -182,9 +181,8 @@ const columns = [
     align: 'center'
   }
 ];
-const userStore = useUserStore();
 const queryForm = ref<TpmInventoryDto>({
-  useDeptId: userStore.userInfo.deptId
+  useDeptId: proxy.$getLoginUser().entityDeptId
 });
 const queryParam = reactive({
   // 请求表格数据参数

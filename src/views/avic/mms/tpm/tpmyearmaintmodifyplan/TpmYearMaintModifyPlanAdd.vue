@@ -99,8 +99,8 @@ const props = defineProps({
   }
 });
 onMounted(() => {
-  form.value.editDeptName = proxy.$getLoginUser().deptName;
-  form.value.editDeptId = proxy.$getLoginUser().deptId;
+  form.value.editDeptName = proxy.$getLoginUser().entityDeptName;
+  form.value.editDeptId = proxy.$getLoginUser().entityDeptId;
   form.value.editUserName = proxy.$getLoginUser().name;
   form.value.editUserId = proxy.$getLoginUser().id;
   form.value.editDate = currentTime;
