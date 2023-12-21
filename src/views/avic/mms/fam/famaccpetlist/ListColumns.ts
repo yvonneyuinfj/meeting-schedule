@@ -2154,14 +2154,14 @@ export const ITColumns = [
 
 /** 全部的输入列 */
 export const AllColumns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    ellipsis: true,
-    width: 60,
-    align: 'center',
-    fixed: 'left'
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   ellipsis: true,
+  //   width: 60,
+  //   align: 'center',
+  //   fixed: 'left'
+  // },
   // {
   //   title: '资产类别',
   //   dataIndex: 'assetClass',
