@@ -964,6 +964,7 @@ const layout = {
   labelCol: { flex: '0 0 120px' },
   wrapperCol: { flex: '1 1 0' }
 };
+const $emit = defineEmits(['select', 'handleRowDblClick']);
 const props = defineProps({
   isAdd: {
     type: Boolean,
@@ -1637,6 +1638,7 @@ const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
+const selectedRows = ref([]); // 选中行集合
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
 const assetsStatusList = ref([]); // 资产状态通用代码
@@ -1665,6 +1667,7 @@ onMounted(() => {
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
+  selectedRows.value = []; // 清空选中
   loading.value = true;
   listFamInventoryByPage(queryParam)
     .then(response => {
@@ -1783,8 +1786,11 @@ function handleDelete(ids, type) {
 }
 
 /** 勾选复选框时触发 */
-function onSelectChange(rowKeys) {
+function onSelectChange(rowKeys,rows) {
   selectedRowKeys.value = rowKeys;
+  selectedRows.value = rows;
+
+  $emit('select', selectedRows.value);
 }
 
 /** 表格排序 */

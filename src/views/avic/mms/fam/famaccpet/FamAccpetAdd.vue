@@ -61,11 +61,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderValue" label="合同金额" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.orderValue"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入合同金额"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">

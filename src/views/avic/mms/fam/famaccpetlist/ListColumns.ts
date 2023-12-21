@@ -889,6 +889,11 @@ export const DeviceColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'center'
   },
   {
@@ -959,7 +964,15 @@ export const DeviceColumns = [
     resizable: true,
     align: 'center'
   },
-
+  {
+    title: '出厂号',
+    dataIndex: 'factoryNo',
+    key: 'factoryNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   {
     title: '入账前当年折旧',
     dataIndex: 'currentYearDepreciation',
