@@ -192,7 +192,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input v-model:value="form.assetClasst" @click="assetClasstClick">
                 <template #suffix>

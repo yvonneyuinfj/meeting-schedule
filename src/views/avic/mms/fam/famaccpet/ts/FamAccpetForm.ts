@@ -46,7 +46,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
-    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }],
+    assetClasst: [{ validator: validatorAssetClasst, trigger: 'change' }],
     equipmentType: [{ validator: validatorEquipmentType, trigger: 'change' }]
   };
   const famAccpetListEdit = ref();
@@ -102,11 +102,18 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     }
   });
 
+  async function validatorAssetClasst(_rule, value, _record) {
+    if (form.value.accpetType === '1' && !value) {
+      return Promise.reject(new Error('资产类别必填！'));
+    } else {
+      return Promise.resolve();
+    }
+  }
+
   async function validatorEquipmentType(_rule, value, _record) {
     const codeList = ['1', '4', '6', '8'];
     if (form.value.assetClasst) {
       if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
-        console.log('走了');
         return Promise.reject(new Error('设备类型必填！'));
       } else {
         return Promise.resolve();

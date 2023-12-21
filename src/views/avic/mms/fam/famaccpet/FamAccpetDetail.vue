@@ -250,7 +250,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetClasst')">
+        <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1' && fieldVisible('assetClasst')">
           <a-form-item
             name="assetClasst"
             label="资产类别"

@@ -87,16 +87,6 @@
               />
             </a-form-item>
           </a-col>
-          <!-- <a-col v-bind="colLayout.cols">
-            <a-form-item name="managerDeptName" label="主管部门名称" has-feedback>
-              <AvicCommonSelect v-model:value="form.managerDeptName" type="deptSelect" placeholder="请选择主管部门名称" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="receiveDeptName" label="接收部门名称" has-feedback>
-              <AvicCommonSelect v-model:value="form.receiveDeptName" type="deptSelect" placeholder="请选择接收部门名称" />
-            </a-form-item>
-          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClass" label="资产属性" has-feedback>
               <a-select
@@ -188,7 +178,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input
                 v-model:value="form.assetClasstName"

@@ -130,6 +130,7 @@
           :record="record"
           :column="column.dataIndex"
         >
+<!--          && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2')-->
           <template #edit>
             <a-input
               v-model:value="record[column.dataIndex]"
@@ -353,7 +354,7 @@
             </a-input>
           </template>
           <template #default>
-            {{ record.equipClassName}}
+            {{ record.equipClassName }}
           </template>
         </AvicRowEdit>
 
@@ -530,7 +531,7 @@ import {
   CarColumns,
   OfficialColumns,
   ITColumns,
-  backColumnsObj
+  backColumnsObj, AllColumns
 } from './ListColumns';
 import {
   CarValidateRules, DeviceValidateRules,
@@ -542,9 +543,9 @@ const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
 const equipClassOpen = ref<boolean>(false);
 const bodyStyle = {
-  overflow:'hidden',
-  overflowY:'scroll'
-}
+  overflow: 'hidden',
+  overflowY: 'scroll'
+};
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
@@ -1088,108 +1089,112 @@ function getAddObj(code) {
 /** 分配列 */
 function allocationColumn(code) {
   showTable.value = false;
-  switch (code) {
-    case'1':
-      columns.value = [...HouseColumns];
-      validateRules = HouseValidateRules;
-      break;
-    case'4':
-      columns.value = [...CarColumns];
-      validateRules = CarValidateRules;
-      break;
-    case'6':
-      columns.value = [...ITColumns];
-      validateRules = ITValidateRules;
-      break;
-    case'8':
-      columns.value = [...OfficialColumns];
-      validateRules = OfficialValidateRules;
-      break;
-    default:
-      columns.value = [...DeviceColumns];
-      validateRules = DeviceValidateRules;
-      // 提交流程
-      if (props.readOnly) {
-        if (props.bpmInstanceObject.bpmModel.activityname  && props.bpmInstanceObject.bpmModel.activityname !== 'task3') return;
-        const list = [
-          {
-            title: '是否瓶颈设备',
-            dataIndex: 'ynBottleneckEquipmentName',
-            key: 'ynBottleneckEquipmentName',
-            ellipsis: true,
-            minWidth: 120,
-            resizable: true,
-            align: 'left'
-          },
-          {
-            title: '军工关键设备专用代码',
-            dataIndex: 'militaryKeyEquipCode',
-            key: 'militaryKeyEquipCode',
-            ellipsis: true,
-            minWidth: 120,
-            resizable: true,
-            align: 'left'
-          },
-          {
-            title: '是否重大军工设备',
-            dataIndex: 'ynMajorAssets',
-            key: 'ynMajorAssets',
-            ellipsis: true,
-            minWidth: 120,
-            resizable: true,
-            align: 'left'
-          }
-        ];
-        validateRules['militaryKeyEquipCode'] = [{
-          validator: validatorMilitaryKeyEquipCode,
-          trigger: 'blur'
-        }];
-        // 特种设备
-        const list1 = [
-          {
-            title: '是否年检',
-            dataIndex: 'ynAnnualInspection',
-            key: 'ynAnnualInspection',
-            ellipsis: true,
-            minWidth: 120,
-            resizable: true,
-            customHeaderCell() {
-              return {
-                ['class']: 'required-table-title'
-              };
+  if (props.accpetType === '1') {
+    switch (code) {
+      case'1':
+        columns.value = [...HouseColumns];
+        validateRules = HouseValidateRules;
+        break;
+      case'4':
+        columns.value = [...CarColumns];
+        validateRules = CarValidateRules;
+        break;
+      case'6':
+        columns.value = [...ITColumns];
+        validateRules = ITValidateRules;
+        break;
+      case'8':
+        columns.value = [...OfficialColumns];
+        validateRules = OfficialValidateRules;
+        break;
+      default:
+        columns.value = [...DeviceColumns];
+        validateRules = DeviceValidateRules;
+        // 提交流程
+        if (props.readOnly) {
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task3') return;
+          const list = [
+            {
+              title: '是否瓶颈设备',
+              dataIndex: 'ynBottleneckEquipmentName',
+              key: 'ynBottleneckEquipmentName',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
             },
-            align: 'left'
-          },
-          {
-            title: '特种设备注册码',
-            dataIndex: 'registrationCode',
-            key: 'registrationCode',
-            ellipsis: true,
-            minWidth: 120,
-            resizable: true,
-            customHeaderCell() {
-              return {
-                ['class']: 'required-table-title'
-              };
+            {
+              title: '军工关键设备专用代码',
+              dataIndex: 'militaryKeyEquipCode',
+              key: 'militaryKeyEquipCode',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
             },
-            align: 'left'
-          }
-        ];
-        columns.value = [...columns.value, ...list];
-        if (props.equipmentType === '1') {
-          columns.value = [...columns.value, ...list1];
-          validateRules['ynAnnualInspection'] = [{ required: true, message: '是否年检不能为空' }];
-          validateRules['registrationCode'] = [{ required: true, message: '特种设备注册码不能为空' }];
+            {
+              title: '是否重大军工设备',
+              dataIndex: 'ynMajorAssets',
+              key: 'ynMajorAssets',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            }
+          ];
+          validateRules['militaryKeyEquipCode'] = [{
+            validator: validatorMilitaryKeyEquipCode,
+            trigger: 'blur'
+          }];
+          // 特种设备
+          const list1 = [
+            {
+              title: '是否年检',
+              dataIndex: 'ynAnnualInspection',
+              key: 'ynAnnualInspection',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left'
+            },
+            {
+              title: '特种设备注册码',
+              dataIndex: 'registrationCode',
+              key: 'registrationCode',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left'
+            }
+          ];
+          columns.value = [...columns.value, ...list];
+          if (props.equipmentType === '1') {
+            columns.value = [...columns.value, ...list1];
+            validateRules['ynAnnualInspection'] = [{ required: true, message: '是否年检不能为空' }];
+            validateRules['registrationCode'] = [{ required: true, message: '特种设备注册码不能为空' }];
 
+          }
         }
-      }
-      break;
+        break;
+    }
+    getAddObj(code);
+  } else {
+    columns.value = [...AllColumns];
   }
-  getAddObj(code);
+
   setTimeout(() => {
     showTable.value = true;
   }, 500);
-
 }
 
 function validatorMilitaryKeyEquipCode(value, record) {
