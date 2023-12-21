@@ -1,7 +1,6 @@
 import type { TpmOeeDto } from '@/api/avic/mms/tpm/TpmOeeApi'; // 引入模块DTO
 import { getTpmOee, saveTpmOee } from '@/api/avic/mms/tpm/TpmOeeApi'; // 引入模块API
 import dayjs from 'dayjs';
-import { useUserStore } from '@/store/user';
 
 export const emits = ['reloadData', 'close'];
 
@@ -30,7 +29,6 @@ export function useTpmOeeForm({
     const colLayout = proxy.$colLayout2; // 调用布局公共方法
     const loading = ref(false);
     const secretLevelList = ref([]); // 密级通用代码
-    const userStore = useUserStore();
 
     onMounted(() => {
         // 获取当前用户对应的文档密级
@@ -40,10 +38,10 @@ export function useTpmOeeForm({
             getFormData(props.formId);
         } else {
             form.value.applyDate = dayjs(new Date());
-            form.value.applyUserId = userStore.userInfo.id;
-            form.value.applyUserName = userStore.userInfo.name;
-            form.value.reportDeptId = userStore.userInfo.deptId;
-            form.value.reportDeptIdAlias = userStore.userInfo.deptName;
+            form.value.applyUserId = proxy.$getLoginUser().id;
+            form.value.applyUserName = proxy.$getLoginUser().name;
+            form.value.reportDeptId = proxy.$getLoginUser().entityDeptId;
+            form.value.reportDeptIdAlias = proxy.$getLoginUser().entityDeptName;
         }
     });
 

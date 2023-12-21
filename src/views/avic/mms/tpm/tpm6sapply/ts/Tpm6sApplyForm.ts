@@ -1,16 +1,15 @@
 import type { Tpm6sApplyDto } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块DTO
-import { getTpm6sApply, saveTpm6sApply, saveFormAndStartProcess } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块API
+import { getTpm6sApply, saveFormAndStartProcess, saveTpm6sApply } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块API
 import {
-  default as flowUtils,
-  startFlowByFormCode,
   closeFlowLoading,
-  openFlowDetail,
+  default as flowUtils,
   getFieldAuth,
-  getFieldVisible,
   getFieldDisabled,
-  getFieldRequired
+  getFieldRequired,
+  getFieldVisible,
+  openFlowDetail,
+  startFlowByFormCode
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import { useUserStore } from '@/store/user';
 import dayjs from 'dayjs';
 import { createEditor } from '@wangeditor/editor'; // 引入富文本依赖
 import { useRichText } from '@/utils/hooks/useRichText'; // 引入富文本相关配置及方法
@@ -77,7 +76,6 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
     { fieldName: 'projectCategory', lookUpType: 'TPM_6S_PROBLEM_APPLY' }
   ];
   const authJson = ref(null);
-  const userStore = useUserStore();
   const {
     toolbarConfig,
     editorConfig,
@@ -113,13 +111,13 @@ export function useTpm6sApplyForm({ props: props, emit: emit }) {
     } else {
       // 添加表单的初始值
       initForm();
-      form.value.editDeptId = userStore.userInfo.deptId;
-      form.value.editDeptName = userStore.userInfo.deptName;
-      form.value.editDeptNameAlias = userStore.userInfo.deptName;
-      form.value.editUserId = userStore.userInfo.id;
-      form.value.editUserName = userStore.userInfo.name;
-      form.value.problemFinderId = userStore.userInfo.id;
-      form.value.problemFinderName = userStore.userInfo.name;
+      form.value.editDeptId = proxy.$getLoginUser().entityDeptId;
+      form.value.editDeptName = proxy.$getLoginUser().entityDeptName;
+      form.value.editDeptNameAlias = proxy.$getLoginUser().entityDeptName;
+      form.value.editUserId = proxy.$getLoginUser().id;
+      form.value.editUserName = proxy.$getLoginUser().name;
+      form.value.problemFinderId = proxy.$getLoginUser().id;
+      form.value.problemFinderName = proxy.$getLoginUser().name;
       form.value.applyDate = dayjs(new Date());
     }
   });

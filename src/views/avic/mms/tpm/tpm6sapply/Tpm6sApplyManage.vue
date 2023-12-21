@@ -7,33 +7,33 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划完成时间(起)">
               <a-date-picker
-                v-model:value="queryForm.planFinishDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择计划完成时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.planFinishDateEnd)"
+                  v-model:value="queryForm.planFinishDateBegin"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择计划完成时间(起)"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.planFinishDateEnd)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="计划完成时间(止)">
               <a-date-picker
-                v-model:value="queryForm.planFinishDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择计划完成时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.planFinishDateBegin)"
+                  v-model:value="queryForm.planFinishDateEnd"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择计划完成时间(止)"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.planFinishDateBegin)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="项目组长">
               <AvicCommonSelect
-                v-model:value="queryForm.chargeUserName"
-                type="userSelect"
-                placeholder="请选择项目组长"
-                :defaultShowValue="queryForm.chargeUserNameAlias"
-                @callback="
+                  v-model:value="queryForm.chargeUserName"
+                  type="userSelect"
+                  placeholder="请选择项目组长"
+                  :defaultShowValue="queryForm.chargeUserNameAlias"
+                  @callback="
                   result => {
                     queryForm.chargeUserNameAlias = result.names;
                   }
@@ -42,23 +42,23 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              v-bind="colLayout.cols"
+              style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -69,79 +69,77 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpm6sApply"
-        table-key="tpm6sApply"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpm6sApply"
+          table-key="tpm6sApply"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['tpm6sApply:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpm6sApply:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
             <a-button
-              v-hasPermi="['tpm6sApply:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
+                v-hasPermi="['tpm6sApply:edit']"
+                title="编辑"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                @click="handleEdit"
             >
               <template #icon>
-                <edit-outlined />
+                <edit-outlined/>
               </template>
               编辑
             </a-button>
             <a-button
-              v-hasPermi="['tpm6sApply:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['tpm6sApply:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
             <a-button
-              v-hasPermi="['tpm6sApply:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
+                v-hasPermi="['tpm6sApply:export']"
+                title="导出"
+                type="primary"
+                ghost
+                @click="handleExport">
               <template #icon>
-                 <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
             <a-button
-              v-hasPermi="['tpm6sApply:commitProcess']"
-              title="提交审批"
-              type="primary"
-              :loading="approvalLoading"
-              ghost
-              @click="handleApproval(selectedRows, selectedRowKeys)">
+                v-hasPermi="['tpm6sApply:commitProcess']"
+                title="提交审批"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="approvalLoading"
+                @click="handleApproval(selectedRows, selectedRowKeys)">
               提交审批
             </a-button>
           </a-space>
@@ -149,18 +147,18 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpm6sApply:all']"
-              :myFileAuth="['tpm6sApply:my']"
-              :defaultBpmType = 'queryForm.bpmType'
-              :defaultBpmState = 'queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['tpm6sApply:all']"
+                :myFileAuth="['tpm6sApply:my']"
+                :defaultBpmType='queryForm.bpmType'
+                :defaultBpmState='queryForm.bpmState'
+                @change="changeBpmFilter"
             />
             <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+                class="opt-btn-commonsearch"
+                style="width: 200px"
+                placeholder="请输入"
+                :allow-clear="true"
+                @search="handleKeyWordQuery"
             />
           </a-space>
         </template>
@@ -168,7 +166,7 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'billNo'">
+          <template v-else-if="column.dataIndex === 'billNo' && record.bpmState != null">
             <a @click="handleFlowDetail(record)">
               {{ record.billNo }}
             </a>
@@ -183,19 +181,19 @@
     </div>
     <!-- 添加页面弹窗 -->
     <Tpm6sApplyAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <Tpm6sApplyEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
     <AttachModal
         :attachOpen="attachOpen"
@@ -206,12 +204,12 @@
 </template>
 <script lang="ts" setup>
 import type { Tpm6sApplyDto } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块DTO
-import { listTpm6sApplyByPage, delTpm6sApply, approval6sApply, exportExcel } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块API
+import { approval6sApply, delTpm6sApply, exportExcel, listTpm6sApplyByPage } from '@/api/avic/mms/tpm/Tpm6sApplyApi'; // 引入模块API
 import Tpm6sApplyAdd from './Tpm6sApplyAdd.vue'; // 引入添加页面组件
 import Tpm6sApplyEdit from './Tpm6sApplyEdit.vue'; // 引入编辑页面组件
 import AttachModal from './AttachModal.vue';
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import { useUserStore } from '@/store/user';
+
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -348,11 +346,9 @@ const columns = [
     fixed: 'right'
   }
 ];
-const userStore = useUserStore();
 const queryForm = ref<Tpm6sApplyDto>({
   bpmState: 'all',
-  bpmType: 'all',
-  editDeptId: userStore.userInfo.deptId
+  bpmType: 'all'
 });
 // 高级查询对象
 const queryParam = reactive({
@@ -393,21 +389,23 @@ onMounted(() => {
 
 /** 查询数据 */
 function getList() {
+  queryParam.searchParams.editDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   listTpm6sApplyByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -415,6 +413,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -422,6 +421,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -430,33 +430,36 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
-  const keyWord = {
-  };
+  const keyWord = {};
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
-  if (selectedRows.value[0].editUserId !== userStore.userInfo.id) {
+  if (selectedRows.value[0].editUserId !== proxy.$getLoginUser().id) {
     proxy.$message.warning('请选择自己的数据编辑！');
     return;
   }
-  if (selectedRows.value[0].createdBy !== userStore.userInfo.id) {
+  if (selectedRows.value[0].createdBy !== proxy.$getLoginUser().id) {
     proxy.$message.warning('只有自己添加的数据才可以编辑！');
     return;
   }
@@ -467,6 +470,7 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -476,17 +480,18 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
-  if (rows.filter(row => row.editUserId !== userStore.userInfo.id)?.length > 0) {
+  if (rows.filter(row => row.editUserId !== proxy.$getLoginUser().id)?.length > 0) {
     proxy.$message.warning('只有自己的数据才可以删除！');
     return;
   }
-  if (rows.filter(row => row.createdBy !== userStore.userInfo.id)?.length > 0) {
+  if (rows.filter(row => row.createdBy !== proxy.$getLoginUser().id)?.length > 0) {
     proxy.$message.warning('只有自己添加的数据才可以删除！');
     return;
   }
@@ -501,19 +506,20 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delTpm6sApply(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -530,11 +536,13 @@ function handleExport() {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -545,17 +553,18 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
 /** 提交审批 */
 const handleApproval = (rows, ids) => {
   if (ids.length !== 1) {
     proxy.$message.warning('请选择要提交审批的数据！');
     return;
   }
-  if (rows.filter(row => row.editUserId !== userStore.userInfo.id)?.length > 0) {
+  if (rows.filter(row => row.editUserId !== proxy.$getLoginUser().id)?.length > 0) {
     proxy.$message.warning('只有自己的数据才可以提交！');
     return;
   }
-  if (rows.filter(row => row.createdBy !== userStore.userInfo.id)?.length > 0) {
+  if (rows.filter(row => row.createdBy !== proxy.$getLoginUser().id)?.length > 0) {
     proxy.$message.warning('只有自己添加的数据才可以提交！');
     return;
   }
@@ -574,7 +583,7 @@ const handleApproval = (rows, ids) => {
   });
 };
 
-function getBpmDefine(row){
+function getBpmDefine(row) {
   startFlowByFormCode({
     formCode: formCode,
     formData: row,
@@ -609,7 +618,7 @@ const handleAttach = (record, title) => {
   attchForm.id = record.id;
   if (title === 'problemDescription') {
     attchForm.info = record.problemDescription;
-  } else if (title === 'problemSolvingInstruction'){
+  } else if (title === 'problemSolvingInstruction') {
     attchForm.info = record.problemSolvingInstruction;
   }
   attachOpen.value = true;

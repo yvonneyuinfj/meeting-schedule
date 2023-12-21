@@ -500,7 +500,8 @@ const handleCreative = () => {
   }
   const data = {
     planMaintenanceDateBegin: barForm.value.startDate,
-    planMaintenanceDateEnd: barForm.value.endDate
+    planMaintenanceDateEnd: barForm.value.endDate,
+    useDeptId: proxy.$getLoginUser().entityDeptId
   };
   //生成逻辑
   creativeMaintPlan(data).then(res => {

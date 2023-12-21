@@ -187,7 +187,7 @@
 import { useTpm6sApplyForm, emits } from './ts/Tpm6sApplyForm'; // 引入表单ts
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
-import { useUserStore } from '@/store/user';
+const { proxy } = getCurrentInstance();
 const props = defineProps({
   formId: {
     type: String,
@@ -210,7 +210,6 @@ const props = defineProps({
   }
 });
 const emit = defineEmits(emits);
-const userStore = useUserStore();
 const {
   form,
   formRef,
@@ -247,7 +246,7 @@ defineExpose({
 function getInfo() {
   let billNo = autoCode.value.getSegmentValue();
   billNo = billNo.split('$$');
-  billNo[1] = userStore.userInfo.deptName;
+  billNo[1] = proxy.$getLoginUser().entityDeptName;
   form.value.billNo = billNo.toString().replaceAll(',','');
 }
 </script>
