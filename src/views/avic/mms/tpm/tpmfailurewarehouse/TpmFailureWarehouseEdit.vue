@@ -21,10 +21,16 @@
               <a-input v-model:value="form.billNo" disabled/>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="equipmentCode" label="设备编号" has-feedback>
               <a-input v-model:value="form.equipmentCode" :maxLength="64" :auto-focus="true"
                        placeholder="请选择设备编号" :readonly="true" @click="handleOpen"/>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="equipmentCode" label="设备编号" has-feedback>
+              <a-input v-model:value="form.equipmentCode" :maxLength="64" :auto-focus="true"
+                       placeholder="请选择设备编号" :readonly="true"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -68,7 +74,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="applyUserId" label="申请人姓名" has-feedback>
               <AvicCommonSelect
                   v-model:value="form.applyUserId"
@@ -78,12 +84,33 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="applyUserId" label="申请人姓名" has-feedback>
+              <AvicCommonSelect
+                  v-model:value="form.applyUserId"
+                  type="userSelect"
+                  placeholder="请选择申请人姓名"
+                  :defaultShowValue="form.applyUserNameAlias"
+                  :disabled="true"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="applyUserTel" label="申请人电话">
               <a-input
                   v-model:value="form.applyUserTel"
                   :maxLength="64"
                   placeholder="请输入申请人电话"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="applyUserTel" label="申请人电话">
+              <a-input
+                  v-model:value="form.applyUserTel"
+                  :maxLength="64"
+                  placeholder="请输入申请人电话"
+                  :disabled="true"
               />
             </a-form-item>
           </a-col>
@@ -96,7 +123,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="applyDate" label="申请日期" has-feedback>
               <a-date-picker
                   v-model:value="form.applyDate"
@@ -106,13 +133,35 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="applyDate" label="申请日期" has-feedback>
+              <a-date-picker
+                  v-model:value="form.applyDate"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择申请日期"
+                  :disabled="true"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="faultDate" label="故障发生时间" has-feedback>
               <a-date-picker
                   v-model:value="form.faultDate"
                   format="YYYY-MM-DD"
                   value-format="YYYY-MM-DD"
                   placeholder="请选择故障发生时间"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="faultDate" label="故障发生时间" has-feedback>
+              <a-date-picker
+                  v-model:value="form.faultDate"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择故障发生时间"
+                  :disabled="true"
               />
             </a-form-item>
           </a-col>
@@ -136,7 +185,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="failureWarehouseType" label="故障库类型" has-feedback>
               <a-select
                   v-model:value="form.failureWarehouseType"
@@ -156,7 +205,28 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="failureWarehouseType" label="故障库类型" has-feedback>
+              <a-select
+                  v-model:value="form.failureWarehouseType"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择故障库类型"
+                  :disabled="true"
+              >
+                <a-select-option
+                    v-for="item in failureWarehouseTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '0'">
             <a-form-item name="secretLevel" label="密级" has-feedback>
               <a-select
                   v-model:value="form.secretLevel"
@@ -165,6 +235,27 @@
                   :show-search="true"
                   :allow-clear="true"
                   placeholder="请选择密级"
+              >
+                <a-select-option
+                    v-for="item in secretLevelList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.repairType === '1'">
+            <a-form-item name="secretLevel" label="密级" has-feedback>
+              <a-select
+                  v-model:value="form.secretLevel"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择密级"
+                  :disabled="true"
               >
                 <a-select-option
                     v-for="item in secretLevelList"
@@ -206,7 +297,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols3">
+          <a-col v-bind="colLayout.cols3" v-if="form.repairType === '0'">
             <a-form-item
                 label="附件"
             >
@@ -242,7 +333,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { useTpmFailureWarehouseForm, emits } from './ts/TpmFailureWarehouseForm'; // 引入表单ts
+import { emits, useTpmFailureWarehouseForm } from './ts/TpmFailureWarehouseForm'; // 引入表单ts
 import TpmInventoryFailureSelect from '@/views/avic/mms/tpm/tpmfailurewarehouse/TpmInventoryFailureSelect.vue'; // 引入弹窗选择页
 
 const props = defineProps({

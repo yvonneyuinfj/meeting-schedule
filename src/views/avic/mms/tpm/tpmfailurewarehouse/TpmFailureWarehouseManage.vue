@@ -496,6 +496,10 @@ const handleApproval = (rows, ids) => {
       proxy.$message.warning('请选择未提交审批的数据！');
       return;
     }
+    if (item.repairType === '1'){
+      proxy.$message.warning('维修类型是外委的数据,不进入审批流程！');
+      return;
+    }
   }
   proxy.$confirm({
     title: '确认要提交审批查询出的数据吗?',
@@ -633,6 +637,10 @@ function handleDelete(rows, ids) {
   }
   if (rows.filter(row => row.bpmState !== 'start' && row.bpmState !== null)?.length > 0) {
     proxy.$message.warning('只有拟稿中和未提交的数据才可以删除！');
+    return;
+  }
+  if (rows.filter(row => row.repairType === '1')?.length > 0){
+    proxy.$message.warning('维修类型为外委的数据无法删除!');
     return;
   }
   proxy.$confirm({
