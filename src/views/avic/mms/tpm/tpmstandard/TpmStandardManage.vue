@@ -130,7 +130,7 @@
               <a-input-search
                   class="opt-btn-commonsearch"
                   style="width: 200px"
-                  placeholder="或设备编号"
+                    placeholder="请输入设备编号"
                   :allow-clear="true"
                   @search="handleKeyWordQuery"
               />

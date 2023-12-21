@@ -120,6 +120,7 @@
                   format="YYYY-MM-DD"
                   value-format="YYYY-MM-DD"
                   placeholder="请选择申请日期"
+                    :defaultValue="currentTime"
               />
             </a-form-item>
           </a-col>
@@ -262,6 +263,8 @@
 <script lang="ts" setup>
 import { useTpmFailureWarehouseForm, emits } from './ts/TpmFailureWarehouseForm'; // 引入表单ts
 import TpmInventoryFailureSelect from './TpmInventoryFailureSelect.vue'; // 引入弹窗选择页
+import dayjs from 'dayjs';
+const currentTime = ref(dayjs().format('YYYY-MM-DD'));
 const props = defineProps({
   formId: {
     type: String,
@@ -326,4 +329,7 @@ const handleOk = () => {
 
   open.value = false;
 };
+onMounted(() => {
+  form.value.applyDate = currentTime;
+});
 </script>

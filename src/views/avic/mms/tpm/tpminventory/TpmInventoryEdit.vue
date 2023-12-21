@@ -58,7 +58,7 @@
               <a-input
                 v-model:value="form.equipmentCode"
                 :maxLength="128"
-                placeholder="自动编号：四位设备大类CODE+三位流水号,需要唯一值校验"
+                  placeholder="自动编号：四位设备大类CODE+五位流水号"
               />
             </a-form-item>
           </a-col>

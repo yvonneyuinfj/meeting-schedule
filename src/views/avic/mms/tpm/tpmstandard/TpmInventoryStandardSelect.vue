@@ -91,7 +91,7 @@
         @change="handleTableChange"
         @refresh="getList"
       >
-        <template #toolBarRight>
+          <!-- <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"
             style="width: 200px"
@@ -99,7 +99,7 @@
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />
-        </template>
+        </template> -->
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}

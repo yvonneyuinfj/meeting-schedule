@@ -48,25 +48,26 @@
                 baseUrl="/mms/tpm/tpmassetclasss"
                 :allowSelectNonIsLeaf="false"
                 @select="res => (form.className = res)"
-                placeholder="请选择设备大类"
-              ></AvicTreeSelect>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetsCode" label="资产编号" has-feedback>
-              <a-input
-                v-model:value="form.assetsCode"
-                :maxLength="128"
-                placeholder="请输入资产编号"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="equipmentCode" label="设备编号" has-feedback>
-              <a-input
-                v-model:value="form.equipmentCode"
-                :maxLength="128"
-                placeholder="自动编号：四位设备大类CODE+三位流水号,需要唯一值校验"
+                       @change="getTreeChangeId"
+                   placeholder="请选择设备大类"
+                 ></AvicTreeSelect>
+               </a-form-item>
+             </a-col>
+             <a-col v-bind="colLayout.cols">
+               <a-form-item name="assetsCode" label="资产编号" has-feedback>
+                 <a-input
+                   v-model:value="form.assetsCode"
+                   :maxLength="128"
+                   placeholder="请输入资产编号"
+                 />
+               </a-form-item>
+             </a-col>
+             <a-col v-bind="colLayout.cols">
+               <a-form-item name="equipmentCode" label="设备编号" has-feedback>
+                 <a-input
+                   v-model:value="form.equipmentCode"
+                   :maxLength="128"
+                   placeholder="自动编号：四位设备大类CODE+五位流水号"
               />
             </a-form-item>
           </a-col>
@@ -303,7 +304,8 @@ const {
   proxy,
   afterUploadEvent,
   saveForm,
-  closeModal
+  closeModal,
+  getTreeChangeId
 } = useTpmInventoryForm({
   props: props,
   emit: emit
