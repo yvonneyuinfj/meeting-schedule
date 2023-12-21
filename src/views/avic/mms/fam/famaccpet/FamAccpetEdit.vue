@@ -282,6 +282,7 @@
   </AvicModal>
   <!-- 树节点 -->
   <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
+    <div style="height: 100%;overflow: scroll">
     <a-spin :spinning="treeLoading">
       <a-tree
         v-if="treeData && treeData.length > 0"
@@ -305,6 +306,7 @@
         </template>
       </a-tree>
     </a-spin>
+    </div>
   </a-modal>
 </template>
 <script lang="ts" setup>

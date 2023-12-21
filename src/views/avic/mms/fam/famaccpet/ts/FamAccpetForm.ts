@@ -73,6 +73,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   ];
   const authJson = ref(null);
   const bodyStyle = {
+    height: '600px',
     overflow: 'hidden',
     overflowY: 'scroll'
   };
