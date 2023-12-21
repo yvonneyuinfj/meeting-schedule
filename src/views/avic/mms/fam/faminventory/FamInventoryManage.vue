@@ -862,6 +862,7 @@
             <a-button
               title="打印卡片"
               type="primary"
+              @click="handleExport"
             >
               <template #icon>
                 <import-outlined />
