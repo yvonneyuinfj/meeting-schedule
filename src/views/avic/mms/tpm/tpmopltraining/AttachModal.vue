@@ -7,11 +7,11 @@
       width="40%"
   >
     <div class="Richtext">
-      <Toolbar
+        <!-- <Toolbar
           style="border-bottom: 1px solid #ccc"
           :editor="editorRef"
           :defaultConfig="toolbarConfig"
-      />
+      /> -->
       <Editor
           style="height: 150px; overflow-y: auto"
           v-model:value="form.info"

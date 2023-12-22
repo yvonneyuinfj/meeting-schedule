@@ -94,7 +94,7 @@
                   </template>
                   导出
                 </a-button>
-                <a-button v-hasPermi="['tpmIntactRatioMtbfMttr:startFlow']" title="提交流程" type="primary" ghost
+                  <a-button  title="提交流程" type="primary" ghost
                           @click="handleStartFlow(selectedRows, selectedRowKeys)">
                   <template #icon>
                     <avic-icon svg='avic-arrow-up-circle-line'/>

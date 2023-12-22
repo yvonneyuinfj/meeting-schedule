@@ -93,7 +93,6 @@
               'factoryNo',
               'procureOrder',
               'assetSpec',
-              'warrantyPeriod',
               'assetName',
               'producer',
               'invoiceNo',
@@ -233,6 +232,7 @@
         <AvicRowEdit
           v-else-if="
             [
+              'warrantyPeriod',
               'productionDate',
               'commencementTime',
               'timeCompletion',
@@ -273,7 +273,7 @@
               v-model:value="record[column.dataIndex]"
               style="width: 100%"
               placeholder="请选择是否"
-              @change="value => changeControlValue(value, record, column.dataIndex)"
+              @change="value => changeControlValue(value, record, column.dataIndex,true)"
             >
               <a-select-option
                 v-for="select in importedOrNotList"
@@ -446,7 +446,6 @@
               'fundSource',
               'equipType',
               'assetSecretLevel',
-              'geographicalArea',
               'assetsUse',
             ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
@@ -476,6 +475,30 @@
           </template>
         </AvicRowEdit>
 
+        <!--        @change="getTreeChangeId"-->
+        <!-- 树形弹窗 -->
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'geographicalArea'"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <TreeModal
+              v-model:value="record.geographicalArea"
+              :parentId="record.geographicalArea"
+              :parentTitle="record.geographicalAreaName"
+              ref="treeSelectRef"
+              baseUrl="/mms/tpm/tpmareas"
+              @getTile="getTreeNodeTitle($event, record ,'geographicalAreaName')"
+              :allowSelectNonIsLeaf="false"
+              placeholder="请选择"
+            >
+            </TreeModal>
+          </template>
+          <template #default>
+            {{ record.geographicalAreaName }}
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -581,6 +604,7 @@ import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassA
 import { getTpmAssetClass, getTreeData as getTpmTreeData } from '@/api/avic/mms/tpm/TpmAssetClassApi'; // 引入模块API
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
+import TreeModal from '@/components/tree-modal/TreeModal.vue';
 import {
   HouseColumns,
   DeviceColumns,
@@ -594,6 +618,7 @@ import {
   HouseValidateRules,
   ITValidateRules, OfficialValidateRules
 } from '@/views/avic/mms/fam/famaccpetlist/ValidateRules';
+import { getCodeById } from '@/api/avic/mms/tpm/TpmInventoryApi';
 
 const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
@@ -925,9 +950,9 @@ function getChangedData() {
     item['operationType_'] = 'delete';
   });
   const changedData = proxy.$getChangeRecords(list, initialList);
-  if (deletedData.value.length === 0 && changedData.length === 0) {
-    return list.value;
-  }
+  // if (deletedData.value.length === 0 && changedData.length === 0) {
+  //   return list.value;
+  // }
   return deletedData.value.concat(changedData);
 
 }
@@ -1085,8 +1110,13 @@ function handleTableChange(pagination, _filters, sorter) {
   getList();
 }
 
+function getTreeNodeTitle(nodeTitle, record, name) {
+  record[name] = nodeTitle;
+};
+
+
 /**控件变更事件 */
-function changeControlValue(values, record, column) {
+function changeControlValue(values, record, column, isTF: false) {
   let labels = [];
   if (Array.isArray(values)) {
     // 多选处理
@@ -1097,10 +1127,16 @@ function changeControlValue(values, record, column) {
     }
   } else {
     // 单选处理
-    const target = proxy[column + 'List'].find(item => values === item.lookupCode);
-    labels.push(target.lookupName);
-  }
-  if (record) {
+    if (isTF) {
+      const target = proxy['importedOrNotList'].find(item => values === item.lookupCode);
+      labels.push(target.lookupName);
+    } else {
+      const target = proxy[column + 'List'].find(item => values === item.lookupCode);
+      labels.push(target.lookupName);
+    }
+
+    if (record) {
+    }
     record[column + 'Name'] = labels.join(',');
   }
 }
@@ -1339,6 +1375,7 @@ watch(() => props.assetClass, (newV, oldV) => {
 
 defineExpose({
   validate,
-  getChangedData
+  getChangedData,
+  list
 });
 </script>

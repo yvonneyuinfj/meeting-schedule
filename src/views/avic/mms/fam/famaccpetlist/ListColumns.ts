@@ -810,7 +810,7 @@ export const DeviceColumns = [
     align: 'left'
   },
   {
-    title: '日期类型',
+    title: '质保期',
     dataIndex: 'warrantyPeriod',
     key: 'warrantyPeriod',
     ellipsis: true,

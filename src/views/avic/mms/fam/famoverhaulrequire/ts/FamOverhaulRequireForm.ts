@@ -29,31 +29,33 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    secretLevel: [{ required: true, message: '数据密级不能为空', trigger: 'change' }],
-    billNo: [{ required: true, message: '单据号不能为空', trigger: 'change' }],
-    maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
-    maintCategory: [{ validator: maintCategoryValidator, trigger: 'change' }],
-    expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
-    // managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
-    managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
-    isUsedScientificrs: [
-      { required: true, message: '是否使用型号经费不能为空', trigger: 'change' }
-    ],
-    budgetProject: [{ required: true, message: '预算项目不能为空', trigger: 'change' }],
-    budgetSubitem: [{ required: true, message: '预算分项不能为空', trigger: 'change' }],
-    budgetOrg: [{ required: true, message: '预算组织不能为空', trigger: 'change' }],
-    annualProvisional: [{ required: true, message: '年度/临时不能为空', trigger: 'change' }],
-    projectNumber: [{ required: true, message: '课题号不能为空', trigger: 'change' }],
-    projectAmount: [{ required: true, message: '项目金额（万元）不能为空', trigger: 'change' }],
-    isNeedReview: [{ required: true, message: '是否需要评审不能为空', trigger: 'change' }],
-    reqSuggest: [{ required: true, message: '要求及建议不能为空', trigger: 'change' }],
-    applyDeptId: [{ required: true, message: '申请部门不能为空', trigger: 'change' }],
-    applyDeptName: [{ required: true, message: '申请部门名称不能为空', trigger: 'change' }],
-    handlePersonId: [{ required: true, message: '需求申请人不能为空', trigger: 'change' }],
-    handlePersonName: [{ required: true, message: '需求申请人名称不能为空', trigger: 'change' }],
-    applyDate: [{validator:applyDateValidator,  trigger: 'change' }],
-    telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }]
-  };
+      secretLevel: [{ required: true, message: '数据密级不能为空', trigger: 'change' }],
+      billNo: [{ required: true, message: '单据号不能为空', trigger: 'change' }],
+      maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
+      maintCategory: [{ validator: maintCategoryValidator, trigger: 'change' }],
+      expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
+      managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
+      // managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
+      isUsedScientificrs: [
+        { required: true, message: '是否使用型号经费不能为空', trigger: 'change' }
+      ],
+      budgetProject: [{ required: true, message: '预算项目不能为空', trigger: 'change' }],
+      budgetSubitem: [{ required: true, message: '预算分项不能为空', trigger: 'change' }],
+      budgetOrg: [{ required: true, message: '预算组织不能为空', trigger: 'change' }],
+      annualProvisional: [{ required: true, message: '年度/临时不能为空', trigger: 'change' }],
+      projectNumber: [{ required: true, message: '课题号不能为空', trigger: 'change' }],
+      projectAmount: [{ required: true, message: '项目金额（万元）不能为空', trigger: 'change' }],
+      isNeedReview: [{ required: true, message: '是否需要评审不能为空', trigger: 'change' }],
+      reqSuggest: [{ required: true, message: '要求及建议不能为空', trigger: 'change' }],
+      applyDeptId: [{ required: true, message: '申请部门不能为空', trigger: 'change' }],
+      applyDeptName: [{ required: true, message: '申请部门名称不能为空', trigger: 'change' }],
+      handlePersonId: [{ required: true, message: '需求申请人不能为空', trigger: 'change' }],
+      handlePersonName: [{ required: true, message: '需求申请人名称不能为空', trigger: 'change' }],
+      applyDate: [{ validator: applyDateValidator, trigger: 'change' }],
+      telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }],
+
+    }
+  ;
   const famOverhaulRequireListEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
@@ -109,7 +111,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     }
   };
 
-  async function applyDateValidator(_ruler,value) {
+  async function applyDateValidator(_ruler, value) {
     if (form.value.maintCategory === '1') {
       if (!value) {
         return Promise.reject(new Error('故障时间不能为空'));

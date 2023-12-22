@@ -130,7 +130,7 @@ export function useTpmInventoryForm({
   const ynEntranceList = ref([]); // 是否进口通用代码
   const secretLevelList = ref([]); // 数据密级通用代码
   const ynMilitaryKeyEquipList = ref([]); // 是否军工关键设备通用代码
-  const ynFixedList = ref([]); // 是转固，通用代码：YN_FLAG^ Y是，N否通用代码
+  const ynFixedList = ref([]); // 是转固，通用代码：PLATFORM_YES_NO_FLAG^ Y是，N否通用代码
   const assetTypeList = ref([]); // 资产类别通用代码
   const assetsUseList = ref([]); // 资产用途通用代码
   const transferProjectTypeList = ref([]); // 移交项目类别通用代码
@@ -145,23 +145,23 @@ export function useTpmInventoryForm({
   const lookupParams = [
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
     { fieldName: 'abcdType', lookUpType: 'TPM_ABCD_TYPE' },
-    { fieldName: 'keyOnlyChildFlag', lookUpType: 'YN_FLAG' },
+    { fieldName: 'keyOnlyChildFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'cncType', lookUpType: 'TPM_CNC_TYPE' },
     { fieldName: 'equipmentStatus', lookUpType: 'TPM_EQUIPMENT_STATUS' },
     { fieldName: 'assetsStatus', lookUpType: 'TPM_ASSETS_STATUS' },
-    { fieldName: 'ynEntrance', lookUpType: 'YN_FLAG' },
-    { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'YN_FLAG' },
-    { fieldName: 'ynFixed', lookUpType: 'YN_FLAG' },
+    { fieldName: 'ynEntrance', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'ynFixed', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'assetType', lookUpType: 'TPM_ASSET_TYPE' },
     { fieldName: 'assetsUse', lookUpType: 'TPM_ASSETS_USE' },
     { fieldName: 'transferProjectType', lookUpType: 'TPM_TRANSFER_PROJECT_TYPE' },
-    { fieldName: 'ynMaintain', lookUpType: 'YN_FLAG' },
-    { fieldName: 'ynTransferRecord', lookUpType: 'YN_FLAG' },
+    { fieldName: 'ynMaintain', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'ynTransferRecord', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'equipmentUse', lookUpType: 'TPM_EQUIPMENT_USE' },
-    { fieldName: 'ynBottleneckEquipment', lookUpType: 'YN_FLAG' },
+    { fieldName: 'ynBottleneckEquipment', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'energyEfficiency', lookUpType: 'TPM_ENERGY_EFFICIENCY' },
-    { fieldName: 'ynAnnualInspection', lookUpType: 'YN_FLAG' },
-    { fieldName: 'ynMajorAssets', lookUpType: 'YN_FLAG' },
+    { fieldName: 'ynAnnualInspection', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'ynMajorAssets', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'capitalSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
   ];
   /** 
@@ -265,7 +265,6 @@ export function useTpmInventoryForm({
   /** 获取通用代码  */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-      console.log(result)
       equipmentTypeList.value = result.equipmentType;
       abcdTypeList.value = result.abcdType;
       keyOnlyChildFlagList.value = result.keyOnlyChildFlag;
@@ -387,13 +386,13 @@ export function useTpmInventoryForm({
     form.value[name] = nodeTitle;
   };
   const getTreeChangeId = (id) =>{
-    if(!id) return
+    if(!id) return;
     getCodeById(id).then(res =>{
       if (res.success){
-        form.value.equipmentCode = res.data
+        form.value.equipmentCode = res.data;
       }
-    })
-  }
+    });
+  };
   /** 异步校验设备编号唯一 */
   async function validateEquipmentCodeUnique(rule, value) {
     if (value) {
@@ -450,6 +449,6 @@ export function useTpmInventoryForm({
     closeModal,
     getSelectName,
     getTreeNodeTitle,
-    getTreeChangeId,
+    getTreeChangeId
   };
 }

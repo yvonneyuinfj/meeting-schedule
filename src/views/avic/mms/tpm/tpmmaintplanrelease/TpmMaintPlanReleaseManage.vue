@@ -790,6 +790,9 @@ function validateVendor(value, record) {
 /** 查询数据  */
 function getList() {
   queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
+  //查看登陆人为保养负责人或实际保养人的数据
+  queryParam.searchParams.maintUserId = proxy.$getLoginUser().id;
+  queryParam.searchParams.actrualMaintUserId = proxy.$getLoginUser().id;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

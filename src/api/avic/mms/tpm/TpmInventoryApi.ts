@@ -156,7 +156,7 @@ export interface TpmInventoryDto extends BaseBeanModel {
   attribute10?: string;
   /** 调拨记录 */
   transferRecord?: string;
-  /** 是转固，通用代码：YN_FLAG^ Y是，N否 */
+  /** 是转固，通用代码：PLATFORM_YES_NO_FLAG^ Y是，N否 */
   ynFixed?: any;
   /** 使用年限 */
   useTime?: number;

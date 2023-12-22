@@ -1268,14 +1268,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="ynFixed" label="是转固，通用代码：YN_FLAG^ Y是，N否">
+            <a-form-item name="ynFixed" label="是转固，通用代码：PLATFORM_YES_NO_FLAG^ Y是，N否">
               <a-select
                 v-model:value="form.ynFixed"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择是转固，通用代码：YN_FLAG^ Y是，N否"
+                placeholder="请选择是转固，通用代码：PLATFORM_YES_NO_FLAG^ Y是，N否"
               >
                 <a-select-option
                   v-for="item in ynFixedList"

@@ -86,7 +86,7 @@ export const generator = (
 ) => {
   routeMap.map(item => {
     const { title, hideChildrenInMenu, attribute01, icon, menuMark, menuMarkName, url } =
-      item.meta || {};
+    item.meta || {};
     const target = attribute01 !== 'mainframe' ? '_blank' : undefined;
     let component = '';
     if (url) {
@@ -158,9 +158,13 @@ export const generatorDynamicRouter = () => {
       .then(response => {
         const { permissionButtonList, permissionColumnList, roleCodeList, userInfo } =
           response.data;
-        let menuList  = response.data.menuList
-        if(localStorage.get(USER_TYPE)){
-          menuList  = menuList.filter(item => item.name === localStorage.get(USER_TYPE) || item.name === null)
+        let menuList = response.data.menuList;
+        if (localStorage.get(USER_TYPE)) {
+          if (localStorage.get(USER_TYPE) === 'scm') {
+            menuList = menuList.filter(item => item.name === 'scm' || item.name === 'cam');
+          } else {
+            menuList = menuList.filter(item => item.name === localStorage.get(USER_TYPE) || item.name === null);
+          }
         }
         const routes: MenuDataItem[] = [];
         const blankRoutes: MenuDataItem[] = [];

@@ -645,10 +645,10 @@ const handleApproval = (rows, ids) => {
     proxy.$message.warning('请选择要提交审批的数据！');
     return;
   }
-  if (ids.length > 1) {
-    proxy.$message.warning('请选择一条要提交审批的数据！');
-    return;
-  }
+  // if (ids.length > 1) {
+  //   proxy.$message.warning('请选择一条要提交审批的数据！');
+  //   return;
+  // }
   for (let item of rows) {
     if (item.bpmState !== null) {
       proxy.$message.warning('请选择未提交审批的数据！');
