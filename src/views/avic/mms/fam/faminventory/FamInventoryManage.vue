@@ -736,20 +736,6 @@
               </a-select>
             </a-form-item>
           </a-col>
-
-          <a-col
-            v-bind="colLayout.cols"
-            v-show="advanced"
-          >
-            <a-form-item label="质保期">
-              <a-input
-                v-model:value="queryForm.warrantyPeriod"
-                placeholder="请输入质保期"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
           <a-col
             v-bind="colLayout.cols"
             style="margin-left: auto"
