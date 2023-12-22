@@ -416,17 +416,27 @@
           :column="column.dataIndex"
         >
           <template #edit>
-            <a-input-number
-              v-model:value="record[column.dataIndex]"
-              :max="999999999999"
-              :min="-999999999999"
-              :precision="2"
-              :step="0.01"
-              @input="$forceUpdate()"
-              @blur="blurInput($event, record, column.dataIndex)"
-              placeholder="请输入"
-              style="width: 100%"
-            ></a-input-number>
+<!--            <TreeModal-->
+<!--              v-model:value="record[column.dataIndex]"-->
+<!--              :parentId="record[column.dataIndex]"-->
+<!--              :parentTitle="record[column.dataIndex]"-->
+<!--              ref="treeSelectRef"-->
+<!--              baseUrl="/mms/tpm/tpmareas"-->
+<!--              :allowSelectNonIsLeaf="false"-->
+<!--              placeholder="请选择设备大类"-->
+<!--            >-->
+<!--            </TreeModal>-->
+                        <a-input-number
+                          v-model:value="record[column.dataIndex]"
+                          :max="999999999999"
+                          :min="-999999999999"
+                          :precision="2"
+                          :step="0.01"
+                          @input="$forceUpdate()"
+                          @blur="blurInput($event, record, column.dataIndex)"
+                          placeholder="请输入"
+                          style="width: 100%"
+                        ></a-input-number>
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'assetNo'">
@@ -581,6 +591,7 @@ import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassA
 import { getTpmAssetClass, getTreeData as getTpmTreeData } from '@/api/avic/mms/tpm/TpmAssetClassApi'; // 引入模块API
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
+// import TreeModal from '@/components/tree-modal/TreeModal.vue';
 import {
   HouseColumns,
   DeviceColumns,
@@ -925,9 +936,9 @@ function getChangedData() {
     item['operationType_'] = 'delete';
   });
   const changedData = proxy.$getChangeRecords(list, initialList);
-  if (deletedData.value.length === 0 && changedData.length === 0) {
-    return list.value;
-  }
+  // if (deletedData.value.length === 0 && changedData.length === 0) {
+  //   return list.value;
+  // }
   return deletedData.value.concat(changedData);
 
 }
@@ -1339,6 +1350,7 @@ watch(() => props.assetClass, (newV, oldV) => {
 
 defineExpose({
   validate,
-  getChangedData
+  getChangedData,
+  list
 });
 </script>

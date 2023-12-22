@@ -183,7 +183,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               const subInfoList = famAccpetListEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famAccpetListList = subInfoList; // 挂载子表数据
-              if (postData.famAccpetListList.length === 0) {
+              if (famAccpetListEdit.value.list.length === 0) {
                 loading.value = false;
                 proxy.$message.warning('请添加子表数据');
                 return;
@@ -254,8 +254,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               // 处理数据
               postData.famAccpetListList = subInfoList; // 挂载子表数据
             }
-
-            if (postData.famAccpetListList.length === 0) {
+            if (famAccpetListEdit.value.list.length === 0) {
               loading.value = false;
               proxy.$message.warning('请添加子表数据');
               return;
@@ -356,8 +355,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famAccpetListList = subInfoList; // 挂载子表数据
-
-      if (postData.famAccpetListList.length === 0) {
+      if (famAccpetListEdit.value.list.length === 0) {
         proxy.$message.warning('请添加子表数据');
         loading.value = false;
         return;
