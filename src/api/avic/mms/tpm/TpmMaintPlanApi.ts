@@ -214,3 +214,10 @@ export function backTpmMaintPlan(ids: [string], reason: string): Promise<Respons
 export function cancelTpmMaintPlan(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/cancel-maint-plan/v1', { ids: ids });
 }
+
+/** 获取分页数据 */
+export function listTpmMaintPlanQueryByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmMaintPlanDto>> {
+  return request.post(basePath + '/search-query-by-page/v1', param);
+}
