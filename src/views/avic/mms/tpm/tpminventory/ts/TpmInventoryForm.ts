@@ -265,7 +265,6 @@ export function useTpmInventoryForm({
   /** 获取通用代码  */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-      console.log(result)
       equipmentTypeList.value = result.equipmentType;
       abcdTypeList.value = result.abcdType;
       keyOnlyChildFlagList.value = result.keyOnlyChildFlag;
@@ -387,13 +386,13 @@ export function useTpmInventoryForm({
     form.value[name] = nodeTitle;
   };
   const getTreeChangeId = (id) =>{
-    if(!id) return
+    if(!id) return;
     getCodeById(id).then(res =>{
       if (res.success){
-        form.value.equipmentCode = res.data
+        form.value.equipmentCode = res.data;
       }
-    })
-  }
+    });
+  };
   /** 异步校验设备编号唯一 */
   async function validateEquipmentCodeUnique(rule, value) {
     if (value) {
@@ -450,6 +449,6 @@ export function useTpmInventoryForm({
     closeModal,
     getSelectName,
     getTreeNodeTitle,
-    getTreeChangeId,
+    getTreeChangeId
   };
 }
