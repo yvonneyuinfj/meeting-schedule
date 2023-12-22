@@ -911,9 +911,13 @@ function handleTableChange(pagination, filters, sorter) {
 function handleOpen(record) {
   open.value = true;
   currentRecord.value = record;
-  if (record.problemDescription && record.problemDescription != null){
+  console.log(record.problemDescription);
+  setTimeout(async () => {
     attachModal.value.note = record.problemDescription;
-  }
+  }, 300);
+  // if (record.problemDescription){
+  //   attachModal.value.note = record.problemDescription;
+  // }
 }
 
 const handleCancel = () => {

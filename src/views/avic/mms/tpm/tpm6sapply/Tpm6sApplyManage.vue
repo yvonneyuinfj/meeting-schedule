@@ -615,7 +615,7 @@ const approval = (bpmDefinedInfo, row) => {
 
 /** 打开查看 */
 const handleAttach = (record, title) => {
-  attchForm.id = record.id;
+  attchForm.id = title;
   if (title === 'problemDescription') {
     attchForm.info = record.problemDescription;
   } else if (title === 'problemSolvingInstruction') {
@@ -628,5 +628,6 @@ const handleAttach = (record, title) => {
 const closeAttach = () => {
   attachOpen.value = false;
   attchForm.id = null;
+  attchForm.info = null;
 };
 </script>

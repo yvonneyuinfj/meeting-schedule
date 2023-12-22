@@ -740,6 +740,7 @@ const handleAttach = (record) => {
 const closeAttach = () => {
   attachOpen.value = false;
   attchForm.id = null;
+  attchForm.info = null;
 };
 </script>
 

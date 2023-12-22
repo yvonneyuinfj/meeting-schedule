@@ -7,12 +7,13 @@
       width="40%"
   >
     <div class="Richtext">
-        <!-- <Toolbar
-          style="border-bottom: 1px solid #ccc"
-          :editor="editorRef"
-          :defaultConfig="toolbarConfig"
-      /> -->
+      <!--      <Toolbar-->
+      <!--          style="border-bottom: 1px solid #ccc"-->
+      <!--          :editor="editorRef"-->
+      <!--          :defaultConfig="toolbarConfig"-->
+      <!--      />-->
       <Editor
+          v-if="isShow"
           style="height: 150px; overflow-y: auto"
           v-model:value="form.info"
           :defaultConfig="editorConfig"
@@ -23,7 +24,7 @@
 
 </template>
 <script setup lang="ts">
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { Editor } from '@wangeditor/editor-for-vue';
 import { useRichText } from '@/utils/hooks/useRichText';
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
 
@@ -46,18 +47,20 @@ const form = reactive({
 });
 const emit = defineEmits(['closeAttach']);
 const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
+const isShow = ref(false);
 const {
-    toolbarConfig,
-    editorConfig,
-    onCreated,
-    dealRichText
+  // toolbarConfig,
+  editorConfig,
+  onCreated,
+  dealRichText
 } = useRichText(
-        editorRef,
-        'tpm6sResolveCompareProblemDescription',
-        'tpm6sResolveCompare'
+    editorRef,
+    'info',
+    'default'
 );
 
 function handleCancel() {
+  isShow.value = false;
   emit('closeAttach');
 }
 
@@ -67,12 +70,11 @@ watch(
       if (newV) {
         form.id = newV;
         form.info = props.attachForm.info;
-        if (form.info != null){
-          setTimeout(async () => {
-            await dealRichText(form.info);
-            editorRef.value.disable();
-          }, 500);
-        }
+        isShow.value = true;
+        setTimeout(async () => {
+          await dealRichText(form.info);
+          editorRef.value.disable();
+        }, 300);
       }
     }
 );
