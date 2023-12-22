@@ -984,7 +984,7 @@ const handleOk = () => {
     item['producer'] = item.factoryOwner;
     item['liablePerson'] = item.responseUserName;
   });
-  if (props.assetClass === '2') allocationColumn(selectRow[0].assetClass.charAt(0));
+  if (selectRow.length > 0 && props.assetClass === '2') allocationColumn(selectRow[0].assetClass.charAt(0));
   list.value = [...list.value, ...selectRow];
   // 批量新增数组合并去重
   let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));

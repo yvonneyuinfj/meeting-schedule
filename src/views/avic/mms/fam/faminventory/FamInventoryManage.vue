@@ -1772,7 +1772,7 @@ function handleDelete(ids, type) {
 }
 
 /** 勾选复选框时触发 */
-function onSelectChange(rowKeys,rows) {
+function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 
@@ -1796,28 +1796,43 @@ function handleTableChange(pagination, filters, sorter) {
 
 const selectedRow = (code) => {
   let rows = [];
-  let lastRow = '';
+  // let lastRow = '';
   let canGo = true;
-  selectedRowKeys.value.map(item => {
-    let row = list.value.filter(i => item === i.id)[0];
-    // 从第二个数据开始和上一个数据对比 如果属于不同资产类别不添加
-    if (props.assetClass === '2' && lastRow && lastRow !== row.assetClass.charAt(0)) {
-      if (['1', '4', '6', '8'].includes(lastRow) !== ['1', '4', '6', '8'].includes(row.assetClass.charAt(0))) canGo = false;
-    }
-    // 如果列别中已经有了资产类别 判断是否添加的数据相同
-    if (props.assetClass === '2' && code && ['1', '4', '6', '8'].includes(row.assetClass.charAt(0)) !== ['1', '4', '6', '8'].includes(code)) canGo = false;
-    lastRow = row.assetClass.charAt(0);
-    rows.push({
-      ...row,
-      operationType_: 'inside'
+  // console.log(selectedRows.value);
+  if (props.assetClass !== '2') {
+    selectedRows.value.map(item => {
+      rows.push({
+        ...item,
+        operationType_: 'inside'
+      });
     });
-  });
+  } else {
+    // console.log(code)
+    selectedRows.value.reduce((pre, cur, index) => {
+      if (pre === cur.assetClass.charAt(0)) {
+        rows.push({
+          ...cur,
+          operationType_: 'inside'
+        });
+      } else if (!(['1', '4', '6', '8'].includes(pre)) && !(['1', '4', '6', '8'].includes(cur.assetClass.charAt(0)))) {
+        rows.push({
+          ...cur,
+          operationType_: 'inside'
+        });
+      } else {
+        canGo = false;
+      }
+      // console.log(pre);
+      // console.log(cur);
+      // console.log('index ===========>' + index);
+      return cur.assetClass.charAt(0);
+    }, code || selectedRows.value[0].assetClass.charAt(0));
+  }
   if (canGo) {
     return rows;
   } else {
     proxy.$message.warning('请选择相同的资产类别');
   }
-
 };
 
 watch(
