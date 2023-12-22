@@ -21,7 +21,7 @@
               <avic-auto-code
                   v-model:value="form.billNo"
                   ref="autoCode"
-                  code-type="FAILURE_BILL_NO"
+                  code-type="TPM_FAILURE_BILL_NO"
                   code-param="TPM_FAILURE_WAREHOUSE"
                   :allow-clear="true"
                   :disabled="true"
