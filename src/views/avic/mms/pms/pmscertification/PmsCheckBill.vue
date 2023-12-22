@@ -124,17 +124,6 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <!--            <a-button-->
-            <!--              v-hasPermi="['pmsCheckBill:add']"-->
-            <!--              title="添加"-->
-            <!--              type="primary"-->
-            <!--              @click="handleAdd"-->
-            <!--            >-->
-            <!--              <template #icon>-->
-            <!--                <plus-outlined />-->
-            <!--              </template>-->
-            <!--              添加-->
-            <!--            </a-button>-->
             <a-button
               v-hasPermi="['pmsCheckBill:save']"
               title="保存"
@@ -147,62 +136,6 @@
               </template>
               保存
             </a-button>
-            <a-button
-              v-hasPermi="['pmsCheckBill:save']"
-              title="指定为送检"
-              v-show="compType === '0'"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="saveLoading"
-              @click="
-                event => {
-                  handleUpdateSendType(selectedRowKeys, event,'1');
-                }
-              "
-            >
-              送检
-            </a-button>
-            <a-button
-              v-hasPermi="['pmsCheckBill:save']"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              v-show="compType === '0'"
-              :loading="saveLoading"
-              @click="
-                event => {
-                  handleUpdateSendType(selectedRowKeys, event,'5');
-                }
-              "
-            >
-              入库登账
-            </a-button>
-            <a-button
-              v-hasPermi="['pmsCheckBill:del']"
-              title="退回"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="saveLoading"
-              @click="handleSendBack"
-            >
-              <template #icon>
-                <delete-outlined/>
-              </template>
-              退回
-            </a-button>
-            <!--            <a-button-->
-            <!--              v-hasPermi="['pmsCheckBill:del']"-->
-            <!--              title="删除"-->
-            <!--              danger-->
-            <!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
-            <!--              :loading="delLoading"-->
-            <!--              @click="-->
-            <!--                event => {-->
-            <!--                  handleDelete(selectedRowKeys, event,'');-->
-            <!--                }-->
-            <!--              "-->
-            <!--            >-->
-            <!--              <template #icon>-->
-            <!--                <delete-outlined />-->
-            <!--              </template>-->
-            <!--              删除-->
-            <!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>
@@ -235,28 +168,30 @@
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'accordDesc'"
+            v-else-if="column.dataIndex === 'pmsCheckTmplId'"
             :record="record"
             :column="column.dataIndex"
           >
             <template #edit>
-              <a-select
-                v-model:value="record.accordDesc"
-                style="width: 100%"
-                placeholder="请选择文实相符"
-                @change="(value)=>changeControlValue(value,record,'accordDesc')"
-              >
-                <a-select-option
-                  v-for="select in accordDescList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
+              <AvicModalSelect
+                v-model:value="record.pmsCheckTmplId"
+                title="选择质检方案"
+                placeholder="请选择质检方案"
+                valueField="id"
+                showField="checkTmplName"
+                :selectComponent="pmsCheckTmplSelectComponent"
+                :allow-clear="true"
+              />
             </template>
+            <template #default>
+              {{ record.pmsCheckTmplName }}
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit
+            v-else-if="column.dataIndex === 'accordDesc'"
+            :record="record"
+            :column="column.dataIndex"
+          >
             <template #default>
               <AvicDictTag
                 :value="record.accordDescName"
@@ -315,17 +250,6 @@
             >
               编辑
             </a-button>
-            <!--                      <a-button-->
-            <!--                        type="link"-->
-            <!--                        class="inner-btn"-->
-            <!--                        @click.stop="-->
-            <!--                          event => {-->
-            <!--                            handleDelete([record.id], event, 'row');-->
-            <!--                          }-->
-            <!--                        "-->
-            <!--                      >-->
-            <!--                        删除-->
-            <!--                      </a-button>-->
           </template>
         </template>
       </AvicTable>
@@ -346,10 +270,10 @@ import type {PmsCheckBillDto} from '@/api/avic/mms/pms/PmsCheckBillApi'; // 引�
 import {
   listPmsCheckBillByPage,
   savePmsCheckBill,
-  delPmsCheckBill,
-  exportExcel,
-  updateCompType, sendBack
-} from '@/api/avic/mms/pms/PmsCheckBillApi'; // 引入模块API
+} from '@/api/avic/mms/pms/PmsCheckBillApi';
+import pmsCheckTmplSelect from "@/views/avic/mms/pms/pmschecktmpl/PmsCheckTmplSelect.vue"; // 引入弹窗选择页
+
+const pmsCheckTmplSelectComponent= pmsCheckTmplSelect;// 自定义选择
 
 const {proxy} = getCurrentInstance();
 const layout = {
@@ -368,13 +292,13 @@ const columns = [
     align: 'center'
   },
   {
-    title: '文实相符',
-    dataIndex: 'accordDesc',
-    key: 'accordDesc',
+    title: '检验方案',
+    dataIndex: 'pmsCheckTmplId',
+    key: 'pmsCheckTmplId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '到货流水号',
@@ -503,20 +427,6 @@ const columns = [
     align: 'center'
   },
   {
-    title: '退回原因',
-    dataIndex: 'rejectReason',
-    key: 'rejectReason',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
     title: '操作',
     dataIndex: 'action',
     width: 120,
@@ -525,7 +435,7 @@ const columns = [
   }
 ];
 const queryForm = ref<PmsCheckBillDto>({});
-queryForm.value.compType = '0'
+queryForm.value.compType = '1'
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -534,7 +444,7 @@ const queryParam = reactive({
   },
   searchParams: {
     // ...queryForm,
-    compType: '0'
+    compType: '1'
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -553,9 +463,9 @@ const saveLoading = ref(false); // 统一保存按钮loading 状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const validateRules = {
-  accordDesc: [
-    {required: true, message: '文实相符列不能为空'}
-  ]
+  // accordDesc: [
+  //   {required: true, message: '文实相符列不能为空'}
+  // ]
 }; // 必填列,便于保存和新增数据时校验
 const editingId = ref(''); // 正在编辑中的数据
 const compType = ref('0');
@@ -563,6 +473,12 @@ const accordDescList = ref([]); // 文实相符通用代码
 const lookupParams = [
   { fieldName: 'accordDesc', lookUpType: 'PMS_UP_TO_STANDARD' }
 ];
+const emit = defineEmits(['mainId']);
+
+// 主表传入子表的id
+const mainId = computed(() => {
+  return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : '';
+});
 
 onMounted(() => {
   // 加载表格数据
@@ -607,7 +523,7 @@ function handleQuery() {
 
 /** 高级查询 重置按钮操作  */
 function resetQuery() {
-  queryForm.value = { compType: '0'};
+  queryForm.value = { compType: '1' }
   handleQuery();
 }
 
@@ -739,168 +655,11 @@ function handleSaveAll() {
     saveLoading.value = false;
   }
 }
-
-function handleSendBack() {
-  if (saveLoading.value) return;  // 规避正在保存时连续点击
-  // 开始处理数据
-  saveLoading.value = true;
-  let changedData = list.value.filter(i => selectedRowKeys.value.indexOf(i.id) !== -1).map(i => toRaw(i));
-  console.log(changedData, "<<<");
-  if (!changedData || !changedData.length) {
-    proxy.$message.warning('请先选择数据！');
-    saveLoading.value = false;
-  }
-  let checkReason = true
-  for (const bill of changedData) {
-    if (!bill.rejectReason) {
-      bill.editable = true;
-      bill.operationType_ = bill.operationType_ || 'update';
-      checkReason = false;
-    }
-  }
-  if (!checkReason) {
-    proxy.$message.warning('请填写退回理由！');
-    saveLoading.value = false;
-    return;
-  }
-  sendBack(changedData).then(res => {
-    if (res.success) {
-      getList();
-      proxy.$message.success('操作成功！');
-      saveLoading.value = false;
-    } else {
-      proxy.$message.error('操作失败！');
-      saveLoading.value = false;
-    }
-  }).finally(() => {
-    saveLoading.value = false;
-  });
-}
-
-function handleUpdateSendType(ids, e, type) {
-  if (e) {
-    e.stopPropagation(); // 阻止冒泡
-  }
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要指定的数据！');
-    return;
-  }
-  proxy.$confirm({
-    title: `确认要指定${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      saveLoading.value = true;
-      // 获取所有非新增的数据，执行后台删除逻辑，新增的数据直接界面删除
-      const updateIds = ids.filter(id => id.indexOf('newLine') == -1);
-      if (updateIds.length > 0) {
-        updateCompType(updateIds, type).then(res => {
-          if (res.success) {
-            getList();
-            proxy.$message.success('操作成功！');
-            saveLoading.value = false;
-          } else {
-            proxy.$message.error('操作失败！');
-            saveLoading.value = false;
-          }
-        }).finally(() => {
-          saveLoading.value = false;
-        });
-      }
-    }
-  });
-}
-
-/** 导入 */
-function handleImport() {
-  showImportModal.value = true;
-}
-
-/** 导出 */
-function handleExport() {
-  proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
-        loading.value = false;
-        proxy.$message.info('导出成功！');
-      });
-    }
-  });
-}
-
-/** 删除 */
-function handleDelete(ids, e, type) {
-  if (e) {
-    e.stopPropagation(); // 阻止冒泡
-  }
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      // 获取所有非新增的数据，执行后台删除逻辑，新增的数据直接界面删除
-      const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
-      if (deleteIds.length > 0) {
-        return delPmsCheckBill(deleteIds)
-          .then(() => {
-            removeRecordByIds(ids);
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
-      } else {
-        removeRecordByIds(ids);
-      }
-    }
-  });
-}
-
-/** 删除操作后更新list */
-function removeRecordByIds(deleteIds) {
-  let newData = [...list.value];
-  let updateList = [...list.value];
-  let delUpdateData = [];
-  for (let i = 0; i < deleteIds.length; i++) {
-    newData = newData.filter(item => item['id'] !== deleteIds[i]);
-    delUpdateData = updateList.filter(
-      item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
-    );
-  }
-  // 清空表格选中项
-  selectedRowKeys.value = [];
-  // 前台刷新表格
-  list.value = newData;
-  // 提示成功
-  proxy.$message.success('删除成功！');
-  delLoading.value = false;
-  if (list.value.length == 0) {
-    // 当前页数据被清空
-    let currentPage = 1;
-    if (queryParam.pageParameter.page > 1) {
-      currentPage = queryParam.pageParameter.page - 1;
-    }
-    queryParam.pageParameter.page = currentPage;
-    getList();
-  } else {
-    // 当前页数据没有全部删除时分页总条数为原total-删除数据中心非添加数据个数
-    totalPage.value = totalPage.value - delUpdateData.length;
-  }
-}
-
 /** 行点击事件 */
 function customRow(record) {
   return {
     onClick: () => {
+      emit('mainId', record.id);
       handleEdit(record);
     }
   };

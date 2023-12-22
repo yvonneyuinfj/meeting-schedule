@@ -15,15 +15,7 @@
           columnWidth: 40,
           fixed: true
         }"
-        :customRow="
-          record => {
-            return {
-              onClick: () => {
-                handleRowSelection(record);
-              }
-            };
-          }
-        "
+        :customRow="customRow"
         :pageParameter="queryParam.pageParameter"
         :total="totalPage"
         @change="handleTableChange"
@@ -739,6 +731,15 @@ function handleRowSelection(record) {
     selectedRowKeys.value = selectedRowKeys.value.filter(item => item != record.id);
   }
 }
+/** 行点击事件 */
+function customRow(record) {
+  return {
+    onClick: () => {
+      handleEdit(record);
+    }
+  };
+}
+
 
 watch(
   () => props.mainId,
