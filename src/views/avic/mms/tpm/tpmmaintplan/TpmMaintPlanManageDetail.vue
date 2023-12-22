@@ -99,6 +99,57 @@ const columns = [
     align: 'left'
   },
   {
+    title: '完好标识',
+    dataIndex: 'goodConditionFlag',
+    key: 'goodConditionFlag',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '完工日期',
+    dataIndex: 'completeDate',
+    key: 'completeDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '保养结论',
+    dataIndex: 'maintConclusion',
+    key: 'maintConclusion',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '问题说明',
+    dataIndex: 'problemDescription',
+    key: 'problemDescription',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '设备编号',
     dataIndex: 'equipmentCode',
     ellipsis: true,
@@ -144,6 +195,84 @@ const columns = [
     align: 'left'
   },
   {
+    title: '保养项目',
+    dataIndex: 'maintenanceItems',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养部位',
+    dataIndex: 'maintenancePosition',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养依据',
+    dataIndex: 'maintenanceBasis',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养内容',
+    dataIndex: 'maintenanceContent',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '保养要求',
+    dataIndex: 'maintenanceRequirement',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '上次保养日期',
+    dataIndex: 'oldLastMaintenPlanDate',
+    key: 'oldLastMaintenPlanDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养周期(月)',
+    dataIndex: 'maintenanceCycle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
+  },
+  {
+    title: '小时数',
+    dataIndex: 'maintenanceHours',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'right'
+  },
+  {
+    title: '是否自主维护',
+    dataIndex: 'ynSelfMaintenanceName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '编制时间',
     dataIndex: 'editDate',
     ellipsis: true,
@@ -160,12 +289,12 @@ const columns = [
     align: 'center'
   },
   {
-    title: '保养周期(月)',
-    dataIndex: 'maintenanceCycle',
+    title: '保养状态',
+    dataIndex: 'maintenanceStatusName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '保养负责人',
@@ -174,6 +303,64 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '实际保养人',
+    dataIndex: 'actrualMaintUserIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '外委专业厂家',
+    dataIndex: 'vendorName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '下达人',
+    dataIndex: 'dispatchUserIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '下达日期',
+    dataIndex: 'dispatchDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养完成日期',
+    dataIndex: 'maintenanceFinishDate',
+    key: 'maintenanceFinishDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养计划类型',
+    dataIndex: 'maintenPlanTypeName',
+    key: 'maintenPlanType',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '备注',
