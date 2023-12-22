@@ -1824,7 +1824,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '质保日期',
+    title: '质保期',
     dataIndex: 'qaDate',
     ellipsis: true,
     minWidth: 120,

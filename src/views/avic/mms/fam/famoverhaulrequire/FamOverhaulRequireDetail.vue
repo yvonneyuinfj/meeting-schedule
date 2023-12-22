@@ -103,7 +103,7 @@
           </a-form-item>
         </a-col> -->
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
-          <a-form-item name="managerDeptName" label="主管部门名称" :rules="fieldRequired('managerDeptId')"
+          <a-form-item name="managerDeptId" label="主管部门名称" :rules="fieldRequired('managerDeptId')"
                        has-feedback>
             <AvicCommonSelect
               v-model:value="form.managerDeptId"
