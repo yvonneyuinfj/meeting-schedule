@@ -249,7 +249,7 @@ const onSelectChange = (rowKeys, rows) => {
 /** 添加 */
 const handleAdd = () => {
   let item = {
-    // id: 'newLine' + proxy.$uuid(),
+    id: 'newLine' + proxy.$uuid(),
     operationType_: 'insert',
     singleProjectName: '',
     assetDescribe: '',
