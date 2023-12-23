@@ -1256,40 +1256,44 @@ const columns6 = [
 const columns7 = [
   {
     title: '单项工程名称',
-    dataIndex: 'name',
-    key: 'name'
+    dataIndex: 'singleProjectName',
+    key: 'singleProjectName'
   },
   {
     title: '资产描述',
-    dataIndex: 'age',
-    key: 'age'
+    dataIndex: 'assetDescribe',
+    key: 'assetDescribe'
   },
   {
     title: '资产类别',
-    dataIndex: 'address',
-    key: 'address'
+    dataIndex: 'assetClass',
+    key: 'assetClass'
   },
   {
     title: '规格型号',
-    key: 'tags',
-    dataIndex: 'tags'
+    key: 'specModel',
+    dataIndex: 'specModel'
   },
   {
     title: '单位',
-    key: 'action'
+    dataIndex: 'unit',
+    key: 'unit'
   },
   {
     title: '面积',
-    key: 'action'
+    dataIndex: 'area',
+    key: 'area'
   },
   {
     title: '购置价值',
-    key: 'action'
+    dataIndex: 'acquisitionValue',
+    key: 'acquisitionValue'
   },
-  {
-    title: '密级',
-    key: 'action'
-  }
+  // {
+  //   title: '密级',
+  //   dataIndex: 'name',
+  //   key: 'action'
+  // }
 ];
 const queryParam = reactive({
   // 请求表格数据参数
