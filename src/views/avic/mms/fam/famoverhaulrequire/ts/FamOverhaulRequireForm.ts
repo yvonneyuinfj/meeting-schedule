@@ -32,7 +32,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       secretLevel: [{ required: true, message: '数据密级不能为空', trigger: 'change' }],
       billNo: [{ required: true, message: '单据号不能为空', trigger: 'change' }],
       maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
-      maintCategory: [{ validator: maintCategoryValidator, trigger: 'change' }],
+      maintCategory: [{ required:true, validator: maintCategoryValidator, trigger: 'change' }],
       expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
       managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
       // managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
