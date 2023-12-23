@@ -1425,7 +1425,7 @@ const columns = [
   // =================================================
   {
     title: '地理区域',
-    dataIndex: 'geographicalArea',
+    dataIndex: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

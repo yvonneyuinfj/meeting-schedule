@@ -701,9 +701,26 @@ const layout = {
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'id',
+    ellipsis: true,
+    width: 60,
+    align: 'center',
+    fixed: 'left'
+  },
+  {
+    title: '数据密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '资产编号',
     dataIndex: 'assetsCode',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -712,6 +729,7 @@ const columns = [
     title: '资产名称',
     dataIndex: 'assetsName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -720,6 +738,7 @@ const columns = [
     title: '资产类别名称',
     dataIndex: 'assetClassName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -728,22 +747,32 @@ const columns = [
     title: '资产来源',
     dataIndex: 'assetSource',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '资产状态',
-    dataIndex: 'assetsStatus',
+    dataIndex: 'assetsStatusName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '资产属性',
+    dataIndex: 'assetTypeName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '资产用途',
     dataIndex: 'assetsUse',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -752,6 +781,7 @@ const columns = [
     title: '入账日期',
     dataIndex: 'entryDate',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -760,6 +790,7 @@ const columns = [
     title: '资产原值',
     dataIndex: 'assetOriginalValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -768,6 +799,7 @@ const columns = [
     title: '累计折旧',
     dataIndex: 'depreciationValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -776,6 +808,7 @@ const columns = [
     title: '折旧方法',
     dataIndex: 'depreciationWay',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -784,6 +817,7 @@ const columns = [
     title: '资产数量',
     dataIndex: 'assetNum',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -792,6 +826,7 @@ const columns = [
     title: '使用年限',
     dataIndex: 'useTime',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -800,6 +835,7 @@ const columns = [
     title: '资产净值',
     dataIndex: 'assetNetValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -808,6 +844,7 @@ const columns = [
     title: '月折旧额',
     dataIndex: 'monDepreciation',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -816,6 +853,7 @@ const columns = [
     title: '存放地点',
     dataIndex: 'storageLocation',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -824,21 +862,14 @@ const columns = [
     title: '部门名称',
     dataIndex: 'deptName',
     ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '主管部门',
-    dataIndex: 'managerDeptId',
-    ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '责任人',
-    dataIndex: 'responseUserId',
+    dataIndex: 'responseUserNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -848,6 +879,7 @@ const columns = [
     title: '入账时累计折旧',
     dataIndex: 'firstDepreciationValue',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -864,6 +896,7 @@ const columns = [
     title: '品牌型号',
     dataIndex: 'brandModel',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -880,6 +913,7 @@ const columns = [
     title: '入账前当年折旧',
     dataIndex: 'currentYearDepreciation',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -888,6 +922,7 @@ const columns = [
     title: '新增当月计提',
     dataIndex: 'newaCurrentmProvision',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -896,6 +931,7 @@ const columns = [
     title: '其他',
     dataIndex: 'other',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -904,6 +940,7 @@ const columns = [
     title: '重置凭证号',
     dataIndex: 'resetVoucherNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -912,6 +949,7 @@ const columns = [
     title: '设备编号',
     dataIndex: 'equipNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -920,6 +958,7 @@ const columns = [
     title: '出厂编号',
     dataIndex: 'productionNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -928,6 +967,7 @@ const columns = [
     title: '凭证号',
     dataIndex: 'voucherNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -936,6 +976,7 @@ const columns = [
     title: '厂商',
     dataIndex: 'factoryOwner',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -944,6 +985,7 @@ const columns = [
     title: '建设项目',
     dataIndex: 'buildProject',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -952,6 +994,7 @@ const columns = [
     title: '品牌',
     dataIndex: 'brand',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -960,6 +1003,7 @@ const columns = [
     title: '权属证号',
     dataIndex: 'ownershipCertNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -968,6 +1012,7 @@ const columns = [
     title: '采购合同号',
     dataIndex: 'procureOrderNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -976,20 +1021,21 @@ const columns = [
     title: '资产密级',
     dataIndex: 'assetSecretLevel',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '是否军工关键设备',
-    dataIndex: 'ynMilitaryKeyEquip',
+    dataIndex: 'ynMilitaryKeyEquipName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '接收部门',
+    title: '接收部门名称',
     dataIndex: 'receiveDeptNameAlias',
     ellipsis: true,
     minWidth: 120,
@@ -1000,6 +1046,7 @@ const columns = [
     title: '资产类别',
     dataIndex: 'assetClass',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1008,6 +1055,7 @@ const columns = [
     title: '资金来源',
     dataIndex: 'fundSource',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1016,13 +1064,14 @@ const columns = [
     title: '项目名称',
     dataIndex: 'projectName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
-    title: '经办人',
-    dataIndex: 'handlePersonId',
+    title: '经办人名称',
+    dataIndex: 'handlePersonNameAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1032,6 +1081,7 @@ const columns = [
     title: '设备大类',
     dataIndex: 'equipClass',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1040,6 +1090,7 @@ const columns = [
     title: '资产规格',
     dataIndex: 'assetSpec',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1048,6 +1099,7 @@ const columns = [
     title: '资产型号',
     dataIndex: 'assetModel',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1056,6 +1108,7 @@ const columns = [
     title: '资产单价',
     dataIndex: 'assetUnit',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1064,6 +1117,7 @@ const columns = [
     title: '发票号',
     dataIndex: 'invoiceNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -1080,39 +1134,205 @@ const columns = [
     title: '父资产编号',
     dataIndex: 'parentAssetNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '是否为进口设备',
-    dataIndex: 'importedOrNot',
+    dataIndex: 'importedOrNotName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产分类',
-    dataIndex: 'assetType',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '质保期',
     dataIndex: 'warrantyPeriod',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  
+  // =================================================
+  // =================================================
+  // =================================================
+  {
+    title: '地理区域',
+    dataIndex: 'geographicalAreaName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '开工时间',
+    dataIndex: 'commencementTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '竣工时间',
+    dataIndex: 'timeCompletion',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '所属土地',
+    dataIndex: 'belongingLand',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '不动产权证书',
+    dataIndex: 'certificateTitle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '不动产权证书面积',
+    dataIndex: 'certificateTitleArea',
+    ellipsis: true,
+    minWidth: 150,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '发证时间',
+    dataIndex: 'issuanceTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '竣工备案书档案编号',
+    dataIndex: 'recordNumber',
+    ellipsis: true,
+    minWidth: 150,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '工程规划许可证',
+    dataIndex: 'planningPermit',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '通知书',
+    dataIndex: 'notice',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '附图档案编号',
+    dataIndex: 'attachedFileNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '是否为科研厂房',
+    dataIndex: 'isFactoryBuilding',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '进口设备国别',
+    dataIndex: 'importedEquipment',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '车辆用途',
+    dataIndex: 'vehicleUsageName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '车辆识别号',
+    dataIndex: 'vehicleNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '车牌号',
+    dataIndex: 'licensePlateNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '排气量/ml',
+    dataIndex: 'airDisplacement',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '发动机号',
+    dataIndex: 'engineNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '使用位置',
+    dataIndex: 'usePosition',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '建筑面积',
+    dataIndex: 'floorspace',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '供应商',
+    dataIndex: 'supplier',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '操作',
     dataIndex: 'action',
     ellipsis: true,
-    width: 150,
+    width: 120,
     fixed: 'right'
   }
 ];

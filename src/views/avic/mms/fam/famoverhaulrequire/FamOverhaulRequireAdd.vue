@@ -62,7 +62,7 @@
               <avic-auto-code
                 v-model:value="form.billNo"
                 ref="autoCode"
-                code-type="FAM_BILL_NO"
+                code-type="FAM_OVER_HAUL"
                 code-param="FAM_CIP_ACCPET"
                 :allow-clear="true"
                 :disabled="false"
