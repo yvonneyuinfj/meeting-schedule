@@ -393,6 +393,7 @@ const {
   autoCode,
   purchWayList,
   fundSourceList,
+  equipmentTypeList,
   famAccpetListEntityEdit,
   fieldVisible,
   fieldDisabled,

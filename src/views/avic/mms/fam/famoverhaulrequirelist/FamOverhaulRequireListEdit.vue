@@ -68,7 +68,7 @@
       </template>
       <template #bodyCell="{ column, text, record }">
         <AvicRowEdit
-          v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetNo','assetSpec'].includes(
+          v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetSpec'].includes(
                column.dataIndex
               )"
           :record="record"
@@ -86,6 +86,23 @@
             </a-input>
           </template>
         </AvicRowEdit>
+
+        <AvicRowEdit v-else-if="column.dataIndex === 'assetNo'" :record="record"
+                     :column="column.dataIndex">
+          <template #edit>
+            <a-input
+              v-model:value="record[column.dataIndex]"
+              :maxLength="32"
+              @input="$forceUpdate()"
+              @click="showAssetNo(record)"
+              style="width: 100%"
+              placeholder="请输入"
+              @blur="blurInput($event, record, column.dataIndex)"
+            >
+            </a-input>
+          </template>
+        </AvicRowEdit>
+
         <AvicRowEdit
           v-else-if="column.dataIndex === 'importedOrNot'"
           :record="record"
@@ -134,15 +151,37 @@
 
     <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="handleOk" width="80%" style="top: 20px">
       <div style="height: 600px;overflow: auto">
-        <fam-inventory-manage :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
+        <fam-inventory-manage assetClass="2" :isAdd="'true'" ref="famInventoryManage"></fam-inventory-manage>
       </div>
     </a-modal>
+
+    <a-modal :visible="assetNoOpen" title="维修改造记录" @ok="handleAssetNo" :footer="null" @cancel="handleAssetNo" width="80%"
+             style="top: 20px">
+
+      <AvicTable
+        table-key="assetNo"
+        :columns="assetNoColumns"
+        :row-key="record => record.id"
+        :data-source="assetNoData"
+        :loading="assetNoLoading"
+        @refresh="getAssetNoList"
+      >
+        <template #bodyCell="{ column, text, record, index }">
+          <template v-if="column.dataIndex === 'creationDate'">
+            {{ dayjs(record.creationDate).format('YYYY-MM-DD') }}
+          </template>
+        </template>
+      </AvicTable>
+    </a-modal>
+
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamOverhaulRequireListDto } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块DTO
 import { listFamOverhaulRequireListByPage } from '@/api/avic/mms/fam/FamOverhaulRequireListApi'; // 引入模块API
+import { getFormList } from '@/api/avic/mms/fam/FamInventoryApi';
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
+import dayjs from 'dayjs';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -155,6 +194,10 @@ const props = defineProps({
   readOnly: {
     type: Boolean,
     default: false
+  },
+  bpmInstanceObject: {
+    type: Object,
+    default: {}
   }
 });
 const columns = [
@@ -271,6 +314,65 @@ const columns = [
     align: 'center'
   }
 ] as any[];
+
+const assetNoColumns = [
+  {
+    title: '流程状态',
+    dataIndex: 'businessstate_',
+    key: 'businessstate_'
+  },
+  {
+    title: '单据号',
+    dataIndex: 'billNo',
+    key: 'billNo'
+  },
+  // {
+  //   title: '维修内容',
+  //   dataIndex: 'address',
+  //   key: 'address'
+  // },
+  // {
+  //   title: '新增原值',
+  //   key: 'tags',
+  //   dataIndex: 'tags'
+  // },
+  {
+    title: '申请人',
+    key: 'createdBy',
+    dataIndex: 'createdBy'
+  },
+  {
+    title: '申请日期',
+    key: 'creationDate',
+    dataIndex: 'creationDate'
+  },
+  {
+    title: '联系电话',
+    key: 'telephone',
+    dataIndex: 'telephone'
+  }
+  // {
+  //   title: '密级',
+  //   key: 'action'
+  // }
+] as any[];
+
+const assetNoData = ref([]);
+const assetNoQueryParam = reactive({
+  // 请求表格数据参数
+  pageParameter: {
+    page: 1, // 页数
+    rows: 20 // 每页条数
+  },
+  searchParams: {
+    id: ''
+  },
+  keyWord: ref(''), // 快速查询数据
+  sidx: null, // 排序字段
+  sord: null // 排序方式: desc降序 asc升序
+});
+const assetNoLoading = ref(false);
+
 const queryForm = ref<FamOverhaulRequireListDto>({});
 const open = ref<boolean>(false);
 const famInventoryManage = ref(null);
@@ -295,6 +397,7 @@ const delLoading = ref(false);
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 数据密级通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
+const assetNoOpen = ref(false);
 const lookupParams = [
   { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
@@ -367,6 +470,19 @@ function getList() {
     });
 }
 
+function getAssetNoList() {
+  assetNoLoading.value = true;
+  // console.log(queryParam.searchParams);
+  getFormList(2, assetNoQueryParam.searchParams.id).then(response => {
+    assetNoData.value = response.data;
+    assetNoLoading.value = false;
+  })
+    .catch(() => {
+      assetNoData.value = [];
+      assetNoLoading.value = false;
+    });
+}
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -391,14 +507,24 @@ function handleMostAdd() {
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
-  console.log(famInventoryManage.value.selectedRow());
-  const selectRow = famInventoryManage.value.selectedRow();
+  let code = '';
+  if (list.value.length > 0) {
+    code = list.value[0].assetClass.charAt(0);
+  }
+  const selectRow = famInventoryManage.value.selectedRow(code);
   selectRow.map(item => {
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow];
+  let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));
+  let obj = {};
+  array = array.reduce((cur, next) => {
+    obj[next.id] ? '' : (obj[next.id] = true && cur.push(next));
+    return cur;
+  }, []);
+  list.value = array;
 };
 
 /** 添加 */
@@ -546,6 +672,17 @@ function validate(callback) {
       callback(false);
     }
   }
+}
+
+function showAssetNo(record) {
+  if (!props.bpmInstanceObject.hasOwnProperty('bpmModel')) return;
+  assetNoOpen.value = true;
+  assetNoQueryParam.searchParams.id = record.inventoryId;
+  getAssetNoList();
+}
+
+function handleAssetNo() {
+  assetNoOpen.value = false;
 }
 
 defineExpose({

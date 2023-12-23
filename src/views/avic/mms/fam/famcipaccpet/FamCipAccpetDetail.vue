@@ -389,6 +389,7 @@ const {
   uploadFile,
   afterUploadEvent,
   attachmentRequired,
+  equipmentTypeList,
   autoCode,
   purchWayList,
   fundSourceList,
