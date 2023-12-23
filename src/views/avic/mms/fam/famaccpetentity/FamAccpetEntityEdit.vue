@@ -27,6 +27,7 @@
               <a-select
                 v-model:value="form.accpetType"
                 :auto-focus="true"
+                disabled
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
@@ -59,11 +60,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderValue" label="合同金额" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.orderValue"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入合同金额"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -204,7 +209,9 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="equipmentType" label="设备类型" has-feedback>
+            <a-form-item name="equipmentType" label="设备类型"
+                         v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) "
+                         has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
                 :auto-focus="true"
@@ -263,7 +270,6 @@
                                   @getPlanNo="getPlanNo" @closeCancel="closeMaintPlan"/>
         <FamAccpetListEntityEdit
           ref="famAccpetListEntityEdit"
-          :isLand="isLand"
           :assetClasstObj="assetClasstObj"
           :accpetType="accpetType"
           :asset-class="assetClass"
@@ -350,7 +356,7 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-const isLand = ref(false); //是否为土地及房屋
+
 const assetClasstObj = ref();
 const maintPlanModal = ref<boolean>(false);
 const emit = defineEmits(emits);
@@ -438,8 +444,6 @@ function handleSummit() {
   getFamAssetClass(treeNodeId.value)
     .then(async res => {
       if (res.success) {
-        const parentId = getParentId();
-        isLand.value = res.data.treePath.split('/').includes(parentId);
         assetClasstObj.value = res.data;
         form.value.assetClasst = res.data.classCode;
         assetClasstOpen.value = false;

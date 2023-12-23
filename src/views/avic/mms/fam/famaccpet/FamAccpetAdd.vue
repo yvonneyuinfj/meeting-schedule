@@ -353,7 +353,7 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-const assetClasstObj = ref();
+const assetClasstObj = ref({});
 const emit = defineEmits(emits);
 const {
   form,
@@ -417,10 +417,6 @@ function handleSummit() {
     .then(async res => {
       if (res.success) {
         if (res.data.treeLeaf === 'Y') {
-          // const parentId = getParentId();
-          // console.log(getParentId())
-          // isLand.value = res.data.treePath.split('/').includes(parentId);
-          // console.log(isLand.value)
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           form.value.assetClasstName = res.data.className;

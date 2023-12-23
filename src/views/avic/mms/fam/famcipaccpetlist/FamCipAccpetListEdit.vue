@@ -323,18 +323,19 @@
 
         <!--  设备类别-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'equipClass'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
+          v-else-if="column.dataIndex === 'equipClassName'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
           <template #edit>
             <TreeModal
-              v-model:value="record.equipClass"
-              :parentId="record.equipClass"
+              v-model:value="record.equipCode"
+              :parentId="record.equipCode"
               :parentTitle="record.equipClassName"
               ref="treeSelectRef"
               baseUrl="/mms/tpm/tpmassetclasss"
               @getTile="getTreeNodeTitle($event, record ,'equipClassName')"
+              @change="getTreeNodeCode($event, record ,'equipClass')"
               :allowSelectNonIsLeaf="false"
               placeholder="请选择"
             />
@@ -442,7 +443,7 @@
         <!--        @change="getTreeChangeId"-->
         <!-- 树形弹窗 -->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'geographicalArea'"
+          v-else-if="column.dataIndex === 'geographicalAreaName'"
           :record="record"
           :column="column.dataIndex"
         >
@@ -487,6 +488,7 @@ import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamCipAccpetListApi'
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 import { AllColumns } from '@/views/avic/mms/fam/famaccpetlist/ListColumns';
 import TreeModal from '@/components/tree-modal/TreeModal.vue';
+import { getTpmAssetClass } from '@/api/avic/mms/tpm/TpmAssetClassApi';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -580,7 +582,7 @@ const lookupParams = [
 
 const validateRules = {
   assetClass: [{ required: true, message: '资产类别列不能为空' }],
-  equipClass: [{ required: true, message: '设备大类列不能为空' }],
+  equipClassName: [{ required: true, message: '设备大类列不能为空' }],
   assetName: [{ required: true, message: '资产名称不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 
@@ -815,6 +817,14 @@ function getTreeNodeTitle(nodeTitle, record, name) {
   record[name] = nodeTitle;
 };
 
+function getTreeNodeCode(nodeId, record, name){
+  getTpmAssetClass(nodeId)
+    .then(async res => {
+      if (res.success) {
+        record[name] = res.data.classCode;
+      }
+    })
+}
 
 /**控件变更事件 */
 function changeControlValue(values, record, column, isTF: false) {

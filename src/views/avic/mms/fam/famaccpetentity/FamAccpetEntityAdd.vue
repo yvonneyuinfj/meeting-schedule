@@ -28,6 +28,7 @@
               <a-select
                 v-model:value="form.accpetType"
                 :auto-focus="true"
+                disabled
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
@@ -56,16 +57,20 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderNo" label="合同编号" has-feedback>
-              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号" />
+              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="orderValue" label="合同金额" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.orderValue"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入合同金额"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -198,14 +203,16 @@
               >
                 <template #suffix>
                   <a-tooltip title="Extra information">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                   </a-tooltip>
                 </template>
               </a-input>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="equipmentType" label="设备类型" has-feedback>
+            <a-form-item name="equipmentType" label="设备类型"
+                         v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) "
+                         has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
                 :auto-focus="true"
@@ -226,10 +233,10 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item   v-if="annual === '2' "
-                           name="overhaulRequireCode"
-                           label="维修改造单号"
-                           has-feedback
+            <a-form-item v-if="annual === '2' "
+                         name="overhaulRequireCode"
+                         label="维修改造单号"
+                         has-feedback
             >
               <!--         <a-input v-if="annual === '2'"
                                 v-model:value="form.overhaulRequireCode"
@@ -271,7 +278,6 @@
         </a-row>
         <FamAccpetListEntityEdit
           ref="famAccpetListEntityEdit"
-          :isLand="isLand"
           :assetClasstObj="assetClasstObj"
           :accpetType="accpetType"
           :asset-class="assetClass"
@@ -304,8 +310,8 @@
         @select="handleSelect"
       >
         <template #icon="{ expanded, dataRef }">
-          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff" />
-          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800" />
+          <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+          <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
           <AvicIcon
             v-if="expanded && !dataRef.isLeaf"
             svg="avic-folder-open-fill"
@@ -347,7 +353,8 @@ onMounted(() => {
   getTreeList();
   form.value.handlePersonId = proxy.$getLoginUser().id;
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
-  form.value.assetClass = '2'
+  form.value.assetClass = '2';
+  form.value.accpetType = '1';
 });
 const famOverhaulRequireSelect = ref(null);
 const { proxy } = getCurrentInstance();
@@ -361,7 +368,7 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-const isLand = ref(false); //是否为土地及房屋
+
 const assetClasstObj = ref();
 const emit = defineEmits(emits);
 const {
@@ -425,10 +432,6 @@ function handleSummit() {
     .then(async res => {
       if (res.success) {
         if (res.data.treeLeaf === 'Y') {
-          const parentId = getParentId();
-          console.log(getParentId())
-          isLand.value = res.data.treePath.split('/').includes(parentId);
-          console.log(isLand.value)
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           assetClasstOpen.value = false;
@@ -453,8 +456,8 @@ const annualChange = (v) => {
 };
 const getPlanNo = (v) => {
   form.value.overhaulRequireCode = v.billNo;
-  form.value.overhaulRequireId =  v.id;
-  if(v.maintCategory ==='1'){
+  form.value.overhaulRequireId = v.id;
+  if (v.maintCategory === '1') {
     proxy.$message.warning(' 请选择改造申请！');
   }
 
@@ -484,7 +487,7 @@ function getTreeList() {
 function getParentId() {
   let id = '';
   treeData.value[0].children.map(item => {
-    console.log(item)
+    console.log(item);
     if (item.title === '土地房屋') {
       id = item.id;
     }

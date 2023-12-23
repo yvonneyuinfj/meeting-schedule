@@ -478,7 +478,7 @@
         <!--        @change="getTreeChangeId"-->
         <!-- 树形弹窗 -->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'geographicalArea'"
+          v-else-if="column.dataIndex === 'geographicalAreaName'"
           :record="record"
           :column="column.dataIndex"
         >

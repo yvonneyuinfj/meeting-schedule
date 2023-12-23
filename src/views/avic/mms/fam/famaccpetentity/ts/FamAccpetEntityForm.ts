@@ -46,8 +46,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
-    equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
-    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }]
+    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }],
+    equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }]
   };
   const famAccpetListEntityEdit = ref();
   const layout = {
@@ -89,7 +89,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   onMounted(() => {
     // 加载查询区所需通用代码
     getLookupList();
-    console.log('走了')
+    console.log('走了');
     if (props.formId || form.value.id) {
       // 编辑详情页面加载数据
       getFormData(props.formId || form.value.id);
@@ -98,6 +98,19 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
+  async function validatorEquipmentType(_rule, value, _record) {
+    const codeList = ['1', '4', '6', '8'];
+    if (form.value.assetClasst) {
+      if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
+        return Promise.reject(new Error('设备类型必填！'));
+      } else {
+        return Promise.resolve();
+      }
+    } else {
+      return Promise.resolve();
+    }
+  }
 
   /** 获取通用代码  */
   function getLookupList() {
@@ -154,11 +167,16 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
             loading.value = true;
 
             const postData = proxy.$lodash.cloneDeep(form.value);
-            console.log(postData)
+            console.log(postData);
             if (famAccpetListEntityEdit.value) {
               const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famAccpetListEntityList = subInfoList; // 挂载子表数据
+              if (famAccpetListEntityEdit.value.list.length === 0) {
+                proxy.$message.warning('请添加子表数据');
+                loading.value = false;
+                return;
+              }
             }
 
             // 发送请求
@@ -217,6 +235,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               const subInfoList = famAccpetListEntityEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famAccpetListEntityList = subInfoList; // 挂载子表数据
+              if (famAccpetListEntityEdit.value.list.length === 0) {
+                proxy.$message.warning('请添加子表数据');
+                loading.value = false;
+                return;
+              }
             }
             // 发送请求
             saveFamAccpet(postData)
@@ -324,6 +347,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
         formCode: formCode,
         postData
       };
+      if (famAccpetListEntityEdit.value.list.length === 0) {
+        proxy.$message.warning('请添加子表数据');
+        loading.value = false;
+        return;
+      }
 
       // 发送请求
       saveFormAndStartProcess(param)

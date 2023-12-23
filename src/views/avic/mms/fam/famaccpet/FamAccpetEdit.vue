@@ -353,7 +353,7 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-const assetClasstObj = ref();
+const assetClasstObj = ref({});
 const emit = defineEmits(emits);
 const maintPlanModal = ref<boolean>(false);
 

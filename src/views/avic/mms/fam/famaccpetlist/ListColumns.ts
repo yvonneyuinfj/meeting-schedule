@@ -94,8 +94,8 @@ export const HouseColumns = [
   },
   {
     title: '地理区域',
-    dataIndex: 'geographicalArea',
-    key: 'geographicalArea',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -598,8 +598,8 @@ export const DeviceColumns = [
   },
   {
     title: '地理区域',
-    dataIndex: 'geographicalArea',
-    key: 'geographicalArea',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1099,8 +1099,8 @@ export const CarColumns = [
   },
   {
     title: '地理区域',
-    dataIndex: 'geographicalArea',
-    key: 'geographicalArea',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1513,8 +1513,8 @@ export const OfficialColumns = [
   },
   {
     title: '地理区域',
-    dataIndex: 'geographicalArea',
-    key: 'geographicalArea',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1866,8 +1866,8 @@ export const ITColumns = [
   },
   {
     title: '地理区域',
-    dataIndex: 'geographicalArea',
-    key: 'geographicalArea',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -2199,12 +2199,21 @@ export const AllColumns = [
   },
   {
     title: '设备大类',
-    dataIndex: 'equipClass',
+    dataIndex: 'equipClassName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '地理区域',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '资产规格',

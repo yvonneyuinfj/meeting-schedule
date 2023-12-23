@@ -3,21 +3,21 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="famAccpetEntityList"
-          table-key="famAccpetEntityList"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
+        ref="famAccpetEntityList"
+        table-key="famAccpetEntityList"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          :customRow="
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="
           record => {
             return {
               onClick: () => {
@@ -26,17 +26,17 @@
             };
           }
         "
-          @change="handleTableChange"
-          @refresh="getList"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-                danger
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                title="删除"
-                :loading="delLoading"
-                @click="handleDelete(selectedRowKeys, '')"
+              danger
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              title="删除"
+              :loading="delLoading"
+              @click="handleDelete(selectedRowKeys, '')"
             >
               <template #icon>
                 <delete-outlined/>
@@ -44,13 +44,13 @@
               删除
             </a-button>
             <a-button
-                title="导入"
-                type="primary"
-                ghost
-                @click="handleImport"
+              title="导入"
+              type="primary"
+              ghost
+              @click="handleImport"
             >
               <template #icon>
-                <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
@@ -58,11 +58,11 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+            class="opt-btn-commonsearch"
+            style="width: 200px"
+            placeholder="请输入"
+            :allow-clear="true"
+            @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -71,9 +71,9 @@
           </template>
           <template v-if="column.dataIndex === 'action'">
             <a-button
-                type="link"
-                class="inner-btn"
-                @click="handleDelete([record.id], 'row')"
+              type="link"
+              class="inner-btn"
+              @click="handleDelete([record.id], 'row')"
             >
               删除
             </a-button>
@@ -81,19 +81,20 @@
         </template>
       </AvicTable>
       <AvicExcelImport
-          v-if="showImportModal"
-          :formData="excelParams"
-          title="单表模板导入"
-          importUrl="/mms/fam/famaccpetlists/importData/v1"
-          downloadTemplateUrl="/mms/fam/famaccpetlists/downloadTemplate/v1"
-          @reloadData="getList"
-          @close="showImportModal = false"
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="单表模板导入"
+        importUrl="/mms/fam/famaccpetlists/importData/v1"
+        downloadTemplateUrl="/mms/fam/famaccpetlists/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
       />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamAccpetListEntityApi'; // 引入模块API
+import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamAccpetListEntityApi';
+import { AllColumns } from '@/views/avic/mms/fam/famaccpetlist/ListColumns'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -112,201 +113,7 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  {
-    title: '是否新增资产',
-    dataIndex: 'isNewAssetName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备编号',
-    dataIndex: 'equipNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备大类',
-    dataIndex: 'equipClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂号',
-    dataIndex: 'factoryNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '品牌',
-    dataIndex: 'brand',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购合同',
-    dataIndex: 'procureOrder',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '权属证号',
-    dataIndex: 'ownershipCertNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否为进口设备',
-    dataIndex: 'importedOrNotName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  ...AllColumns,
   {
     title: '操作',
     dataIndex: 'action',
@@ -358,16 +165,16 @@ function getList() {
   loading.value = true;
   queryParam.searchParams.amAccpetId = props.mainId ? props.mainId : '-1';
   listFamAccpetListByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 获取通用代码  */
@@ -387,7 +194,7 @@ function handleKeyWordQuery(value) {
 }
 
 /** 导入 */
-function handleImport () {
+function handleImport() {
   showImportModal.value = true;
 }
 
@@ -405,19 +212,19 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delFamAccpetList(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('删除成功！');
-              // 清空选中
-              selectedRowKeys.value = [];
-              selectedRows.value = [];
-              getList();
-            }
-            delLoading.value = false;
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('删除成功！');
+            // 清空选中
+            selectedRowKeys.value = [];
+            selectedRows.value = [];
+            getList();
+          }
+          delLoading.value = false;
+        })
+        .catch(() => {
+          delLoading.value = false;
+        });
     }
   });
 }
@@ -453,17 +260,17 @@ function handleRowSelection(record) {
 }
 
 watch(
-    () => props.mainId,
-    newVal => {
-      if (newVal) {
-        getList(); // 查询表格数据
-      } else {
-        selectedRowKeys.value = []; // 清空选中
-        selectedRows.value = [];
-        list.value = [];
-        totalPage.value = 0;
-      }
-    },
-    { immediate: true }
+  () => props.mainId,
+  newVal => {
+    if (newVal) {
+      getList(); // 查询表格数据
+    } else {
+      selectedRowKeys.value = []; // 清空选中
+      selectedRows.value = [];
+      list.value = [];
+      totalPage.value = 0;
+    }
+  },
+  { immediate: true }
 );
 </script>
