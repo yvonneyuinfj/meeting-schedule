@@ -1796,18 +1796,15 @@ function handleTableChange(pagination, filters, sorter) {
 
 const selectedRow = (code) => {
   let rows = [];
-  // let lastRow = '';
   let canGo = true;
-  // console.log(selectedRows.value);
   if (props.assetClass !== '2') {
     selectedRows.value.map(item => {
       rows.push({
         ...item,
         operationType_: 'inside'
       });
-    });
+    })
   } else {
-    // console.log(code)
     selectedRows.value.reduce((pre, cur, index) => {
       if (pre === cur.assetClass.charAt(0)) {
         rows.push({
@@ -1822,9 +1819,6 @@ const selectedRow = (code) => {
       } else {
         canGo = false;
       }
-      // console.log(pre);
-      // console.log(cur);
-      // console.log('index ===========>' + index);
       return cur.assetClass.charAt(0);
     }, code || selectedRows.value[0].assetClass.charAt(0));
   }

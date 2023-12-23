@@ -105,6 +105,7 @@
 <script lang="ts" setup>
 import { listFamAccpetListByPage, delFamAccpetList } from '@/api/avic/mms/fam/FamCipAccpetListApi'; // 引入模块API
 import FamCipAccpetListSubsidiary from './FamCipAccpetListSubsidiary.vue';
+import { AllColumns } from '@/views/avic/mms/fam/famaccpetlist/ListColumns';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -124,201 +125,7 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  {
-    title: '是否新增资产',
-    dataIndex: 'isNewAssetName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备编号',
-    dataIndex: 'equipNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备大类',
-    dataIndex: 'equipClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂号',
-    dataIndex: 'factoryNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '品牌',
-    dataIndex: 'brand',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购合同',
-    dataIndex: 'procureOrder',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '权属证号',
-    dataIndex: 'ownershipCertNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否为进口设备',
-    dataIndex: 'importedOrNotName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  ...AllColumns,
   {
     title: '操作',
     dataIndex: 'action',
@@ -493,6 +300,6 @@ watch(
 );
 
 defineExpose({
-  closeLink,
-})
+  closeLink
+});
 </script>

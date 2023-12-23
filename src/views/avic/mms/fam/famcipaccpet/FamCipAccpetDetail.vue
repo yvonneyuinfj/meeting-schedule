@@ -212,7 +212,7 @@
               option-filter-prop="children"
               :show-search="true"
               :allow-clear="true"
-              placeholder="请选择验收类型"
+              placeholder="请选择购置方式"
               :disabled="fieldDisabled('purchWay')"
             >
               <a-select-option
@@ -260,7 +260,8 @@
             <a-input v-model:value="form.assetClasst" :disabled="fieldDisabled('assetClasst')"/>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('equipmentType')">
+        <a-col v-bind="colLayout.cols"
+               v-if="fieldVisible('equipmentType') && form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
           <a-form-item
             name="equipmentType"
             label="设备类型"

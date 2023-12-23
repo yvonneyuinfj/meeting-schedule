@@ -45,10 +45,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
-    equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
-    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }]
+    // equipmentType: [{ required: true, message: '设备类型不能为空', trigger: 'change' }],
+    assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }],
+    equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }]
   };
-  const famCipAccpetListEdit = ref();
+  const famCipAccpetListEdit = ref(null);
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
@@ -96,6 +97,19 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
+  async function validatorEquipmentType(_rule, value, _record) {
+    const codeList = ['1', '4', '6', '8'];
+    if (form.value.assetClasst) {
+      if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
+        return Promise.reject(new Error('设备类型必填！'));
+      } else {
+        return Promise.resolve();
+      }
+    } else {
+      return Promise.resolve();
+    }
+  }
 
   /** 获取通用代码  */
   function getLookupList() {
@@ -155,6 +169,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               const subInfoList = famCipAccpetListEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famCipAccpetListList = subInfoList; // 挂载子表数据
+              if (famCipAccpetListEdit.value.list.length === 0) {
+                proxy.$message.warning('请添加子表数据');
+                loading.value = false;
+                return;
+              }
             }
             // 发送请求
             saveFamAccpet(postData)
@@ -179,16 +198,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
             console.log('error', error);
             loading.value = false;
           });
-        // famAccpetListEdit.value
-        //   .validate(async validate => {
-        //     if (!validate) {
-        //       return;
-        //     }
-        //   })
-        //   .catch(error => {
-        //     console.log('error', error);
-        //     loading.value = false;
-        //   });
       })
       .catch(error => {
         // 定位校验失败元素
@@ -220,6 +229,12 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               const subInfoList = famCipAccpetListEdit.value.getChangedData(); // 获取子表数据
               // 处理数据
               postData.famCipAccpetListList = subInfoList; // 挂载子表数据
+              console.log(famCipAccpetListEdit.value);
+              if (famCipAccpetListEdit.value.list.length === 0) {
+                proxy.$message.warning('请添加子表数据');
+                loading.value = false;
+                return;
+              }
             }
             // 发送请求
             saveFamAccpet(postData)
@@ -239,16 +254,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               .catch(() => {
                 loading.value = false;
               });
-            // famCipAccpetListEdit.value
-            //   .validate(async validate => {
-            //     if (!validate) {
-            //       return;
-            //     }
-            //   })
-            //   .catch(error => {
-            //     console.log('error', error);
-            //     loading.value = false;
-            //   });
           });
       })
       .catch(error => {
@@ -317,6 +322,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famCipAccpetListList = subInfoList; // 挂载子表数据
+      if (famCipAccpetListEdit.value.list.length === 0) {
+        proxy.$message.warning('请添加子表数据');
+        loading.value = false;
+        return;
+      }
       if (autoCode.value) {
         // 获取编码码段值
         postData.accpetApplyNo = autoCode.value.getSegmentValue();

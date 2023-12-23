@@ -143,7 +143,17 @@ const props = defineProps({
     default: ''
   }
 });
-const columns = [...AllColumns];
+const columns = [
+  {
+    title: '序号',
+    dataIndex: 'id',
+    ellipsis: true,
+    width: 60,
+    align: 'center',
+    fixed: 'left'
+  },
+  ...AllColumns
+];
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {

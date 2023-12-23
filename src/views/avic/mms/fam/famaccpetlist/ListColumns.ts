@@ -2154,28 +2154,36 @@ export const ITColumns = [
 
 /** 全部的输入列 */
 export const AllColumns = [
-  // {
-  //   title: '序号',
-  //   dataIndex: 'id',
-  //   ellipsis: true,
-  //   width: 60,
-  //   align: 'center',
-  //   fixed: 'left'
-  // },
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetClass',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
+  {
+    title: '资产名称',
+    dataIndex: 'assetName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产类别',
+    dataIndex: 'assetClassName',
+    key: 'assetClassName',
+    minWidth: 120
+  },
+
   {
     title: '资产编号',
     dataIndex: 'assetNo',
     ellipsis: true,
     sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '使用年限',
+    dataIndex: 'useTime',
+    key: 'useTime',
+    ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -2192,15 +2200,6 @@ export const AllColumns = [
   {
     title: '设备大类',
     dataIndex: 'equipClass',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产名称',
-    dataIndex: 'assetName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,

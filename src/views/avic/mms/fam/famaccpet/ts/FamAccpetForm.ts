@@ -46,8 +46,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
-    assetClasst: [{ validator: validatorAssetClasst, trigger: 'change' }],
-    equipmentType: [{ validator: validatorEquipmentType, trigger: 'change' }]
+    assetClasst: [{ required: true, validator: validatorAssetClasst, trigger: 'change' }],
+    equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }]
   };
   const famAccpetListEdit = ref();
   const layout = {
@@ -212,16 +212,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
             console.log('error', error);
             loading.value = false;
           });
-        // famAccpetListEdit.value
-        //   .validate(async validate => {
-        //     if (!validate) {
-        //       return;
-        //     }
-        //   })
-        //   .catch(error => {
-        //     console.log('error', error);
-        //     loading.value = false;
-        //   });
       })
       .catch(error => {
         // 定位校验失败元素
@@ -254,6 +244,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               // 处理数据
               postData.famAccpetListList = subInfoList; // 挂载子表数据
             }
+
             if (famAccpetListEdit.value.list.length === 0) {
               loading.value = false;
               proxy.$message.warning('请添加子表数据');
@@ -277,16 +268,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
               .catch(() => {
                 loading.value = false;
               });
-            // famAccpetListEdit.value
-            //   .validate(async validate => {
-            //     if (!validate) {
-            //       return;
-            //     }
-            //   })
-            //   .catch(error => {
-            //     console.log('error', error);
-            //     loading.value = false;
-            //   });
           });
       })
       .catch(error => {
