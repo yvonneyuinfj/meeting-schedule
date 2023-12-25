@@ -342,7 +342,7 @@
                   :defaultConfig="toolbarConfig"
                 />
                 <Editor
-                  style="height: 500px; overflow-y: auto"
+                  style="height: 250px; overflow-y: auto"
                   v-model:value="form.applyReason"
                   :defaultConfig="editorConfig"
                   @onCreated="onCreated"
@@ -350,16 +350,15 @@
               </div>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols2">
             <a-form-item
               name="reqSuggest"
               label="要求及建议"
               has-feedback
             >
-              <a-input
-                v-model:value="form.reqSuggest"
-                :maxLength="128"
-                placeholder="请输入要求及建议"
+              <a-textarea v-model:value="form.reqSuggest"
+                          placeholder="请输入要求及建议" allow-clear
+                          :maxLength="128"
               />
             </a-form-item>
           </a-col>
