@@ -152,7 +152,15 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  ...AllColumns
+  ...AllColumns,
+  {
+    title: '操作',
+    dataIndex: 'action',
+    key: 'action',
+    width: 120,
+    fixed: 'right',
+    align: 'center'
+  }
 ];
 const queryParam = reactive({
   // 请求表格数据参数
