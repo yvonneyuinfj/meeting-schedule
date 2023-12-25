@@ -30,6 +30,7 @@ async function saveUser(user: UserInfo) {
 // Promise<boolean>
 ```
 
+
 #### DELETE
 
 ```ts
