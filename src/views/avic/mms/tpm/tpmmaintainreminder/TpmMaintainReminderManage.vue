@@ -7,7 +7,7 @@
           <AvicTable ref="tpmMaintainReminder" table-key="tpmMaintainReminder" :columns="columns"
                      :row-key="record => record.id" :data-source="list" :loading="loading"
                      :pageParameter="queryParam.pageParameter" :total="totalPage" @refresh="getList"
-                     :rowClassName="rowClassName">
+                     :custom-row="customRow">
             <template #bodyCell="{ column, text, record, index }">
               <template v-if="column.dataIndex === 'id'">
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
@@ -154,20 +154,15 @@ function getList() {
       });
 }
 
-const rowClassName = (record: any) => {
+const customRow = (record, index) => {
   const newDate = dayjs(new Date());
   const timeDifference = newDate.diff(record.planMaintenDate, 'day');
   if (timeDifference >= 7) {
-    return 'row-color';
+    return { style: { background: 'red' } };
   } else {
-    return '';
+    return {  };
   }
 };
+
 </script>
-<style scoped lang="less">
-:deep(.row-color) {
-  background-color: red;
-  pointer-events: none;
-}
-</style>
 
