@@ -61,7 +61,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col
+<!--          <a-col
             v-bind="colLayout.cols"
             v-show="advanced"
           >
@@ -735,7 +735,7 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col
             v-bind="colLayout.cols"
             style="margin-left: auto"

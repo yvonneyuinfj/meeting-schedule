@@ -44,15 +44,6 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="maintenanceContent" label="保养内容">
-              <a-input
-                  v-model:value="form.maintenanceContent"
-                  :maxLength="2000"
-                  placeholder="请输入保养内容"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
             <a-form-item name="maintenanceRequirement" label="保养要求">
               <a-input
                   v-model:value="form.maintenanceRequirement"
@@ -124,15 +115,6 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <!--          <a-col v-bind="colLayout.cols">-->
-          <!--            <a-form-item name="note" label="备注">-->
-          <!--              <a-input-->
-          <!--                  v-model:value="form.note"-->
-          <!--                  :maxLength="512"-->
-          <!--                  placeholder="请输入备注"-->
-          <!--              />-->
-          <!--            </a-form-item>-->
-          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="密级" has-feedback>
               <a-select
@@ -173,6 +155,33 @@
           <!--            </a-form-item>-->
           <!--          </a-col>-->
         </a-row>
+        <a-row>
+          <a-col v-bind="colLayout.cols2">
+            <a-form-item name="maintenanceContent" label="保养内容">
+              <a-textarea
+                  v-model:value="form.maintenanceContent"
+                  :rows="2"
+                  :maxLength="2000"
+                  placeholder="请输入保养内容"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col v-bind="colLayout.cols2">
+            <a-form-item
+                name="note"
+                label="备注"
+            >
+              <a-textarea
+                  v-model:value="form.note"
+                  :rows="2"
+                  :maxLength="512"
+                  placeholder="请输入备注"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
       </a-form>
     </a-spin>
     <template #footer>
@@ -182,7 +191,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { useTpmStandardMaintenanceForm, emits } from './ts/TpmStandardMaintenanceForm'; // 引入表单ts
+import { emits, useTpmStandardMaintenanceForm } from './ts/TpmStandardMaintenanceForm'; // 引入表单ts
 const props = defineProps({
   formId: {
     type: String,

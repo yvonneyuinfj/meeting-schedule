@@ -34,7 +34,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+         <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="资产来源">
               <a-input
                 v-model:value="queryForm.assetSource"
@@ -539,7 +539,7 @@
                 @pressEnter="handleQuery"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col
             v-bind="colLayout.cols"
             style="margin-left: auto"
@@ -602,7 +602,7 @@
             class="opt-btn-commonsearch"
             style="width: 200px"
             v-model:value="searchKeyWord"
-            placeholder="请输入备注或ATTRIBUTE_01"
+            placeholder="请输入查询条件"
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />

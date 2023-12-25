@@ -139,6 +139,14 @@ const columns = [
     align: 'center'
   },
   {
+    title: '备注',
+    dataIndex: 'note',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,

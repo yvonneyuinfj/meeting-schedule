@@ -509,7 +509,9 @@ const handleCreative = () => {
       proxy.$message.info('生成成功！');
       getList();
     }
-
+  }).catch((e) => {
+    proxy.$message.error(e.message);
+    getList();
   });
 };
 

@@ -313,7 +313,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="projectName"
@@ -327,7 +327,7 @@
               />
             </a-form-item>
           </a-col>
-          
+
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols2">
@@ -616,6 +616,7 @@ const getPlanNo = (v) => {
   form.value.budgetOrgAlias = v.budgetOrganizationIdAlias;
   form.value.projectAmount = v.projectMoney;
   form.value.maintCategory = v.planType;
+  form.value.projectName = v.projectName;
   maintPlanModal.value = false;
 };
 </script>
