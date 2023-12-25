@@ -208,6 +208,10 @@ export function listPmsCheckBillByPage (
 export function savePmsCheckBill (form: [PmsCheckBillDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
+/** 修改到货检验单，同时修改检验方案 */
+export function updateCheckBillWithPlan (form: [PmsCheckBillDto]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/updateWithPlan', form);
+}
 export function sendBack (list: any): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/sendBack', list);
 }

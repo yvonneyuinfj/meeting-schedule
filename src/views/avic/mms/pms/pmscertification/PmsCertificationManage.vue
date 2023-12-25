@@ -1,7 +1,15 @@
 <template>
   <AvicSplit horizontal>
     <AvicPane size="55">
-      <pms-check-bill @mainId="parentIdChange"/>
+      <AvicSplit>
+        <AvicPane size="60%">
+          <pms-check-bill @mainId="parentIdChange"/>
+        </AvicPane>
+        <AvicPane>
+          <pms-check-bill-list-manage :mainId="mainId" ref="pmsCheckBillListManage"/>
+        </AvicPane>
+      </AvicSplit>
+
     </AvicPane>
     <AvicPane>
       <div class="content-wrapper">
@@ -39,16 +47,16 @@
                   添加
                 </a-button>
                 <a-button
-                  v-hasPermi="['pmsCertification:edit']"
-                  title="编辑"
+                  v-hasPermi="['pmsCertification:save']"
+                  title="保存"
                   type="primary"
-                  ghost
-                  @click="handleEdit"
+                  :loading="saveLoading"
+                  @click="handleSaveAll"
                 >
                   <template #icon>
-                    <edit-outlined/>
+                    <save-outlined/>
                   </template>
-                  编辑
+                  保存
                 </a-button>
                 <a-button
                   v-hasPermi="['pmsCertification:del']"
@@ -63,38 +71,101 @@
                   </template>
                   删除
                 </a-button>
-                <a-button
-                  v-hasPermi="['pmsCertification:export']"
-                  title="导出"
-                  type="primary"
-                  ghost
-                  @click="handleExport">
+                <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)"
+                          :loading="approvalLoading">
+                  发起不合格物资审批流程
                   <template #icon>
-                    <export-outlined/>
+                    <plus-outlined/>
                   </template>
-                  导出
                 </a-button>
               </a-space>
             </template>
-            <template #toolBarRight>
-              <a-space>
-                <AvicBpmFilter
-                  :allFileAuth="['pmsCertification:all']"
-                  :myFileAuth="['pmsCertification:my']"
-                  :defaultBpmType='queryForm.bpmType'
-                  :defaultBpmState='queryForm.bpmState'
-                  @change="changeBpmFilter"
-                />
-                <a-input-search
-                  class="opt-btn-commonsearch"
-                  style="width: 200px"
-                  placeholder="请输入"
-                  :allow-clear="true"
-                  @search="handleKeyWordQuery"
-                />
-              </a-space>
-            </template>
+            <!--            <template #toolBarRight>-->
+            <!--              <a-space>-->
+            <!--                <AvicBpmFilter-->
+            <!--                  :allFileAuth="['pmsCertification:all']"-->
+            <!--                  :myFileAuth="['pmsCertification:my']"-->
+            <!--                  :defaultBpmType='queryForm.bpmType'-->
+            <!--                  :defaultBpmState='queryForm.bpmState'-->
+            <!--                  @change="changeBpmFilter"-->
+            <!--                />-->
+            <!--                <a-input-search-->
+            <!--                  class="opt-btn-commonsearch"-->
+            <!--                  style="width: 200px"-->
+            <!--                  placeholder="请输入"-->
+            <!--                  :allow-clear="true"-->
+            <!--                  @search="handleKeyWordQuery"-->
+            <!--                />-->
+            <!--              </a-space>-->
+            <!--            </template>-->
+
             <template #bodyCell="{ column, text, record, index }">
+              <AvicRowEdit
+                v-if="column.dataIndex === 'unqualifiedQty'"
+                :record="record"
+                :column="column.dataIndex"
+              >
+                <template #edit>
+                  <a-input-number
+                    v-model:value="record.unqualifiedQty"
+                    :min="0"
+                    :max="999999999999"
+                    :precision="0"
+                    :step="1"
+                    style="width: 100%"
+                    placeholder="请输入不合格品数量"
+                  >
+                  </a-input-number>
+                </template>
+              </AvicRowEdit>
+              <AvicRowEdit
+                v-else-if="column.dataIndex === 'qualifiedQty'"
+                :record="record"
+                :column="column.dataIndex"
+              >
+                <template #edit>
+                  <a-input-number
+                    v-model:value="record.qualifiedQty"
+                    :min="0"
+                    :max="999999999999"
+                    :precision="0"
+                    :step="1"
+                    style="width: 100%"
+                    placeholder="请输入合格品数量"
+                  >
+                  </a-input-number>
+                </template>
+              </AvicRowEdit>
+              <AvicRowEdit
+                v-else-if="column.dataIndex === 'checkResult'"
+                :record="record"
+                :column="column.dataIndex"
+              >
+                <template #edit>
+                  <a-select
+                    v-model:value="record.checkResult"
+                    style="width: 100%"
+                    placeholder="请选择检验结论"
+                    @change="(value)=>changeControlValue(value,record,'checkResult')"
+                  >
+                    <a-select-option
+                      v-for="select in checkResultList"
+                      :key="select.sysLookupTlId"
+                      :value="select.lookupCode"
+                      :title="select.lookupName"
+                      :disabled="select.disabled === true"
+                    >
+                      {{ select.lookupName }}
+                    </a-select-option>
+                  </a-select>
+                </template>
+                <template #default>
+                  <AvicDictTag
+                    :value="record.checkResultName"
+                    :options="checkResultList"
+                  />
+                </template>
+              </AvicRowEdit>
               <template v-if="column.dataIndex === 'id'">
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
               </template>
@@ -102,6 +173,37 @@
                 <a @click="handleFlowDetail(record)">
                   {{ record.secretLevelName }}
                 </a>
+              </template>
+              <template v-else-if="column.dataIndex === 'action'">
+                <a-button
+                  v-if="record.editable"
+                  type="link"
+                  class="inner-btn"
+                  :disable="editingId !== ''"
+                  @click.stop="handleSave(record)"
+                >
+                  保存
+                </a-button>
+                <a-button
+                  v-else
+                  type="link"
+                  class="inner-btn"
+                  :disable="editingId !== ''"
+                  @click.stop="handleEdit(record)"
+                >
+                  编辑
+                </a-button>
+                <!--                <a-button-->
+                <!--                  type="link"-->
+                <!--                  class="inner-btn"-->
+                <!--                  @click.stop="-->
+                <!--                    event => {-->
+                <!--                      handleDelete([record.id], event, 'row');-->
+                <!--                    }-->
+                <!--                  "-->
+                <!--                >-->
+                <!--                  删除-->
+                <!--                </a-button>-->
               </template>
             </template>
           </AvicTable>
@@ -131,11 +233,17 @@
 </template>
 <script lang="ts" setup>
 import type {PmsCertificationDto} from '@/api/avic/mms/pms/PmsCertificationApi'; // 引入模块DTO
-import {listPmsCertificationByPage, delPmsCertification, exportExcel} from '@/api/avic/mms/pms/PmsCertificationApi'; // 引入模块API
+import {
+  listPmsCertificationByPage,
+  delPmsCertification,
+  exportExcel,
+  savePmsCertification, saveFormAndStartProcess
+} from '@/api/avic/mms/pms/PmsCertificationApi'; // 引入模块API
 import PmsCertificationAdd from './PmsCertificationAdd.vue'; // 引入添加页面组件
 import PmsCertificationEdit from './PmsCertificationEdit.vue'; // 引入编辑页面组件
-import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import flowUtils, {startFlowByFormCode} from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import PmsCheckBill from "@/views/avic/mms/pms/pmscertification/PmsCheckBill.vue";
+import PmsCheckBillListManage from "@/views/avic/mms/pms/pmscheckbilllist/PmsCheckBillListManage.vue";
 
 const {proxy} = getCurrentInstance();
 const layout = {
@@ -161,6 +269,15 @@ const columns = [
     align: 'center'
   },
   {
+    title: '试验单号',
+    dataIndex: 'checkBusinessNo',
+    key: 'checkBusinessNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '厂内合格证',
     dataIndex: 'facprtlotNo',
     ellipsis: true,
@@ -179,7 +296,7 @@ const columns = [
   },
   {
     title: '检验结论',
-    dataIndex: 'checkResultName',
+    dataIndex: 'checkResult',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -203,14 +320,6 @@ const columns = [
     align: 'left'
   },
   {
-    title: '检验损耗数量',
-    dataIndex: 'checkLossQty',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
     title: '状态',
     dataIndex: 'status',
     ellipsis: true,
@@ -220,32 +329,14 @@ const columns = [
     align: 'left'
   },
   {
-    title: '流程状态',
-    dataIndex: 'businessstate_',
-    ellipsis: true,
+    title: '操作',
+    dataIndex: 'action',
     width: 120,
     align: 'center',
     fixed: 'right'
-  },
-  {
-    title: '流程当前步骤',
-    dataIndex: 'activityalias_',
-    width: 120,
-    fixed: 'right'
-  },
-  {
-    title: '当前处理人',
-    dataIndex: 'assigneenames_',
-    ellipsis: true,
-    width: 130,
-    align: 'left',
-    fixed: 'right'
   }
 ];
-const queryForm = ref<PmsCertificationDto>({
-  bpmState: 'all',
-  bpmType: 'my'
-});
+const queryForm = ref<PmsCertificationDto>({});
 // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数
@@ -254,7 +345,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm.value
+    ...queryForm
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -268,14 +359,22 @@ const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false); // 表格loading状态
+const saveLoading = ref(false); // 统一保存按钮loading 状态
 const delLoading = ref(false); // 删除按钮loading状态
+const approvalLoading = ref(false); // 提交审批按钮loading状态
 const totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
 const checkResultList = ref([]); // 检验结论通用代码
+const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const mainId = ref(''); // 上级ID
+const pmsCertification = ref(null);
 const lookupParams = [
   {fieldName: 'checkResult', lookUpType: 'PMS_UP_TO_STANDARD'}
 ];
+const validateRules = {}; // 必填列,便于保存和新增数据时校验
+const editingId = ref(''); // 正在编辑中的数据
+const formCode = 'PmsCertification';
+const pmsCheckBillListManage = ref(null)
 
 onMounted(() => {
   // 加载表格数据
@@ -288,18 +387,27 @@ onMounted(() => {
 
 function parentIdChange(pmsCheckBillId) {
   mainId.value = pmsCheckBillId;
+  getList();
+  console.log(pmsCheckBillListManage.value, '<<log');
+  pmsCheckBillListManage.value.getList();
 }
 
 /** 查询数据 */
 function getList() {
+  if (!mainId.value) {
+    return;
+  }
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
+  queryParam.searchParams = {pmsCheckBillId: mainId.value};
   listPmsCertificationByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
+      // 查询的初始数据,保存时做比对
+      initialList.value = proxy.$lodash.cloneDeep(list.value);
     })
     .catch(() => {
       list.value = [];
@@ -322,13 +430,13 @@ function getUserFileSecretList() {
   });
 }
 
-/** 根据流程状态及发起人查询数据 */
-function changeBpmFilter({bpmType, bpmState}) {
-  queryForm.value.bpmType = bpmType;
-  queryForm.value.bpmState = bpmState;
-  queryParam.searchParams = queryForm.value;
-  getList();
-}
+// /** 根据流程状态及发起人查询数据 */
+// function changeBpmFilter({bpmType, bpmState}) {
+//   queryForm.value.bpmType = bpmType;
+//   queryForm.value.bpmState = bpmState;
+//   queryParam.searchParams = queryForm.value;
+//   getList();
+// }
 
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
@@ -340,10 +448,7 @@ function handleQuery() {
 
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
-  queryForm.value = {
-    bpmType: queryForm.value.bpmType,
-    bpmState: queryForm.value.bpmState
-  };
+  queryForm.value = {};
   handleQuery();
 }
 
@@ -370,13 +475,25 @@ function handleAdd() {
 }
 
 /** 编辑 */
-function handleEdit() {
-  if (selectedRows.value.length !== 1) {
-    proxy.$message.warning('请选择一条要编辑的数据！');
-    return;
-  }
-  formId.value = selectedRows.value[0].id;
-  showEditModal.value = true;
+// function handleEdit() {
+//   if (selectedRows.value.length !== 1) {
+//     proxy.$message.warning('请选择一条要编辑的数据！');
+//     return;
+//   }
+//   formId.value = selectedRows.value[0].id;
+//   showEditModal.value = true;
+// }
+function handleEdit(record) {
+  record.editable = true;
+  record.operationType_ = record.operationType_ || 'update';
+  const newData = [...list.value];
+  editingId.value = record.id;
+  newData.forEach(item => {
+    if (item.id !== record.id) {
+      item.editable = false;
+    }
+  });
+  list.value = newData;
 }
 
 /** 打开流程详情页面 */
@@ -395,10 +512,10 @@ function handleDelete(rows, ids) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
-  if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-    proxy.$message.warning('只有拟稿中的数据才可以删除！');
-    return;
-  }
+  // if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
+  //   proxy.$message.warning('只有拟稿中的数据才可以删除！');
+  //   return;
+  // }
   proxy.$confirm({
     title: '确认要删除选择的数据吗?',
     okText: '确定',
@@ -453,4 +570,160 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
+/** 保存 */
+function handleSave(record) {
+  let target = proxy.$lodash.cloneDeep(record);
+  // 单数据校验
+  if (!validateRecordData([target])) {
+    return;
+  }
+  // 保存前数据处理
+  for (let key in target) {
+    // 多选控件的数据，数组转化为字符串，
+    if (Array.isArray(target[key])) {
+      target[key] = target[key].join(',');
+    }
+  }
+  editingId.value = '';
+  savePmsCertification([target]).then(res => {
+    if (res.success) {
+      getList();
+      proxy.$message.success('保存成功！');
+    } else {
+      proxy.$message.error('保存失败！');
+    }
+  });
+}
+
+/** 批量保存 */
+function handleSaveAll() {
+  // 规避正在保存时连续点击
+  if (saveLoading.value) return;
+  // 开始处理数据
+  saveLoading.value = true;
+  // 获取改变和新增的数据
+  const changedData = proxy.$getChangeRecords(list, initialList);
+  if (changedData && changedData.length == 0) {
+    proxy.$message.warning('请先修改数据！');
+    saveLoading.value = false;
+  } else if (changedData && validateRecordData(changedData)) {
+    savePmsCertification(changedData).then(res => {
+      if (res.success) {
+        getList();
+        proxy.$message.success('保存成功！');
+        saveLoading.value = false;
+      } else {
+        proxy.$message.error('保存失败！');
+        saveLoading.value = false;
+      }
+    })
+      .catch(() => {
+        saveLoading.value = false;
+      });
+  } else {
+    saveLoading.value = false;
+  }
+}
+
+/** 行点击事件 */
+function customRow(record) {
+  return {
+    onClick: () => {
+      handleEdit(record);
+    }
+  };
+}
+
+/** 控件变更事件  */
+function changeControlValue(values, record, column) {
+  let labels = [];
+  if (Array.isArray(values)) {
+    // 多选处理
+    for (let i = 0; i < values.length; i++) {
+      // 从对应的通用代码中查询对应的label
+      const target = proxy[column + 'List'].find(item => values[i] === item.lookupCode);
+      labels.push(target.lookupName);
+    }
+  } else {
+    // 单选处理
+    const target = proxy[column + 'List'].find(item => values === item.lookupCode);
+    labels.push(target.lookupName);
+  }
+  if (record) {
+    record[column + 'Name'] = labels.join(',');
+  }
+}
+
+/** 批量数据校验 */
+function validateRecordData(records) {
+  let flag = true;
+  for (let index in records) {
+    flag = proxy.$validateRecordData(records[index], validateRules, list.value, pmsCertification);
+    if (!flag) {
+      break;
+    }
+  }
+  return flag;
+}
+
+// 提交审批
+const handleApproval = (rows, ids) => {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交审批的数据！');
+    return;
+  }
+  if (ids.length > 1) {
+    proxy.$message.warning('请选择一条要提交审批的数据！');
+    return;
+  }
+  for (let item of rows) {
+    if (item.bpmState !== null) {
+      proxy.$message.warning('请选择未提交审批的数据！');
+      return;
+    }
+  }
+  proxy.$confirm({
+    title: '确认提交审批?',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      approvalLoading.value = true;
+      getBpmDefine(rows);
+    }
+  });
+};
+
+function getBpmDefine(rows) {
+  for (let postData of rows) {
+    startFlowByFormCode({
+      formCode: formCode,
+      formData: postData,
+      callback: bpmDefinedInfo => {
+        approval(bpmDefinedInfo, postData);
+      }
+    });
+  }
+}
+
+const approval = (bpmDefinedInfo, postData) => {
+  const param = {
+    processDefId: bpmDefinedInfo.dbid,
+    formCode: formCode,
+    postData
+  };
+  saveFormAndStartProcess(param).then(res => {
+    if (res.success) {
+      approvalLoading.value = false;
+      proxy.$message.success('提交成功!');
+      getList();
+      handleFlowDetail(postData);
+    } else {
+      approvalLoading.value = false;
+    }
+  }).catch(() => {
+    approvalLoading.value = false;
+  });
+};
+
 </script>

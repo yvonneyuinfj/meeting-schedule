@@ -20,24 +20,9 @@ export function usePmsCertificationForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); //提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    secretLevel: [
-      { required: true, message: '密级不能为空', trigger: 'change' }
-    ],
-    qualifiedQty: [
-      { required: true, message: '合格品数量不能为空', trigger: 'change' }
-    ],
     checkResult: [
       { required: true, message: '检验结论不能为空', trigger: 'change' }
     ],
-    unqualifiedQty: [
-      { required: true, message: '不合格品数量不能为空', trigger: 'change' }
-    ],
-    checkerUserId: [
-      { required: true, message: '检验人不能为空', trigger: 'change' }
-    ],
-    checkDate: [
-      { required: true, message: '检验日期 不能为空', trigger: 'change' }
-    ]
   };
   const layout = {
     labelCol: { flex: '0 0 140px' },
@@ -127,7 +112,7 @@ export function usePmsCertificationForm({ props: props, emit: emit }) {
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        savePmsCertification(postData)
+        savePmsCertification([postData])
           .then(res => {
             if (res.success) {
               if (props.bpmInstanceObject) {

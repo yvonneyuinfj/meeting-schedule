@@ -360,8 +360,8 @@ const colLayout = proxy.$colLayout4; // 调用布局公共方法
 const columns = [
   {
     title: '密级',
-    dataIndex: 'secretLevel',
-    key: 'secretLevel',
+    dataIndex: 'secretLevelName',
+    key: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

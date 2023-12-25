@@ -110,12 +110,6 @@
         :row-key="record => record.id"
         :data-source="list"
         :loading="loading"
-        :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }"
         :pageParameter="queryParam.pageParameter"
         :total="totalPage"
         :customRow="customRow"
@@ -180,6 +174,7 @@
                 valueField="id"
                 showField="checkTmplName"
                 :selectComponent="pmsCheckTmplSelectComponent"
+                :defaultShowValue="record.pmsCheckTmplName"
                 :allow-clear="true"
               />
             </template>
@@ -264,16 +259,23 @@
       @close="showImportModal = false"
     ></avic-excel-import>
   </div>
+  <a-modal :visible="showSubList" title="检验项目" @ok="showSubList = false" @cancel="showSubList = false"
+           width="80%" style="top: 20px">
+    <div style="height: 400px;overflow: auto">
+      <PmsCheckBillListManage :parentId="pmsCheckBillId"/>
+    </div>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import type {PmsCheckBillDto} from '@/api/avic/mms/pms/PmsCheckBillApi'; // 引入模块DTO
 import {
   listPmsCheckBillByPage,
-  savePmsCheckBill,
+  updateCheckBillWithPlan,
 } from '@/api/avic/mms/pms/PmsCheckBillApi';
 import pmsCheckTmplSelect from "@/views/avic/mms/pms/pmschecktmpl/PmsCheckTmplSelect.vue"; // 引入弹窗选择页
+import PmsCheckBillListManage from "@/views/avic/mms/pms/pmscheckbilllist/PmsCheckBillListManage.vue";
 
-const pmsCheckTmplSelectComponent= pmsCheckTmplSelect;// 自定义选择
+const pmsCheckTmplSelectComponent = pmsCheckTmplSelect;// 自定义选择
 
 const {proxy} = getCurrentInstance();
 const layout = {
@@ -296,7 +298,7 @@ const columns = [
     dataIndex: 'pmsCheckTmplId',
     key: 'pmsCheckTmplId',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -429,7 +431,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 120,
+    width: 160,
     align: 'center',
     fixed: 'right'
   }
@@ -467,11 +469,11 @@ const validateRules = {
   //   {required: true, message: '文实相符列不能为空'}
   // ]
 }; // 必填列,便于保存和新增数据时校验
-const editingId = ref(''); // 正在编辑中的数据
-const compType = ref('0');
+const editingId = ref<string>(''); // 正在编辑中的数据
+const showSubList = ref<boolean>(false);
 const accordDescList = ref([]); // 文实相符通用代码
 const lookupParams = [
-  { fieldName: 'accordDesc', lookUpType: 'PMS_UP_TO_STANDARD' }
+  {fieldName: 'accordDesc', lookUpType: 'PMS_UP_TO_STANDARD'}
 ];
 const emit = defineEmits(['mainId']);
 
@@ -480,14 +482,16 @@ const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : '';
 });
 
+const pmsCheckBillId = ref<string>('');
+
 onMounted(() => {
   // 加载表格数据
   getList();
-  getLookupList ();
+  getLookupList();
 });
 
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     accordDescList.value = result.accordDesc;
   });
@@ -523,7 +527,7 @@ function handleQuery() {
 
 /** 高级查询 重置按钮操作  */
 function resetQuery() {
-  queryForm.value = { compType: '1' }
+  queryForm.value = {compType: '1'}
   handleQuery();
 }
 
@@ -601,6 +605,11 @@ function handleEdit(record) {
   list.value = newData;
 }
 
+function handleSubList(record) {
+  showSubList.value = true;
+  pmsCheckBillId.value = record.id;
+}
+
 /** 保存 */
 function handleSave(record) {
   let target = proxy.$lodash.cloneDeep(record);
@@ -616,7 +625,7 @@ function handleSave(record) {
     }
   }
   editingId.value = '';
-  savePmsCheckBill([target]).then(res => {
+  updateCheckBillWithPlan([target]).then(res => {
     if (res.success) {
       getList();
       proxy.$message.success('保存成功！');
@@ -638,7 +647,7 @@ function handleSaveAll() {
     proxy.$message.warning('请先修改数据！');
     saveLoading.value = false;
   } else if (changedData && validateRecordData(changedData)) {
-    savePmsCheckBill(changedData).then(res => {
+    updateCheckBillWithPlan(changedData).then(res => {
       if (res.success) {
         getList();
         proxy.$message.success('操作成功！');
@@ -655,6 +664,7 @@ function handleSaveAll() {
     saveLoading.value = false;
   }
 }
+
 /** 行点击事件 */
 function customRow(record) {
   return {
@@ -700,7 +710,7 @@ function handleTableChange(pagination, filters, sorter) {
 }
 
 /** 控件变更事件  */
-function changeControlValue (values, record, column) {
+function changeControlValue(values, record, column) {
   let labels = [];
   if (Array.isArray(values)) {
     // 多选处理

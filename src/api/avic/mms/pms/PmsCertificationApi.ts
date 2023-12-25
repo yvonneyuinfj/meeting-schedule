@@ -80,10 +80,9 @@ export function getPmsCertification (id: string): Promise<ResponseBaseData<PmsCe
 }
 
 /** 保存表单数据 */
-export function savePmsCertification (form: PmsCertificationDto): Promise<ResponseBaseData<any>> {
+export function savePmsCertification (form: [PmsCertificationDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
-
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
   processDefId,

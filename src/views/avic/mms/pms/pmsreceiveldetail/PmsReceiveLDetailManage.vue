@@ -193,6 +193,25 @@
             </template>
           </AvicRowEdit>
           <AvicRowEdit
+            v-else-if="column.dataIndex === 'mdsItemCode'"
+            :record="record"
+            :column="column.dataIndex"
+          >
+            <template #edit>
+              <a-input v-model:value="record.mdsItemCode" :maxLength="64" placeholder="请选择物料号" :readonly="true"
+                       @click="proMdsItemOpen(record)">
+                <template #suffix>
+                  <a-tooltip title="物料号" @click="proMdsItemOpen(record)">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                  </a-tooltip>
+                </template>
+              </a-input>
+            </template>
+            <template #default>
+              {{ record['mdsItemCode'] }}
+            </template>
+          </AvicRowEdit>
+          <AvicRowEdit
             v-else-if="['stoveNo','batchNo','itemSerialNo'].includes(
                column.dataIndex
               )"
@@ -278,6 +297,13 @@
       @close="showImportModal = false"
     />
   </div>
+  <!--选择产品弹窗-->
+  <a-modal :visible="openMdsItem" title="选择物料" @ok="handleOk2" @cancel="handleCancel2" width="80%" style="top: 20px">
+    <div style="height: 400px;overflow: auto">
+      <Mds-item-select ref="mdsItemSelect">
+      </Mds-item-select>
+    </div>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import {
@@ -293,6 +319,10 @@ const {proxy} = getCurrentInstance();
 const saveLoading = ref(false); // 统一保存按钮loading 状态
 const editingId = ref(''); // 正在编辑中的数据
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
+import MdsItemSelect from "@/views/avic/mms/mds/mdsproject/MdsItemSelect.vue";
+const mdsItemSelect = ref(null);
+const openMdsItem = ref<boolean>(false);
+const editData = ref({});
 
 const props = defineProps({
   // 主表选中项的keys集合
@@ -834,4 +864,22 @@ function validateRecordData(records) {
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
+function proMdsItemOpen(record) {
+  openMdsItem.value = true;
+  editData.value = record;
+}
+
+const handleCancel2 = () => {
+  openMdsItem.value = false;
+};
+
+const handleOk2 = () => {
+  const info = mdsItemSelect.value.info;
+  editData.value.mdsItemId = info.id;
+  editData.value.mdsItemCode = info.itemCode;
+  editData.value.mdsItemName = info.itemName;
+  openMdsItem.value = false;
+};
+
 </script>
