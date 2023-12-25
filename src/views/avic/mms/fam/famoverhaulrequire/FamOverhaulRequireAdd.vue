@@ -609,7 +609,6 @@ const closeMaintPlan = () => {
 };
 
 const getPlanNo = (v) => {
-  console.log(v);
   form.value.maintPlan = v.planNo;
   form.value.budgetProject = v.budgetItems;
   form.value.budgetSubitem = v.budgetBreakdownItems;

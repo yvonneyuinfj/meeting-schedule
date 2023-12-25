@@ -618,7 +618,6 @@ import {
   HouseValidateRules,
   ITValidateRules, OfficialValidateRules
 } from '@/views/avic/mms/fam/famaccpetlist/ValidateRules';
-import { getCodeById } from '@/api/avic/mms/tpm/TpmInventoryApi';
 
 const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
@@ -1044,9 +1043,8 @@ function handleCopy(ids, e) {
 /** 编辑 */
 function handleEdit(record) {
   if (props.readOnly)
-    if (props.bpmInstanceObject.bpmModel.activityname !== 'task2' && props.bpmInstanceObject.bpmModel.activityname !== 'task3')
+    if (!['task2', 'task3', 'task4'].includes(props.bpmInstanceObject.bpmModel.activityname))
       return;
-
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
