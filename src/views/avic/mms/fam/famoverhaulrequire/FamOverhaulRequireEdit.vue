@@ -17,36 +17,36 @@
         class="form-excel-style"
       >
         <a-row :gutter="0">
-  <!--        <a-col v-bind="colLayout.cols">
-            <a-form-item name="secretLevel" label="数据密级" has-feedback>
-              <a-select
-                v-model:value="form.secretLevel"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择数据密级"
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="note" label="备注">
-              <a-input
-                v-model:value="form.note"
-                :maxLength="512"
-                placeholder="请输入备注"
-              />
-            </a-form-item>
-          </a-col> -->
+          <!--        <a-col v-bind="colLayout.cols">
+                    <a-form-item name="secretLevel" label="数据密级" has-feedback>
+                      <a-select
+                        v-model:value="form.secretLevel"
+                        :auto-focus="true"
+                        :get-popup-container="triggerNode => triggerNode.parentNode"
+                        option-filter-prop="children"
+                        :show-search="true"
+                        :allow-clear="true"
+                        placeholder="请选择数据密级"
+                      >
+                        <a-select-option
+                          v-for="item in secretLevelList"
+                          :key="item.sysLookupTlId"
+                          :value="item.lookupCode"
+                        >
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols">
+                    <a-form-item name="note" label="备注">
+                      <a-input
+                        v-model:value="form.note"
+                        :maxLength="512"
+                        placeholder="请输入备注"
+                      />
+                    </a-form-item>
+                  </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="billNo" label="单据号" has-feedback>
               <avic-auto-code
@@ -61,7 +61,7 @@
               />
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="expectedMaintenance" label="预计维修/改造金额" has-feedback>
               <a-input
@@ -71,7 +71,7 @@
               />
             </a-form-item>
           </a-col>
-          
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="annualProvisional" label="年度/临时">
               <a-radio-group v-model:value="form.annualProvisional">
@@ -248,6 +248,19 @@
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="projectName"
+              label="项目名称"
+              has-feedback
+            >
+              <a-input
+                v-model:value="form.projectName"
+                :maxLength="64"
+                placeholder="请输入项目名称"
+              />
             </a-form-item>
           </a-col>
         </a-row>
@@ -452,9 +465,9 @@ const {
   emit: emit
 });
 
-watch(()=> form.value.annualProvisional , newV => {
-  annual.value = newV
-})
+watch(() => form.value.annualProvisional, newV => {
+  annual.value = newV;
+});
 
 const changeIsimp = (v) => {
   if (v === '1') {
@@ -472,11 +485,12 @@ const closeMaintPlan = () => {
 };
 
 const getPlanNo = (v) => {
+  console.log(v);
   form.value.maintPlan = v.planNo;
   form.value.budgetProject = v.budgetItems;
   form.value.budgetSubitem = v.budgetBreakdownItems;
-  form.value.budgetOrg = v.budgetOrganizationName;
-  form.value.budgetOrgAlias = v.budgetOrganizationNameAlias;
+  form.value.budgetOrg = v.budgetOrganizationId;
+  form.value.budgetOrgAlias = v.budgetOrganizationIdAlias;
   form.value.projectAmount = v.projectMoney;
   form.value.maintCategory = v.planType;
   form.value.projectName = v.projectName;
