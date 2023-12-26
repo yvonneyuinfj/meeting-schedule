@@ -118,7 +118,7 @@ export function usePmsDeliveryDetailDesignerForm({ props: props, emit: emit }) {
 
   /** 保存 */
   function saveForm(params) {
-    if (mainId.value != null){
+    if (mainId.value != null) {
       form.value.pmsPlanId = mainId;
     } else {
       form.value.pmsPlanId = props.mainId;

@@ -4,17 +4,7 @@
     <div class="table-wrapper">
       <AvicTable
           ref="pmsDeliveryDetail"
-          table-key="pmsDeliveryDetail"
           :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }"
           :customRow="
           record => {
             return {
@@ -24,8 +14,18 @@
             };
           }
         "
+          :data-source="list"
+          :loading="loading"
           :pageParameter="queryParam.pageParameter"
+          :row-key="record => record.id"
+          :row-selection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+          columnWidth: 40,
+          fixed: true
+        }"
           :total="totalPage"
+          table-key="pmsDeliveryDetail"
           @change="handleTableChange"
           @refresh="getList"
       >
@@ -44,10 +44,10 @@
             </a-button>
             <a-button
                 v-hasPermi="['pmsDeliveryDetail:del']"
-                title="删除"
-                danger
-                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 :loading="delLoading"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                danger
+                title="删除"
                 @click="handleDelete(selectedRowKeys, '')"
             >
               <template #icon>
@@ -57,9 +57,9 @@
             </a-button>
             <a-button
                 v-hasPermi="['pmsDeliveryDetail:import']"
+                ghost
                 title="导入"
                 type="primary"
-                ghost
                 @click="handleImport">
               <template #icon>
                 <import-outlined/>
@@ -68,9 +68,9 @@
             </a-button>
             <a-button
                 v-hasPermi="['pmsDeliveryDetail:export']"
+                ghost
                 title="导出"
                 type="primary"
-                ghost
                 @click="handleExport">
               <template #icon>
                 <export-outlined/>
@@ -81,10 +81,10 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入编号层次"
               :allow-clear="true"
+              class="opt-btn-commonsearch"
+              placeholder="请输入编号层次"
+              style="width: 200px"
               @search="handleKeyWordQuery"
           />
         </template>
@@ -94,16 +94,16 @@
           </template>
           <template v-else-if="column.dataIndex  === 'action'">
             <a-button
-                type="link"
                 class="inner-btn"
+                type="link"
                 @click.stop="handleEdit(record.id)"
             >
               编辑
             </a-button>
             <a-button
                 v-hasPermi="['pmsDeliveryDetail:del']"
-                type="link"
                 class="inner-btn"
+                type="link"
                 @click.stop="handleDelete([record.id], 'row')"
             >
               删除
@@ -117,26 +117,26 @@
         v-if="showAddModal"
         ref="addModal"
         :mainId="mainId"
-        @reloadData="getList"
         @close="showAddModal = false"
+        @reloadData="getList"
     />
     <!-- 编辑页面弹窗 -->
     <pms-delivery-detail-edit
         v-if="showEditModal"
         ref="editModal"
-        :mainId="mainId"
         :form-id="formId"
-        @reloadData="getList"
+        :mainId="mainId"
         @close="showEditModal = false"
+        @reloadData="getList"
     />
     <AvicExcelImport
         v-if="showImportModal"
         :formData="excelParams"
-        title="单表模板导入"
-        importUrl="/mms/pms/pmsdeliverydetails/importData/v1"
         downloadTemplateUrl="/mms/pms/pmsdeliverydetails/downloadTemplate/v1"
-        @reloadData="getList"
+        importUrl="/mms/pms/pmsdeliverydetails/importData/v1"
+        title="单表模板导入"
         @close="showImportModal = false"
+        @reloadData="getList"
     />
   </div>
 </template>

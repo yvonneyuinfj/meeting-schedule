@@ -1,22 +1,22 @@
 <template>
   <a-modal
-      title="查看附件"
-      :visible="props.attachOpen"
-      @cancel="handleCancel"
       :footer="null"
+      :visible="props.attachOpen"
+      title="查看附件"
       width="40%"
+      @cancel="handleCancel"
   >
     <AvicUploader
-        element-id="1"
-        form-type="detail"
         :allow-add="false"
         :allow-download="true"
         :allow-preview="true"
         :form-id="form.id"
+        element-id="1"
+        form-type="detail"
     />
   </a-modal>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   attachOpen: {
     type: Boolean,

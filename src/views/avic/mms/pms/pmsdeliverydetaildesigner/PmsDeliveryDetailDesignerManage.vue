@@ -2,22 +2,22 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+      <a-form ref="formRef" :model="queryForm" v-bind="layout">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="密级">
               <a-select
-                v-model:value="queryForm.secretLevel"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择密级"
+                  v-model:value="queryForm.secretLevel"
+                  :allow-clear="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  :show-search="true"
+                  option-filter-prop="children"
+                  placeholder="请选择密级"
               >
                 <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in secretLevelList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -27,83 +27,83 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="PDM归档编号">
               <a-input
-                v-model:value="queryForm.pdmArchiveNumber"
-                placeholder="请输入PDM归档编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.pdmArchiveNumber"
+                  :allow-clear="true"
+                  placeholder="请输入PDM归档编号"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="文件名称">
               <a-input
-                v-model:value="queryForm.fileName"
-                placeholder="请输入文件名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.fileName"
+                  :allow-clear="true"
+                  placeholder="请输入文件名称"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="上传人">
               <a-input
-                v-model:value="queryForm.uplink"
-                placeholder="请输入上传人"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.uplink"
+                  :allow-clear="true"
+                  placeholder="请输入上传人"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="上传时间(起)">
               <a-date-picker
-                v-model:value="queryForm.uploadTimeBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择上传时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.uploadTimeEnd)"
+                  v-model:value="queryForm.uploadTimeBegin"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.uploadTimeEnd)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择上传时间(起)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="上传时间(止)">
               <a-date-picker
-                v-model:value="queryForm.uploadTimeEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择上传时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.uploadTimeBegin)"
+                  v-model:value="queryForm.uploadTimeEnd"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.uploadTimeBegin)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择上传时间(止)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="是否审批">
               <a-input
-                v-model:value="queryForm.ynApprover"
-                placeholder="请输入是否审批"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.ynApprover"
+                  :allow-clear="true"
+                  placeholder="请输入是否审批"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              style="margin-left: auto"
+              v-bind="colLayout.cols"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                <a-button ghost type="primary" @click="resetQuery">
+                  <redo-outlined/>
                   重置
                 </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                <a-button style="margin: 0" type="link" @click="toggleAdvanced">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -114,97 +114,97 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="pmsDeliveryDetailDesigner"
-        table-key="pmsDeliveryDetailDesigner"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="pmsDeliveryDetailDesigner"
+          :columns="columns"
+          :data-source="list"
+          :loading="loading"
+          :pageParameter="queryParam.pageParameter"
+          :row-key="record => record.id"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :total="totalPage"
+          table-key="pmsDeliveryDetailDesigner"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['pmsDeliveryDetailDesigner:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['pmsDeliveryDetailDesigner:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               添加
             </a-button>
-<!--            <a-button-->
-<!--              v-hasPermi="['pmsDeliveryDetailDesigner:edit']"-->
-<!--              title="编辑"-->
-<!--              type="primary"-->
-<!--              ghost-->
-<!--              @click="handleEdit"-->
-<!--            >-->
-<!--              <template #icon>-->
-<!--                <edit-outlined />-->
-<!--              </template>-->
-<!--              编辑-->
-<!--            </a-button>-->
+            <!--            <a-button-->
+            <!--              v-hasPermi="['pmsDeliveryDetailDesigner:edit']"-->
+            <!--              title="编辑"-->
+            <!--              type="primary"-->
+            <!--              ghost-->
+            <!--              @click="handleEdit"-->
+            <!--            >-->
+            <!--              <template #icon>-->
+            <!--                <edit-outlined />-->
+            <!--              </template>-->
+            <!--              编辑-->
+            <!--            </a-button>-->
             <a-button
-              v-hasPermi="['pmsDeliveryDetailDesigner:commitProcess']"
-              title="提交审批"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="approvalLoading"
-              @click="handleApproval(selectedRows, selectedRowKeys)">
+                v-hasPermi="['pmsDeliveryDetailDesigner:commitProcess']"
+                :loading="approvalLoading"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                title="提交审批"
+                @click="handleApproval(selectedRows, selectedRowKeys)">
               提交审批
             </a-button>
             <a-button
-              v-hasPermi="['pmsDeliveryDetailDesigner:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['pmsDeliveryDetailDesigner:del']"
+                :loading="delLoading"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                danger
+                title="删除"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
-<!--            <a-button-->
-<!--              v-hasPermi="['pmsDeliveryDetailDesigner:export']"-->
-<!--              title="导出"-->
-<!--              type="primary"-->
-<!--              ghost-->
-<!--              @click="handleExport">-->
-<!--              <template #icon>-->
-<!--                 <export-outlined />-->
-<!--              </template>-->
-<!--              导出-->
-<!--            </a-button>-->
+            <!--            <a-button-->
+            <!--              v-hasPermi="['pmsDeliveryDetailDesigner:export']"-->
+            <!--              title="导出"-->
+            <!--              type="primary"-->
+            <!--              ghost-->
+            <!--              @click="handleExport">-->
+            <!--              <template #icon>-->
+            <!--                 <export-outlined />-->
+            <!--              </template>-->
+            <!--              导出-->
+            <!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['pmsDeliveryDetailDesigner:all']"
-              :myFileAuth="['pmsDeliveryDetailDesigner:my']"
-              :defaultBpmType = 'queryForm.bpmType'
-              :defaultBpmState = 'queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['pmsDeliveryDetailDesigner:all']"
+                :defaultBpmState='queryForm.bpmState'
+                :defaultBpmType='queryForm.bpmType'
+                :myFileAuth="['pmsDeliveryDetailDesigner:my']"
+                @change="changeBpmFilter"
             />
             <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入计划ID或PDM归档编号"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+                :allow-clear="true"
+                class="opt-btn-commonsearch"
+                placeholder="请输入计划ID或PDM归档编号"
+                style="width: 200px"
+                @search="handleKeyWordQuery"
             />
           </a-space>
         </template>
@@ -227,24 +227,24 @@
     </div>
     <!-- 添加页面弹窗 -->
     <PmsDeliveryDetailDesignerAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :mainId="mainId"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        :mainId="mainId"
+        @close="showAddModal = false"
+        @reloadData="getList"
     />
     <!-- 编辑页面弹窗 -->
-<!--    <PmsDeliveryDetailDesignerEdit-->
-<!--      v-if="showEditModal"-->
-<!--      ref="editModal"-->
-<!--      :form-id="formId"-->
-<!--      @reloadData="getList"-->
-<!--      @close="showEditModal = false"-->
-<!--    />-->
+    <!--    <PmsDeliveryDetailDesignerEdit-->
+    <!--      v-if="showEditModal"-->
+    <!--      ref="editModal"-->
+    <!--      :form-id="formId"-->
+    <!--      @reloadData="getList"-->
+    <!--      @close="showEditModal = false"-->
+    <!--    />-->
     <AttachModal
-        :attachOpen="attachOpen"
         :attach-form="attchForm"
+        :attachOpen="attachOpen"
         @closeAttach="closeAttach"
     />
   </div>
@@ -252,15 +252,15 @@
 <script lang="ts" setup>
 import type { PmsDeliveryDetailDesignerDto } from '@/api/avic/mms/pms/PmsDeliveryDetailDesignerApi'; // 引入模块DTO
 import {
-  listPmsDeliveryDetailDesignerByPage,
-  // exportExcel ,
+  approvalPmsDeliveryDetailDesigner,
   delPmsDeliveryDetailDesigner,
-  approvalPmsDeliveryDetailDesigner
+  listPmsDeliveryDetailDesignerByPage
 } from '@/api/avic/mms/pms/PmsDeliveryDetailDesignerApi'; // 引入模块API
 import PmsDeliveryDetailDesignerAdd from './PmsDeliveryDetailDesignerAdd.vue'; // 引入添加页面组件
 // import PmsDeliveryDetailDesignerEdit from './PmsDeliveryDetailDesignerEdit.vue'; // 引入编辑页面组件
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import AttachModal from './AttachModal.vue';
+
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
@@ -320,7 +320,7 @@ const columns = [
   },
   {
     title: '上传人',
-    dataIndex: 'uplink',
+    dataIndex: 'uplinkName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -427,23 +427,25 @@ function getList() {
   loading.value = true;
   queryParam.searchParams.pmsPlanId = props.mainId ? props.mainId : '-1';
   listPmsDeliveryDetailDesignerByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -451,6 +453,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -458,6 +461,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -466,10 +470,12 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -480,6 +486,7 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   if (props.mainId == '') {
@@ -488,6 +495,7 @@ function handleAdd() {
   }
   showAddModal.value = true;
 }
+
 /** 编辑 */
 // function handleEdit() {
 //   if (selectedRows.value.length !== 1) {
@@ -506,6 +514,7 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
@@ -523,22 +532,23 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delPmsDeliveryDetailDesigner(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
 /** 导出 */
 // function handleExport() {
 //   proxy.$confirm({
@@ -560,6 +570,7 @@ function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -595,7 +606,7 @@ const handleApproval = (rows, ids) => {
   //   proxy.$message.warning('只有自己的数据才可以提交！');
   //   return;
   // }
-  if (rows.filter(row => row.bpmState !== null )?.length > 0) {
+  if (rows.filter(row => row.bpmState !== null)?.length > 0) {
     proxy.$message.warning('只有未提交的数据才可以提交审批！');
     return;
   }
@@ -610,7 +621,7 @@ const handleApproval = (rows, ids) => {
   });
 };
 
-function getBpmDefine(row){
+function getBpmDefine(row) {
   startFlowByFormCode({
     formCode: 'PmsDeliveryDetailDesigner',
     formData: row,
