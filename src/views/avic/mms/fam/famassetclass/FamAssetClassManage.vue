@@ -302,7 +302,6 @@ function afterEditTreeNode(data) {
     // 修改时如果更改了父节点id，需要刷新树
     getTreeList();
   } else {
-    alert(data.title);
     currentSelectedNode.value.dataRef.title = data.title;
     // 节点编辑成功后重新加载右侧详细区数据
     RightListManageRef.value.getList();
