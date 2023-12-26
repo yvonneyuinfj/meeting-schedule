@@ -253,12 +253,6 @@
                 placeholder="请选择预算组织"
                 :defaultShowValue="form.budgetOrgAlias"
               />
-              <!--              <a-input-->
-              <!--                v-model:value="form.budgetOrg"-->
-              <!--                :disabled="annual === '1'"-->
-              <!--                :maxLength="32"-->
-              <!--                placeholder="请输入预算组织"-->
-              <!--              />-->
             </a-form-item>
           </a-col>
 
@@ -322,6 +316,7 @@
             >
               <a-input
                 v-model:value="form.projectName"
+                :disabled="annual === '1'"
                 :maxLength="64"
                 placeholder="请输入项目名称"
               />
@@ -427,6 +422,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择故障时间"
+                :disabled-date="
+                  startValue => proxy.$disabledStartDate(startValue,dayjs().add(1, 'day').format('YYYY-MM-DD'))
+                "
               />
             </a-form-item>
           </a-col>
@@ -530,6 +528,7 @@ import AnnualMaintPlan from '@/views/avic/mms/fam/components/AnnualMaintPlan.vue
 import FamOverhaulRequireListEdit from '@/views/avic/mms/fam/famoverhaulrequirelist/FamOverhaulRequireListEdit.vue'; // 引入子表组件
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
+import dayjs from 'dayjs'
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({

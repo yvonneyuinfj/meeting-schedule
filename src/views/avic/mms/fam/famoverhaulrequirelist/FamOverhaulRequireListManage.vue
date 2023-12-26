@@ -29,22 +29,22 @@
         @change="handleTableChange"
         @refresh="getList"
       >
-        <template #toolBarLeft>
-          <a-space>
-            <a-button
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              title="删除"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-          </a-space>
-        </template>
+<!--        <template #toolBarLeft>-->
+<!--          <a-space>-->
+<!--            <a-button-->
+<!--              danger-->
+<!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+<!--              title="删除"-->
+<!--              :loading="delLoading"-->
+<!--              @click="handleDelete(selectedRowKeys, '')"-->
+<!--            >-->
+<!--              <template #icon>-->
+<!--                <delete-outlined />-->
+<!--              </template>-->
+<!--              删除-->
+<!--            </a-button>-->
+<!--          </a-space>-->
+<!--        </template>-->
         <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"
@@ -163,13 +163,13 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    width: 120,
-    fixed: 'right'
-  }
+  // {
+  //   title: '操作',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   width: 120,
+  //   fixed: 'right'
+  // }
 ];
 const queryParam = reactive({
   // 请求表格数据参数
