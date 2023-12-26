@@ -1,10 +1,11 @@
 import type { PmsPlanBkDto } from '@/api/avic/mms/pms/PmsPlanBkApi'; // 引入模块DTO
 import { getPmsPlanBk, savePmsPlanBk } from '@/api/avic/mms/pms/PmsPlanBkApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
+
 export function usePmsPlanBkForm({
-  props: props,
-  emit: emit
-}) {
+                                   props: props,
+                                   emit: emit
+                                 }) {
   const { proxy } = getCurrentInstance();
   const form = ref<PmsPlanBkDto>({});
   const formRef = ref(null);
@@ -54,11 +55,13 @@ export function usePmsPlanBkForm({
   const proposedSourcingMethodList = ref([]); // 拟寻源方式通用代码
   const mergeFlagList = ref([]); // 合并标识通用代码
   const planStatusList = ref([]); // 计划状态通用代码
+  const procureStageList = ref([]); // 采购阶段通用代码
   const lookupParams = [
     { fieldName: 'proposedSourcingMethod', lookUpType: 'PMS_PROPOSED_SOURCING_METHOD' },
     { fieldName: 'mergeFlag', lookUpType: 'PMS_MERGE_FLAG' },
-    { fieldName: 'planStatus', lookUpType: 'PMS_PLAN_STATUS' }
-    ];
+    { fieldName: 'planStatus', lookUpType: 'PMS_PLAN_STATUS' },
+    { fieldName: 'procureStage', lookUpType: 'PMS_PROCURE_STAGE' }
+  ];
 
   onMounted(() => {
     // 加载查询区所需通用代码
@@ -72,31 +75,34 @@ export function usePmsPlanBkForm({
   });
 
   /** 获取通用代码  */
-  function getLookupList () {
+  function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-    proposedSourcingMethodList.value = result.proposedSourcingMethod;
-    mergeFlagList.value = result.mergeFlag;
-    planStatusList.value = result.planStatus;
+      proposedSourcingMethodList.value = result.proposedSourcingMethod;
+      mergeFlagList.value = result.mergeFlag;
+      planStatusList.value = result.planStatus;
+      procureStageList.value = result.procureStage;
     });
   }
+
   /** 获取当前用户对应的文档密级 */
-  function getUserFileSecretList () {
+  function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
    */
-  function getFormData (id) {
+  function getFormData(id) {
     loading.value = true;
     getPmsPlanBk(id)
       .then(async (res) => {
         if (res.success) {
           form.value = res.data;
           // 处理数据
- loading.value = false;
+          loading.value = false;
         }
       })
       .catch(() => {
@@ -104,11 +110,12 @@ export function usePmsPlanBkForm({
         loading.value = false;
       });
   }
+
   /** 保存 */
-  function saveForm () {
+  function saveForm() {
     formRef.value
       .validate()
-      .then( () => {
+      .then(() => {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
@@ -134,16 +141,19 @@ export function usePmsPlanBkForm({
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 数据保存成功的回调 */
-  function successCallback () {
+  function successCallback() {
     proxy.$message.success('保存成功！');
     emit('reloadData');
     emit('close');
   }
+
   /** 返回关闭事件 */
-  function closeModal () {
+  function closeModal() {
     emit('close');
   }
+
   return {
     form,
     formRef,
@@ -152,6 +162,7 @@ export function usePmsPlanBkForm({
     colLayout,
     loading,
     secretLevelList,
+    procureStageList,
     proposedSourcingMethodList,
     mergeFlagList,
     planStatusList,

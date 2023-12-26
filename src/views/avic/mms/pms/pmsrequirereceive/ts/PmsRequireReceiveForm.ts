@@ -1,10 +1,11 @@
 import type { PmsRequireReceiveDto } from '@/api/avic/mms/pms/PmsRequireReceiveApi'; // 引入模块DTO
 import { getPmsRequireReceive, savePmsRequireReceive } from '@/api/avic/mms/pms/PmsRequireReceiveApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
+
 export function usePmsRequireReceiveForm({
-  props: props,
-  emit: emit
-}) {
+                                           props: props,
+                                           emit: emit
+                                         }) {
   const { proxy } = getCurrentInstance();
   const form = ref<PmsRequireReceiveDto>({});
   const formRef = ref(null);
@@ -48,12 +49,16 @@ export function usePmsRequireReceiveForm({
   const sourceTypeList = ref([]); // 需求来源通用代码
   const proposedSourcingMethodList = ref([]); // 拟寻源方式通用代码
   const reqStatusList = ref([]); // 需求状态通用代码
+  const procureStageList = ref([]); // 采购阶段通用代码
+  const productServiceCategoryList = ref([]); // 采购阶段通用代码
   const lookupParams = [
     { fieldName: 'planType', lookUpType: 'PMS_PLAN_TYPE' },
     { fieldName: 'sourceType', lookUpType: 'PMS_SOURCE_TYPE' },
     { fieldName: 'proposedSourcingMethod', lookUpType: 'PMS_PROPOSED_SOURCING_METHOD' },
-    { fieldName: 'reqStatus', lookUpType: 'PMS_REQ_STATUS' }
-    ];
+    { fieldName: 'reqStatus', lookUpType: 'PMS_REQ_STATUS' },
+    { fieldName: 'procureStage', lookUpType: 'PMS_PROCURE_STAGE' },
+    { fieldName: 'productServiceCategory', lookUpType: 'PMS_PRODUCT_SERVICE_CATEGORY' }
+  ];
 
   onMounted(() => {
     // 加载查询区所需通用代码
@@ -67,32 +72,36 @@ export function usePmsRequireReceiveForm({
   });
 
   /** 获取通用代码  */
-  function getLookupList () {
+  function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-    planTypeList.value = result.planType;
-    sourceTypeList.value = result.sourceType;
-    proposedSourcingMethodList.value = result.proposedSourcingMethod;
-    reqStatusList.value = result.reqStatus;
+      planTypeList.value = result.planType;
+      sourceTypeList.value = result.sourceType;
+      proposedSourcingMethodList.value = result.proposedSourcingMethod;
+      reqStatusList.value = result.reqStatus;
+      procureStageList.value = result.procureStage;
+      productServiceCategoryList.value = result.productServiceCategory;
     });
   }
+
   /** 获取当前用户对应的文档密级 */
-  function getUserFileSecretList () {
+  function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
    */
-  function getFormData (id) {
+  function getFormData(id) {
     loading.value = true;
     getPmsRequireReceive(id)
       .then(async (res) => {
         if (res.success) {
           form.value = res.data;
           // 处理数据
- loading.value = false;
+          loading.value = false;
         }
       })
       .catch(() => {
@@ -100,11 +109,12 @@ export function usePmsRequireReceiveForm({
         loading.value = false;
       });
   }
+
   /** 保存 */
-  function saveForm () {
+  function saveForm() {
     formRef.value
       .validate()
-      .then( () => {
+      .then(() => {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
@@ -126,16 +136,19 @@ export function usePmsRequireReceiveForm({
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 数据保存成功的回调 */
-  function successCallback () {
+  function successCallback() {
     proxy.$message.success('保存成功！');
     emit('reloadData');
     emit('close');
   }
+
   /** 返回关闭事件 */
-  function closeModal () {
+  function closeModal() {
     emit('close');
   }
+
   return {
     form,
     formRef,
@@ -144,8 +157,10 @@ export function usePmsRequireReceiveForm({
     colLayout,
     loading,
     secretLevelList,
+    procureStageList,
     planTypeList,
     sourceTypeList,
+    productServiceCategoryList,
     proposedSourcingMethodList,
     reqStatusList,
     saveForm,

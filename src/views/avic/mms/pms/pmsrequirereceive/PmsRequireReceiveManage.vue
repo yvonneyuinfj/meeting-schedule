@@ -2,26 +2,26 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+      <a-form ref="formRef" :model="queryForm" v-bind="layout">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购计划名称">
               <a-input
-                v-model:value="queryForm.reqPlanName"
-                placeholder="请输入采购计划名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.reqPlanName"
+                  :allow-clear="true"
+                  placeholder="请输入采购计划名称"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="主责单位">
               <AvicCommonSelect
-                v-model:value="queryForm.reqDeptId"
-                type="deptSelect"
-                placeholder="请选择主责单位"
-                :defaultShowValue="queryForm.reqDeptIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.reqDeptId"
+                  :defaultShowValue="queryForm.reqDeptIdAlias"
+                  placeholder="请选择主责单位"
+                  type="deptSelect"
+                  @callback="result => {
                   queryForm.reqDeptIdAlias = result.names;
                 }
                   "
@@ -31,31 +31,31 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购负责人">
               <AvicCommonSelect
-                v-model:value="queryForm.managerUserId"
-                type="userSelect"
-                placeholder="请选择采购负责人"
-                :defaultShowValue="queryForm.managerUserIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.managerUserId"
+                  :defaultShowValue="queryForm.managerUserIdAlias"
+                  placeholder="请选择采购负责人"
+                  type="userSelect"
+                  @callback="result => {
                   queryForm.managerUserIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="计划类型">
               <a-select
-                v-model:value="queryForm.planType"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择计划类型"
+                  v-model:value="queryForm.planType"
+                  :allow-clear="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  :show-search="true"
+                  option-filter-prop="children"
+                  placeholder="请选择计划类型"
               >
                 <a-select-option
-                  v-for="item in planTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in planTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -63,23 +63,23 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              style="margin-left: auto"
+              v-bind="colLayout.cols"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                <a-button ghost type="primary" @click="resetQuery">
+                  <redo-outlined/>
                   重置
                 </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                <a-button style="margin: 0" type="link" @click="toggleAdvanced">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -90,22 +90,22 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="pmsRequireReceive"
-        table-key="pmsRequireReceive"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="pmsRequireReceive"
+          :columns="columns"
+          :data-source="list"
+          :loading="loading"
+          :pageParameter="queryParam.pageParameter"
+          :row-key="record => record.id"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :total="totalPage"
+          table-key="pmsRequireReceive"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -134,24 +134,24 @@
               删除
             </a-button> -->
             <a-button
-              v-hasPermi="['pmsRequireReceive:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
+                v-hasPermi="['pmsRequireReceive:import']"
+                ghost
+                title="导入"
+                type="primary"
+                @click="handleImport">
               <template #icon>
-                 <import-outlined />
+                <import-outlined/>
               </template>
               导入
             </a-button>
             <a-button
-              v-hasPermi="['pmsRequireReceive:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
+                v-hasPermi="['pmsRequireReceive:export']"
+                ghost
+                title="导出"
+                type="primary"
+                @click="handleExport">
               <template #icon>
-                 <export-outlined />
+                <export-outlined/>
               </template>
               导出
             </a-button>
@@ -159,11 +159,11 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入采购计划号或采购计划名称"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
+              :allow-clear="true"
+              class="opt-btn-commonsearch"
+              placeholder="请输入采购计划号或采购计划名称"
+              style="width: 200px"
+              @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -216,23 +216,19 @@
       @close="showDetailModal = false"
     /> -->
     <AvicExcelImport
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="单表模板导入"
-      importUrl="/mms/pms/pmsrequirereceives/importData/v1"
-      downloadTemplateUrl="/mms/pms/pmsrequirereceives/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
+        v-if="showImportModal"
+        :formData="excelParams"
+        downloadTemplateUrl="/mms/pms/pmsrequirereceives/downloadTemplate/v1"
+        importUrl="/mms/pms/pmsrequirereceives/importData/v1"
+        title="单表模板导入"
+        @close="showImportModal = false"
+        @reloadData="getList"
     />
   </div>
 </template>
 <script lang="ts" setup>
 import type { PmsRequireReceiveDto } from '@/api/avic/mms/pms/PmsRequireReceiveApi'; // 引入模块DTO
-import {
-  listPmsRequireReceiveByPage,
-  // delPmsRequireReceive, 
-  exportExcel
-} from '@/api/avic/mms/pms/PmsRequireReceiveApi'; // 引入模块API
+import { exportExcel, listPmsRequireReceiveByPage } from '@/api/avic/mms/pms/PmsRequireReceiveApi'; // 引入模块API
 // import PmsRequireReceiveAdd from './PmsRequireReceiveAdd.vue'; // 引入添加页面组件
 // import PmsRequireReceiveEdit from './PmsRequireReceiveEdit.vue'; // 引入编辑页面组件
 // import PmsRequireReceiveDetail from './PmsRequireReceiveDetail.vue'; // 引入详情页面组件
@@ -303,7 +299,7 @@ const columns = [
   },
   {
     title: '产品和服务类别',
-    dataIndex: 'productServiceCategory',
+    dataIndex: 'productServiceCategoryName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -312,7 +308,7 @@ const columns = [
   },
   {
     title: '产品需求分类',
-    dataIndex: 'productReqClassify',
+    dataIndex: 'productReqClassifyName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -329,7 +325,7 @@ const columns = [
   },
   {
     title: '产品类型',
-    dataIndex: 'productType',
+    dataIndex: 'productTypeName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -477,17 +473,18 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   loading.value = true;
   listPmsRequireReceiveByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -497,6 +494,7 @@ function getLookupList() {
     reqStatusList.value = result.reqStatus;
   });
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -504,15 +502,18 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -523,6 +524,7 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 // function handleAdd() {
 //   showAddModal.value = true;
@@ -541,6 +543,7 @@ function handleKeyWordQuery(value) {
 function handleImport() {
   showImportModal.value = true;
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -557,6 +560,7 @@ function handleExport() {
     }
   });
 }
+
 /** 删除 */
 // function handleDelete(ids, type) {
 //   if (ids.length == 0) {
@@ -587,6 +591,7 @@ function handleExport() {
 function onSelectChange(rowKeys) {
   selectedRowKeys.value = rowKeys;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;

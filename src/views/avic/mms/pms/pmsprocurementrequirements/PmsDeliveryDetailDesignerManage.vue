@@ -121,28 +121,6 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
-  },
-  {
-    title: '流程状态',
-    dataIndex: 'businessstate_',
-    ellipsis: true,
-    width: 120,
-    align: 'center',
-    fixed: 'right'
-  },
-  {
-    title: '流程当前步骤',
-    dataIndex: 'activityalias_',
-    width: 120,
-    fixed: 'right'
-  },
-  {
-    title: '当前处理人',
-    dataIndex: 'assigneenames_',
-    ellipsis: true,
-    width: 130,
-    align: 'left',
-    fixed: 'right'
   }
 ];
 const queryForm = ref<PmsDeliveryDetailDesignerDto>({

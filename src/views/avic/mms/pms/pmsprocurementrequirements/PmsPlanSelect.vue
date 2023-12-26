@@ -15,21 +15,31 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item label="合并标识">
+              <a-select
+                  v-model:value="queryForm.mergeFlag"
+                  :allow-clear="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  :show-search="true"
+                  option-filter-prop="children"
+                  placeholder="请选择合并标识"
+              >
+                <a-select-option
+                    v-for="item in mergeFlagList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item label="采购计划号">
               <a-input
                   v-model:value="queryForm.reqPlanNo"
                   :allow-clear="true"
                   placeholder="请输入采购计划号"
-                  @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item label="采购计划名称">
-              <a-input
-                  v-model:value="queryForm.reqPlanName"
-                  :allow-clear="true"
-                  placeholder="请输入采购计划名称"
                   @pressEnter="handleQuery"
               />
             </a-form-item>
@@ -104,26 +114,6 @@
           <!--              />-->
           <!--            </a-form-item>-->
           <!--          </a-col>-->
-          <a-col v-show="advanced" v-bind="colLayout.cols">
-            <a-form-item label="采购阶段">
-              <a-select
-                  v-model:value="queryForm.procureStage"
-                  :allow-clear="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  :show-search="true"
-                  option-filter-prop="children"
-                  placeholder="请选择采购阶段"
-              >
-                <a-select-option
-                    v-for="item in procureStageList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
 <!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
 <!--            <a-form-item label="产品需求分类">-->
 <!--              <a-input-->
@@ -318,7 +308,7 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="pmsPlanBkSelect"
+          ref="pmsPlanSelect"
           :columns="columns"
           :customRow="customRow"
           :data-source="list"
@@ -326,6 +316,7 @@
           :pageParameter="queryParam.pageParameter"
           :row-key="record => record.id"
           :row-selection="{
+          type: 'radio',
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
@@ -333,7 +324,7 @@
         }"
           :show-table-setting="false"
           :total="totalPage"
-          table-key="pmsPlanBkSelect"
+          table-key="pmsPlanSelect"
           @change="handleTableChange"
           @refresh="getList"
       >
@@ -356,10 +347,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { PmsPlanBkDto } from '@/api/avic/mms/pms/PmsPlanBkApi'; // 引入模块DTO
-import { listPmsPlanBkByPage } from '@/api/avic/mms/pms/PmsPlanBkApi'; // 引入模块API
+import type { PmsPlanDto } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块DTO
+import { listPmsPlanByPage } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块API
 const $emit = defineEmits(['select', 'handleRowDblClick']);
-const pmsPlanBkSelect = ref();
+const pmsPlanSelect = ref();
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -392,17 +383,16 @@ const columns = [
     align: 'center'
   },
   {
-    title: '采购计划号',
-    dataIndex: 'reqPlanNo',
+    title: '合并标识',
+    dataIndex: 'mergeFlagName',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '采购计划名称',
-    dataIndex: 'reqPlanName',
+    title: '采购计划号',
+    dataIndex: 'reqPlanNo',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -444,15 +434,6 @@ const columns = [
   {
     title: '产品和服务类别',
     dataIndex: 'productServiceCategoryName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购阶段',
-    dataIndex: 'procureStageName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -561,7 +542,7 @@ const columns = [
     fixed: 'right'
   }
 ];
-const queryForm = ref<PmsPlanBkDto>({});
+const queryForm = ref<PmsPlanDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -581,17 +562,16 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const totalPage = ref(0);
-const secretLevelList = ref([]); // 密级通用代码
-const proposedSourcingMethodList = ref([]); // 拟寻源方式通用代码
+// const secretLevelList = ref([]); // 密级通用代码
 const mergeFlagList = ref([]); // 合并标识通用代码
+const proposedSourcingMethodList = ref([]); // 拟寻源方式通用代码
 const planStatusList = ref([]); // 计划状态通用代码
-const procureStageList = ref([]); // 采购阶段通用代码
 const lookupParams = [
-  { fieldName: 'proposedSourcingMethod', lookUpType: 'PMS_PROPOSED_SOURCING_METHOD' },
   { fieldName: 'mergeFlag', lookUpType: 'PMS_MERGE_FLAG' },
-  { fieldName: 'planStatus', lookUpType: 'PMS_PLAN_STATUS' },
-  { fieldName: 'procureStage', lookUpType: 'PMS_PROCURE_STAGE' }
+  { fieldName: 'proposedSourcingMethod', lookUpType: 'PMS_PROPOSED_SOURCING_METHOD' },
+  { fieldName: 'planStatus', lookUpType: 'PMS_PLAN_STATUS' }
 ];
+const info = ref();
 
 onMounted(() => {
   // 加载表格数据
@@ -605,7 +585,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
-  listPmsPlanBkByPage(queryParam)
+  listPmsPlanByPage(queryParam)
       .then(response => {
         list.value = response.data.result;
         totalPage.value = response.data.pageParameter.totalCount;
@@ -621,10 +601,9 @@ function getList() {
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
-    proposedSourcingMethodList.value = result.proposedSourcingMethod;
     mergeFlagList.value = result.mergeFlag;
+    proposedSourcingMethodList.value = result.proposedSourcingMethod;
     planStatusList.value = result.planStatus;
-    procureStageList.value = result.procureStage;
   });
 }
 
@@ -662,6 +641,7 @@ function handleKeyWordQuery(value) {
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
+  info.value = rows[0];
   // 传出选中项
   $emit('select', selectedRows.value);
 }
@@ -687,5 +667,9 @@ function customRow(record) {
     }
   };
 }
+
+defineExpose({
+  info
+});
 </script>
 

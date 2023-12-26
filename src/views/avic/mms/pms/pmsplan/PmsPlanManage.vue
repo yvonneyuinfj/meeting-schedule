@@ -2,32 +2,32 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+      <a-form ref="formRef" :model="queryForm" v-bind="layout">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购任务编号">
               <a-input
-                v-model:value="queryForm.pmsTaskNo"
-                placeholder="请输入采购任务编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.pmsTaskNo"
+                  :allow-clear="true"
+                  placeholder="请输入采购任务编号"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="合并标识">
               <a-select
-                v-model:value="queryForm.mergeFlag"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择合并标识"
+                  v-model:value="queryForm.mergeFlag"
+                  :allow-clear="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  :show-search="true"
+                  option-filter-prop="children"
+                  placeholder="请选择合并标识"
               >
                 <a-select-option
-                  v-for="item in mergeFlagList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in mergeFlagList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -37,261 +37,261 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购计划号">
               <a-input
-                v-model:value="queryForm.reqPlanNo"
-                placeholder="请输入采购计划号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.reqPlanNo"
+                  :allow-clear="true"
+                  placeholder="请输入采购计划号"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="主责单位">
               <AvicCommonSelect
-                v-model:value="queryForm.reqDeptId"
-                type="deptSelect"
-                placeholder="请选择主责单位"
-                :defaultShowValue="queryForm.reqDeptIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.reqDeptId"
+                  :defaultShowValue="queryForm.reqDeptIdAlias"
+                  placeholder="请选择主责单位"
+                  type="deptSelect"
+                  @callback="result => {
                   queryForm.reqDeptIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="设计员">
               <AvicCommonSelect
-                v-model:value="queryForm.reqUserId"
-                type="userSelect"
-                placeholder="请选择设计员"
-                :defaultShowValue="queryForm.reqUserIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.reqUserId"
+                  :defaultShowValue="queryForm.reqUserIdAlias"
+                  placeholder="请选择设计员"
+                  type="userSelect"
+                  @callback="result => {
                   queryForm.reqUserIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="采购负责人">
               <AvicCommonSelect
-                v-model:value="queryForm.managerUserId"
-                type="userSelect"
-                placeholder="请选择采购负责人"
-                :defaultShowValue="queryForm.managerUserIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.managerUserId"
+                  :defaultShowValue="queryForm.managerUserIdAlias"
+                  placeholder="请选择采购负责人"
+                  type="userSelect"
+                  @callback="result => {
                   queryForm.managerUserIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="对接人">
               <AvicCommonSelect
-                v-model:value="queryForm.abutmentUserId"
-                type="userSelect"
-                placeholder="请选择对接人"
-                :defaultShowValue="queryForm.abutmentUserIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.abutmentUserId"
+                  :defaultShowValue="queryForm.abutmentUserIdAlias"
+                  placeholder="请选择对接人"
+                  type="userSelect"
+                  @callback="result => {
                   queryForm.abutmentUserIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="产品和服务类别">
-              <a-input
-                v-model:value="queryForm.productServiceCategory"
-                placeholder="请输入产品和服务类别"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="产品需求分类">
-              <a-input
-                v-model:value="queryForm.productReqClassify"
-                placeholder="请输入产品需求分类"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="产品类型">
-              <a-input
-                v-model:value="queryForm.productType"
-                placeholder="请输入产品类型"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="产品和服务类别">-->
+          <!--              <a-input-->
+          <!--                  v-model:value="queryForm.productServiceCategory"-->
+          <!--                  :allow-clear="true"-->
+          <!--                  placeholder="请输入产品和服务类别"-->
+          <!--                  @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+<!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
+<!--            <a-form-item label="产品需求分类">-->
+<!--              <a-input-->
+<!--                  v-model:value="queryForm.productReqClassify"-->
+<!--                  :allow-clear="true"-->
+<!--                  placeholder="请输入产品需求分类"-->
+<!--                  @pressEnter="handleQuery"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
+<!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
+<!--            <a-form-item label="产品类型">-->
+<!--              <a-input-->
+<!--                  v-model:value="queryForm.productType"-->
+<!--                  :allow-clear="true"-->
+<!--                  placeholder="请输入产品类型"-->
+<!--                  @pressEnter="handleQuery"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="所属项目课题号">
               <a-input
-                v-model:value="queryForm.projectTopicNumber"
-                placeholder="请输入所属项目课题号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.projectTopicNumber"
+                  :allow-clear="true"
+                  placeholder="请输入所属项目课题号"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="申请日期(起)">
               <a-date-picker
-                v-model:value="queryForm.applyDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择申请日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.applyDateEnd)"
+                  v-model:value="queryForm.applyDateBegin"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.applyDateEnd)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择申请日期(起)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="申请日期(止)">
               <a-date-picker
-                v-model:value="queryForm.applyDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择申请日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.applyDateBegin)"
+                  v-model:value="queryForm.applyDateEnd"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.applyDateBegin)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择申请日期(止)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="预算金额">
               <a-input
-                v-model:value="queryForm.budgetAmount"
-                placeholder="请输入预算金额"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.budgetAmount"
+                  :allow-clear="true"
+                  placeholder="请输入预算金额"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="采购部门">
               <AvicCommonSelect
-                v-model:value="queryForm.procureDeptId"
-                type="deptSelect"
-                placeholder="请选择采购部门"
-                :defaultShowValue="queryForm.procureDeptIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.procureDeptId"
+                  :defaultShowValue="queryForm.procureDeptIdAlias"
+                  placeholder="请选择采购部门"
+                  type="deptSelect"
+                  @callback="result => {
                   queryForm.procureDeptIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="采购主管">
               <AvicCommonSelect
-                v-model:value="queryForm.procureUserId"
-                type="userSelect"
-                placeholder="请选择采购主管"
-                :defaultShowValue="queryForm.procureUserIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.procureUserId"
+                  :defaultShowValue="queryForm.procureUserIdAlias"
+                  placeholder="请选择采购主管"
+                  type="userSelect"
+                  @callback="result => {
                   queryForm.procureUserIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="交付日期(起)">
               <a-date-picker
-                v-model:value="queryForm.deliveryDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择交付日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.deliveryDateEnd)"
+                  v-model:value="queryForm.deliveryDateBegin"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.deliveryDateEnd)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择交付日期(起)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="交付日期(止)">
               <a-date-picker
-                v-model:value="queryForm.deliveryDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择交付日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.deliveryDateBegin)"
+                  v-model:value="queryForm.deliveryDateEnd"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.deliveryDateBegin)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择交付日期(止)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="拟寻源方式">
               <a-select
-                v-model:value="queryForm.proposedSourcingMethod"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择拟寻源方式"
+                  v-model:value="queryForm.proposedSourcingMethod"
+                  :allow-clear="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  :show-search="true"
+                  option-filter-prop="children"
+                  placeholder="请选择拟寻源方式"
               >
                 <a-select-option
-                  v-for="item in proposedSourcingMethodList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in proposedSourcingMethodList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="指定供应商">
               <a-input
-                v-model:value="queryForm.appointVendorId"
-                placeholder="请输入指定供应商"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.appointVendorId"
+                  :allow-clear="true"
+                  placeholder="请输入指定供应商"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="技术文件完成日期(起)">
               <a-date-picker
-                v-model:value="queryForm.techDocCompleteDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择技术文件完成日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.techDocCompleteDateEnd)"
+                  v-model:value="queryForm.techDocCompleteDateBegin"
+                  :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.techDocCompleteDateEnd)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择技术文件完成日期(起)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="技术文件完成日期(止)">
               <a-date-picker
-                v-model:value="queryForm.techDocCompleteDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择技术文件完成日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.techDocCompleteDateBegin)"
+                  v-model:value="queryForm.techDocCompleteDateEnd"
+                  :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.techDocCompleteDateBegin)"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择技术文件完成日期(止)"
+                  value-format="YYYY-MM-DD"
               />
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              style="margin-left: auto"
+              v-bind="colLayout.cols"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                <a-button ghost type="primary" @click="resetQuery">
+                  <redo-outlined/>
                   重置
                 </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                <a-button style="margin: 0" type="link" @click="toggleAdvanced">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -302,53 +302,53 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="pmsPlan"
-        table-key="pmsPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="pmsPlan"
+          :columns="columns"
+          :data-source="list"
+          :loading="loading"
+          :pageParameter="queryParam.pageParameter"
+          :row-key="record => record.id"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :total="totalPage"
+          table-key="pmsPlan"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['pmsPlan:requirement']"
-              title="科研需求选择"
-              type="primary"
-              @click="handleOpen"
+                v-hasPermi="['pmsPlan:requirement']"
+                title="科研需求选择"
+                type="primary"
+                @click="handleOpen"
             >
               科研需求选择
             </a-button>
             <a-button
-              v-hasPermi="['pmsPlan:mergePlan']"
-              title="合并计划"
-              :type="selectedRowKeys.length === 0 ? 'default' : 'primary'"
-              @click="handleMergePlan(selectedRowKeys)"
+                v-hasPermi="['pmsPlan:mergePlan']"
+                :type="selectedRowKeys.length === 0 ? 'default' : 'primary'"
+                title="合并计划"
+                @click="handleMergePlan(selectedRowKeys)"
             >
               合并计划
             </a-button>
             <a-button
                 v-hasPermi="['pmsPlan:canelMerge']"
-                title="取消合并"
                 :type="selectedRowKeys.length === 0 ? 'default' : 'primary'"
+                title="取消合并"
                 @click="handleCancelMerge(selectedRowKeys)"
             >
               取消合并
             </a-button>
             <a-button
                 v-hasPermi="['pmsPlan:edit']"
-                title="编辑"
                 :type="selectedRowKeys.length === 0 ? 'default' : 'primary'"
+                title="编辑"
                 @click="handleEdit"
             >
               <template #icon>
@@ -358,8 +358,8 @@
             </a-button>
             <a-button
                 v-hasPermi="['pmsPlan:issuancePlan']"
-                title="计划下达"
                 :type="selectedRowKeys.length === 0 ? 'default' : 'primary'"
+                title="计划下达"
                 @click="handleIssuancePlan(selectedRowKeys)"
             >
               计划下达
@@ -388,37 +388,37 @@
               </template>
               删除
             </a-button> -->
-<!--            <a-button-->
-<!--              v-hasPermi="['pmsPlan:import']"-->
-<!--              title="导入"-->
-<!--              type="primary"-->
-<!--              ghost-->
-<!--              @click="handleImport">-->
-<!--              <template #icon>-->
-<!--                 <import-outlined />-->
-<!--              </template>-->
-<!--              导入-->
-<!--            </a-button>-->
-<!--            <a-button-->
-<!--              v-hasPermi="['pmsPlan:export']"-->
-<!--              title="导出"-->
-<!--              type="primary"-->
-<!--              ghost-->
-<!--              @click="handleExport">-->
-<!--              <template #icon>-->
-<!--                 <export-outlined />-->
-<!--              </template>-->
-<!--              导出-->
-<!--            </a-button>-->
+            <!--            <a-button-->
+            <!--              v-hasPermi="['pmsPlan:import']"-->
+            <!--              title="导入"-->
+            <!--              type="primary"-->
+            <!--              ghost-->
+            <!--              @click="handleImport">-->
+            <!--              <template #icon>-->
+            <!--                 <import-outlined />-->
+            <!--              </template>-->
+            <!--              导入-->
+            <!--            </a-button>-->
+            <!--            <a-button-->
+            <!--              v-hasPermi="['pmsPlan:export']"-->
+            <!--              title="导出"-->
+            <!--              type="primary"-->
+            <!--              ghost-->
+            <!--              @click="handleExport">-->
+            <!--              <template #icon>-->
+            <!--                 <export-outlined />-->
+            <!--              </template>-->
+            <!--              导出-->
+            <!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>
           <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入采购任务编号或采购计划号"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
+              :allow-clear="true"
+              class="opt-btn-commonsearch"
+              placeholder="请输入采购任务编号或采购计划号"
+              style="width: 200px"
+              @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -430,46 +430,46 @@
               {{ record.mergeFlagName }}
             </a>
           </template>
-<!--          <template v-else-if="column.dataIndex === 'action' && record.mergeFlag === '5'">-->
-<!--            <a-button-->
-<!--              type="link"-->
-<!--              class="inner-btn"-->
-<!--              @click.stop="handleEdit(record.id)">-->
-<!--              编辑-->
-<!--            </a-button>-->
-<!--            <a-button-->
-<!--              v-hasPermi="['pmsPlan:del']"-->
-<!--              type="link"-->
-<!--              class="inner-btn"-->
-<!--              @click.stop="handleDelete([record.id], 'row')">-->
-<!--              删除-->
-<!--            </a-button>-->
-<!--          </template>-->
+          <!--          <template v-else-if="column.dataIndex === 'action' && record.mergeFlag === '5'">-->
+          <!--            <a-button-->
+          <!--              type="link"-->
+          <!--              class="inner-btn"-->
+          <!--              @click.stop="handleEdit(record.id)">-->
+          <!--              编辑-->
+          <!--            </a-button>-->
+          <!--            <a-button-->
+          <!--              v-hasPermi="['pmsPlan:del']"-->
+          <!--              type="link"-->
+          <!--              class="inner-btn"-->
+          <!--              @click.stop="handleDelete([record.id], 'row')">-->
+          <!--              删除-->
+          <!--            </a-button>-->
+          <!--          </template>-->
         </template>
       </AvicTable>
     </div>
     <!-- 合并计划页面弹窗 -->
     <pms-plan-add
-      v-if="showAddModal"
-      ref="addModal"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        @close="showAddModal = false"
+        @reloadData="getList"
     />
     <!-- 编辑页面弹窗 -->
     <pms-plan-edit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @close="showEditModal = false"
+        @reloadData="getList"
     />
     <!-- 详情页面弹窗 -->
-<!--    <pms-plan-detail-->
-<!--      v-if="showDetailModal"-->
-<!--      ref="detailModal"-->
-<!--      :form-id="formId"-->
-<!--      @close="showDetailModal = false"-->
-<!--    />-->
+    <!--    <pms-plan-detail-->
+    <!--      v-if="showDetailModal"-->
+    <!--      ref="detailModal"-->
+    <!--      :form-id="formId"-->
+    <!--      @close="showDetailModal = false"-->
+    <!--    />-->
     <pms-plan-bk-manage
         v-if="showDetailModal"
         ref="detailModal"
@@ -477,33 +477,31 @@
         @close="showDetailModal = false"
     />
     <!--科研需求选择弹窗-->
-    <a-modal :visible="open" title="科研需求选择" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
+    <a-modal :visible="open" style="top: 20px" title="科研需求选择" width="80%" @cancel="handleCancel" @ok="handleOk">
       <div style="height: 400px;overflow: auto">
         <Pms-require-receive-select ref="pmsRequireReceiveSelect">
         </Pms-require-receive-select>
       </div>
     </a-modal>
-<!--    <AvicExcelImport-->
-<!--      v-if="showImportModal"-->
-<!--      :formData="excelParams"-->
-<!--      title="单表模板导入"-->
-<!--      importUrl="/mms/pms/pmsplans/importData/v1"-->
-<!--      downloadTemplateUrl="/mms/pms/pmsplans/downloadTemplate/v1"-->
-<!--      @reloadData="getList"-->
-<!--      @close="showImportModal = false"-->
-<!--    />-->
+    <!--    <AvicExcelImport-->
+    <!--      v-if="showImportModal"-->
+    <!--      :formData="excelParams"-->
+    <!--      title="单表模板导入"-->
+    <!--      importUrl="/mms/pms/pmsplans/importData/v1"-->
+    <!--      downloadTemplateUrl="/mms/pms/pmsplans/downloadTemplate/v1"-->
+    <!--      @reloadData="getList"-->
+    <!--      @close="showImportModal = false"-->
+    <!--    />-->
   </div>
 </template>
 <script lang="ts" setup>
 import type { PmsPlanDto } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块DTO
 import {
-  listPmsPlanByPage,
-  // delPmsPlan,
-  // exportExcel,
-  savePmsPlanList,
-  saveMergePlanByIds,
   canelMergePlanByIds,
-  issuancePlanByIds
+  issuancePlanByIds,
+  listPmsPlanByPage,
+  saveMergePlanByIds,
+  savePmsPlanList
 } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块API
 import PmsPlanAdd from './PmsPlanAdd.vue'; // 引入合并计划页面组件
 import PmsPlanEdit from './PmsPlanEdit.vue'; // 引入编辑页面组件
@@ -601,7 +599,7 @@ const columns = [
   },
   {
     title: '产品和服务类别',
-    dataIndex: 'productServiceCategory',
+    dataIndex: 'productServiceCategoryName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -610,7 +608,7 @@ const columns = [
   },
   {
     title: '产品需求分类',
-    dataIndex: 'productReqClassify',
+    dataIndex: 'productReqClassifyName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -619,7 +617,7 @@ const columns = [
   },
   {
     title: '产品类型',
-    dataIndex: 'productType',
+    dataIndex: 'productTypeName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -700,19 +698,16 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
-  // },
-  // {
-  //   title: '操作',
-  //   dataIndex: 'action',
-  //   ellipsis: true,
-  //   width: 120,
-  //   fixed: 'right'
+    // },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'action',
+    //   ellipsis: true,
+    //   width: 120,
+    //   fixed: 'right'
   }
 ];
-const queryForm = ref<PmsPlanDto>({
-  managerUserId: proxy.$getLoginUser().id,
-  planStatus: '0'
-});
+const queryForm = ref<PmsPlanDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -759,21 +754,24 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  queryParam.searchParams.managerUserId = proxy.$getLoginUser().id;
+  queryParam.searchParams.planStatus = '0';
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   listPmsPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -782,6 +780,7 @@ function getLookupList() {
     planStatusList.value = result.planStatus;
   });
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -789,15 +788,18 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -808,6 +810,7 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 // function handleAdd() {
 //   showAddModal.value = true;
@@ -825,11 +828,13 @@ function handleEdit() {
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 详细 */
 function handleDetail(record) {
   formId.value = record.id;
   showDetailModal.value = true;
 }
+
 /** 导入 */
 // function handleImport() {
 //   showImportModal.value = true;
@@ -881,6 +886,7 @@ function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -895,7 +901,9 @@ function handleTableChange(pagination, filters, sorter) {
 /** 科研需求选择 */
 function handleOpen() {
   open.value = true;
-  pmsRequireReceiveSelect.value.getList();
+  if (pmsRequireReceiveSelect.value != null) {
+    pmsRequireReceiveSelect.value.getList();
+  }
 }
 
 const handleCancel = () => {
@@ -924,11 +932,11 @@ const handleOk = () => {
 
 /** 合并计划 */
 function handleMergePlan(keys) {
-  if (keys.length < 2){
+  if (keys.length < 2) {
     proxy.$message.warning('请选择至少两条计划');
     return;
   }
-  if (keys.filter(row =>row.mergeFlag === '5')?.length > 0){
+  if (keys.filter(row => row.mergeFlag === '5')?.length > 0) {
     proxy.$message.warning('请选择未合并的计划');
     return;
   }
@@ -948,11 +956,11 @@ function handleMergePlan(keys) {
 
 /** 取消合并 */
 function handleCancelMerge(keys) {
-  if (keys.length === 0){
+  if (keys.length === 0) {
     proxy.$message.warning('请选择至少一条计划');
     return;
   }
-  if (keys.filter(row =>row.mergeFlag === '0')?.length > 0){
+  if (keys.filter(row => row.mergeFlag === '0')?.length > 0) {
     proxy.$message.warning('请选择已合并的计划');
     return;
   }
@@ -972,7 +980,7 @@ function handleCancelMerge(keys) {
 
 /** 计划下达 */
 function handleIssuancePlan(keys) {
-  if (keys.length === 0){
+  if (keys.length === 0) {
     proxy.$message.warning('请选择至少一条计划');
     return;
   }
