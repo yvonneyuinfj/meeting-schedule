@@ -333,6 +333,7 @@
     <FamOverhaulRequireListEdit
       v-if="fieldVisible('FAM_OVERHAUL_REQUIRE_LIST')"
       ref="famOverhaulRequireListEdit"
+      read-only="true"
       :mainId="formId || form.id"
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"

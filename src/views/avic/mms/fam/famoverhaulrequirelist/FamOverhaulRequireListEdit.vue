@@ -21,7 +21,7 @@
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
+      <template v-if="!props.readOnly ||  task==='task2'" #toolBarLeft>
         <a-space>
           <a-space>
             <!-- <a-button
@@ -155,7 +155,8 @@
       </div>
     </a-modal>
 
-    <a-modal :visible="assetNoOpen" title="维修改造记录" @ok="handleAssetNo" :footer="null" @cancel="handleAssetNo" width="80%"
+    <a-modal :visible="assetNoOpen" title="维修改造记录" @ok="handleAssetNo" :footer="null" @cancel="handleAssetNo"
+             width="80%"
              style="top: 20px">
 
       <AvicTable
@@ -198,8 +199,10 @@ const props = defineProps({
   bpmInstanceObject: {
     type: Object,
     default: {}
-  }
+  },
 });
+const task = props.bpmInstanceObject.hasOwnProperty('bpmModel') ? props.bpmInstanceObject.bpmModel : '';
+
 const columns = [
   {
     title: '资产类别',
@@ -428,6 +431,8 @@ const validateRules = {
   ]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
+
+console.log(props.bpmInstanceObject);
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
