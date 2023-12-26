@@ -21,7 +21,7 @@ export function useTpmInventoryForm({
     equipmentName: [{ required: true, message: '设备名称不能为空', trigger: 'change' }],
     useDeptId: [{ required: true, message: '使用部门不能为空', trigger: 'change' }],
     tpmAreaId: [{ required: true, message: '设备地理区域不能为空', trigger: 'change' }],
-    storageLocation: [{ required: true, message: '具体位置不能为空', trigger: 'change' }],
+    storageLocation: [{ required: true, message: '存放地点不能为空', trigger: 'change' }],
     secretLevel: [{ required: true, message: '密级不能为空', trigger: 'change' }],
     recordDate: [{ required: true, message: '启用时间不能为空', trigger: 'change' }],
     responseUserId: [{ required: true, message: '责任人不能为空', trigger: 'change' }],

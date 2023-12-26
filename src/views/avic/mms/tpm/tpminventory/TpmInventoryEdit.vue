@@ -494,11 +494,11 @@
             </a-form-item>
           </a-col> -->
           <a-col v-bind="colLayout.cols2">
-            <a-form-item name="storageLocation" label="具体位置">
+            <a-form-item name="storageLocation" label="存放地点">
               <a-input
                 v-model:value="form.storageLocation"
                 :maxLength="512"
-                placeholder="请输入具体位置"
+                placeholder="请输入存放地点"
               />
             </a-form-item>
           </a-col>
@@ -926,11 +926,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="storageLocation" label="具体位置">
+            <a-form-item name="storageLocation" label="存放地点">
               <a-input
                 v-model:value="form.storageLocation"
                 :maxLength="512"
-                placeholder="请输入具体位置"
+                placeholder="请输入存放地点"
               />
             </a-form-item>
           </a-col>

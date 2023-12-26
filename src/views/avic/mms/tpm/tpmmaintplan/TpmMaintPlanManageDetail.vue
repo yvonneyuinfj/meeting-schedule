@@ -98,57 +98,57 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '完好标识',
-    dataIndex: 'goodConditionFlag',
-    key: 'goodConditionFlag',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '完工日期',
-    dataIndex: 'completeDate',
-    key: 'completeDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '保养结论',
-    dataIndex: 'maintConclusion',
-    key: 'maintConclusion',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '问题说明',
-    dataIndex: 'problemDescription',
-    key: 'problemDescription',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '完好标识',
+  //   dataIndex: 'goodConditionFlag',
+  //   key: 'goodConditionFlag',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'center'
+  // },
+  // {
+  //   title: '完工日期',
+  //   dataIndex: 'completeDate',
+  //   key: 'completeDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'center'
+  // },
+  // {
+  //   title: '保养结论',
+  //   dataIndex: 'maintConclusion',
+  //   key: 'maintConclusion',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'center'
+  // },
+  // {
+  //   title: '问题说明',
+  //   dataIndex: 'problemDescription',
+  //   key: 'problemDescription',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '设备编号',
     dataIndex: 'equipmentCode',
@@ -296,63 +296,63 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '保养负责人',
-    dataIndex: 'maintUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '实际保养人',
-    dataIndex: 'actrualMaintUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '外委专业厂家',
-    dataIndex: 'vendorName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '下达人',
-    dataIndex: 'dispatchUserIdAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '下达日期',
-    dataIndex: 'dispatchDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '保养完成日期',
-    dataIndex: 'maintenanceFinishDate',
-    key: 'maintenanceFinishDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  // {
+  //   title: '保养负责人',
+  //   dataIndex: 'maintUserIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '实际保养人',
+  //   dataIndex: 'actrualMaintUserIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '外委专业厂家',
+  //   dataIndex: 'vendorName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '下达人',
+  //   dataIndex: 'dispatchUserIdAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '下达日期',
+  //   dataIndex: 'dispatchDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '密级',
+  //   dataIndex: 'secretLevelName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '保养完成日期',
+  //   dataIndex: 'maintenanceFinishDate',
+  //   key: 'maintenanceFinishDate',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
   {
     title: '保养计划类型',
     dataIndex: 'maintenPlanTypeName',
@@ -362,15 +362,15 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '备注',
-    dataIndex: 'note',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '备注',
+  //   dataIndex: 'note',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '驳回原因',
     dataIndex: 'backReason',
@@ -388,7 +388,7 @@ const columns = [
     resizable: true,
     align: 'center'
   }
-];
+];d
 const backReason = ref<string>('');
 const queryForm = ref<TpmMaintPlanDto>({});
 // 高级查询对象

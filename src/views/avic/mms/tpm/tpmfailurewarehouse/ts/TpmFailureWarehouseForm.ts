@@ -49,9 +49,9 @@ export function useTpmFailureWarehouseForm({ props: props, emit: emit }) {
     applyUserName: [
       { required: true, message: '申请人姓名不能为空', trigger: 'change' }
     ],
-    applyUserTel: [
-      proxy.$validateRegExp('phone')
-    ],
+    // applyUserTel: [
+    //   proxy.$validateRegExp('phone')
+    // ],
     applyDate: [
       { required: true, message: '申请日期不能为空', trigger: 'change' }
     ],

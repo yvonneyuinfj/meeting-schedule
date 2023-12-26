@@ -39,7 +39,7 @@ export function useTpmInventoryForm({
       { required: true, message: '设备地理区域不能为空', trigger: 'change' }
     ],
     storageLocation: [
-      { required: true, message: '具体位置不能为空', trigger: 'change' }
+      { required: true, message: '存放地点不能为空', trigger: 'change' }
     ],
     secretLevel: [
       { required: true, message: '密级不能为空', trigger: 'change' }
@@ -87,7 +87,7 @@ export function useTpmInventoryForm({
   //   { required: true, message: '设备地理区域不能为空', trigger: 'change' }
   // ],
   // storageLocation: [
-  //   { required: true, message: '具体位置不能为空', trigger: 'change' }
+  //   { required: true, message: '存放地点不能为空', trigger: 'change' }
   // ],
   // secretLevel: [
   //   { required: true, message: '密级不能为空', trigger: 'change' }

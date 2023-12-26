@@ -94,7 +94,7 @@
       <p style="margin: 0">7、故障平均修复时间=年内设备故障修复时间（）/年内故障总数（）。</p>
       <p style="margin: 0">8、示例：某设备工作80h后发生故障，修复后工作60h又发生故障，再修复后又工作70h发生故障，则设备在这段时期内设备平均故障间隔期（MTBF）=（80h+60h+70h）/3=70h。</p>
     </div>
-    <TpmIntactRatioMtbfMttrLEdit
+          <TpmIntactRatioMtbfMttrLDetailManage
         v-if="fieldVisible('TPM_INTACT_RATIO_MTBF_MTTR_L')"
         ref="tpmIntactRatioMtbfMttrLEdit"
         :mainId="formId || form.id"
@@ -126,7 +126,7 @@
 </template>
 <script lang="ts" setup>
 import { useTpmIntactRatioMtbfMttrForm, emits } from './ts/TpmIntactRatioMtbfMttrForm'; // 引入表单ts
-import TpmIntactRatioMtbfMttrLEdit from '@/views/avic/mms/tpm/tpmintactratiomtbfmttrl/TpmIntactRatioMtbfMttrLEdit.vue'; // 引入子表组件
+import TpmIntactRatioMtbfMttrLDetailManage from '@/views/avic/mms/tpm/tpmintactratiomtbfmttrl/TpmIntactRatioMtbfMttrLDetailManage.vue'; // 引入子表组件
 
 const props = defineProps({
   formId: {

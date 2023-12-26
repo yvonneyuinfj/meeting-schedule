@@ -147,7 +147,7 @@
     <AvicPane>
       <!--子表组件-->
       <TpmIntactRatioMtbfMttrLManage key="tpmIntactRatioMtbfMttrLManage" ref="tpmIntactRatioMtbfMttrLManage"
-                                     :mainId="mainId" :reportDate="reportDate" @reloadData="getList"/>
+                                         :mainId="mainId" :reportDate="reportDate" @reloadData="getList" :selectedParentRows="selectedRows"/>
     </AvicPane>
   </AvicSplit>
 </template>
@@ -269,7 +269,7 @@ const queryParam = reactive({
     ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
-  sidx: 'applyDate', // 排序字段
+  sidx: 'reportDate', // 排序字段
   sord: 'desc' // 排序方式: desc降序 asc升序
 });
 const props = defineProps({
