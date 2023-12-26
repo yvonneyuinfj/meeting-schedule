@@ -78,6 +78,7 @@ import dayjs from 'dayjs'; // 引入模块API
 import TpmIntactRatioMtbfMttrLAdd from './TpmIntactRatioMtbfMttrLAdd.vue'; // 引入添加页面组件
 import TpmIntactRatioMtbfMttrLEdit from './TpmIntactRatioMtbfMttrLEdit.vue'; // 引入编辑页面组件
 import { $ } from 'dom7';
+import { array } from 'vue-types';
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showImportModal = ref(false); // 是否展示导入弹窗
@@ -93,6 +94,10 @@ const props = defineProps({
   reportDate: {
     type: String,
     default: ''
+  },
+  selectedParentRows: {
+    type: Array,
+    default: []
   }
 });
 /** 添加 */
@@ -123,6 +128,11 @@ function handleDelete(ids, type) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
+  if (props.selectedParentRows[0].businessstate_ != '' || props.selectedParentRows[0].businessstate_ != '拟稿中') {
+    proxy.$message.warning('流程已提交，不允许删除');
+    return;
+  }
+
   proxy.$confirm({
     title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
     okText: '确定',
