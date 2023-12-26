@@ -28,6 +28,7 @@
               columnWidth: 40,
               fixed: true
             }"
+            :customRow="customRow"
             :pageParameter="queryParam.pageParameter"
             :total="totalPage"
             @change="handleTableChange"
@@ -80,24 +81,6 @@
                 </a-button>
               </a-space>
             </template>
-            <!--            <template #toolBarRight>-->
-            <!--              <a-space>-->
-            <!--                <AvicBpmFilter-->
-            <!--                  :allFileAuth="['pmsCertification:all']"-->
-            <!--                  :myFileAuth="['pmsCertification:my']"-->
-            <!--                  :defaultBpmType='queryForm.bpmType'-->
-            <!--                  :defaultBpmState='queryForm.bpmState'-->
-            <!--                  @change="changeBpmFilter"-->
-            <!--                />-->
-            <!--                <a-input-search-->
-            <!--                  class="opt-btn-commonsearch"-->
-            <!--                  style="width: 200px"-->
-            <!--                  placeholder="请输入"-->
-            <!--                  :allow-clear="true"-->
-            <!--                  @search="handleKeyWordQuery"-->
-            <!--                />-->
-            <!--              </a-space>-->
-            <!--            </template>-->
 
             <template #bodyCell="{ column, text, record, index }">
               <AvicRowEdit
@@ -169,30 +152,32 @@
               <template v-if="column.dataIndex === 'id'">
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
               </template>
-              <template v-else-if="column.dataIndex === 'secretLevelName'">
+              <template v-else-if="column.dataIndex === 'businessstate_'">
                 <a @click="handleFlowDetail(record)">
-                  {{ record.secretLevelName }}
+                  {{ record.businessstate_ }}
                 </a>
               </template>
               <template v-else-if="column.dataIndex === 'action'">
-                <a-button
-                  v-if="record.editable"
-                  type="link"
-                  class="inner-btn"
-                  :disable="editingId !== ''"
-                  @click.stop="handleSave(record)"
-                >
-                  保存
-                </a-button>
-                <a-button
-                  v-else
-                  type="link"
-                  class="inner-btn"
-                  :disable="editingId !== ''"
-                  @click.stop="handleEdit(record)"
-                >
-                  编辑
-                </a-button>
+                <div v-if="!record.bpmState || record.bpmState === 'start'">
+                  <a-button
+                    v-if="record.editable"
+                    type="link"
+                    class="inner-btn"
+                    :disable="editingId !== ''"
+                    @click.stop="handleSave(record)"
+                  >
+                    保存
+                  </a-button>
+                  <a-button
+                    v-else
+                    type="link"
+                    class="inner-btn"
+                    :disable="editingId !== ''"
+                    @click.stop="handleEdit(record)"
+                  >
+                    编辑
+                  </a-button>
+                </div>
                 <!--                <a-button-->
                 <!--                  type="link"-->
                 <!--                  class="inner-btn"-->
@@ -287,16 +272,16 @@ const columns = [
     align: 'left'
   },
   {
-    title: '合格品数量',
-    dataIndex: 'qualifiedQty',
+    title: '检验结论',
+    dataIndex: 'checkResult',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
-    title: '检验结论',
-    dataIndex: 'checkResult',
+    title: '合格品数量',
+    dataIndex: 'qualifiedQty',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -308,7 +293,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '不合格品处理单号',
@@ -321,12 +306,12 @@ const columns = [
   },
   {
     title: '状态',
-    dataIndex: 'status',
+    dataIndex: 'businessstate_',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '操作',
@@ -388,7 +373,6 @@ onMounted(() => {
 function parentIdChange(pmsCheckBillId) {
   mainId.value = pmsCheckBillId;
   getList();
-  console.log(pmsCheckBillListManage.value, '<<log');
   pmsCheckBillListManage.value.getList();
 }
 
@@ -512,10 +496,10 @@ function handleDelete(rows, ids) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
-  // if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-  //   proxy.$message.warning('只有拟稿中的数据才可以删除！');
-  //   return;
-  // }
+  if (rows.filter(row => row.bpmState && row.bpmState !== 'start')?.length > 0) {
+    proxy.$message.warning('只有拟稿中的数据才可以删除！');
+    return;
+  }
   proxy.$confirm({
     title: '确认要删除选择的数据吗?',
     okText: '确定',
@@ -630,7 +614,9 @@ function handleSaveAll() {
 function customRow(record) {
   return {
     onClick: () => {
-      handleEdit(record);
+      if (!record.bpmState || record.bpmState === 'start') {
+        handleEdit(record);
+      }
     }
   };
 }

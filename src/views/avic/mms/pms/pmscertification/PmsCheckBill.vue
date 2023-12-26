@@ -115,6 +115,12 @@
         :customRow="customRow"
         @change="handleTableChange"
         @refresh="getList"
+        :row-selection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectChange,
+          columnWidth: 40,
+          fixed: true
+        }"
       >
         <template #toolBarLeft>
           <a-space>
@@ -129,6 +135,14 @@
                 <save-outlined/>
               </template>
               保存
+            </a-button>
+            <a-button
+              v-hasPermi="['pmsCheckBill:save']"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              :loading="saveLoading"
+              @click="handleSaveAll"
+            >
+              入库
             </a-button>
           </a-space>
         </template>
