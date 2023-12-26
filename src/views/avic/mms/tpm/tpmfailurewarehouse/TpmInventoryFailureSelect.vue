@@ -162,7 +162,7 @@ const columns = [
     resizable: true,
     align: 'left'
   }, {
-    title: '具体位置',
+    title: '存放地点',
     dataIndex: 'storageLocation',
     ellipsis: true,
     sorter: true,
@@ -300,5 +300,4 @@ defineExpose({
   info
 });
 </script>
-  
   

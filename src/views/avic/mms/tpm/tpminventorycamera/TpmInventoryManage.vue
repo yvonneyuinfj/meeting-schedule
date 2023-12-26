@@ -363,7 +363,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '具体地点',
+    title: '存放地点',
     dataIndex: 'storageLocation',
     ellipsis: true,
     sorter: true,
