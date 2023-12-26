@@ -8,7 +8,7 @@
     @cancel="closeModal"
   >
     <a-spin :spinning="loading">
-      <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" layout="horizontal">
+      <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" layout="horizontal" :colon="false">
         <a-row :gutter="16">
           <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="serialNo" label="序号">

@@ -164,6 +164,7 @@ export function useTpmInventoryForm({
     { fieldName: 'ynMajorAssets', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'capitalSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
   ];
+  const largeLabelCol = { flex: '0 0 160px' };
   /** 
    *  过滤设备类型列表，只显示1特种设备5普通设备
    *  by 于小耘
@@ -444,6 +445,7 @@ export function useTpmInventoryForm({
     ynMajorAssetsList,
     uploadFile,
     proxy,
+    largeLabelCol,
     afterUploadEvent,
     saveForm,
     closeModal,

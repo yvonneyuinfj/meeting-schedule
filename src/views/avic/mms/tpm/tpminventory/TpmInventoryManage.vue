@@ -4,7 +4,7 @@
       <div class="content-wrapper">
         <div class="top-search-box">
           <!-- 高级查询 -->
-          <a-form v-bind="layout" ref="formRef" :model="queryForm">
+          <a-form v-bind="layout" ref="formRef" :model="queryForm" :colon="false">
             <a-row :gutter="16">
               <!-- <a-col v-bind="colLayout.cols">
                 <a-form-item label="设备大类">
@@ -1554,7 +1554,7 @@ import TpmInventoryDetail from './TpmInventoryDetail.vue'; // 引入详情页面
 import TpmInventoryPropertyManage from '../tpminventoryproperty/TpmInventoryPropertyManage.vue'; // 引入子表页面组件
 const { proxy } = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '120px' },
+  labelCol: { flex: '90px' },
   wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
