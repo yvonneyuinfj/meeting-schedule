@@ -61,11 +61,11 @@
       </div>
     </AvicPane>
     <AvicPane>
-                <FamAssetClassYManage ref="RightListManageRef" :mainId="nodeId" :parentId="detailParentId"
-                  :parentTitle="detailParentTitle" @getTree="getTreeList"/>
-    </AvicPane>
-    <!-- 添加页面弹窗 -->
-    <FamAssetClassAdd v-if="showAddNodeModal" :parentId="parentId" :parentTitle="parentTitle"
+              <FamAssetClassYManage ref="RightListManageRef" :mainId="nodeId" :parentId="detailParentId"
+                :parentTitle="detailParentTitle" @getTree="getTreeList" />
+            </AvicPane>
+            <!-- 添加页面弹窗 -->
+            <FamAssetClassAdd v-if="showAddNodeModal" :parentId="parentId" :parentTitle="parentTitle"
       @afterAddTreeNode="afterAddTreeNode" @getList1="getList1" @close="showAddNodeModal = false" />
     <!-- 编辑页面弹窗 -->
     <FamAssetClassEdit v-if="showEditNodeModal" :formId="nodeId" :parentId="parentId" :parentTitle="parentTitle"
@@ -109,7 +109,6 @@ const detailParentTitle = ref(''); // 详细页父节点标题
 const selectMenuKey = ref(''); // 当前选择的右键操作类型
 const treeContentRef = ref();
 const treeHeight = ref();
-const famAssetClassDetailRef = ref(null);
 const RightListManageRef = ref(null);
 onMounted(() => {
   // 加载树数据
@@ -303,9 +302,10 @@ function afterEditTreeNode(data) {
     // 修改时如果更改了父节点id，需要刷新树
     getTreeList();
   } else {
+    alert(data.title);
     currentSelectedNode.value.dataRef.title = data.title;
     // 节点编辑成功后重新加载右侧详细区数据
-    famAssetClassDetailRef.value.reloadDetail();
+    RightListManageRef.value.getList();
   }
 }
 /** 树节点删除方法 */

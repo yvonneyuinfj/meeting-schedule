@@ -104,7 +104,6 @@
         width="60%"
       >
         <AvicUploader
-          v-if="attachOpen"
           element-id="1"
           form-type="add"
           ref="uploadFile"
@@ -132,7 +131,7 @@
 <script lang="ts" setup>
 import { listFamAccpetListByPage, delFamAccpetList, previewImage } from '@/api/avic/mms/fam/FamAccpetListApi';
 import { validPreview } from '@/api/avic/system/FileUploadApi.ts';
-import {  Columns } from './ListColumns';
+import { Columns } from './ListColumns';
 import { closeFlowLoading } from '@/views/avic/bpm/bpmutils/FlowUtils'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
@@ -247,7 +246,7 @@ const handleAttach = (record) => {
 };
 
 const handleOk = () => {
-  const validateResult = validateUploaderFileSecret(secretLevel.value);
+  const validateResult = validateUploaderFileSecret();
   if (!validateResult) {
     return;
   }
@@ -280,7 +279,6 @@ async function getFileImageList(id) {
 const getFileView = (id, result) => {
   return new Promise((resolve, reject) => {
     previewImage(id, result).then(res => {
-      console.log(res);
       fileImgList.value.push(res);
     });
   });
@@ -371,9 +369,7 @@ function handleRowSelection(record) {
 }
 
 /** 上传之后的回调  */
-const afterUploadEvent = (successFile, errorFile) => {
-  console.log(successFile);
-  console.log(errorFile);
+const afterUploadEvent = (_successFile, _errorFile) => {
 };
 
 
