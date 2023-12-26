@@ -132,7 +132,7 @@
 <script lang="ts" setup>
 import { listFamAccpetListByPage, delFamAccpetList, previewImage } from '@/api/avic/mms/fam/FamAccpetListApi';
 import { validPreview } from '@/api/avic/system/FileUploadApi.ts';
-import { AllColumns } from './ListColumns';
+import {  Columns } from './ListColumns';
 import { closeFlowLoading } from '@/views/avic/bpm/bpmutils/FlowUtils'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
@@ -152,7 +152,7 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  ...AllColumns,
+  ...Columns,
   {
     title: '操作',
     dataIndex: 'action',

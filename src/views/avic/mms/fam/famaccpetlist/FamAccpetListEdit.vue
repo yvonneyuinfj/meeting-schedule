@@ -611,7 +611,7 @@ import {
   CarColumns,
   OfficialColumns,
   ITColumns,
-  backColumnsObj, AllColumns
+  backColumnsObj, Columns
 } from './ListColumns';
 import {
   CarValidateRules, DeviceValidateRules,
@@ -1305,7 +1305,7 @@ function allocationColumn(code) {
     /**
      *  改造 固定资产
      */
-    columns.value = [...AllColumns];
+    columns.value = [...Columns];
     validateRules = {
       assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
     };
