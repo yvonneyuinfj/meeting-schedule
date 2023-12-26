@@ -207,8 +207,8 @@ export function useTpmInventoryForm({
   watch(
     () => form.value.ynMilitaryKeyEquip,
     newVal => {
-      console.log('军工关键设备==============>', newVal);
-      if (newVal === '1') {
+      // console.log('军工关键设备==============>', newVal);
+      if (newVal === 'Y') {
         rules['militaryKeyEquipCode'] = [{ required: true, message: '军工关键设备专用代码不能为空', trigger: 'change' }];
       }
     },
