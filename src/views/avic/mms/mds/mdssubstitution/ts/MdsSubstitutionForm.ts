@@ -103,31 +103,18 @@ export function useMdsSubstitutionForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(() => {
-        mdsSubstitutionLEdit.value
-          .validate(async validate => {
-            if (!validate) {
-              return;
+        loading.value = true;
+        const postData = proxy.$lodash.cloneDeep(form.value);
+        // 发送请求
+        saveMdsSubstitution(postData)
+          .then(res => {
+            if (res.success) {
+              successCallback();
+            } else {
+              loading.value = false;
             }
-            loading.value = true;
-            const subInfoList = mdsSubstitutionLEdit.value.getChangedData(); // 获取子表数据
-            // 处理数据
-            const postData = proxy.$lodash.cloneDeep(form.value);
-            postData.mdsSubstitutionLList = subInfoList; // 挂载子表数据
-            // 发送请求
-            saveMdsSubstitution(postData)
-              .then(res => {
-                if (res.success) {
-                  successCallback();
-                } else {
-                  loading.value = false;
-                }
-              })
-              .catch(() => {
-                loading.value = false;
-              });
           })
-          .catch(error => {
-            console.log('error', error);
+          .catch(() => {
             loading.value = false;
           });
       })

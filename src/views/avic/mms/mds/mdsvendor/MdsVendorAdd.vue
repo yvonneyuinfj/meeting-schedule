@@ -84,14 +84,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="corporationMode" label="企业性质分类">
+            <a-form-item name="corporationMode" label="企业性质分类 ^ SRM_CORPORATION_MODE:1-国家行政企业，2-公司合作企业，3-中外合资企业，4-社会组织机构，5-国际组织机构，6-外资企业，7-私营企业，8-集体企业，9-国防军事企业">
               <a-select
                 v-model:value="form.corporationMode"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择企业性质分类"
+                placeholder="请选择企业性质分类 ^ SRM_CORPORATION_MODE:1-国家行政企业，2-公司合作企业，3-中外合资企业，4-社会组织机构，5-国际组织机构，6-外资企业，7-私营企业，8-集体企业，9-国防军事企业"
               >
                 <a-select-option
                   v-for="item in corporationModeList"
@@ -104,14 +104,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="ynInternal" label="是否集团内">
+            <a-form-item name="ynInternal" label="是否集团内 ^ YN_FLAG:Y-是,N-否 ->GYS_LX 01集团内 02集团外">
               <a-select
                 v-model:value="form.ynInternal"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择是否集团内"
+                placeholder="请选择是否集团内 ^ YN_FLAG:Y-是,N-否 ->GYS_LX 01集团内 02集团外"
               >
                 <a-select-option
                   v-for="item in ynInternalList"
@@ -178,14 +178,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="businessType" label="供应商所属行业">
+            <a-form-item name="businessType" label="供应商所属行业 ^ SRM_BUSINESS_TYPE:1-航空，2-航天，3-兵器，4-船舶，10-其他">
               <a-select
                 v-model:value="form.businessType"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择供应商所属行业"
+                placeholder="请选择供应商所属行业 ^ SRM_BUSINESS_TYPE:1-航空，2-航天，3-兵器，4-船舶，10-其他"
               >
                 <a-select-option
                   v-for="item in businessTypeList"
@@ -207,14 +207,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="vendorLevel" label="供应商等级">
+            <a-form-item name="vendorLevel" label="供应商等级 ^ SRM_VENDOR_LEVEL:0-I,1-II,2-III">
               <a-select
                 v-model:value="form.vendorLevel"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择供应商等级"
+                placeholder="请选择供应商等级 ^ SRM_VENDOR_LEVEL:0-I,1-II,2-III"
               >
                 <a-select-option
                   v-for="item in vendorLevelList"
@@ -305,14 +305,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="taxpayerType" label="纳税人身份">
+            <a-form-item name="taxpayerType" label="纳税人身份 ^ SRM_TAXPAYER_TYPE:0-一般纳税人；1-小规模纳税人">
               <a-select
                 v-model:value="form.taxpayerType"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择纳税人身份"
+                placeholder="请选择纳税人身份 ^ SRM_TAXPAYER_TYPE:0-一般纳税人；1-小规模纳税人"
               >
                 <a-select-option
                   v-for="item in taxpayerTypeList"
@@ -325,14 +325,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="vendorType" label="供应商性质分类">
+            <a-form-item name="vendorType" label="供应商性质分类 ^ SRM_VENDOR_TYPE: 1-经销商,2-制造商,3-其他； ">
               <a-select
                 v-model:value="form.vendorType"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择供应商性质分类"
+                placeholder="请选择供应商性质分类 ^ SRM_VENDOR_TYPE: 1-经销商,2-制造商,3-其他； "
               >
                 <a-select-option
                   v-for="item in vendorTypeList"
@@ -371,7 +371,7 @@
               />
             </a-form-item>
           </a-col>
-          <!-- <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="editorUserId" label="编制人ID">
               <AvicCommonSelect
                 v-model:value="form.editorUserId"
@@ -381,14 +381,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="editorUserCode" label="编制人编码">
+            <a-form-item name="editorUserCode" label="编制人编码 ^ 员工编码">
               <AvicCommonSelect
                 v-model:value="form.editorUserCode"
                 type="userSelect"
-                placeholder="请选择编制人编码"
+                placeholder="请选择编制人编码 ^ 员工编码"
               />
             </a-form-item>
-          </a-col> -->
+          </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="editorUserName" label="编制人姓名">
               <AvicCommonSelect
@@ -398,7 +398,7 @@
               />
             </a-form-item>
           </a-col>
-          <!-- <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="editorDeptId" label="编制部门ID">
               <AvicCommonSelect
                 v-model:value="form.editorDeptId"
@@ -415,7 +415,7 @@
                 placeholder="请选择编制部门编码"
               />
             </a-form-item>
-          </a-col> -->
+          </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="editorDeptName" label="编制部门名称">
               <AvicCommonSelect
@@ -436,14 +436,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="validFlag" label="是否有效标识">
+            <a-form-item name="validFlag" label="是否有效标识 ^ PLATFORM_VALID_FLAG:1-有效,0-无效">
               <a-select
                 v-model:value="form.validFlag"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择是否有效标识"
+                placeholder="请选择是否有效标识 ^ PLATFORM_VALID_FLAG:1-有效,0-无效"
               >
                 <a-select-option
                   v-for="item in validFlagList"
@@ -493,14 +493,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="vendorApproveType" label="批准状态">
+            <a-form-item name="vendorApproveType" label="批准状态 ^ SRM_VENDOR_APPROVE_TYPE：0-不批准；1-批准；2-有条件批准；3-一次性批准">
               <a-select
                 v-model:value="form.vendorApproveType"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择批准状态"
+                placeholder="请选择批准状态 ^ SRM_VENDOR_APPROVE_TYPE：0-不批准；1-批准；2-有条件批准；3-一次性批准"
               >
                 <a-select-option
                   v-for="item in vendorApproveTypeList"
@@ -513,14 +513,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="ynEligibility" label="是否合格供应商">
+            <a-form-item name="ynEligibility" label="是否合格供应商 ^ YN_FLAG:Y-是,N-否">
               <a-select
                 v-model:value="form.ynEligibility"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择是否合格供应商"
+                placeholder="请选择是否合格供应商 ^ YN_FLAG:Y-是,N-否"
               >
                 <a-select-option
                   v-for="item in ynEligibilityList"
@@ -533,14 +533,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="selfUnitFlag" label="本单位标识">
+            <a-form-item name="selfUnitFlag" label="本单位标识 ^ SRM_SELF_UNIT_FLAG:0-本单位，1-非本单位">
               <a-select
                 v-model:value="form.selfUnitFlag"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择本单位标识"
+                placeholder="请选择本单位标识 ^ SRM_SELF_UNIT_FLAG:0-本单位，1-非本单位"
               >
                 <a-select-option
                   v-for="item in selfUnitFlagList"
@@ -553,14 +553,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="secretLevel" label="密级" has-feedback>
+            <a-form-item name="secretLevel" label="密级 ^ 通用代码MMS_DATA_SECRET_LEVEL" has-feedback>
               <a-select
                 v-model:value="form.secretLevel"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择密级"
+                placeholder="请选择密级 ^ 通用代码MMS_DATA_SECRET_LEVEL"
               >
                 <a-select-option
                   v-for="item in secretLevelList"
@@ -609,7 +609,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="useModule" label="使用单位">
+            <a-form-item name="useModule" label="使用单位（SF）使用单位（SF）A1器材 A2零供">
               <a-select
                 v-model:value="form.useModule"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
@@ -647,14 +647,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="vendorCategory" label="供应商类别">
+            <a-form-item name="vendorCategory" label="供应商类别 ^ 多选，以“,”分隔；SRM_VENDOR_CATEGORY: 1-一类,2-二类,3-三类,4-二类（海），三类（空）">
               <a-select
                 v-model:value="form.vendorCategory"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择供应商类别"
+                placeholder="请选择供应商类别 ^ 多选，以“,”分隔；SRM_VENDOR_CATEGORY: 1-一类,2-二类,3-三类,4-二类（海），三类（空）"
               >
                 <a-select-option
                   v-for="item in vendorCategoryList"
@@ -676,11 +676,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="currencyType" label="币种">
+            <a-form-item name="currencyType" label="币种 ^ 通用代码：SRM_CURRENDY_TYPE">
               <a-input
                 v-model:value="form.currencyType"
                 :maxLength="10"
-                placeholder="请输入币种"
+                placeholder="请输入币种 ^ 通用代码：SRM_CURRENDY_TYPE"
               />
             </a-form-item>
           </a-col>
@@ -731,7 +731,7 @@
           </a-col>
         </a-row>
       </a-form>
-      <!-- <MdsVendorAccountEdit ref="mdsVendorAccountEdit"></MdsVendorAccountEdit> -->
+      <MdsVendorAccountEdit ref="mdsVendorAccountEdit"></MdsVendorAccountEdit>
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>

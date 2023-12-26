@@ -1,5 +1,312 @@
 <template>
   <div class="content-wrapper">
+    <div class="top-search-box">
+      <!-- 高级查询 -->
+      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+        <a-row :gutter="16">
+          <a-col v-bind="colLayout.cols">
+            <a-form-item label="供应商信息表主键ID">
+              <a-input
+                v-model:value="queryForm.mdsVendorId"
+                placeholder="请输入供应商信息表主键ID"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item label="资质编号">
+              <a-input
+                v-model:value="queryForm.proveNo"
+                placeholder="请输入资质编号"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item label="资质名称">
+              <a-input
+                v-model:value="queryForm.proveName"
+                placeholder="请输入资质名称"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="资质类型 ^ SRM_PROVE_TYPE: 1-质量认证，2-环境认证，3-NADCAP认证，4-适航认证， 5-武器装备承制资格认证，6-保密认证，7-武器装备，8-科研生产许可认证">
+              <a-select
+                v-model:value="queryForm.proveType"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择资质类型 ^ SRM_PROVE_TYPE: 1-质量认证，2-环境认证，3-NADCAP认证，4-适航认证， 5-武器装备承制资格认证，6-保密认证，7-武器装备，8-科研生产许可认证"
+              >
+                <a-select-option
+                  v-for="item in proveTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="资质等级 ^ SRM_PROVE_GRADE:0-I,1-II,2-III">
+              <a-select
+                v-model:value="queryForm.proveGrade"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择资质等级 ^ SRM_PROVE_GRADE:0-I,1-II,2-III"
+              >
+                <a-select-option
+                  v-for="item in proveGradeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="发证单位">
+              <a-input
+                v-model:value="queryForm.releaseDept"
+                placeholder="请输入发证单位"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="发证日期(起)">
+              <a-date-picker
+                v-model:value="queryForm.releaseDateBegin"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择发证日期(起)"
+                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.releaseDateEnd)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="发证日期(止)">
+              <a-date-picker
+                v-model:value="queryForm.releaseDateEnd"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择发证日期(止)"
+                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.releaseDateBegin)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="有效开始日期(起)">
+              <a-date-picker
+                v-model:value="queryForm.effectiveBenDateBegin"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择有效开始日期(起)"
+                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.effectiveBenDateEnd)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="有效开始日期(止)">
+              <a-date-picker
+                v-model:value="queryForm.effectiveBenDateEnd"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择有效开始日期(止)"
+                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.effectiveBenDateBegin)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="有效结束日期(起)">
+              <a-date-picker
+                v-model:value="queryForm.effectiveEndDateBegin"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择有效结束日期(起)"
+                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.effectiveEndDateEnd)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="有效结束日期(止)">
+              <a-date-picker
+                v-model:value="queryForm.effectiveEndDateEnd"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择有效结束日期(止)"
+                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.effectiveEndDateBegin)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制人ID">
+              <AvicCommonSelect
+                v-model:value="queryForm.editorUserId"
+                type="userSelect"
+                placeholder="请选择编制人ID"
+                :defaultShowValue="queryForm.editorUserIdAlias"
+                @callback="
+                  result => {
+                    queryForm.editorUserIdAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制人编码 ^ 员工编码">
+              <AvicCommonSelect
+                v-model:value="queryForm.editorUserCode"
+                type="userSelect"
+                placeholder="请选择编制人编码 ^ 员工编码"
+                :defaultShowValue="queryForm.editorUserCodeAlias"
+                @callback="
+                  result => {
+                    queryForm.editorUserCodeAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制人姓名">
+              <AvicCommonSelect
+                v-model:value="queryForm.editorUserName"
+                type="userSelect"
+                placeholder="请选择编制人姓名"
+                :defaultShowValue="queryForm.editorUserNameAlias"
+                @callback="
+                  result => {
+                    queryForm.editorUserNameAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制部门ID">
+              <AvicCommonSelect
+                v-model:value="queryForm.editorDeptId"
+                type="deptSelect"
+                placeholder="请选择编制部门ID"
+                :defaultShowValue="queryForm.editorDeptIdAlias"
+                @callback="
+                  result => {
+                    queryForm.editorDeptIdAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制部门编码">
+              <AvicCommonSelect
+                v-model:value="queryForm.editorDeptCode"
+                type="deptSelect"
+                placeholder="请选择编制部门编码"
+                :defaultShowValue="queryForm.editorDeptCodeAlias"
+                @callback="
+                  result => {
+                    queryForm.editorDeptCodeAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制部门名称">
+              <AvicCommonSelect
+                v-model:value="queryForm.editorDeptName"
+                type="deptSelect"
+                placeholder="请选择编制部门名称"
+                :defaultShowValue="queryForm.editorDeptNameAlias"
+                @callback="
+                  result => {
+                    queryForm.editorDeptNameAlias = result.names;
+                  }
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制时间(起)">
+              <a-date-picker
+                v-model:value="queryForm.editorDateBegin"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择编制时间(起)"
+                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.editorDateEnd)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="编制时间(止)">
+              <a-date-picker
+                v-model:value="queryForm.editorDateEnd"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择编制时间(止)"
+                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.editorDateBegin)"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="密级 ^ 通用代码MMS_DATA_SECRET_LEVEL">
+              <a-select
+                v-model:value="queryForm.secretLevel"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择密级 ^ 通用代码MMS_DATA_SECRET_LEVEL"
+              >
+                <a-select-option
+                  v-for="item in secretLevelList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col
+            v-bind="colLayout.cols"
+            style="margin-left: auto"
+          >
+            <div class="table-page-search-submitButtons">
+              <a-space>
+                <a-button type="primary" @click="handleQuery">
+                  <search-outlined />
+                  查询
+                </a-button>
+                <a-button type="primary" @click="resetQuery" ghost>
+                  <redo-outlined />
+                  重置
+                </a-button>
+                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                  {{ advanced ? '收起' : '展开' }}
+                  <up-outlined v-if="advanced" />
+                  <down-outlined v-else />
+                </a-button>
+              </a-space>
+            </div>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
@@ -160,15 +467,15 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  // {
-  //   title: '供应商信息表主键ID',
-  //   dataIndex: 'mdsVendorId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
+  {
+    title: '供应商信息表主键ID',
+    dataIndex: 'mdsVendorId',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   {
     title: '资质编号',
     dataIndex: 'proveNo',
@@ -188,7 +495,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '资质类型',
+    title: '资质类型 ^ SRM_PROVE_TYPE: 1-质量认证，2-环境认证，3-NADCAP认证，4-适航认证， 5-武器装备承制资格认证，6-保密认证，7-武器装备，8-科研生产许可认证',
     dataIndex: 'proveTypeName',
     ellipsis: true,
     minWidth: 120,
@@ -196,7 +503,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '资质等级',
+    title: '资质等级 ^ SRM_PROVE_GRADE:0-I,1-II,2-III',
     dataIndex: 'proveGradeName',
     ellipsis: true,
     minWidth: 120,
@@ -236,16 +543,16 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  // {
-  //   title: '编制人ID',
-  //   dataIndex: 'editorUserIdAlias',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
-    title: '编制人编码',
+    title: '编制人ID',
+    dataIndex: 'editorUserIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '编制人编码 ^ 员工编码',
     dataIndex: 'editorUserCodeAlias',
     ellipsis: true,
     minWidth: 120,
@@ -260,14 +567,14 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  // {
-  //   title: '编制部门ID',
-  //   dataIndex: 'editorDeptIdAlias',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
+  {
+    title: '编制部门ID',
+    dataIndex: 'editorDeptIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   {
     title: '编制部门编码',
     dataIndex: 'editorDeptCodeAlias',
@@ -293,7 +600,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '密级',
+    title: '密级 ^ 通用代码MMS_DATA_SECRET_LEVEL',
     dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,

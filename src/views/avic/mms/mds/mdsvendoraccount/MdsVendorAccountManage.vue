@@ -32,17 +32,6 @@
         <template #toolBarLeft>
           <a-space>
             <a-button
-              v-hasPermi="['mdsVendorAccount:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               title="删除"
@@ -101,13 +90,6 @@
         </template>
       </AvicTable>
     </div>
-    <!-- 添加页面弹窗 -->
-    <mds-vendor-account-add
-      v-if="showAddModal"
-      ref="addModal"
-      @reloadData="getList"
-      @close="showAddModal = false"
-    />
     <AvicExcelImport
       v-if="showImportModal"
       :formData="excelParams"
@@ -176,7 +158,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '账户性质',
+    title: '账户性质 ^ SRM_ACCOUNT_ATTRIBUTE:1-基本存款账户,2-一般存款账户,3-临时存款账户,4-专用存款账户',
     dataIndex: 'accountAttributeName',
     ellipsis: true,
     minWidth: 120,
@@ -201,17 +183,17 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  // {
-  //   title: '编制人ID',
-  //   dataIndex: 'editorUserId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
-    title: '编制人编码',
+    title: '编制人ID',
+    dataIndex: 'editorUserId',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '编制人编码 ^ 员工编码',
     dataIndex: 'editorUserCode',
     ellipsis: true,
     sorter: true,
@@ -228,15 +210,15 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  // {
-  //   title: '编制部门ID',
-  //   dataIndex: 'editorDeptId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
+  {
+    title: '编制部门ID',
+    dataIndex: 'editorDeptId',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   {
     title: '编制部门编码',
     dataIndex: 'editorDeptCode',
@@ -264,7 +246,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '密级',
+    title: '密级 ^ 通用代码MMS_DATA_SECRET_LEVEL',
     dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
@@ -272,7 +254,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '是否有效标识',
+    title: '是否有效标识 ^ PLATFORM_VALID_FLAG:1-有效,0-无效',
     dataIndex: 'validFlagName',
     ellipsis: true,
     minWidth: 120,
@@ -301,7 +283,6 @@ const queryParam = reactive({
   sord: null // 排序方式: desc降序 asc升序
 });
 const showImportModal = ref(false); // 是否展示导入弹窗
-const showAddModal = ref(false); // 是否展示添加弹窗
 const excelParams = ref({ tableName: 'mdsVendorAccount', mdsVendorId: '' });
 const list = ref([]); // 表格数据集合
 const selectedRows = ref([]); // 选中行集合
@@ -414,10 +395,6 @@ function handleExport () {
       });
     }
   });
-}
-/** 添加 */
-function handleAdd () {
-  showAddModal.value = true;
 }
 /** 勾选复选框时触发 */
 function onSelectChange (rowKeys, rows) {

@@ -967,11 +967,9 @@
         @close="showImportModal = false"
       />
     </AvicPane>
-    <!-- <AvicPane>
-      <mds-vendor-account-manage key="mdsVendorAccountManage" ref="mdsVendorAccountManage" :mainId="mainId" />
-    </AvicPane> -->
     <AvicPane>
-      <mds-vendor-tab-manage key="mdsVendorTabManage" ref="mdsVendorTabManage" :mainId="mainId"/>
+      <!-- 子表组件 -->
+      <mds-vendor-account-manage key="mdsVendorAccountManage" ref="mdsVendorAccountManage" :mainId="mainId" />
     </AvicPane>
   </AvicSplit>
 </template>
@@ -982,7 +980,6 @@ import { listMdsVendorByPage, delMdsVendor, exportExcel } from '@/api/avic/mms/m
 import MdsVendorAdd from './MdsVendorAdd.vue'; // 引入添加页面组件
 import MdsVendorEdit from './MdsVendorEdit.vue'; // 引入编辑页面组件
 import MdsVendorDetail from './MdsVendorDetail.vue'; // 引入详情页面组件
-import MdsVendorTabManage from './MdsVendorTabManage.vue'; // 引入添加页面组件
 import MdsVendorAccountManage from '../mdsvendoraccount/MdsVendorAccountManage.vue'; // 引入子表页面组件
 const { proxy } = getCurrentInstance();
 const layout = {
