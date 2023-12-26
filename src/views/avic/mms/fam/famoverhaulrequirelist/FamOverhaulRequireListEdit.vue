@@ -206,8 +206,8 @@ const task = props.bpmInstanceObject.hasOwnProperty('bpmModel') ? props.bpmInsta
 const columns = [
   {
     title: '资产类别',
-    dataIndex: 'assetClass',
-    key: 'assetClass',
+    dataIndex: 'assetClassName',
+    key: 'assetClassName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
