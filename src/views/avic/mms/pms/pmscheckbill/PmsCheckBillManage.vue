@@ -164,7 +164,6 @@
             <a-button
               v-hasPermi="['pmsCheckBill:save']"
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              v-show="compType === '0'"
               :loading="saveLoading"
               @click="
                 event => {
@@ -172,7 +171,7 @@
                 }
               "
             >
-              入库登账
+              入库
             </a-button>
             <a-button
               v-hasPermi="['pmsCheckBill:del']"

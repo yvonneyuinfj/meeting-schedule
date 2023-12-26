@@ -50,7 +50,7 @@ export const DeviceValidateRules = {
   importedOrNot: [{ required: true, message: '是否为进口设备不能为空' }],
   productionDate: [{ required: true, message: '出厂日期不能为空' }],
   equipClassName: [{ required: true, message: '设备大类不能为空' }],
-  storageLocation: [{ required: true, message: '具体位置不能为空' }],
+  // storageLocation: [{ required: true, message: '具体位置不能为空' }],
   abcdType: [{ required: true, message: '设备级别不能为空' }]
 };
 

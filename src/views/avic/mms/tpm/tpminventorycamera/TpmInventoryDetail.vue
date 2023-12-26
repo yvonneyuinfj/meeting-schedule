@@ -190,11 +190,11 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
-            <a-form-item name="storageLocation" label="具体位置" has-feedback>
+            <a-form-item name="storageLocation" label="存放地点" has-feedback>
               <a-input
                 v-model:value="form.storageLocation"
                 :maxLength="512"
-                placeholder="请输入具体位置"
+                placeholder="请输入存放地点"
                 disabled
               />
             </a-form-item>

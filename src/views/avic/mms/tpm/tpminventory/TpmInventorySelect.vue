@@ -355,10 +355,10 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="具体位置">
+            <a-form-item label="存放地点">
               <a-input
                 v-model:value="queryForm.storageLocation"
-                placeholder="请输入具体位置"
+                placeholder="请输入存放地点"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
@@ -1626,7 +1626,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '具体位置',
+    title: '存放地点',
     dataIndex: 'storageLocation',
     ellipsis: true,
     sorter: true,
