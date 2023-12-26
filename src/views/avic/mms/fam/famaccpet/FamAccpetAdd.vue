@@ -238,8 +238,6 @@
               </a-input>
             </a-form-item>
           </a-col>
-
-
           <a-col v-bind="colLayout.cols2">
             <a-form-item label="附件">
               <AvicUploader

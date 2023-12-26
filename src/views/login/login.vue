@@ -5,14 +5,14 @@
         <div class="login_content">
           <div class="logo">
             <img src="~@/assets/img/logo.png" alt="logo" width="48px" height="48px" />
-            <span>金航业务基础云平台</span>
+            <span>动力所协同运营平台</span>
             <span class="tag-box">
-              <a-tag color="#1AA4EE">公开</a-tag>
-              <!-- <a-tag color="#1e89ff">普通商密</a-tag>
+              <!-- <a-tag color="#1AA4EE">公开</a-tag>
+              <a-tag color="#1e89ff">普通商密</a-tag>
               <a-tag color="#224ecd">核心商密</a-tag>
-              <a-tag color="#fe8624">内部</a-tag>
+              <a-tag color="#fe8624">内部</a-tag> -->
               <a-tag color="#d40000">秘密</a-tag>
-              <a-tag color="#7A0000">机密</a-tag> -->
+<!--              <a-tag color="#7A0000">机密</a-tag>-->
             </span>
           </div>
           <div class="login_box">
@@ -64,7 +64,7 @@
                       登 录
                     </a-button>
                     <p style="color: #909399; text-align: center; margin: 0">
-                      技术支持：010-0000 0000
+                      技术支持：信息技术中心
                     </p>
                   </a-form-item>
                 </a-form>
@@ -74,7 +74,7 @@
         </div>
       </div>
       <div class="footer">
-        <div class="copyright">&copy; 2015 航空工业信息技术中心（金航数码）版权所有</div>
+        <div class="copyright">&copy; 2023 中国航发动力所-信息技术中心 版权所有</div>
       </div>
       <ChangePassword v-if="showChangePwd" :userInfo="modelRef" @close="showChangePwd = false" />
       <LicenseUpload v-if="showUploadModal" @close="showUploadModal = false" />

@@ -88,31 +88,31 @@
                   />
                 </a-form-item>
               </a-col>
-<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="主管部门id">
-                  <a-input
-                    v-model:value="queryForm.managerDeptId"
-                    placeholder="请输入主管部门id"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
-                  />
-                </a-form-item>
-              </a-col> -->
-<!--              <a-col v-bind="colLayout.cols" v-show="advanced">
-                <a-form-item label="主管部门名称">
-                  <AvicCommonSelect
-                    v-model:value="queryForm.managerDeptName"
-                    type="deptSelect"
-                    placeholder="请选择主管部门名称"
-                    :defaultShowValue="queryForm.managerDeptNameAlias"
-                    @callback="
-                      result => {
-                        queryForm.managerDeptNameAlias = result.names;
-                      }
-                    "
-                  />
-                </a-form-item>
-              </a-col> -->
+              <!--              <a-col v-bind="colLayout.cols" v-show="advanced">
+                              <a-form-item label="主管部门id">
+                                <a-input
+                                  v-model:value="queryForm.managerDeptId"
+                                  placeholder="请输入主管部门id"
+                                  :allow-clear="true"
+                                  @pressEnter="handleQuery"
+                                />
+                              </a-form-item>
+                            </a-col> -->
+              <!--              <a-col v-bind="colLayout.cols" v-show="advanced">
+                              <a-form-item label="主管部门名称">
+                                <AvicCommonSelect
+                                  v-model:value="queryForm.managerDeptName"
+                                  type="deptSelect"
+                                  placeholder="请选择主管部门名称"
+                                  :defaultShowValue="queryForm.managerDeptNameAlias"
+                                  @callback="
+                                    result => {
+                                      queryForm.managerDeptNameAlias = result.names;
+                                    }
+                                  "
+                                />
+                              </a-form-item>
+                            </a-col> -->
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="是否使用型号经费">
                   <a-select
@@ -322,17 +322,17 @@
                 <div class="table-page-search-submitButtons">
                   <a-space>
                     <a-button type="primary" @click="handleQuery">
-                      <search-outlined />
+                      <search-outlined/>
                       查询
                     </a-button>
                     <a-button type="primary" @click="resetQuery" ghost>
-                      <redo-outlined />
+                      <redo-outlined/>
                       重置
                     </a-button>
                     <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                       {{ advanced ? '收起' : '展开' }}
-                      <up-outlined v-if="advanced" />
-                      <down-outlined v-else />
+                      <up-outlined v-if="advanced"/>
+                      <down-outlined v-else/>
                     </a-button>
                   </a-space>
                 </div>
@@ -362,63 +362,63 @@
             @refresh="getList"
           >
             <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['famOverhaulRequire:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['famOverhaulRequire:edit']"
-              title="编辑"
-              type="primary"
-              ghost
-              @click="handleEdit"
-            >
-              <template #icon>
-                <edit-outlined />
-              </template>
-              编辑
-            </a-button>
-            <a-button
-              v-hasPermi="['famOverhaulRequire:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['famOverhaulRequire:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
-          </a-space>
+              <a-space>
+                <a-button
+                  v-hasPermi="['famOverhaulRequire:add']"
+                  title="添加"
+                  type="primary"
+                  @click="handleAdd"
+                >
+                  <template #icon>
+                    <plus-outlined/>
+                  </template>
+                  添加
+                </a-button>
+                <a-button
+                  v-hasPermi="['famOverhaulRequire:edit']"
+                  title="编辑"
+                  type="primary"
+                  ghost
+                  @click="handleEdit"
+                >
+                  <template #icon>
+                    <edit-outlined/>
+                  </template>
+                  编辑
+                </a-button>
+                <a-button
+                  v-hasPermi="['famOverhaulRequire:del']"
+                  title="删除"
+                  danger
+                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                  :loading="delLoading"
+                  @click="handleDelete(selectedRows, selectedRowKeys)"
+                >
+                  <template #icon>
+                    <delete-outlined/>
+                  </template>
+                  删除
+                </a-button>
+                <a-button
+                  v-hasPermi="['famOverhaulRequire:export']"
+                  title="导出"
+                  type="primary"
+                  ghost
+                  @click="handleExport">
+                  <template #icon>
+                    <export-outlined/>
+                  </template>
+                  导出
+                </a-button>
+              </a-space>
             </template>
             <template #toolBarRight>
               <a-space>
                 <AvicBpmFilter
                   :allFileAuth="['famOverhaulRequire:all']"
                   :myFileAuth="['famOverhaulRequire:my']"
-                  :defaultBpmType = 'queryForm.bpmType'
-                  :defaultBpmState = 'queryForm.bpmState'
+                  :defaultBpmType='queryForm.bpmType'
+                  :defaultBpmState='queryForm.bpmState'
                   @change="changeBpmFilter"
                 />
                 <a-input-search
@@ -481,7 +481,11 @@
 </template>
 <script lang="ts" setup>
 import type { FamOverhaulRequireDto } from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块DTO
-import { listFamOverhaulRequireByPage, delFamOverhaulRequire, exportExcel } from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块API
+import {
+  listFamOverhaulRequireByPage,
+  delFamOverhaulRequire,
+  exportExcel
+} from '@/api/avic/mms/fam/FamOverhaulRequireApi'; // 引入模块API
 import FamOverhaulRequireAdd from './FamOverhaulRequireAdd.vue'; // 引入添加页面组件
 import FamOverhaulRequireEdit from './FamOverhaulRequireEdit.vue'; // 引入编辑页面组件
 import FamOverhaulRequireDetail from './FamOverhaulRequireDetail.vue'; // 引入详情页面组件
@@ -817,8 +821,9 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     maintCategoryList.value = result.maintCategory;
     isUsedScientificrsList.value = result.isUsedScientificrs;
@@ -826,12 +831,14 @@ function getLookupList () {
     isNeedReviewList.value = result.isNeedReview;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
-function getUserFileSecretList () {
+function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 根据流程状态及发起人查询数据 */
 function changeBpmFilter({ bpmType, bpmState }) {
   queryForm.value.bpmType = bpmType;
@@ -839,6 +846,7 @@ function changeBpmFilter({ bpmType, bpmState }) {
   queryParam.searchParams = queryForm.value;
   getList();
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -846,6 +854,7 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {
@@ -854,10 +863,12 @@ function resetQuery() {
   };
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -867,19 +878,26 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value[0].businessstate_ && selectedRows.value[0].businessstate_ !== '拟稿中') {
+    proxy.$message.warning('当前流程状态不可编辑');
+    return;
+  }
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
+
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {
   if (record.id) {
@@ -889,8 +907,9 @@ function handleFlowDetail(record) {
     });
   }
 }
+
 /** 导出 */
-function handleExport () {
+function handleExport() {
   proxy.$confirm({
     title: '确认导出数据吗?',
     okText: '确定',
@@ -905,17 +924,18 @@ function handleExport () {
     }
   });
 }
+
 /** 删除 */
 function handleDelete(rows, ids) {
   if (ids.length == 0) {
-    proxy. $message.warning('请选择要删除的数据！');
+    proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   if (rows.filter(row => row.bpmState !== 'start')?.length > 0) {
-    proxy. $message.warning('只有拟稿中的数据才可以删除！');
+    proxy.$message.warning('只有拟稿中的数据才可以删除！');
     return;
   }
-  proxy. $confirm({
+  proxy.$confirm({
     title: '确定删除已选数据及关联的子表数据吗？',
     okText: '确定',
     cancelText: '取消',
@@ -938,11 +958,13 @@ function handleDelete(rows, ids) {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;

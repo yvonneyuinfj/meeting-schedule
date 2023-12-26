@@ -363,7 +363,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2" v-show="form.ynMilitaryKeyEquip==='1'">
+          <a-col v-bind="colLayout.cols2" v-show="form.ynMilitaryKeyEquip==='Y'">
             <a-form-item name="militaryKeyEquipCode" label="军工关键设备专用代码">
               <a-input
                 v-model:value="form.militaryKeyEquipCode"
