@@ -634,6 +634,7 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  queryParam.searchParams.agentId = proxy.$getLoginUser().id;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
