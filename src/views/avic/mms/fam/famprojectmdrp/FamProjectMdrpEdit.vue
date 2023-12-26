@@ -14,7 +14,7 @@
         :rules="rules"
         v-bind="layout"
         layout="horizontal"
-       >
+      >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="note" label="备注">
@@ -42,6 +42,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择在研开始时间"
+                :disabled-date="
+                  startValue => proxy.$disabledStartDate(startValue, form.urEndTime)
+                "
               />
             </a-form-item>
           </a-col>
@@ -52,6 +55,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择在研结束时间"
+                :disabled-date="
+                  startValue => proxy.$disabledEndDate(startValue, form.urStartTime)
+                "
               />
             </a-form-item>
           </a-col>
@@ -66,6 +72,7 @@
 </template>
 <script lang="ts" setup>
 import { useFamProjectMdrpForm, emits } from './ts/FamProjectMdrpForm'; // 引入表单ts
+const { proxy } = getCurrentInstance();
 const props = defineProps({
   formId: {
     type: String,

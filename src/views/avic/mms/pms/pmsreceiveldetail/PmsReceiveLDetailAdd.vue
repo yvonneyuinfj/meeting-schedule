@@ -88,11 +88,14 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="mdsItemCode" label="物料号">
-              <a-input
-                v-model:value="form.mdsItemCode"
-                :maxLength="256"
-                placeholder="请输入物料号"
-              />
+              <a-input v-model:value="form.mdsItemCode" :maxLength="64" placeholder="请选择物料号" :readonly="true"
+                       @click="proMdsItemOpen">
+                <template #suffix>
+                  <a-tooltip title="物料号">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)" />
+                  </a-tooltip>
+                </template>
+              </a-input>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -206,9 +209,21 @@
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
+  <!--选择产品弹窗-->
+  <a-modal :visible="openMdsItem" title="选择物料" @ok="handleOk2" @cancel="handleCancel2" width="80%" style="top: 20px">
+    <div style="height: 400px;overflow: auto">
+      <Mds-item-select ref="mdsItemSelect">
+      </Mds-item-select>
+    </div>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import {usePmsReceiveLDetailForm, emits} from './ts/PmsReceiveLDetailForm'; // 引入表单ts
+import MdsItemSelect from "@/views/avic/mms/mds/mdsproject/MdsItemSelect.vue";
+
+const mdsItemSelect = ref(null);
+const openMdsItem = ref<boolean>(false);
+
 const props = defineProps({
   formId: {
     type: String,
@@ -252,4 +267,22 @@ function userSelect(value) {
   form.value.receiverUserId = value.ids;
   form.value.receiverUserCode = value.ids;
 }
+
+function proMdsItemOpen() {
+  openMdsItem.value = true;
+}
+
+const handleCancel2 = () => {
+  openMdsItem.value = false;
+};
+
+
+const handleOk2 = () => {
+  const info = mdsItemSelect.value.info;
+  form.value.mdsItemId = info.id;
+  form.value.mdsItemCode = info.itemCode;
+  form.value.mdsItemName = info.itemName;
+  openMdsItem.value = false;
+};
+
 </script>

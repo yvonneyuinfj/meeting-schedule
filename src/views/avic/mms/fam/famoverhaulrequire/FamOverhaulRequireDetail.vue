@@ -224,7 +224,7 @@
                 :defaultConfig="toolbarConfig"
               />
               <Editor
-                style="height: 500px; overflow-y: auto"
+                style="height: 250px; overflow-y: auto"
                 v-model:value="form.applyReason"
                 :defaultConfig="editorConfig"
                 @onCreated="onCreated"
@@ -232,11 +232,10 @@
             </div>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('reqSuggest')">
+        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('reqSuggest')">
           <a-form-item name="reqSuggest" label="要求及建议" :rules="fieldRequired('reqSuggest')" has-feedback>
-            <a-input
-              v-model:value="form.reqSuggest"
-              :disabled="fieldDisabled('reqSuggest')"
+            <a-textarea v-model:value="form.reqSuggest"
+                        :disabled="fieldDisabled('reqSuggest')"
             />
           </a-form-item>
         </a-col>
@@ -334,6 +333,7 @@
     <FamOverhaulRequireListEdit
       v-if="fieldVisible('FAM_OVERHAUL_REQUIRE_LIST')"
       ref="famOverhaulRequireListEdit"
+      read-only="true"
       :mainId="formId || form.id"
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"

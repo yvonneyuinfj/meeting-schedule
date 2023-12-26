@@ -1729,19 +1729,7 @@ function handleImport() {
 
 /** 导出 */
 function handleExport() {
-  proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
-        loading.value = false;
-        proxy.$message.info('导出成功！');
-      });
-    }
-  });
+   proxy.$message.warning('功能开发中');
 }
 
 /** 删除 */
