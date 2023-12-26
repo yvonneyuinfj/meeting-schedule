@@ -31,7 +31,7 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button
+    <!--        <a-button
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               title="删除"
@@ -42,7 +42,7 @@
                 <delete-outlined/>
               </template>
               删除
-            </a-button>
+            </a-button> -->
 <!--            <a-button
               title="导入"
               type="primary"
@@ -70,13 +70,13 @@
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
           <template v-if="column.dataIndex === 'action'">
-            <a-button
+    <!--        <a-button
               type="link"
               class="inner-btn"
               @click="handleDelete([record.id], 'row')"
             >
               删除
-            </a-button>
+            </a-button> -->
             <a-button
               type="link"
               class="inner-btn"

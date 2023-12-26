@@ -31,7 +31,7 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button
+<!--            <a-button
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               title="删除"
@@ -42,8 +42,8 @@
                 <delete-outlined/>
               </template>
               删除
-            </a-button>
-            <a-button
+            </a-button> -->
+  <!--          <a-button
               title="导入"
               type="primary"
               ghost
@@ -53,7 +53,7 @@
                 <import-outlined/>
               </template>
               导入
-            </a-button>
+            </a-button> -->
           </a-space>
         </template>
         <template #toolBarRight>
@@ -77,13 +77,13 @@
             >
               附件
             </a-button>
-            <a-button
+<!--            <a-button
               type="link"
               class="inner-btn"
               @click="handleDelete([record.id], 'row')"
             >
               删除
-            </a-button>
+            </a-button> -->
           </template>
         </template>
       </AvicTable>
