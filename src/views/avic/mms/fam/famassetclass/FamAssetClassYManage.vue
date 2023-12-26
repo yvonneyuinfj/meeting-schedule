@@ -1,6 +1,4 @@
 <template>
-  <AvicSplit horizontal>
-    <AvicPane size="55">
       <div class="content-wrapper">
         <!-- 表格组件 -->
         <div class="table-wrapper">
@@ -43,8 +41,7 @@
         </div>
        
       </div>
-    </AvicPane>
-  </AvicSplit>
+
   <AvicExcelImport
     v-if="showImportModal"
     :formData="excelParams"
@@ -124,8 +121,7 @@ const columns = [
   }
 ];
 const queryForm = ref<FamAssetClassDto>({
-  bpmState: 'all',
-  bpmType: 'my'
+
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数
@@ -144,7 +140,7 @@ const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
 const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'famAssetClass' }); // 导入Excel数据过滤参数
+const excelParams = ref({ tableName: 'famAssetClass', parentId: '' }); // 导入Excel数据过滤参数
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); //表格数据集合
 const formId = ref(''); // 当前行数据id
@@ -165,20 +161,31 @@ const lookupParams = [
   { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
   { fieldName: 'isNeedReview', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
-const mainId = computed(() => {
-  return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
+const props = defineProps({
+  mainId: {
+    type: String,
+    default: ''
+  }
 });
 
 onMounted(() => {
   // 加载表格数据
-  getList();
+  if (props.mainId) {
+    // 加载表格数据
+    getList();
+  }
   // 加载查询区所需通用代码
   getLookupList();
 });
 
 /** 导入 */
 function handleImport () {
+  if (props.mainId == '') {
+    proxy.$message.warning('请选择一条主数据');
+    return;
+  }
   showImportModal.value = true;
+  excelParams.value.parentId = props.mainId;
 }
 
 function reload(){
@@ -191,6 +198,8 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
+  queryForm.value.parentId = props.mainId;
+  queryParam.searchParams = queryForm.value;
   listFamAssetClassByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
@@ -254,6 +263,18 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
+watch(
+  () => props.mainId,
+  newVal => {
+    if (newVal) {
+      if (props.mainId) {
+        getList();
+      }
+    }
+  },
+  { immediate: true }
+);
 defineExpose({
   getList
 });

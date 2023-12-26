@@ -99,7 +99,7 @@ export function useFamAssetClassForm({ props: props, emit: emit }) {
   /** 数据保存成功的回调 */
   function successCallback() {
     proxy.$message.success('保存成功！');
-    emit('getList1');
+    //emit('getList1');
     emit('close');
   }
   /** 返回关闭事件 */

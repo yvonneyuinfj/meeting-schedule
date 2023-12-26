@@ -61,7 +61,8 @@
       </div>
     </AvicPane>
     <AvicPane>
-      <FamAssetClassYManage ref="RightListManageRef"  @getTree="getTreeList" :mainId="nodeId" />
+                <FamAssetClassYManage ref="RightListManageRef" :mainId="nodeId" :parentId="detailParentId"
+                  :parentTitle="detailParentTitle" @getTree="getTreeList"/>
     </AvicPane>
     <!-- 添加页面弹窗 -->
     <FamAssetClassAdd v-if="showAddNodeModal" :parentId="parentId" :parentTitle="parentTitle"
@@ -88,7 +89,6 @@ import {
 } from '@/utils/tree-util'; // 引入树公共方法
 import FamAssetClassAdd from './FamAssetClassAdd.vue'; // 引入添加页面组件
 import FamAssetClassEdit from './FamAssetClassEdit.vue'; // 引入编辑页面组件
-import FamAssetClassDetail from './FamAssetClassDetail.vue'; // 引入详细页面组件
 import FamAssetClassYManage from '../famassetclass/FamAssetClassYManage.vue'; // 引入子表页面组件
 
 const { proxy } = getCurrentInstance();

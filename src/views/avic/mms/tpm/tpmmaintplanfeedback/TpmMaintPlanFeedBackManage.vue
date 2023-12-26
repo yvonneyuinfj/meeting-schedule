@@ -528,7 +528,7 @@ const columns = [
 ];
 const queryForm = ref<TpmMaintPlanReleaseDto>({
   bpmState: 'all',
-  bpmType: 'my'
+  bpmType: 'all'
 });
 const queryParam = reactive({
   // 请求表格数据参数
@@ -537,7 +537,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -590,9 +590,6 @@ const props = defineProps({
 
 onMounted(() => {
   queryForm.value.maintenanceStatus = '10';
-  //当前登陆人为保养负责人
-  queryForm.value.maintUserId = proxy.$getLoginUser().id;
-  queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
   // 加载查询区所需通用代码
@@ -603,6 +600,13 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
+  const keyWord = {
+    maintUserId: proxy.$getLoginUser().id,
+    actrualMaintUserId: proxy.$getLoginUser().id,
+    maintenanceStatus: '10',
+    billNo: queryForm.value.billNo
+  };
+  queryParam.keyWord = JSON.stringify(keyWord);
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
