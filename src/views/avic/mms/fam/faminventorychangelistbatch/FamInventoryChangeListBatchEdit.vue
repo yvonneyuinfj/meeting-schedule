@@ -275,7 +275,7 @@ function getList() {
       initialList.value = proxy.$lodash.cloneDeep(list.value);
       let amountList = [];
       list.value.map(item => {
-        amountList.push({ assetOriginalValue: item.assetOriginalValue, inventoryId: item.id });
+        amountList.push({ assetOriginalValue: item.assetOriginalValue, inventoryId: item.inventoryId });
       });
       originalList.value = amountList;
     })
@@ -429,7 +429,6 @@ const handleShare = e => {
   if (shareAmount.value === 0 || !shareAmount.value) {
     //输入为空或者0时
     loading.value = true;
-
     list.value.map(item => {
       item.assetOriginalValue = originalList.value.filter(
         it => it.inventoryId === item.inventoryId
@@ -440,13 +439,12 @@ const handleShare = e => {
     //计算分摊
     loading.value = true;
     let percentage = 0;
-
     originalList.value.map(item => {
       percentage += Number(item.assetOriginalValue);
     });
     list.value.map((item, index) => {
       let num = Number(
-        (Number(originalList.value[index].assetOriginalValue) / percentage).toFixed(2)
+        (Number(originalList.value[index].assetOriginalValue) / percentage)
       );
       item.assetOriginalValue = Number(shareAmount.value * num).toFixed(2);
     });
