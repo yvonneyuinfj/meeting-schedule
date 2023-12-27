@@ -310,12 +310,13 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="wmsInvInBillL"
-        table-key="wmsInvInBillL"
+        ref="wmsInvInBillLSelect"
+        table-key="wmsInvInBillLSelect"
         :columns="columns"
         :row-key="record => record.id"
         :data-source="list"
         :loading="loading"
+        :show-table-setting="false"
         :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
@@ -328,50 +329,6 @@
         @change="handleTableChange"
         @refresh="getList"
       >
-        <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['wmsInvInBillL:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['wmsInvInBillL:save']"
-              title="保存"
-              type="primary"
-              :loading="saveLoading"
-              @click="handleSaveAll"
-            >
-              <template #icon>
-                <save-outlined />
-              </template>
-              保存
-            </a-button>
-            <a-button
-              v-hasPermi="['wmsInvInBillL:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
-                event => {
-                  handleDelete(selectedRowKeys, event,'');
-                }
-              "
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-          </a-space>
-        </template>
         <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"
@@ -381,160 +338,38 @@
             @search="handleKeyWordQuery"
           />
         </template>
-        <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="column.dataIndex === 'ensureDate'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-date-picker
-                v-model:value="record.ensureDate"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择有效保管期"
-              >
-              </a-date-picker>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="['inPrice','arrivalUnitPrice','refuseReason'].includes(
-               column.dataIndex
-              )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="20"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'archiveDate'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-date-picker
-                v-model:value="record.archiveDate"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择封存日期"
-              >
-              </a-date-picker>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'storageDate'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-date-picker
-                v-model:value="record.storageDate"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择最长保管日期"
-              >
-              </a-date-picker>
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'mdsLocatorId'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicModalSelect
-                v-model:value="record.mdsLocatorId"
-                title="选择库位号"
-                placeholder="请选择库位号"
-                valueField=""
-                showField=""
-                :selectComponent="mdsLocatorSelectComponent"
-                :allow-clear="true"
-              />
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'acceptanceDate'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-date-picker
-                v-model:value="record.acceptanceDate"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择验收日期"
-              >
-              </a-date-picker>
-            </template>
-          </AvicRowEdit>
-          <template v-else-if="column.dataIndex === 'action'">
-            <a-button
-              v-if="record.editable"
-              type="link"
-              class="inner-btn"
-              :disable="editingId !== ''"
-              @click.stop="handleSave(record)"
-            >
-              保存
-            </a-button>
-            <a-button
-              v-else
-              type="link"
-              class="inner-btn"
-              :disable="editingId !== ''"
-              @click.stop="handleEdit(record)"
-            >
-              编辑
-            </a-button>
-            <a-button
-              type="link"
-              class="inner-btn"
-              @click.stop="
-                event => {
-                  handleDelete([record.id], event, 'row');
-                }
-              "
-            >
-              删除
-            </a-button>
+        <template #bodyCell="{ column, text, record, index }">
+          <template v-if="column.dataIndex === 'id'">
+            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
         </template>
       </AvicTable>
     </div>
-    <avic-excel-import
-      v-if="showImportModal"
-      :formData="excelParams"
-      title="导入"
-      importUrl="/mms/wms/wmsinvinbillls/importData/v1"
-      downloadTemplateUrl="/mms/wms/wmsinvinbillls/downloadTemplate/v1"
-      @reloadData="getList"
-      @close="showImportModal = false"
-    ></avic-excel-import>
   </div>
 </template>
 <script lang="ts" setup>
 import type { WmsInvInBillLDto } from '@/api/avic/mms/wms/WmsInvInBillLApi'; // 引入模块DTO
-import { listWmsInvInBillLByPage, saveWmsInvInBillL, delWmsInvInBillL, exportExcel } from '@/api/avic/mms/wms/WmsInvInBillLApi'; // 引入模块API
-import mdsLocatorSelect from '@/views/avic/mms/mds/mdslocator/MdsLocatorSelect.vue'; // 引入弹窗选择页
-
+import { listWmsInvInBillLByPage } from '@/api/avic/mms/wms/WmsInvInBillLApi'; // 引入模块API
+const $emit = defineEmits(['select', 'handleRowDblClick']);
+const wmsInvInBillLSelect = ref();
 const { proxy } = getCurrentInstance();
 const layout = {
-    labelCol: { flex: '120px' },
-    wrapperCol: { flex: '1' }
+  labelCol: { flex: '0 0 120px' },
+  wrapperCol: { flex: '1 1 0' }
 };
-const colLayout = proxy.$colLayout4; // 调用布局公共方法
+const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'id',
+    ellipsis: true,
+    width: 60,
+    align: 'center',
+    fixed: 'left'
+  },
+  {
     title: '密级',
-    dataIndex: 'secretLevel',
-    key: 'secretLevel',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -543,16 +378,15 @@ const columns = [
   {
     title: '退回原因',
     dataIndex: 'refuseReason',
-    key: 'refuseReason',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
     title: '库位号',
-    dataIndex: 'mdsLocatorId',
-    key: 'mdsLocatorId',
+    dataIndex: 'mdsLocatorIdName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -561,8 +395,8 @@ const columns = [
   {
     title: '物料',
     dataIndex: 'mdsItemId',
-    key: 'mdsItemId',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -570,8 +404,8 @@ const columns = [
   {
     title: '供应商',
     dataIndex: 'srmVendorId',
-    key: 'srmVendorId',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -579,8 +413,8 @@ const columns = [
   {
     title: '计量单位 ',
     dataIndex: 'mdsUnitId',
-    key: 'mdsUnitId',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -588,7 +422,6 @@ const columns = [
   {
     title: '申请数量',
     dataIndex: 'applyQty',
-    key: 'applyQty',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -597,8 +430,8 @@ const columns = [
   {
     title: '不含税合同单价',
     dataIndex: 'inPrice',
-    key: 'inPrice',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -606,8 +439,8 @@ const columns = [
   {
     title: '含税合同单价',
     dataIndex: 'arrivalUnitPrice',
-    key: 'arrivalUnitPrice',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -615,8 +448,8 @@ const columns = [
   {
     title: '计划价',
     dataIndex: 'plannedPrice',
-    key: 'plannedPrice',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -624,7 +457,6 @@ const columns = [
   {
     title: '单件数量',
     dataIndex: 'itemQty',
-    key: 'itemQty',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -633,8 +465,8 @@ const columns = [
   {
     title: '批次',
     dataIndex: 'batchNumber',
-    key: 'batchNumber',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -642,8 +474,8 @@ const columns = [
   {
     title: '质量编号',
     dataIndex: 'qualityCode',
-    key: 'qualityCode',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -651,8 +483,8 @@ const columns = [
   {
     title: '订单类型',
     dataIndex: 'orderType',
-    key: 'orderType',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -660,7 +492,6 @@ const columns = [
   {
     title: '有效保管期',
     dataIndex: 'ensureDate',
-    key: 'ensureDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -669,7 +500,6 @@ const columns = [
   {
     title: '最长保管日期',
     dataIndex: 'storageDate',
-    key: 'storageDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -678,7 +508,6 @@ const columns = [
   {
     title: '验收日期',
     dataIndex: 'acceptanceDate',
-    key: 'acceptanceDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -687,7 +516,6 @@ const columns = [
   {
     title: '封存日期',
     dataIndex: 'archiveDate',
-    key: 'archiveDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -696,8 +524,8 @@ const columns = [
   {
     title: '单据状态',
     dataIndex: 'inBillLStatus',
-    key: 'inBillLStatus',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -705,8 +533,8 @@ const columns = [
   {
     title: '限用型号',
     dataIndex: 'confineProduct',
-    key: 'confineProduct',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -714,8 +542,8 @@ const columns = [
   {
     title: '限用批次',
     dataIndex: 'confineBatch',
-    key: 'confineBatch',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -723,8 +551,8 @@ const columns = [
   {
     title: '限用架次',
     dataIndex: 'confineLot',
-    key: 'confineLot',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -732,8 +560,8 @@ const columns = [
   {
     title: '限用说明',
     dataIndex: 'confineDesc',
-    key: 'confineDesc',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -741,8 +569,8 @@ const columns = [
   {
     title: '炉号',
     dataIndex: 'stoveNo',
-    key: 'stoveNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -750,8 +578,8 @@ const columns = [
   {
     title: '批号',
     dataIndex: 'batchNo',
-    key: 'batchNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -759,8 +587,8 @@ const columns = [
   {
     title: '架次',
     dataIndex: 'lotNo',
-    key: 'lotNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -768,8 +596,9 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
+    ellipsis: true,
+    visible: false,
     width: 120,
-    align: 'center',
     fixed: 'right'
   }
 ];
@@ -787,23 +616,13 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const wmsInvInBillL = ref(null);
-const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'wmsInvInBillL' }); // 导入Excel数据过滤参数
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
-const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
-const loading = ref(false); // 表格loading状态
-const saveLoading = ref(false); // 统一保存按钮loading 状态
-const delLoading = ref(false); // 删除按钮loading状态
-const totalPage = ref(0);
+const loading = ref(false);
+const  totalPage = ref(0);
 const secretLevelList = ref([]); // 密级通用代码
-const validateRules = {
-}; // 必填列,便于保存和新增数据时校验
-const editingId = ref(''); // 正在编辑中的数据
-const mdsLocatorSelectComponent= mdsLocatorSelect;// 自定义选择
 
 onMounted(() => {
   // 加载表格数据
@@ -811,19 +630,16 @@ onMounted(() => {
   // 获取当前用户对应的文档密级
   getUserFileSecretList();
 });
-
 /** 查询数据  */
-function getList () {
+function getList() {
   selectedRowKeys.value = []; // 清空选中
-  selectedRows.value = [];
+  selectedRows.value = []; // 清空选中
   loading.value = true;
   listWmsInvInBillLByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
       loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
     })
     .catch(() => {
       list.value = [];
@@ -832,29 +648,29 @@ function getList () {
     });
 }
 /** 获取当前用户对应的文档密级 */
-function getUserFileSecretList () {
+function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
 /** 高级查询 查询按钮操作 */
-function handleQuery () {
+function handleQuery() {
   queryParam.searchParams = queryForm.value;
   queryParam.keyWord = '';
   queryParam.pageParameter.page = 1;
   getList();
 }
-/** 高级查询 重置按钮操作  */
-function resetQuery () {
+/** 高级查询 重置按钮操作 */
+function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
 /** 高级查询 展开/收起 */
-function toggleAdvanced () {
+function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
 /** 快速查询逻辑 */
-function handleKeyWordQuery (value) {
+function handleKeyWordQuery(value) {
   const keyWord = {
     refuseReason: value
   };
@@ -862,230 +678,16 @@ function handleKeyWordQuery (value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
-/** 添加 */
-function handleAdd () {
-  let item = {
-    id: 'newLine' + proxy.$uuid(),
-    operationType_: 'insert',
-    secretLevel: undefined,
-    refuseReason: '',
-    mdsLocatorId: '',
-    mdsItemId: '',
-    srmVendorId: '',
-    mdsUnitId: '',
-    applyQty: '',
-    inPrice: '',
-    arrivalUnitPrice: '',
-    plannedPrice: '',
-    itemQty: '',
-    batchNumber: '',
-    qualityCode: '',
-    orderType: '',
-    ensureDate: null,
-    storageDate: null,
-    acceptanceDate: null,
-    archiveDate: null,
-    inBillLStatus: '',
-    confineProduct: '',
-    confineBatch: '',
-    confineLot: '',
-    confineDesc: '',
-    stoveNo: '',
-    batchNo: '',
-    lotNo: '',
-    editable: true // true为编辑中, false为未编辑
-  };
-  editingId.value = item.id;
-  let newData = [...list.value];
-  // 数据校验
-  if (!validateRecordData(newData)) {
-    return;
-  }
-  // 其他列编辑状态修改为false
-  newData.forEach(item => {
-    item.editable = false;
-  });
-  newData.unshift(item);
-  list.value = newData;
-}
-/** 编辑 */
-function handleEdit (record) {
-  record.editable = true;
-  record.operationType_ = record.operationType_ || 'update';
-  const newData = [...list.value];
-  editingId.value = record.id;
-  newData.forEach(item => {
-    if (item.id !== record.id) {
-      item.editable = false;
-    }
-  });
-  list.value = newData;
-}
-/** 保存 */
-function handleSave (record) {
-  let target = proxy.$lodash.cloneDeep(record);
-  // 单数据校验
-  if (!validateRecordData([target])) {
-    return;
-  }
-  // 保存前数据处理
-  for (let key in target) {
-    // 多选控件的数据，数组转化为字符串，
-    if (Array.isArray(target[key])) {
-      target[key] = target[key].join(',');
-    }
-  }
-  editingId.value = '';
-  saveWmsInvInBillL([target]).then(res => {
-    if (res.success) {
-      getList();
-      proxy.$message.success('保存成功！');
-    } else {
-      proxy.$message.error('保存失败！');
-    }
-  });
-}
-/** 批量保存 */
-function handleSaveAll () {
-  // 规避正在保存时连续点击
-  if (saveLoading.value) return;
-  // 开始处理数据
-  saveLoading.value = true;
-  // 获取改变和新增的数据
-  const changedData = proxy.$getChangeRecords(list, initialList);
-  if (changedData && changedData.length == 0) {
-    proxy.$message.warning('请先修改数据！');
-    saveLoading.value = false;
-  } else if (changedData && validateRecordData(changedData)) {
-    saveWmsInvInBillL(changedData).then(res => {
-      if (res.success) {
-        getList();
-        proxy.$message.success('保存成功！');
-        saveLoading.value = false;
-      } else {
-        proxy.$message.error('保存失败！');
-        saveLoading.value = false;
-      }
-    })
-    .catch(() => {
-      saveLoading.value = false;
-    });
-  } else {
-    saveLoading.value = false;
-  }
-}
-/** 导入 */
-function handleImport () {
-  showImportModal.value = true;
-}
-/** 导出 */
-function handleExport () {
-  proxy.$confirm({
-    title: '确认导出数据吗?',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      loading.value = true;
-      queryParam.searchParams = queryForm.value;
-      exportExcel(queryParam).then(() => {
-        loading.value = false;
-        proxy.$message.info('导出成功！');
-      });
-    }
-  });
-}
-/** 删除 */
-function handleDelete (ids, e, type) {
-  if (e) {
-    e.stopPropagation(); // 阻止冒泡
-  }
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      // 获取所有非新增的数据，执行后台删除逻辑，新增的数据直接界面删除
-      const deleteIds = ids.filter(id => id.indexOf('newLine') == -1);
-      if (deleteIds.length > 0) {
-        return delWmsInvInBillL(deleteIds)
-          .then(() => {
-            removeRecordByIds(ids);
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
-      } else {
-        removeRecordByIds(ids);
-      }
-    }
-  });
-}
-/** 删除操作后更新list */
-function removeRecordByIds (deleteIds) {
-  let newData = [...list.value];
-  let updateList = [...list.value];
-  let delUpdateData = [];
-  for (let i = 0; i < deleteIds.length; i++) {
-    newData = newData.filter(item => item['id'] !== deleteIds[i]);
-    delUpdateData = updateList.filter(
-      item => item['id'] == deleteIds[i] && item['operationType_'] != 'insert'
-    );
-  }
-  // 清空表格选中项
-  selectedRowKeys.value = [];
-  // 前台刷新表格
-  list.value = newData;
-  // 提示成功
-  proxy.$message.success('删除成功！');
-  delLoading.value = false;
-  if (list.value.length == 0) {
-    // 当前页数据被清空
-    let currentPage = 1;
-    if (queryParam.pageParameter.page > 1) {
-      currentPage = queryParam.pageParameter.page - 1;
-    }
-    queryParam.pageParameter.page = currentPage;
-    getList();
-  } else {
-    // 当前页数据没有全部删除时分页总条数为原total-删除数据中心非添加数据个数
-    totalPage.value = totalPage.value - delUpdateData.length;
-  }
-}
-/** 行点击事件 */
-function customRow (record) {
-  return {
-    onClick: () => {
-      handleEdit(record);
-    }
-  };
-}
-/** 输入框的值失去焦点 */
-function blurInput (e, record, column) {
-  proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
-}
-/** 批量数据校验 */
-function validateRecordData (records) {
-  let flag = true;
-  for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, wmsInvInBillL);
-    if (!flag) {
-      break;
-    }
-  }
-  return flag;
-}
+
 /** 勾选复选框时触发 */
-function onSelectChange (rowKeys, rows) {
+function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
+  // 传出选中项
+  $emit('select', selectedRows.value);
 }
-/** 表头排序 */
-function handleTableChange (pagination, filters, sorter) {
+/** 表格排序 */
+function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
   queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
@@ -1094,5 +696,14 @@ function handleTableChange (pagination, filters, sorter) {
   }
   getList();
 }
+/** 行双击事件 */
+function customRow (record) {
+  return {
+    on: {
+      dblclick: (event, record, index) => {
+        $emit('handleRowDblClick', [record]);
+      }
+    }
+  };
+}
 </script>
-

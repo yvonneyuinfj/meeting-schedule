@@ -85,7 +85,7 @@
                     :loading="delLoading"
                     @click="handleCommitStorage(selectedRows, selectedRowKeys)"
                 >
-                  入库
+                  提交
                 </a-button>
               </a-space>
             </template>
@@ -161,7 +161,8 @@
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
               </template>
               <template v-else-if="column.dataIndex === 'businessstate_'">
-                <a @click="handleFlowDetail(record)">
+                <span v-if="record.status === '10'"> {{ record.businessstate_ }}</span>
+                <a v-else @click="handleFlowDetail(record)">
                   {{ record.businessstate_ }}
                 </a>
               </template>
@@ -626,6 +627,10 @@ function handleCommitStorage(rows, ids) {
     proxy.$message.warning('不能提交不合格物资！');
     return;
   }
+  if (rows.filter(row => row.status === '10')?.length > 0) {
+    proxy.$message.warning('已生效不可重复提交！');
+    return;
+  }
   proxy.$confirm({
     title: '确认要提交选择的数据吗?',
     okText: '确定',
@@ -703,6 +708,10 @@ const handleApproval = (rows, ids) => {
   for (let item of rows) {
     if (item.bpmState !== null) {
       proxy.$message.warning('请选择未提交审批的数据！');
+      return;
+    }
+    if (item.checkResult === '1') {
+      proxy.$message.warning('请提交不合格物资！');
       return;
     }
   }

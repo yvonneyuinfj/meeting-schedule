@@ -136,14 +136,14 @@
               </template>
               保存
             </a-button>
-            <a-button
-              v-hasPermi="['pmsCheckBill:save']"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="saveLoading"
-              @click="handleSaveAll"
-            >
-              入库
-            </a-button>
+<!--            <a-button-->
+<!--              v-hasPermi="['pmsCheckBill:save']"-->
+<!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+<!--              :loading="saveLoading"-->
+<!--              @click="handleSaveAll"-->
+<!--            >-->
+<!--              入库-->
+<!--            </a-button>-->
           </a-space>
         </template>
         <template #toolBarRight>

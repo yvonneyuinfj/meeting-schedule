@@ -118,28 +118,28 @@
               </template>
               删除
             </a-button>
-            <a-button
-              v-hasPermi="['pmsReceive:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
-              <template #icon>
-                 <import-outlined />
-              </template>
-              导入
-            </a-button>
-            <a-button
-              v-hasPermi="['pmsReceive:export']"
-              title="导出"
-              type="primary"
-              ghost
-              @click="handleExport">
-              <template #icon>
-                 <export-outlined />
-              </template>
-              导出
-            </a-button>
+<!--            <a-button-->
+<!--              v-hasPermi="['pmsReceive:import']"-->
+<!--              title="导入"-->
+<!--              type="primary"-->
+<!--              ghost-->
+<!--              @click="handleImport">-->
+<!--              <template #icon>-->
+<!--                 <import-outlined />-->
+<!--              </template>-->
+<!--              导入-->
+<!--            </a-button>-->
+<!--            <a-button-->
+<!--              v-hasPermi="['pmsReceive:export']"-->
+<!--              title="导出"-->
+<!--              type="primary"-->
+<!--              ghost-->
+<!--              @click="handleExport">-->
+<!--              <template #icon>-->
+<!--                 <export-outlined />-->
+<!--              </template>-->
+<!--              导出-->
+<!--            </a-button>-->
           </a-space>
             </template>
             <template #toolBarRight>

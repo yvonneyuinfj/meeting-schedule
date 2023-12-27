@@ -5,18 +5,81 @@ import { downloadSysFile } from '@/utils/download-util';
 const basePath = '/mms/wms/wmsinvinbillls';
 /** 入库单子表 */
 export interface WmsInvInBillLDto extends BaseBeanModel {
+  /** 密级 */
+  secretLevel?: any;
+  /** 退回原因 */
+  refuseReason?: string;
+  /** 库位号 */
+  mdsLocatorId?: string;
+  mdsLocatorIdAlias?: string;
+  /** 物料 */
+  mdsItemId?: string;
+  /** 供应商 */
+  srmVendorId?: string;
+  /** 计量单位  */
+  mdsUnitId?: string;
+  /** 申请数量 */
+  applyQty?: number;
+  /** 不含税合同单价 */
+  inPrice?: string;
+  /** 含税合同单价 */
+  arrivalUnitPrice?: string;
+  /** 计划价 */
+  plannedPrice?: string;
+  /** 单件数量 */
+  itemQty?: number;
+  /** 批次 */
+  batchNumber?: string;
+  /** 质量编号 */
+  qualityCode?: string;
+  /** 订单类型 */
+  orderType?: string;
+  /** 有效保管期 */
+  ensureDate?: any;
+  ensureDateBegin?: any;
+  ensureDateEnd?: any;
+  /** 最长保管日期 */
+  storageDate?: any;
+  storageDateBegin?: any;
+  storageDateEnd?: any;
+  /** 验收日期 */
+  acceptanceDate?: any;
+  acceptanceDateBegin?: any;
+  acceptanceDateEnd?: any;
+  /** 封存日期 */
+  archiveDate?: any;
+  archiveDateBegin?: any;
+  archiveDateEnd?: any;
+  /** 单据状态 */
+  inBillLStatus?: string;
+  /** 限用型号 */
+  confineProduct?: string;
+  /** 限用批次 */
+  confineBatch?: string;
+  /** 限用架次 */
+  confineLot?: string;
+  /** 限用说明 */
+  confineDesc?: string;
+  /** 炉号 */
+  stoveNo?: string;
+  /** 批号 */
+  batchNo?: string;
+  /** 架次 */
+  lotNo?: string;
   /** 申请单主表ID */
   wmsInvInBillId?: string;
+  /** 有效保管期 */
+  validStorageDate?: any;
+  validStorageDateBegin?: any;
+  validStorageDateEnd?: any;
   /** 原始单据ID */
   originalOrderDetailId?: string;
   /** 原始单据表名 */
   originalOrderTabName?: string;
-  /** 物料 */
-  mdsItemId?: string;
-  /** 计量单位  */
-  mdsUnitId?: string;
   /** 入库数量 */
   inQty?: number;
+  /** 新进入库数量^未使用过的数量，入库数量包含新进入库数量 */
+  unusedInQty?: number;
   /** 入库登账人ID */
   inUserId?: string;
   /** 入库登账人编码 */
@@ -33,8 +96,6 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   inDeptCode?: string;
   /** 入库登账人所在部门名称 */
   inDeptName?: string;
-  /** 库位ID */
-  mdsLocatorId?: string;
   /** 封装日期 */
   envelopDate?: any;
   envelopDateBegin?: any;
@@ -59,48 +120,28 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   recheckDate?: any;
   recheckDateBegin?: any;
   recheckDateEnd?: any;
-  /** 最长保管日期 */
-  storageDate?: any;
-  storageDateBegin?: any;
-  storageDateEnd?: any;
   /** 项目编号 */
   projectNo?: string;
   /** 合同号 */
   orderNo?: string;
-  /** 供应商ID */
-  srmVendorId?: string;
   /** 产品ID */
   proMdsItemId?: string;
   /** 父件ID */
   parentMdsItemId?: string;
-  /** 架次 */
-  lotNo?: string;
-  /** 炉号 */
-  stoveNo?: string;
-  /** 批号 */
-  batchNo?: string;
-  /** 计划价 */
-  plannedPrice?: string;
+  /** 本次入库数量 */
+  thisTimeInQty?: number;
   /** 货币类型 ^  */
   currencyType?: string;
-  /** 不含税合同单价 */
-  inPrice?: string;
-  /** 含税合同单价 */
-  arrivalUnitPrice?: string;
   /** 合格证ID ^ 厂内检验合格后的合格证ID */
   qcCertificationId?: string;
   /** 合格证号 */
   certificationNo?: string;
-  /** 质量编号 ^ 用于唯一标识本批物料,如:到货送检编号,本厂合格证号等 */
-  qualityCode?: string;
   /** 派工号 */
   missionNo?: string;
   /** 紧急放行标识^Y-是紧急放行、N-非紧急放行 */
   urgentReleaseFlag?: string;
   /** 紧急放行单号 */
   urgentReleaseNo?: string;
-  /** 拒绝原因 */
-  refuseReason?: string;
   /** 打印标识 ^ N-未打印,Y-已打印 */
   ynPrint?: string;
   /** 客户ID */
@@ -129,14 +170,14 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   useDeptCode?: string;
   /** 使用部门名称 */
   useDeptName?: string;
-  /** 单据状态 ^0-编制中；5-提交申请；10-已派工；13-提交检验，15-部分完成；20-已完成；25-已拒绝;3-用于显示采购入库申请 */
-  inBillLStatus?: string;
   /** 备注 */
   note?: string;
   /** 是否挂账 ^ N-未挂账,Y-已挂账 */
   ynOnAccount?: string;
   /** 是否关闭 ^ N-未关闭,Y-已关闭 */
   ynClose?: string;
+  /** 关闭数量 */
+  closeQty?: number;
   /** 关闭日期 */
   closeDate?: any;
   closeDateBegin?: any;
@@ -161,6 +202,8 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   recheckPeriod?: number;
   /** 客户类型ID */
   mdsCustomerTypeId?: string;
+  /** 检验损耗数量 */
+  checkLossQty?: number;
   /** 分工路线主表ID */
   mdsWorkLineId?: string;
   /** 分工路线 */
@@ -185,34 +228,18 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   firstOverhaulDate?: any;
   firstOverhaulDateBegin?: any;
   firstOverhaulDateEnd?: any;
-  /** 密级 */
-  secretLevel?: any;
   /** 锭节号 */
   spindleSegmentNo?: string;
   /** 材料账本号 */
   materialAccountNo?: string;
   /** 物料类型 */
   mdsItemType?: string;
-  /** 有效保管期--暂时作废该字段 */
-  validStorageDate?: any;
-  validStorageDateBegin?: any;
-  validStorageDateEnd?: any;
   /** 材料账本号ID */
   materialAccountId?: string;
   /** 材料尺寸 */
   materialSize?: string;
   /** 是否限用 YN_flag Y是 ,N 否 */
   confineFlag?: string;
-  /** 限用型号 */
-  confineProduct?: string;
-  /** 限用批次 */
-  confineBatch?: string;
-  /** 限用架次 */
-  confineLot?: string;
-  /** 限用说明 */
-  confineDesc?: string;
-  /** 批次 */
-  batchNumber?: string;
   /** 长度 */
   length?: string;
   /** 宽度 */
@@ -227,10 +254,6 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   wallThickness?: string;
   /** 外径 */
   externalDiameter?: string;
-  /** 质保期/有效保管期 */
-  ensureDate?: any;
-  ensureDateBegin?: any;
-  ensureDateEnd?: any;
   /** 生产批号 */
   productionBatchNo?: string;
   /** 热处理批号 */
@@ -241,16 +264,6 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   fixedTestPeriod?: string;
   /** 成品状态 */
   matetialStatus?: string;
-  /** 订单类型 */
-  orderType?: string;
-  /** 验收日期 */
-  acceptanceDate?: any;
-  acceptanceDateBegin?: any;
-  acceptanceDateEnd?: any;
-  /** 封存日期 */
-  archiveDate?: any;
-  archiveDateBegin?: any;
-  archiveDateEnd?: any;
   /** 采购到货检验单表ID;多个以','分割 */
   pmsCheckInfoId?: string;
   /** 是否上机标识 */
@@ -281,18 +294,6 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
   rbrkNo?: string;
   /** 税款抵扣类型01全额抵扣02不抵扣03混合抵扣 */
   pmsTaxDeductionType?: string;
-  /** 申请数量 */
-  applyQty?: number;
-  /** 新进入库数量^未使用过的数量，入库数量包含新进入库数量 */
-  unusedInQty?: number;
-  /** 关闭数量 */
-  closeQty?: number;
-  /** 本次入库数量 */
-  thisTimeInQty?: number;
-  /** 检验损耗数量 */
-  checkLossQty?: number;
-  /** 采购入库单件数量 */
-  itemQty?: number;
 }
 
 /** 获取分页数据 */
@@ -302,13 +303,8 @@ export function listWmsInvInBillLByPage (
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
-/** 根据id加载数据 */
-export function getWmsInvInBillL (id: string): Promise<ResponseBaseData<WmsInvInBillLDto>> {
-  return request.get(basePath + '/get/' + id + '/v1');
-}
-
 /** 保存表单数据 */
-export function saveWmsInvInBillL (form: WmsInvInBillLDto): Promise<ResponseBaseData<any>> {
+export function saveWmsInvInBillL (form: [WmsInvInBillLDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
