@@ -654,6 +654,10 @@ function handleEdit() {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value.filter(row => row.bpmState !== 'start')?.length > 0) {
+    proxy.$message.warning('只有拟稿中的数据才可以编辑！');
+    return;
+  }
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }

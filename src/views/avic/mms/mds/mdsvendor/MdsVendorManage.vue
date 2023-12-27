@@ -1069,7 +1069,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '企业性质分类 ^ SRM_CORPORATION_MODE:1-国家行政企业，2-公司合作企业，3-中外合资企业，4-社会组织机构，5-国际组织机构，6-外资企业，7-私营企业，8-集体企业，9-国防军事企业',
+    title: '企业性质分类',
     dataIndex: 'corporationModeName',
     ellipsis: true,
     minWidth: 120,
@@ -1077,7 +1077,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '是否集团内 ^ YN_FLAG:Y-是,N-否 ->GYS_LX 01集团内 02集团外',
+    title: '是否集团内',
     dataIndex: 'ynInternalName',
     ellipsis: true,
     minWidth: 120,
@@ -1139,7 +1139,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '供应商所属行业 ^ SRM_BUSINESS_TYPE:1-航空，2-航天，3-兵器，4-船舶，10-其他',
+    title: '供应商所属行业',
     dataIndex: 'businessTypeName',
     ellipsis: true,
     minWidth: 120,
@@ -1156,7 +1156,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '供应商等级 ^ SRM_VENDOR_LEVEL:0-I,1-II,2-III',
+    title: '供应商等级',
     dataIndex: 'vendorLevelName',
     ellipsis: true,
     minWidth: 120,
@@ -1234,7 +1234,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '纳税人身份 ^ SRM_TAXPAYER_TYPE:0-一般纳税人；1-小规模纳税人',
+    title: '纳税人身份',
     dataIndex: 'taxpayerTypeName',
     ellipsis: true,
     minWidth: 120,
@@ -1242,7 +1242,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '供应商性质分类 ^ SRM_VENDOR_TYPE: 1-经销商,2-制造商,3-其他； ',
+    title: '供应商性质分类',
     dataIndex: 'vendorTypeName',
     ellipsis: true,
     minWidth: 120,
@@ -1285,7 +1285,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '编制人编码 ^ 员工编码',
+    title: '编制人编码',
     dataIndex: 'editorUserCodeAlias',
     ellipsis: true,
     minWidth: 120,
@@ -1333,7 +1333,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '是否有效标识 ^ PLATFORM_VALID_FLAG:1-有效,0-无效',
+    title: '是否有效标识',
     dataIndex: 'validFlagName',
     ellipsis: true,
     minWidth: 120,
@@ -1376,7 +1376,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '批准状态 ^ SRM_VENDOR_APPROVE_TYPE：0-不批准；1-批准；2-有条件批准；3-一次性批准',
+    title: '批准状态',
     dataIndex: 'vendorApproveTypeName',
     ellipsis: true,
     minWidth: 120,
@@ -1384,7 +1384,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '是否合格供应商 ^ YN_FLAG:Y-是,N-否',
+    title: '是否合格供应商',
     dataIndex: 'ynEligibilityName',
     ellipsis: true,
     minWidth: 120,
@@ -1392,7 +1392,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '本单位标识 ^ SRM_SELF_UNIT_FLAG:0-本单位，1-非本单位',
+    title: '本单位标识',
     dataIndex: 'selfUnitFlagName',
     ellipsis: true,
     minWidth: 120,
@@ -1400,7 +1400,7 @@ const columns = [
     align: 'center'
   },
   {
-    title: '密级 ^ 通用代码MMS_DATA_SECRET_LEVEL',
+    title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
@@ -1470,7 +1470,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '供应商类别 ^ 多选，以“,”分隔；SRM_VENDOR_CATEGORY: 1-一类,2-二类,3-三类,4-二类（海），三类（空）',
+    title: '供应商类别',
     dataIndex: 'vendorCategoryName',
     ellipsis: true,
     minWidth: 120,
@@ -1487,7 +1487,7 @@ const columns = [
     align: 'left'
   },
   {
-    title: '币种 ^ 通用代码：SRM_CURRENDY_TYPE',
+    title: '币种',
     dataIndex: 'currencyType',
     ellipsis: true,
     sorter: true,

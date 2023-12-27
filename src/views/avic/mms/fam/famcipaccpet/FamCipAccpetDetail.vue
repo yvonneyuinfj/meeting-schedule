@@ -257,7 +257,7 @@
             :rules="fieldRequired('assetClasst')"
             has-feedback
           >
-            <a-input v-model:value="form.assetClasst" :disabled="fieldDisabled('assetClasst')"/>
+            <a-input v-model:value="form.assetClasstName" :disabled="fieldDisabled('assetClasst')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols"

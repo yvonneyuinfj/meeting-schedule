@@ -197,7 +197,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input
-                v-model:value="form.assetClasst"
+                v-model:value="form.assetClasstName"
                 placeholder="请输入资产类别"
                 @click="assetClasstClick"
               >
@@ -434,6 +434,7 @@ function handleSummit() {
         if (res.data.treeLeaf === 'Y') {
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
+          form.value.assetClasstName = res.data.className;
           assetClasstOpen.value = false;
         } else {
           proxy.$message.warning('该数据不属于末级节点请重新选择！');

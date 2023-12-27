@@ -22,13 +22,25 @@ export function useFamInventoryChangeBatchForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
+    changeNote: [
+      { required: true, message: '变更理由不能为空', trigger: 'change' }
+    ],
+    applyNo: [
+      { required: true, message: '申请单编号不能为空', trigger: 'change' }
+    ],
+    applyPersonId: [
+      { required: true, message: '申请人不能为空', trigger: 'change' }
+    ],
+    applyDeptId: [
+      { required: true, message: '主管部门不能为空', trigger: 'change' }
+    ],
   };
   const famInventoryChangeListBatchEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout4; // 调用布局公共方法
+  const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
   const autoCode = ref(null); // 自动编码ref

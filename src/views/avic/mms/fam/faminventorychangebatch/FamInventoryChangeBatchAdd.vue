@@ -53,29 +53,29 @@
           </a-col>
         </a-row>
         <a-row>
-          <a-col v-bind="colLayout.cols4">
-            <a-form-item
-              name="changeNote"
-              label="变更理由"
-            >
-              <a-textarea
-                v-model:value="form.changeNote"
-                :rows="2"
-                :maxLength="4000"
-                placeholder="请输入变更理由"
-              />
-            </a-form-item>
-          </a-col>
-<!--          <a-col v-bind="colLayout.cols">-->
-<!--            <a-form-item name="fenqi" label="分期金额">-->
-<!--              <a-input-->
-<!--                v-model:value="form.fenqi"-->
-<!--                :maxLength="64"-->
-<!--                placeholder="请输入分期金额"-->
-<!--              />-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
-          <a-col v-bind="colLayout.cols4">
+            <a-col v-bind="colLayout.cols2">
+              <a-form-item
+                name="changeNote"
+                label="变更理由"
+              >
+                <a-textarea
+                  v-model:value="form.changeNote"
+                  :rows="2"
+                  :maxLength="4000"
+                  placeholder="请输入变更理由"
+                />
+              </a-form-item>
+            </a-col>
+  <!--          <a-col v-bind="colLayout.cols">-->
+  <!--            <a-form-item name="fenqi" label="分期金额">-->
+  <!--              <a-input-->
+  <!--                v-model:value="form.fenqi"-->
+  <!--                :maxLength="64"-->
+  <!--                placeholder="请输入分期金额"-->
+  <!--              />-->
+  <!--            </a-form-item>-->
+  <!--          </a-col>-->
+            <a-col v-bind="colLayout.cols2">
             <a-form-item
               label="附件"
             >

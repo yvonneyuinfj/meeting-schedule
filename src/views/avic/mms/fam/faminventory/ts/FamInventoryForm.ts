@@ -51,9 +51,6 @@ export function useFamInventoryForm({
     monDepreciation: [
       { required: true, message: '月折旧额不能为空', trigger: 'change' }
     ],
-    storageLocation: [
-      { required: true, message: '存放地点不能为空', trigger: 'change' }
-    ],
     deptName: [
       { required: true, message: '部门名称不能为空', trigger: 'change' }
     ],

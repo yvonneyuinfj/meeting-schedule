@@ -110,14 +110,14 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('billStatus')">
-          <a-form-item name="billStatus" label="审批状态" :rules="fieldRequired('billStatus')" has-feedback>
-            <a-input
-              v-model:value="form.billStatus"
-              :disabled="fieldDisabled('billStatus')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('billStatus')">-->
+<!--          <a-form-item name="billStatus" label="审批状态" :rules="fieldRequired('billStatus')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.billStatus"-->
+<!--              :disabled="fieldDisabled('billStatus')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('leaseTerm')">
           <a-form-item name="leaseTerm" label="租赁期限(单位年)" :rules="fieldRequired('leaseTerm')" has-feedback>
             <a-input
