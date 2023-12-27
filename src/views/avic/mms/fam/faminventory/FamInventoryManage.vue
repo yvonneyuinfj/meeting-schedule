@@ -845,16 +845,14 @@
               </template>
               导出
             </a-button>
-            <a-button
-                title="打印卡片"
-                type="primary"
-                @click="handlePrintCard"
-            >
-              <!--              <template #icon>-->
-              <!--                <import-outlined/>-->
-              <!--              </template>-->
-              打印卡片
-            </a-button>
+<!--            <a-button-->
+<!--                title="打印卡片"-->
+<!--                type="primary"-->
+<!--                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+<!--                @click="handlePrintCard(selectedRowKeys,'')"-->
+<!--            >-->
+<!--              打印卡片-->
+<!--            </a-button>-->
             <a-button
                 title="同步浪潮折旧信息"
                 type="primary"
@@ -944,7 +942,9 @@ import {
 } from '@/api/avic/mms/fam/FamInventoryApi'; // 引入模块API
 import FamInventoryAdd from './FamInventoryAdd.vue'; // 引入添加页面组件
 import FamInventoryEdit from './FamInventoryEdit.vue'; // 引入编辑页面组件
-import FamInventoryDetail from './FamInventoryDetail.vue'; // 引入详情页面组件
+import FamInventoryDetail from './FamInventoryDetail.vue';
+import { createMdsReportConditionByUserId, MdsReportConditionDto } from '@/api/avic/mms/mds/MdsReportConditionApi';
+
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -1631,6 +1631,7 @@ const assetsStatusList = ref([]); // 资产状态通用代码
 const ynMilitaryKeyEquipList = ref([]); // 是否军工关键设备通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const assetTypeList = ref([]); // 资产分类通用代码
+const mdsReportConditionDto = ref<MdsReportConditionDto>({});
 const lookupParams = [
   { fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS' },
   { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
@@ -1666,6 +1667,33 @@ function getList() {
         totalPage.value = 0;
         loading.value = false;
       });
+}
+
+function handlePrintCard(ids, type) {
+  // proxy.$message.info('功能开发中！');
+  //return;
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要打印的数据！');
+    return;
+  }
+  proxy.$confirm({
+    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      mdsReportConditionDto.value.tableIdList = ids;
+      createMdsReportConditionByUserId(mdsReportConditionDto)
+          .then(res => {
+            if (res.success) {
+              window.open('http://localhost:8075/WebReport/ReportServer?reportlet=famInventory.cpt');
+              getList();
+            }
+          })
+          .catch((e) => {
+            proxy.$message.error(e.message);
+          });
+    }
+  });
 }
 
 /** 获取通用代码  */
@@ -1742,10 +1770,6 @@ function handleExport() {
       });
     }
   });
-}
-
-function handlePrintCard() {
-  proxy.$message.info('功能开发中！');
 }
 
 /** 删除 */

@@ -112,15 +112,15 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="billStatus" label="审批状态">
-              <a-input
-                v-model:value="form.billStatus"
-                :maxLength="32"
-                placeholder="请输入审批状态"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="billStatus" label="审批状态">-->
+<!--              <a-input-->
+<!--                v-model:value="form.billStatus"-->
+<!--                :maxLength="32"-->
+<!--                placeholder="请输入审批状态"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="leaseTerm" label="租赁期限(单位年)">
               <a-input
