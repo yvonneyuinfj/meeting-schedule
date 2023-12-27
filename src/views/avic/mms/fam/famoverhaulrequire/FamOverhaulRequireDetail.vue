@@ -181,6 +181,14 @@
             />
           </a-form-item>
         </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('projectName')">
+          <a-form-item name="projectNumber" label="项目名称" :rules="fieldRequired('projectName')" has-feedback>
+            <a-input
+              v-model:value="form.projectName"
+              :disabled="fieldDisabled('projectName')"
+            />
+          </a-form-item>
+        </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('projectAmount')">
           <a-form-item name="projectAmount" label="项目金额（万元）" :rules="fieldRequired('projectAmount')" has-feedback>
             <a-input-number

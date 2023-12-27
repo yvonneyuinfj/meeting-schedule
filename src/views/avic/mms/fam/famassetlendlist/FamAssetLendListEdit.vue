@@ -182,6 +182,10 @@ const props = defineProps({
   readOnly: {
     type: Boolean,
     default: false
+  },
+  bpmInstanceObject: {
+    type: Object,
+    default: {}
   }
 });
 const open = ref<boolean>(false);
@@ -309,6 +313,7 @@ const delLoading = ref(false);
 const totalPage = ref(0);
 const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
+const task = props.bpmInstanceObject.hasOwnProperty('bpmModel') ? props.bpmInstanceObject.bpmModel : '';
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
@@ -411,6 +416,7 @@ const handleOk = () => {
 
 /** 编辑 */
 function handleEdit(record) {
+  if (task !== 'task2') return;
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];

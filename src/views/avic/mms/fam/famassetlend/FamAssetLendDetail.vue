@@ -148,6 +148,7 @@
       v-if="fieldVisible('FAM_ASSET_LEND_LIST')"
       ref="famAssetLendListEdit"
       :mainId="formId || form.id"
+      read-only="true"
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"
     />
