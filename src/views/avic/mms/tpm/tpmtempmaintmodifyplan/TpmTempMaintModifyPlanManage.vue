@@ -2,11 +2,7 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form
-        v-bind="layout"
-        ref="formRef"
-        :model="queryForm"
-      >
+      <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="需求部门">
@@ -64,25 +60,15 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
-          >
+          <a-col v-bind="colLayout.cols" style="margin-left: auto">
             <div class="table-page-search-submitButtons">
               <a-space>
-                <a-button
-                  type="primary"
-                  @click="handleQuery"
-                >
-                  <search-outlined/>
+                <a-button type="primary" @click="handleQuery">
+                  <search-outlined />
                   查询
                 </a-button>
-                <a-button
-                  type="primary"
-                  @click="resetQuery"
-                  ghost
-                >
-                  <redo-outlined/>
+                <a-button type="primary" @click="resetQuery" ghost>
+                  <redo-outlined />
                   重置
                 </a-button>
               </a-space>
@@ -133,7 +119,7 @@
               @click="handleSaveAll"
             >
               <template #icon>
-                <save-outlined/>
+                <save-outlined />
               </template>
               保存
             </a-button>
@@ -145,7 +131,7 @@
               @click="handleExport"
             >
               <template #icon>
-                <export-outlined/>
+                <export-outlined />
               </template>
               导出
             </a-button>
@@ -168,12 +154,15 @@
             </a-button> -->
             <a-button
               v-hasPermi="['tpmTempMaintModifyPlan:commit']"
-              title="提交"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              title="提交至经办人"
+              type="primary"
               :loading="commitLoading"
               @click="handleCommit(selectedRowKeys, '')"
             >
-              提交
+              <template #icon>
+                <check-circle-outlined />
+              </template>
+              提交至经办人
             </a-button>
           </a-space>
         </template>
@@ -200,7 +189,7 @@
                 type="userSelect"
                 @callback="
                   (value, _selectRows) => {
-                    changeCommonSelect(value,record,'agentId')
+                    changeCommonSelect(value, record, 'agentId');
                   }
                 "
               />
@@ -210,38 +199,36 @@
             </template>
           </AvicRowEdit>
 
-<!--          <AvicRowEdit-->
-<!--            v-else-if="column.dataIndex === 'businessStatus'"-->
-<!--            :record="record"-->
-<!--            :column="column.dataIndex"-->
-<!--          >-->
-<!--            <template #edit>-->
-<!--              <a-select-->
-<!--                v-model:value="record.businessStatus"-->
-<!--                style="width: 100%"-->
-<!--                placeholder="请选择制单状态"-->
-<!--                @change="(value)=>changeControlValue(value,record,'businessStatus')"-->
-<!--              >-->
-<!--                <a-select-option-->
-<!--                  v-for="select in businessStatusList"-->
-<!--                  :key="select.sysLookupTlId"-->
-<!--                  :value="select.lookupCode"-->
-<!--                  :title="select.lookupName"-->
-<!--                  :disabled="select.disabled === true"-->
-<!--                >-->
-<!--                  {{ select.lookupName }}-->
-<!--                </a-select-option>-->
-<!--              </a-select>-->
-<!--            </template>-->
-<!--            <template #default>-->
-<!--              {{ record['businessStatusName'] }}-->
-<!--            </template>-->
-<!--          </AvicRowEdit>-->
+          <!--          <AvicRowEdit-->
+          <!--            v-else-if="column.dataIndex === 'businessStatus'"-->
+          <!--            :record="record"-->
+          <!--            :column="column.dataIndex"-->
+          <!--          >-->
+          <!--            <template #edit>-->
+          <!--              <a-select-->
+          <!--                v-model:value="record.businessStatus"-->
+          <!--                style="width: 100%"-->
+          <!--                placeholder="请选择制单状态"-->
+          <!--                @change="(value)=>changeControlValue(value,record,'businessStatus')"-->
+          <!--              >-->
+          <!--                <a-select-option-->
+          <!--                  v-for="select in businessStatusList"-->
+          <!--                  :key="select.sysLookupTlId"-->
+          <!--                  :value="select.lookupCode"-->
+          <!--                  :title="select.lookupName"-->
+          <!--                  :disabled="select.disabled === true"-->
+          <!--                >-->
+          <!--                  {{ select.lookupName }}-->
+          <!--                </a-select-option>-->
+          <!--              </a-select>-->
+          <!--            </template>-->
+          <!--            <template #default>-->
+          <!--              {{ record['businessStatusName'] }}-->
+          <!--            </template>-->
+          <!--          </AvicRowEdit>-->
 
           <template v-else-if="column.dataIndex === 'attach'">
-            <a @click="handleAttach(record)">
-              查看
-            </a>
+            <a @click="handleAttach(record)">查看</a>
           </template>
         </template>
       </AvicTable>
@@ -255,11 +242,7 @@
       @reloadData="getList"
       @close="showImportModal = false"
     ></avic-excel-import>
-    <AttachModal
-      :attachOpen="attachOpen"
-      :attach-form="attchForm"
-      @closeAttach="closeAttach"
-    />
+    <AttachModal :attachOpen="attachOpen" :attach-form="attchForm" @closeAttach="closeAttach" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -288,7 +271,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '经办人',
@@ -302,7 +285,7 @@ const columns = [
         ['class']: 'required-table-title'
       };
     },
-    align: 'left'
+    align: 'center'
   },
   {
     title: '预算项目',
@@ -311,7 +294,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '预算分项',
@@ -320,7 +303,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '预算组织',
@@ -329,7 +312,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '项目名称',
@@ -338,7 +321,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '计划类别',
@@ -356,7 +339,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '需求时间',
@@ -365,7 +348,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '需求申请人',
@@ -374,7 +357,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '联系电话',
@@ -383,7 +366,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '项目金额（万元）',
@@ -392,7 +375,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '课题号',
@@ -401,7 +384,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '是否使用型号经费',
@@ -473,7 +456,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   // {
   //   title: '合同编号',
@@ -534,9 +517,10 @@ const columns = [
     dataIndex: 'businessStatusName',
     key: 'businessStatusName',
     ellipsis: true,
-    minWidth: 120,
+    width: 100,
     resizable: true,
-    align: 'center'
+    align: 'center',
+    fixed: 'left'
   }
 ];
 const queryForm = ref<TpmTempMaintModifyPlanDto>({});
@@ -637,9 +621,10 @@ function handleCommit(ids, type) {
             getList();
           }
           commitLoading.value = false;
-        }).catch(() => {
-        commitLoading.value = false;
-      });
+        })
+        .catch(() => {
+          commitLoading.value = false;
+        });
     }
   });
 }
@@ -648,7 +633,9 @@ function handleCommit(ids, type) {
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     planTypeList.value = result.planType;
-    businessStatusList.value = result.businessStatus.filter(row => row.lookupCode === '0' || row.lookupCode === '15');
+    businessStatusList.value = result.businessStatus.filter(
+      row => row.lookupCode === '0' || row.lookupCode === '15'
+    );
   });
 }
 
@@ -982,4 +969,3 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
-
