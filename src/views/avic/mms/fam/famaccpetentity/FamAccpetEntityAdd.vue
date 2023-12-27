@@ -296,7 +296,7 @@
     </template>
   </AvicModal>
   <!-- 树节点 -->
-  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" @ok="handleSummit">
+  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle"  @ok="handleSummit">
     <a-spin :spinning="treeLoading">
       <a-tree
         v-if="treeData && treeData.length > 0"
@@ -378,6 +378,7 @@ const {
   layout,
   colLayout,
   loading,
+  bodyStyle,
   secretLevelList,
   saveAndStartProcess,
   assetTypeList,

@@ -8,79 +8,75 @@
     @cancel="closeModal"
   >
     <a-spin :spinning="loading">
-      <a-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        v-bind="layout"
-        layout="horizontal"
-        class="form-excel-style"
-      >
+      <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" class="form-excel-style">
         <a-row :gutter="0">
+          <!--         <a-col v-bind="colLayout.cols2">
+                     <a-form-item name="secretLevel" label="数据密级" has-feedback>
+                       <a-select
+                         v-model:value="form.secretLevel"
+                         :auto-focus="true"
+                         :get-popup-container="triggerNode => triggerNode.parentNode"
+                         option-filter-prop="children"
+                         :show-search="true"
+                         :allow-clear="true"
+                         placeholder="请选择数据密级"
+                       >
+                         <a-select-option
+                           v-for="item in secretLevelList"
+                           :key="item.sysLookupTlId"
+                           :value="item.lookupCode"
+                         >
+                           {{ item.lookupName }}
+                         </a-select-option>
+                       </a-select>
+                     </a-form-item>
+                   </a-col> -->
+          <!--         <a-col v-bind="colLayout.cols2">
+                     <a-form-item name="assetsCode" label="资产编号" has-feedback>
+                       <a-input
+                         v-model:value="form.assetsCode"
+                         :maxLength="128"
+                         placeholder="请输入资产编号"
+                       />
+                     </a-form-item>
+                   </a-col>
+                   <a-col v-bind="colLayout.cols2">
+                     <a-form-item name="assetsName" label="资产名称" has-feedback>
+                       <a-input
+                         v-model:value="form.assetsName"
+                         :maxLength="128"
+                         placeholder="请输入资产名称"
+                       />
+                     </a-form-item>
+                   </a-col>
+                   <a-col v-bind="colLayout.cols2">
+                     <a-form-item name="assetClassName" label="资产类别名称" has-feedback>
+                       <a-input
+                         v-model:value="form.assetClassName"
+                         :maxLength="64"
+                         placeholder="请输入资产类别名称"
+                       />
+                     </a-form-item>
+                   </a-col>
+                   <a-col v-bind="colLayout.cols2">
+                     <a-form-item name="assetSource" label="资产来源" has-feedback>
+                       <a-input
+                         v-model:value="form.assetSource"
+                         :maxLength="64"
+                         placeholder="请输入资产来源"
+                       />
+                     </a-form-item>
+                   </a-col> -->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="changeApplyNo" label="申请单编号" has-feedback>
-              <a-input
+              <avic-auto-code
                 v-model:value="form.changeApplyNo"
-                disabled
-                :maxLength="128"
-                placeholder="请输入申请单编号"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="secretLevel" label="数据密级" has-feedback>
-              <a-select
-                v-model:value="form.secretLevel"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
+                ref="autoCode"
+                code-type="FAM_BILL_NO"
+                code-param="FAM_INVENTORY_CHANGE"
                 :allow-clear="true"
-                placeholder="请选择数据密级"
-              >
-                <a-select-option
-                  v-for="item in secretLevelList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="assetsCode" label="资产编号" has-feedback>
-              <a-input
-                v-model:value="form.assetsCode"
-                :maxLength="128"
-                placeholder="请输入资产编号"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="assetsName" label="资产名称" has-feedback>
-              <a-input
-                v-model:value="form.assetsName"
-                :maxLength="128"
-                placeholder="请输入资产名称"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="assetClassName" label="资产类别名称" has-feedback>
-              <a-input
-                v-model:value="form.assetClassName"
-                :maxLength="64"
-                placeholder="请输入资产类别名称"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="assetSource" label="资产来源" has-feedback>
-              <a-input
-                v-model:value="form.assetSource"
-                :maxLength="64"
-                placeholder="请输入资产来源"
+                :disabled="false"
+                placeholder="请输入申请单编号"
               />
             </a-form-item>
           </a-col>
@@ -125,20 +121,28 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetOriginalValue" label="资产原值" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetOriginalValue"
-                :maxLength="64"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入资产原值"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="depreciationValue" label="累计折旧">
-              <a-input
+              <a-input-number
                 v-model:value="form.depreciationValue"
-                :maxLength="20"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入累计折旧"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -152,11 +156,13 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetNum" label="资产数量" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetNum"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
                 placeholder="请输入资产数量"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -170,20 +176,28 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetNetValue" label="资产净值" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetNetValue"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入资产净值"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="monDepreciation" label="月折旧额" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.monDepreciation"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入月折旧额"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -210,7 +224,6 @@
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
                 placeholder="请选择主管部门"
-                :defaultShowValue="form.managerDeptIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -220,17 +233,20 @@
                 v-model:value="form.responseUserId"
                 type="userSelect"
                 placeholder="请选择责任人"
-                :defaultShowValue="form.responseUserIdAlias"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="firstDepreciationValue" label="入账时累计折旧">
-              <a-input
+              <a-input-number
                 v-model:value="form.firstDepreciationValue"
-                :maxLength="20"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入入账时累计折旧"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -264,11 +280,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="currentYearDepreciation" label="入账前当年折旧">
-              <a-input
+              <a-input-number
                 v-model:value="form.currentYearDepreciation"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入入账前当年折旧"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -298,15 +318,15 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="equipNo" label="设备编号">
-              <a-input
-                v-model:value="form.equipNo"
-                :maxLength="128"
-                placeholder="请输入设备编号"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">
+                      <a-form-item name="equipNo" label="设备编号">
+                        <a-input
+                          v-model:value="form.equipNo"
+                          :maxLength="128"
+                          placeholder="请输入设备编号"
+                        />
+                      </a-form-item>
+                    </a-col> -->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="productionNo" label="出厂编号">
               <a-input
@@ -405,7 +425,6 @@
                 v-model:value="form.receiveDeptId"
                 type="deptSelect"
                 placeholder="请选择接收部门"
-                :defaultShowValue="form.receiveDeptIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -442,19 +461,18 @@
                 v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择经办人"
-                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="equipClass" label="设备大类" has-feedback>
-              <a-input
-                v-model:value="form.equipClass"
-                :maxLength="32"
-                placeholder="请输入设备大类"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">
+                      <a-form-item name="equipClass" label="设备大类" has-feedback>
+                        <a-input
+                          v-model:value="form.equipClass"
+                          :maxLength="32"
+                          placeholder="请输入设备大类"
+                        />
+                      </a-form-item>
+                    </a-col> -->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetSpec" label="资产规格" has-feedback>
               <a-input
@@ -475,11 +493,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetUnit" label="资产单价" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetUnit"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入资产单价"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -501,15 +523,15 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="parentAssetNo" label="父资产编号" has-feedback>
-              <a-input
-                v-model:value="form.parentAssetNo"
-                :maxLength="32"
-                placeholder="请输入父资产编号"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">
+                      <a-form-item name="parentAssetNo" label="父资产编号" has-feedback>
+                        <a-input
+                          v-model:value="form.parentAssetNo"
+                          :maxLength="32"
+                          placeholder="请输入父资产编号"
+                        />
+                      </a-form-item>
+                    </a-col> -->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="importedOrNot" label="是否为进口设备" has-feedback>
               <a-select
@@ -552,10 +574,11 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="warrantyPeriod" label="质保期" has-feedback>
-              <a-input
+              <a-date-picker
                 v-model:value="form.warrantyPeriod"
-                :maxLength="64"
-                placeholder="请输入质保期"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择质保期"
               />
             </a-form-item>
           </a-col>
@@ -575,8 +598,8 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <FamInventoryChangeListEdit ref="famInventoryChangeListEdit" :mainId="formId || form.id" />
       </a-form>
+      <FamInventoryChangeListEdit ref="famInventoryChangeListEdit" />
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>

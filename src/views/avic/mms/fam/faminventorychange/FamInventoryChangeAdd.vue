@@ -121,20 +121,28 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetOriginalValue" label="资产原值" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetOriginalValue"
-                :maxLength="64"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入资产原值"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="depreciationValue" label="累计折旧">
-              <a-input
+              <a-input-number
                 v-model:value="form.depreciationValue"
-                :maxLength="20"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入累计折旧"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -148,11 +156,13 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetNum" label="资产数量" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetNum"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
                 placeholder="请输入资产数量"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -166,20 +176,28 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetNetValue" label="资产净值" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetNetValue"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入资产净值"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="monDepreciation" label="月折旧额" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.monDepreciation"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入月折旧额"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -220,11 +238,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="firstDepreciationValue" label="入账时累计折旧">
-              <a-input
+              <a-input-number
                 v-model:value="form.firstDepreciationValue"
-                :maxLength="20"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入入账时累计折旧"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -258,11 +280,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="currentYearDepreciation" label="入账前当年折旧">
-              <a-input
+              <a-input-number
                 v-model:value="form.currentYearDepreciation"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入入账前当年折旧"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -467,11 +493,15 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetUnit" label="资产单价" has-feedback>
-              <a-input
+              <a-input-number
                 v-model:value="form.assetUnit"
-                :maxLength="16"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
                 placeholder="请输入资产单价"
-              />
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -544,10 +574,11 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="warrantyPeriod" label="质保期" has-feedback>
-              <a-input
+              <a-date-picker
                 v-model:value="form.warrantyPeriod"
-                :maxLength="64"
-                placeholder="请输入质保期"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择质保期"
               />
             </a-form-item>
           </a-col>
