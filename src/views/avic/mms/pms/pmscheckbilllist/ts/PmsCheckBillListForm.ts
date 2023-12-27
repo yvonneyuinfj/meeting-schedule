@@ -1,5 +1,5 @@
 import type { PmsCheckBillListDto } from '@/api/avic/mms/pms/PmsCheckBillListApi'; // 引入模块DTO
-import { getPmsCheckBillList, savePmsCheckBillList } from '@/api/avic/mms/pms/PmsCheckBillListApi'; // 引入模块API
+import {  savePmsCheckBillList } from '@/api/avic/mms/pms/PmsCheckBillListApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 export function usePmsCheckBillListForm({
   props: props,
@@ -29,7 +29,7 @@ export function usePmsCheckBillListForm({
     getUserFileSecretList();
     if (props.formId) {
       // 编辑、详情页面加载数据
-      getFormData(props.formId);
+      // getFormData(props.formId);
     }
   });
 
@@ -49,21 +49,21 @@ export function usePmsCheckBillListForm({
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
    */
-  function getFormData (id) {
-    loading.value = true;
-    getPmsCheckBillList(id)
-      .then(async (res) => {
-        if (res.success) {
-          form.value = res.data;
-          // 处理数据
- loading.value = false;
-        }
-      })
-      .catch(() => {
-        proxy.$message.warning('获取表单数据失败！');
-        loading.value = false;
-      });
-  }
+ //  function getFormData (id) {
+ //    loading.value = true;
+ //    getPmsCheckBillList(id)
+ //      .then(async (res) => {
+ //        if (res.success) {
+ //          form.value = res.data;
+ //          // 处理数据
+ // loading.value = false;
+ //        }
+ //      })
+ //      .catch(() => {
+ //        proxy.$message.warning('获取表单数据失败！');
+ //        loading.value = false;
+ //      });
+ //  }
   /** 保存 */
   function saveForm () {
     formRef.value
@@ -73,7 +73,7 @@ export function usePmsCheckBillListForm({
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        savePmsCheckBillList(postData)
+        savePmsCheckBillList([postData])
           .then((res) => {
             if (res.success) {
               successCallback();
