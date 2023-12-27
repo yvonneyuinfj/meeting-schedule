@@ -566,7 +566,7 @@ const columns = [
 ];
 const queryForm = ref<DemoMainInsideFlowDto>({
   bpmState: 'active',
-  bpmType: 'my'
+  bpmType: 'all'
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数

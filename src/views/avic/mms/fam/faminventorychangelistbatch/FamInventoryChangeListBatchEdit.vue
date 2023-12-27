@@ -45,7 +45,7 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
@@ -62,7 +62,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -74,8 +74,8 @@
                 style="width: 120px"
                 clear
                 v-model:value="shareAmount"
-                  :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                  :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
               />
             </div>
             <a-button
@@ -468,6 +468,7 @@ const handleOk = () => {
     amountList.push({ assetOriginalValue: item.assetOriginalValue, inventoryId: item.id });
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
+    item['managerDeptName'] = item.receiveDeptNameAlias;
   });
   // 批量新增数组合并去重
   let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));
