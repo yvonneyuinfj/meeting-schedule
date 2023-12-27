@@ -3,58 +3,58 @@
     <div class="top-search-box">
       <!-- 高级查询 -->
       <a-form
-          v-bind="layout"
-          ref="formRef"
-          :model="queryForm"
+        v-bind="layout"
+        ref="formRef"
+        :model="queryForm"
       >
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="资产编号">
               <a-input
-                  v-model:value="queryForm.assetsCode"
-                  placeholder="请输入资产编号"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.assetsCode"
+                placeholder="请输入资产编号"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="资产名称">
               <a-input
-                  v-model:value="queryForm.assetsName"
-                  placeholder="请输入资产名称"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.assetsName"
+                placeholder="请输入资产名称"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="资产类别名称">
               <a-input
-                  v-model:value="queryForm.assetClassName"
-                  placeholder="请输入资产类别名称"
-                  :allow-clear="true"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.assetClassName"
+                placeholder="请输入资产类别名称"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col
-              v-bind="colLayout.cols"
-              v-show="advanced"
+            v-bind="colLayout.cols"
+            v-show="advanced"
           >
             <a-form-item label="资产属性">
               <a-select
-                  v-model:value="queryForm.assetType"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  option-filter-prop="children"
-                  :show-search="true"
-                  :allow-clear="true"
-                  placeholder="请选择资产属性"
+                v-model:value="queryForm.assetType"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择资产属性"
               >
                 <a-select-option
-                    v-for="item in assetTypeList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -737,30 +737,30 @@
                       </a-form-item>
                     </a-col> -->
           <a-col
-              v-bind="colLayout.cols"
-              style="margin-left: auto"
+            v-bind="colLayout.cols"
+            style="margin-left: auto"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button
-                    type="primary"
-                    @click="handleQuery"
+                  type="primary"
+                  @click="handleQuery"
                 >
                   <search-outlined/>
                   查询
                 </a-button>
                 <a-button
-                    type="primary"
-                    @click="resetQuery"
-                    ghost
+                  type="primary"
+                  @click="resetQuery"
+                  ghost
                 >
                   <redo-outlined/>
                   重置
                 </a-button>
                 <a-button
-                    type="link"
-                    @click="toggleAdvanced"
-                    style="margin: 0"
+                  type="link"
+                  @click="toggleAdvanced"
+                  style="margin: 0"
                 >
                   {{ advanced ? '收起' : '展开' }}
                   <up-outlined v-if="advanced"/>
@@ -775,26 +775,26 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="famInventory"
-          table-key="famInventory"
-          :columns="columns"
-          :row-key="record => record.id"
-          :data-source="list"
-          :loading="loading"
-          :row-selection="{
+        ref="famInventory"
+        table-key="famInventory"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-          :pageParameter="queryParam.pageParameter"
-          :total="totalPage"
-          @change="handleTableChange"
-          @refresh="getList"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template
-            #toolBarLeft
-            v-if="!isAdd"
+          #toolBarLeft
+          v-if="!isAdd"
         >
           <a-space>
             <!-- <a-button
@@ -822,11 +822,11 @@
               删除
             </a-button> -->
             <a-button
-                v-hasPermi="['famInventory:import']"
-                title="导入"
-                type="primary"
-                ghost
-                @click="handleImport"
+              v-hasPermi="['famInventory:import']"
+              title="导入"
+              type="primary"
+              ghost
+              @click="handleImport"
             >
               <template #icon>
                 <import-outlined/>
@@ -834,28 +834,28 @@
               导入
             </a-button>
             <a-button
-                v-hasPermi="['famInventory:export']"
-                title="导出"
-                type="primary"
-                ghost
-                @click="handleExport"
+              v-hasPermi="['famInventory:export']"
+              title="导出"
+              type="primary"
+              ghost
+              @click="handleExport"
             >
               <template #icon>
                 <export-outlined/>
               </template>
               导出
             </a-button>
-<!--            <a-button-->
-<!--                title="打印卡片"-->
-<!--                type="primary"-->
-<!--                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
-<!--                @click="handlePrintCard(selectedRowKeys,'')"-->
-<!--            >-->
-<!--              打印卡片-->
-<!--            </a-button>-->
             <a-button
-                title="同步浪潮折旧信息"
-                type="primary"
+              title="打印卡片"
+              type="primary"
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              @click="handlePrintCard(selectedRowKeys, '')"
+            >
+              打印卡片
+            </a-button>
+            <a-button
+              title="同步浪潮折旧信息"
+              type="primary"
             >
               <template #icon>
                 <import-outlined/>
@@ -866,11 +866,11 @@
         </template>
         <template #toolBarRight>
           <a-input-search
-              class="opt-btn-commonsearch"
-              style="width: 200px"
-              placeholder="请输入"
-              :allow-clear="true"
-              @search="handleKeyWordQuery"
+            class="opt-btn-commonsearch"
+            style="width: 200px"
+            placeholder="请输入"
+            :allow-clear="true"
+            @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -884,52 +884,52 @@
           </template>
           <template v-else-if="column.dataIndex === 'action'">
             <!-- <a-button
-                type="link"
-                class="inner-btn"
-                @click.stop="handleEdit(record.id)">
-              编辑
-            </a-button>
-            <a-button
-                v-hasPermi="['famInventory:del']"
-                type="link"
-                class="inner-btn"
-                @click.stop="handleDelete([record.id], 'row')">
-              删除
-            </a-button> -->
+  type="link"
+  class="inner-btn"
+  @click.stop="handleEdit(record.id)">
+编辑
+</a-button>
+<a-button
+  v-hasPermi="['famInventory:del']"
+  type="link"
+  class="inner-btn"
+  @click.stop="handleDelete([record.id], 'row')">
+删除
+</a-button> -->
           </template>
         </template>
       </AvicTable>
     </div>
     <!-- 添加页面弹窗 -->
     <fam-inventory-add
-        v-if="showAddModal"
-        ref="addModal"
-        @reloadData="getList"
-        @close="showAddModal = false"
+      v-if="showAddModal"
+      ref="addModal"
+      @reloadData="getList"
+      @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <fam-inventory-edit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
+      v-if="showEditModal"
+      ref="editModal"
+      :form-id="formId"
+      @reloadData="getList"
+      @close="showEditModal = false"
     />
     <!-- 详情页面弹窗 -->
     <fam-inventory-detail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
+      v-if="showDetailModal"
+      ref="detailModal"
+      :form-id="formId"
+      @close="showDetailModal = false"
     />
     <AvicExcelImport
-        v-if="showImportModal"
-        :formData="excelParams"
-        title="单表模板导入"
-        importUrl="/mms/fam/faminventorys/importData/v1"
-        downloadTemplateUrl="/mms/fam/faminventorys/downloadTemplate/v1"
-        @reloadData="getList"
-        @close="showImportModal = false"
+      v-if="showImportModal"
+      :formData="excelParams"
+      title="单表模板导入"
+      importUrl="/mms/fam/faminventorys/importData/v1"
+      downloadTemplateUrl="/mms/fam/faminventorys/downloadTemplate/v1"
+      @reloadData="getList"
+      @close="showImportModal = false"
     />
   </div>
 </template>
@@ -1657,41 +1657,42 @@ function getList() {
   selectedRows.value = []; // 清空选中
   loading.value = true;
   listFamInventoryByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 function handlePrintCard(ids, type) {
-  // proxy.$message.info('功能开发中！');
-  //return;
   if (ids.length == 0) {
     proxy.$message.warning('请选择要打印的数据！');
     return;
   }
   proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    title: `确认要打印${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
       mdsReportConditionDto.value.tableIdList = ids;
-      createMdsReportConditionByUserId(mdsReportConditionDto)
-          .then(res => {
-            if (res.success) {
-              window.open('http://localhost:8075/WebReport/ReportServer?reportlet=famInventory.cpt');
-              getList();
+      const postData = proxy.$lodash.cloneDeep(mdsReportConditionDto.value);
+      createMdsReportConditionByUserId(postData)
+        .then(res => {
+          if (res.success) {
+            const page = window.open('http://localhost:8075/WebReport/ReportServer?reportlet=famInventory.cpt', '_blank');
+            page.onLoad = ()=>{
+              page.document.title = '资产台账卡片'
             }
-          })
-          .catch((e) => {
-            proxy.$message.error(e.message);
-          });
+          }
+        })
+        .catch((e) => {
+          proxy.$message.error(e.message);
+        });
     }
   });
 }
@@ -1785,16 +1786,16 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delFamInventory(ids)
-          .then(res => {
-            if (res.success) {
-              proxy.$message.success('删除成功！');
-              getList();
-            }
-            delLoading.value = false;
-          })
-          .catch(() => {
-            delLoading.value = false;
-          });
+        .then(res => {
+          if (res.success) {
+            proxy.$message.success('删除成功！');
+            getList();
+          }
+          delLoading.value = false;
+        })
+        .catch(() => {
+          delLoading.value = false;
+        });
     }
   });
 }
@@ -1858,16 +1859,16 @@ const selectedRow = (code) => {
 };
 
 watch(
-    () => props.assetClass,
-    newV => {
-      if (newV === '1') {
-        queryForm.value.assetType = props.assetClass;
-        handleQuery();
-      } else {
-        queryForm.value.assetType = null;
-        handleQuery();
-      }
+  () => props.assetClass,
+  newV => {
+    if (newV === '1') {
+      queryForm.value.assetType = props.assetClass;
+      handleQuery();
+    } else {
+      queryForm.value.assetType = null;
+      handleQuery();
     }
+  }
 );
 
 defineExpose({
