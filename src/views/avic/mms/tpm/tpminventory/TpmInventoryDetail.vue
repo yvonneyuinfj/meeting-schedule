@@ -1,14 +1,14 @@
 <template>
   <AvicModal
       :visible="true"
-      title="编辑设备台账"
+      title="详情"
       width="90%"
       height="580px"
       :centered="true"
       @cancel="closeModal"
   >
     <a-spin :spinning="loading">
-      <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" layout="horizontal">
+      <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" layout="horizontal" :colon="false">
         <a-row :gutter="16">
           <!-- 第一行 -->
           <a-col v-bind="colLayout.cols">
@@ -387,8 +387,8 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2" v-show="form.ynMilitaryKeyEquip==='1'">
-            <a-form-item name="militaryKeyEquipCode" label="军工关键设备专用代码">
+          <a-col v-bind="colLayout.cols2" v-show="form.ynMilitaryKeyEquip==='Y'">
+            <a-form-item name="militaryKeyEquipCode" label="军工关键设备专用代码" :labelCol="largeLabelCol">
               <a-input
                   v-model:value="form.militaryKeyEquipCode"
                   :maxLength="128"
@@ -398,7 +398,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="ynMajorAssets" label="是否军工重大专用资产">
+            <a-form-item name="ynMajorAssets" label="是否军工重大专用资产" :labelCol="largeLabelCol">
               <a-select
                   v-model:value="form.ynMajorAssets"
                   :get-popup-container="triggerNode => triggerNode.parentNode"
@@ -723,6 +723,7 @@ const {
   rules,
   layout,
   colLayout,
+  largeLabelCol,
   loading,
   equipmentTypeList,
   abcdTypeList,

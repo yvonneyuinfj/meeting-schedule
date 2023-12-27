@@ -1,7 +1,7 @@
 <template>
   <AvicModal
     :visible="true"
-    title="添加设备台账"
+    title="添加"
     width="90%"
     height="580px"
     :centered="true"
@@ -381,11 +381,11 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2" v-show="form.ynMilitaryKeyEquip==='1'">
+          <a-col v-bind="colLayout.cols2" v-show="form.ynMilitaryKeyEquip==='Y'">
             <a-form-item
               name="militaryKeyEquipCode"
               label="军工关键设备专用代码"
-              :labelCol="labelCol"
+              :labelCol="largeLabelCol"
             >
               <a-input
                 v-model:value="form.militaryKeyEquipCode"
@@ -395,7 +395,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="ynMajorAssets" label="是否军工重大专用资产" has-feedback>
+            <a-form-item name="ynMajorAssets" label="是否军工重大专用资产" has-feedback :labelCol="largeLabelCol">
               <a-select
                 v-model:value="form.ynMajorAssets"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
@@ -1308,7 +1308,7 @@
 </template>
 <script lang="ts" setup>
 import { useTpmInventoryForm, emits } from './ts/TpmInventoryForm'; // 引入表单ts
-const labelCol = reactive({ span: 6, offset: 0 });
+// const labelCol = reactive({ span: 6, offset: 0 });
 const props = defineProps({
   formId: {
     type: String,
@@ -1346,6 +1346,7 @@ const {
   capitalSourceList,
   uploadFile,
   proxy,
+  largeLabelCol,
   afterUploadEvent,
   saveForm,
   closeModal,

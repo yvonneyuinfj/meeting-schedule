@@ -16,31 +16,31 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable
-            ref="pmsCertification"
-            table-key="pmsCertification"
-            :columns="columns"
-            :row-key="record => record.id"
-            :data-source="list"
-            :loading="loading"
-            :row-selection="{
+              ref="pmsCertification"
+              table-key="pmsCertification"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="list"
+              :loading="loading"
+              :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }"
-            :customRow="customRow"
-            :pageParameter="queryParam.pageParameter"
-            :total="totalPage"
-            @change="handleTableChange"
-            @refresh="getList"
+              :customRow="customRow"
+              :pageParameter="queryParam.pageParameter"
+              :total="totalPage"
+              @change="handleTableChange"
+              @refresh="getList"
           >
             <template #toolBarLeft>
               <a-space>
                 <a-button
-                  v-hasPermi="['pmsCertification:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleAdd"
+                    v-hasPermi="['pmsCertification:add']"
+                    title="添加"
+                    type="primary"
+                    @click="handleAdd"
                 >
                   <template #icon>
                     <plus-outlined/>
@@ -48,11 +48,11 @@
                   添加
                 </a-button>
                 <a-button
-                  v-hasPermi="['pmsCertification:save']"
-                  title="保存"
-                  type="primary"
-                  :loading="saveLoading"
-                  @click="handleSaveAll"
+                    v-hasPermi="['pmsCertification:save']"
+                    title="保存"
+                    type="primary"
+                    :loading="saveLoading"
+                    @click="handleSaveAll"
                 >
                   <template #icon>
                     <save-outlined/>
@@ -60,12 +60,12 @@
                   保存
                 </a-button>
                 <a-button
-                  v-hasPermi="['pmsCertification:del']"
-                  title="删除"
-                  danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  :loading="delLoading"
-                  @click="handleDelete(selectedRows, selectedRowKeys)"
+                    v-hasPermi="['pmsCertification:del']"
+                    title="删除"
+                    danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleDelete(selectedRows, selectedRowKeys)"
                 >
                   <template #icon>
                     <delete-outlined/>
@@ -79,64 +79,72 @@
                     <plus-outlined/>
                   </template>
                 </a-button>
+                <a-button
+                    v-hasPermi="['pmsCertification:save']"
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleCommitStorage(selectedRows, selectedRowKeys)"
+                >
+                  入库
+                </a-button>
               </a-space>
             </template>
 
             <template #bodyCell="{ column, text, record, index }">
               <AvicRowEdit
-                v-if="column.dataIndex === 'unqualifiedQty'"
-                :record="record"
-                :column="column.dataIndex"
+                  v-if="column.dataIndex === 'unqualifiedQty'"
+                  :record="record"
+                  :column="column.dataIndex"
               >
                 <template #edit>
                   <a-input-number
-                    v-model:value="record.unqualifiedQty"
-                    :min="0"
-                    :max="999999999999"
-                    :precision="0"
-                    :step="1"
-                    style="width: 100%"
-                    placeholder="请输入不合格品数量"
+                      v-model:value="record.unqualifiedQty"
+                      :min="0"
+                      :max="999999999999"
+                      :precision="0"
+                      :step="1"
+                      style="width: 100%"
+                      placeholder="请输入不合格品数量"
                   >
                   </a-input-number>
                 </template>
               </AvicRowEdit>
               <AvicRowEdit
-                v-else-if="column.dataIndex === 'qualifiedQty'"
-                :record="record"
-                :column="column.dataIndex"
+                  v-else-if="column.dataIndex === 'qualifiedQty'"
+                  :record="record"
+                  :column="column.dataIndex"
               >
                 <template #edit>
                   <a-input-number
-                    v-model:value="record.qualifiedQty"
-                    :min="0"
-                    :max="999999999999"
-                    :precision="0"
-                    :step="1"
-                    style="width: 100%"
-                    placeholder="请输入合格品数量"
+                      v-model:value="record.qualifiedQty"
+                      :min="0"
+                      :max="999999999999"
+                      :precision="0"
+                      :step="1"
+                      style="width: 100%"
+                      placeholder="请输入合格品数量"
                   >
                   </a-input-number>
                 </template>
               </AvicRowEdit>
               <AvicRowEdit
-                v-else-if="column.dataIndex === 'checkResult'"
-                :record="record"
-                :column="column.dataIndex"
+                  v-else-if="column.dataIndex === 'checkResult'"
+                  :record="record"
+                  :column="column.dataIndex"
               >
                 <template #edit>
                   <a-select
-                    v-model:value="record.checkResult"
-                    style="width: 100%"
-                    placeholder="请选择检验结论"
-                    @change="(value)=>changeControlValue(value,record,'checkResult')"
+                      v-model:value="record.checkResult"
+                      style="width: 100%"
+                      placeholder="请选择检验结论"
+                      @change="(value)=>changeControlValue(value,record,'checkResult')"
                   >
                     <a-select-option
-                      v-for="select in checkResultList"
-                      :key="select.sysLookupTlId"
-                      :value="select.lookupCode"
-                      :title="select.lookupName"
-                      :disabled="select.disabled === true"
+                        v-for="select in checkResultList"
+                        :key="select.sysLookupTlId"
+                        :value="select.lookupCode"
+                        :title="select.lookupName"
+                        :disabled="select.disabled === true"
                     >
                       {{ select.lookupName }}
                     </a-select-option>
@@ -144,8 +152,8 @@
                 </template>
                 <template #default>
                   <AvicDictTag
-                    :value="record.checkResultName"
-                    :options="checkResultList"
+                      :value="record.checkResultName"
+                      :options="checkResultList"
                   />
                 </template>
               </AvicRowEdit>
@@ -160,20 +168,20 @@
               <template v-else-if="column.dataIndex === 'action'">
                 <div v-if="!record.bpmState || record.bpmState === 'start'">
                   <a-button
-                    v-if="record.editable"
-                    type="link"
-                    class="inner-btn"
-                    :disable="editingId !== ''"
-                    @click.stop="handleSave(record)"
+                      v-if="record.editable"
+                      type="link"
+                      class="inner-btn"
+                      :disable="editingId !== ''"
+                      @click.stop="handleSave(record)"
                   >
                     保存
                   </a-button>
                   <a-button
-                    v-else
-                    type="link"
-                    class="inner-btn"
-                    :disable="editingId !== ''"
-                    @click.stop="handleEdit(record)"
+                      v-else
+                      type="link"
+                      class="inner-btn"
+                      :disable="editingId !== ''"
+                      @click.stop="handleEdit(record)"
                   >
                     编辑
                   </a-button>
@@ -195,20 +203,20 @@
         </div>
         <!-- 添加页面弹窗 -->
         <PmsCertificationAdd
-          v-if="showAddModal"
-          ref="addModal"
-          :mainId="mainId"
-          :bpmOperatorRefresh="getList"
-          @reloadData="getList"
-          @close="showAddModal = false"
+            v-if="showAddModal"
+            ref="addModal"
+            :mainId="mainId"
+            :bpmOperatorRefresh="getList"
+            @reloadData="getList"
+            @close="showAddModal = false"
         />
         <!-- 编辑页面弹窗 -->
         <PmsCertificationEdit
-          v-if="showEditModal"
-          ref="editModal"
-          :form-id="formId"
-          @reloadData="getList"
-          @close="showEditModal = false"
+            v-if="showEditModal"
+            ref="editModal"
+            :form-id="formId"
+            @reloadData="getList"
+            @close="showEditModal = false"
         />
       </div>
     </AvicPane>
@@ -222,7 +230,7 @@ import {
   listPmsCertificationByPage,
   delPmsCertification,
   exportExcel,
-  savePmsCertification, saveFormAndStartProcess
+  savePmsCertification, saveFormAndStartProcess, commitStorage
 } from '@/api/avic/mms/pms/PmsCertificationApi'; // 引入模块API
 import PmsCertificationAdd from './PmsCertificationAdd.vue'; // 引入添加页面组件
 import PmsCertificationEdit from './PmsCertificationEdit.vue'; // 引入编辑页面组件
@@ -386,18 +394,18 @@ function getList() {
   loading.value = true;
   queryParam.searchParams = {pmsCheckBillId: mainId.value};
   listPmsCertificationByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码 */
@@ -507,16 +515,16 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delPmsCertification(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
@@ -596,18 +604,47 @@ function handleSaveAll() {
       if (res.success) {
         getList();
         proxy.$message.success('保存成功！');
-        saveLoading.value = false;
       } else {
         proxy.$message.error('保存失败！');
-        saveLoading.value = false;
       }
-    })
-      .catch(() => {
-        saveLoading.value = false;
-      });
+    }).finally(() => {
+      saveLoading.value = false;
+    });
   } else {
     saveLoading.value = false;
   }
+}
+
+
+/** 提交入库 */
+function handleCommitStorage(rows, ids) {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交的数据！');
+    return;
+  }
+  if (rows.filter(row => row.checkResult !== '1')?.length > 0) {
+    proxy.$message.warning('不能提交不合格物资！');
+    return;
+  }
+  proxy.$confirm({
+    title: '确认要提交选择的数据吗?',
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      delLoading.value = true;
+      commitStorage(ids)
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('提交成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
+    }
+  });
 }
 
 /** 行点击事件 */

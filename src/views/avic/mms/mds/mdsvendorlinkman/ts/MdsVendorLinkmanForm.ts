@@ -75,6 +75,7 @@ export function useMdsVendorLinkmanForm({
   }
   /** 保存 */
   function saveForm () {
+    form.value.mdsVendorId = props.mainId;
     formRef.value
       .validate()
       .then( () => {

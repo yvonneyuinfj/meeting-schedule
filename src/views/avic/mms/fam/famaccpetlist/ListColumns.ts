@@ -222,7 +222,7 @@ export const HouseColumns = [
     dataIndex: 'ynMilitaryKeyEquip',
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -370,7 +370,7 @@ export const HouseColumns = [
     dataIndex: 'certificateTitle',
     key: 'certificateTitle',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -384,7 +384,7 @@ export const HouseColumns = [
     dataIndex: 'certificateTitleArea',
     key: 'certificateTitleArea',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -412,7 +412,7 @@ export const HouseColumns = [
     dataIndex: 'recordNumber',
     key: 'recordNumber',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -426,7 +426,7 @@ export const HouseColumns = [
     dataIndex: 'planningPermit',
     key: 'planningPermit',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -454,7 +454,7 @@ export const HouseColumns = [
     dataIndex: 'attachedFileNumber',
     key: 'attachedFileNumber',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -468,7 +468,7 @@ export const HouseColumns = [
     dataIndex: 'isFactoryBuilding',
     key: 'isFactoryBuilding',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -482,7 +482,7 @@ export const HouseColumns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'left'
   },
@@ -657,7 +657,7 @@ export const DeviceColumns = [
     dataIndex: 'firstDepreciationValue',
     key: 'firstDepreciationValue',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -726,7 +726,7 @@ export const DeviceColumns = [
     dataIndex: 'ynMilitaryKeyEquip',
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -823,7 +823,7 @@ export const DeviceColumns = [
     dataIndex: 'importedOrNot',
     key: 'importedOrNot',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -860,7 +860,7 @@ export const DeviceColumns = [
     dataIndex: 'importedEquipment',
     key: 'importedEquipment',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -978,7 +978,7 @@ export const DeviceColumns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   }
@@ -1158,7 +1158,7 @@ export const CarColumns = [
     dataIndex: 'firstDepreciationValue',
     key: 'firstDepreciationValue',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -1227,7 +1227,7 @@ export const CarColumns = [
     dataIndex: 'ynMilitaryKeyEquip',
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -1403,7 +1403,7 @@ export const CarColumns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'left'
   },
@@ -1586,7 +1586,7 @@ export const OfficialColumns = [
     dataIndex: 'firstDepreciationValue',
     key: 'firstDepreciationValue',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -1655,7 +1655,7 @@ export const OfficialColumns = [
     dataIndex: 'ynMilitaryKeyEquip',
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -1747,7 +1747,7 @@ export const OfficialColumns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'left'
   },
@@ -1939,7 +1939,7 @@ export const ITColumns = [
     dataIndex: 'firstDepreciationValue',
     key: 'firstDepreciationValue',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2008,7 +2008,7 @@ export const ITColumns = [
     dataIndex: 'ynMilitaryKeyEquip',
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     customHeaderCell() {
       return {
@@ -2100,7 +2100,7 @@ export const ITColumns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'left'
   },
@@ -2371,7 +2371,7 @@ export const AllColumns = [
     title: '是否为进口设备',
     dataIndex: 'importedOrNotName',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2434,7 +2434,7 @@ export const AllColumns = [
     dataIndex: 'recordNumber',
     key: 'recordNumber',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2462,7 +2462,7 @@ export const AllColumns = [
     dataIndex: 'attachedFileNumber',
     key: 'attachedFileNumber',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2471,7 +2471,7 @@ export const AllColumns = [
     dataIndex: 'isFactoryBuilding',
     key: 'isFactoryBuilding',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2480,7 +2480,7 @@ export const AllColumns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'left'
   },
@@ -2498,7 +2498,7 @@ export const AllColumns = [
     dataIndex: 'importedEquipment',
     key: 'importedEquipment',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2867,7 +2867,7 @@ export const Columns = [
     title: '是否为进口设备',
     dataIndex: 'importedOrNotName',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2903,7 +2903,7 @@ export const Columns = [
     dataIndex: 'certificateTitle',
     key: 'certificateTitle',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2912,7 +2912,7 @@ export const Columns = [
     dataIndex: 'certificateTitleArea',
     key: 'certificateTitleArea',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2930,7 +2930,7 @@ export const Columns = [
     dataIndex: 'recordNumber',
     key: 'recordNumber',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2939,7 +2939,7 @@ export const Columns = [
     dataIndex: 'planningPermit',
     key: 'planningPermit',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2958,7 +2958,7 @@ export const Columns = [
     dataIndex: 'attachedFileNumber',
     key: 'attachedFileNumber',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2967,7 +2967,7 @@ export const Columns = [
     dataIndex: 'isFactoryBuilding',
     key: 'isFactoryBuilding',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },
@@ -2976,7 +2976,7 @@ export const Columns = [
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'left'
   },
@@ -2994,7 +2994,7 @@ export const Columns = [
     dataIndex: 'importedEquipment',
     key: 'importedEquipment',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 200,
     resizable: true,
     align: 'center'
   },

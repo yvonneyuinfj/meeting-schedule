@@ -3,22 +3,22 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="pmsDeliveryDetailDesigner"
-        table-key="pmsDeliveryDetailDesigner"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="pmsDeliveryDetailDesigner"
+          :columns="columns"
+          :data-source="list"
+          :loading="loading"
+          :pageParameter="queryParam.pageParameter"
+          :row-key="record => record.id"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :total="totalPage"
+          table-key="pmsDeliveryDetailDesigner"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
@@ -33,8 +33,8 @@
       </AvicTable>
     </div>
     <AttachModal
-        :attachOpen="attachOpen"
         :attach-form="attchForm"
+        :attachOpen="attachOpen"
         @closeAttach="closeAttach"
     />
   </div>
@@ -43,6 +43,7 @@
 import type { PmsDeliveryDetailDesignerDto } from '@/api/avic/mms/pms/PmsDeliveryDetailDesignerApi'; // 引入模块DTO
 import { listPmsDeliveryDetailDesignerByPage } from '@/api/avic/mms/pms/PmsDeliveryDetailDesignerApi'; // 引入模块API
 import AttachModal from './AttachModal.vue';
+
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
@@ -88,7 +89,7 @@ const columns = [
   },
   {
     title: '上传人',
-    dataIndex: 'uplink',
+    dataIndex: 'uplinkName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -146,9 +147,7 @@ const columns = [
 ];
 const queryForm = ref<PmsDeliveryDetailDesignerDto>({
   bpmState: 'all',
-  bpmType: 'all',
-  pmsPlanId: props.mainId,
-  ynApprover: '5'
+  bpmType: 'all'
 });
 // 高级查询对象
 const queryParam = reactive({
@@ -185,33 +184,37 @@ onMounted(() => {
 
 /** 查询数据 */
 function getList() {
+  queryParam.searchParams.ynApprover = '5';
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   queryParam.searchParams.pmsPlanId = props.mainId ? props.mainId : '-1';
   listPmsDeliveryDetailDesignerByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;

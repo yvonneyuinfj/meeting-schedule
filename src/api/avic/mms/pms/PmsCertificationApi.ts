@@ -101,6 +101,11 @@ export function delPmsCertification(ids: [string]): Promise<ResponseBaseData<any
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
+/** 根据id提交入库 */
+export function commitStorage(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/commitStorage', ids);
+}
+
 /** 导出Excel */
 export function exportExcel(param) {
   const download = {

@@ -14,6 +14,7 @@
         :rules="rules"
         v-bind="layout"
         layout="horizontal"
+        :colon="false"
       >
         <a-row :gutter="16">
           <!-- <a-col v-bind="colLayout.cols">

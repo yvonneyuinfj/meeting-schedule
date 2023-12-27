@@ -2,26 +2,26 @@
   <div class="content-wrapper">
     <div class="top-search-box">
       <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+      <a-form ref="formRef" :model="queryForm" v-bind="layout">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购计划名称">
               <a-input
-                v-model:value="queryForm.reqPlanName"
-                placeholder="请输入采购计划名称"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.reqPlanName"
+                  :allow-clear="true"
+                  placeholder="请输入采购计划名称"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="主责单位">
               <AvicCommonSelect
-                v-model:value="queryForm.reqDeptId"
-                type="deptSelect"
-                placeholder="请选择主责单位"
-                :defaultShowValue="queryForm.reqDeptIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.reqDeptId"
+                  :defaultShowValue="queryForm.reqDeptIdAlias"
+                  placeholder="请选择主责单位"
+                  type="deptSelect"
+                  @callback="result => {
                   queryForm.reqDeptIdAlias = result.names;
                 }
                   "
@@ -31,31 +31,31 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购负责人">
               <AvicCommonSelect
-                v-model:value="queryForm.managerUserId"
-                type="userSelect"
-                placeholder="请选择采购负责人"
-                :defaultShowValue="queryForm.managerUserIdAlias"
-                @callback="result => {
+                  v-model:value="queryForm.managerUserId"
+                  :defaultShowValue="queryForm.managerUserIdAlias"
+                  placeholder="请选择采购负责人"
+                  type="userSelect"
+                  @callback="result => {
                   queryForm.managerUserIdAlias = result.names;
                 }
                   "
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="计划类型">
               <a-select
-                v-model:value="queryForm.planType"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择计划类型"
+                  v-model:value="queryForm.planType"
+                  :allow-clear="true"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  :show-search="true"
+                  option-filter-prop="children"
+                  placeholder="请选择计划类型"
               >
                 <a-select-option
-                  v-for="item in planTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in planTypeList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -63,23 +63,23 @@
             </a-form-item>
           </a-col>
           <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
+              style="margin-left: auto"
+              v-bind="colLayout.cols"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
+                <a-button ghost type="primary" @click="resetQuery">
+                  <redo-outlined/>
                   重置
                 </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                <a-button style="margin: 0" type="link" @click="toggleAdvanced">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
+                  <up-outlined v-if="advanced"/>
+                  <down-outlined v-else/>
                 </a-button>
               </a-space>
             </div>
@@ -90,32 +90,32 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="pmsRequireReceiveSelect"
-        table-key="pmsRequireReceiveSelect"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :show-table-setting="false"
-        :row-selection="{
+          ref="pmsRequireReceiveSelect"
+          :columns="columns"
+          :customRow="customRow"
+          :data-source="list"
+          :loading="loading"
+          :pageParameter="queryParam.pageParameter"
+          :row-key="record => record.id"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        :customRow="customRow"
-        @change="handleTableChange"
-        @refresh="getList"
+          :show-table-setting="false"
+          :total="totalPage"
+          table-key="pmsRequireReceiveSelect"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarRight>
           <a-input-search
-            class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入采购计划号或采购计划名称"
-            :allow-clear="true"
-            @search="handleKeyWordQuery"
+              :allow-clear="true"
+              class="opt-btn-commonsearch"
+              placeholder="请输入采购计划号或采购计划名称"
+              style="width: 200px"
+              @search="handleKeyWordQuery"
           />
         </template>
         <template #bodyCell="{ column, text, record, index }">
@@ -199,7 +199,7 @@ const columns = [
   },
   {
     title: '产品和服务类别',
-    dataIndex: 'productServiceCategory',
+    dataIndex: 'productServiceCategoryName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -361,23 +361,25 @@ onMounted(() => {
   // 加载查询区所需通用代码
   getLookupList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
   listPmsRequireReceiveByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -387,6 +389,7 @@ function getLookupList() {
     reqStatusList.value = result.reqStatus;
   });
 }
+
 /** 高级查询 查询按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -394,15 +397,18 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询 重置按钮操作 */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -421,6 +427,7 @@ function onSelectChange(rowKeys, rows) {
   // 传出选中项
   $emit('select', selectedRows.value);
 }
+
 /** 表格排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -431,6 +438,7 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 行双击事件 */
 function customRow(record) {
   return {

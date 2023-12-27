@@ -16,7 +16,7 @@
         layout="horizontal"
        >
         <a-row :gutter="16">
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="mdsVendorId" label="供应商信息表主键ID" has-feedback>
               <a-input
                 v-model:value="form.mdsVendorId"
@@ -25,7 +25,7 @@
                 placeholder="请输入供应商信息表主键ID"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="contactUser" label="联系人" has-feedback>
               <AvicCommonSelect
@@ -148,7 +148,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="editorUserId" label="编制人ID">
               <AvicCommonSelect
                 v-model:value="form.editorUserId"
@@ -167,7 +167,7 @@
                 :defaultShowValue="form.editorUserCodeAlias"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="editorUserName" label="编制人姓名">
               <AvicCommonSelect
@@ -178,7 +178,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <!-- <a-col v-bind="colLayout.cols">
             <a-form-item name="editorDeptId" label="编制部门ID">
               <AvicCommonSelect
                 v-model:value="form.editorDeptId"
@@ -197,7 +197,7 @@
                 :defaultShowValue="form.editorDeptCodeAlias"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="editorDeptName" label="编制部门名称">
               <AvicCommonSelect
@@ -219,14 +219,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="secretLevel" label="密级 ^ 通用代码MMS_DATA_SECRET_LEVEL" has-feedback>
+            <a-form-item name="secretLevel" label="密级" has-feedback>
               <a-select
                 v-model:value="form.secretLevel"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
                 :allow-clear="true"
-                placeholder="请选择密级 ^ 通用代码MMS_DATA_SECRET_LEVEL"
+                placeholder="请选择密级"
               >
                 <a-select-option
                   v-for="item in secretLevelList"
@@ -251,6 +251,11 @@
 import { useMdsVendorLinkmanForm, emits } from './ts/MdsVendorLinkmanForm'; // 引入表单ts
 const props = defineProps({
   formId: {
+    type: String,
+    default: ''
+  },
+  mainId: {
+    // 主表选中项的id
     type: String,
     default: ''
   }

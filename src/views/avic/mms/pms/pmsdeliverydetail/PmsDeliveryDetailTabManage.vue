@@ -1,7 +1,8 @@
 <template>
   <a-tabs v-model:activeKey="activeKey" type="card">
     <a-tab-pane key="1" tab="附件明细">
-      <pms-delivery-detail-designer-manage key="pmsDeliveryDetailDesignerManage" ref="pmsDeliveryDetailDesignerManage" :mainId="mainId"/>
+      <pms-delivery-detail-designer-manage key="pmsDeliveryDetailDesignerManage" ref="pmsDeliveryDetailDesignerManage"
+                                           :mainId="mainId"/>
     </a-tab-pane>
     <a-tab-pane key="2" tab="交付明细">
       <pms-delivery-detail-manage key="pmsDeliveryDetailManage" ref="pmsDeliveryDetailManage" :mainId="mainId"/>
@@ -24,15 +25,17 @@ const props = defineProps({
 });
 </script>
 <style lang="less">
-.splitpanes__inner{
-  .ant-tabs-card{
+.splitpanes__inner {
+  .ant-tabs-card {
     height: 100%;
   }
 }
-.ant-tabs-content-holder{
+
+.ant-tabs-content-holder {
   height: 100%;
 }
-.ant-tabs-content{
+
+.ant-tabs-content {
   height: 100%;
 }
 </style>

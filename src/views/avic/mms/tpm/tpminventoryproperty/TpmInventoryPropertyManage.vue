@@ -163,8 +163,7 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
+    align: 'center'
   },
   // {
   //   title: '序号',
@@ -194,14 +193,6 @@ const columns = [
     align: 'left'
   },
   {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '备注',
     dataIndex: 'note',
     ellipsis: true,
@@ -211,13 +202,21 @@ const columns = [
     align: 'left'
   },
   {
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '创建人',
     dataIndex: 'createdBy',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '创建时间',
@@ -226,7 +225,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '操作',
@@ -287,12 +286,14 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -303,6 +304,7 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   if (props.mainId == '') {
@@ -311,11 +313,13 @@ function handleAdd() {
   }
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit(id) {
   formId.value = id;
   showEditModal.value = true;
 }
+
 /* 子表删除 */
 function handleDelete(ids, type) {
   if (ids.length == 0) {
@@ -345,6 +349,7 @@ function handleDelete(ids, type) {
     }
   });
 }
+
 /** 导入 */
 function handleImport() {
   if (props.mainId == '') {
@@ -354,6 +359,7 @@ function handleImport() {
   excelParams.value.tpmInventoryId = props.mainId;
   showImportModal.value = true;
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -369,11 +375,13 @@ function handleExport() {
     }
   });
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -384,6 +392,7 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+
 /** 表格行选中 */
 function handleRowSelection(record) {
   let selectIds = [...selectedRowKeys.value];

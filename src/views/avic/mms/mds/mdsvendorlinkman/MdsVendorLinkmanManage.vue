@@ -118,6 +118,7 @@
     <mds-vendor-linkman-add
       v-if="showAddModal"
       ref="addModal"
+      :mainId="mainId"
       @reloadData="getList"
       @close="showAddModal = false"
     />
@@ -125,6 +126,7 @@
     <mds-vendor-linkman-edit
       v-if="showEditModal"
       ref="editModal"
+      :mainId="mainId"
       :form-id="formId"
       @reloadData="getList"
       @close="showEditModal = false"
@@ -133,6 +135,7 @@
     <mds-vendor-linkman-detail
       v-if="showDetailModal"
       ref="detailModal"
+      :mainId="mainId"
       :form-id="formId"
       @close="showDetailModal = false"
     />
@@ -361,7 +364,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+     mdsVendorId: ''
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -393,11 +396,19 @@ onMounted(() => {
   // 获取当前用户对应的文档密级
   getUserFileSecretList();
 });
+const props = defineProps({
+  // 主表选中项的keys集合
+  mainId: {
+    type: String,
+    default: ''
+  }
+});
 
 /** 查询数据  */
 function getList () {
   selectedRowKeys.value = []; // 清空选中
   loading.value = true;
+  queryParam.searchParams.mdsVendorId = props.mainId ? props.mainId : '-1';
   listMdsVendorLinkmanByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
@@ -462,6 +473,10 @@ function handleRowSelection(record) {
 }
 /** 添加 */
 function handleAdd () {
+  if (props.mainId == '') {
+    proxy.$message.warning('请选择一条主数据');
+    return;
+  }
   showAddModal.value = true;
 }
 /** 编辑 */
@@ -534,6 +549,19 @@ function handleTableChange (pagination, filters, sorter) {
   }
   getList();
 }
+watch(
+  () => props.mainId,
+  newVal => {
+    if (newVal) {
+      getList(); // 查询表格数据
+    } else {
+      selectedRowKeys.value = []; // 清空选中
+      list.value = [];
+      totalPage.value = 0;
+    }
+  },
+  { immediate: true }
+);
 
 </script>
 

@@ -244,6 +244,11 @@ const props = defineProps({
   formId: {
     type: String,
     default: ''
+  },
+  mainId: {
+    // 主表选中项的id
+    type: String,
+    default: ''
   }
 });
 const emit = defineEmits(emits);
