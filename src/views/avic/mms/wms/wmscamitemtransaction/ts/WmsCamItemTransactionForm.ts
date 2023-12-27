@@ -47,7 +47,7 @@ export function useWmsCamItemTransactionForm({
     { fieldName: 'urgentReleaseFlag', lookUpType: 'WMS_URGENT_RELEASE_FLAG' },
     { fieldName: 'certificationFlag', lookUpType: 'WMS_CERTIFICATION_FLAG' },
     { fieldName: 'useLimit', lookUpType: 'WMS_USE_LIMIT' },
-    { fieldName: 'mdsInvOperationType', lookUpType: 'WMS_OPERATION_TYPE' },
+    { fieldName: 'mdsInvOperationType', lookUpType: 'TRANSACTION_OPERATION_TYPE' },
     { fieldName: 'confineFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'auditStatus', lookUpType: 'WMS_AUDIT_STATUS' },
     { fieldName: 'billStatus', lookUpType: 'WMS_BILL_STATUS' },
