@@ -59,13 +59,13 @@
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
           <template v-if="column.dataIndex === 'action'">
-            <a-button
+                <!-- <a-button
               type="link"
               class="inner-btn"
               @click="handleDelete([record.id], 'row')"
             >
               删除
-            </a-button>
+            </a-button> -->
           </template>
         </template>
       </AvicTable>
@@ -128,13 +128,13 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    width: 120,
-    fixed: 'right'
-  }
+  // {
+  //   title: '操作',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   width: 120,
+  //   fixed: 'right'
+  // }
 ];
 const queryParam = reactive({
   // 请求表格数据参数

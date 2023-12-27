@@ -9,7 +9,7 @@
   >
     <a-spin :spinning="loading">
       <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" class="form-excel-style">
-        <a-row :gutter="0">
+        <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyNo" label="申请单编号" has-feedback>
               <avic-auto-code
@@ -109,15 +109,15 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="billStatus" label="审批状态">
-              <a-input
-                v-model:value="form.billStatus"
-                :maxLength="32"
-                placeholder="请输入审批状态"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="billStatus" label="审批状态">-->
+<!--              <a-input-->
+<!--                v-model:value="form.billStatus"-->
+<!--                :maxLength="32"-->
+<!--                placeholder="请输入审批状态"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="leaseTerm" label="租赁期限(单位年)">
               <a-input
@@ -179,11 +179,11 @@ const props = defineProps({
     type: Function
   }
 });
-const { proxy } = getCurrentInstance()
+const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
 onMounted(()=>{
   form.value.title = proxy.$getLoginUser().name + dayjs(new Date()).format('YYYYMMDD') + '出租申请';
-})
+});
 const {
   form,
   formRef,

@@ -198,7 +198,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
-              <a-input v-model:value="form.assetClasst" @click="assetClasstClick">
+              <a-input v-model:value="form.assetClasstName" @click="assetClasstClick">
                 <template #suffix>
                   <a-tooltip title="Extra information">
                     <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
@@ -442,6 +442,7 @@ function handleSummit() {
       if (res.success) {
         assetClasstObj.value = res.data;
         form.value.assetClasst = res.data.classCode;
+        form.value.assetClasstName = res.data.className;
         assetClasstOpen.value = false;
       }
     })

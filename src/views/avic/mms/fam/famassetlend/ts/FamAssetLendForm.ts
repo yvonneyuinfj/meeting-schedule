@@ -31,6 +31,30 @@ export function useFamAssetLendForm({ props: props, emit: emit }) {
     ],
     hireTerm: [
       { validator: hireTermValidator, trigger: 'change' }
+    ],
+    title: [
+      { required: true, message: '标题不能为空', trigger: 'change' }
+    ],
+    tranType: [
+      { required: true, message: '事务类型不能为空', trigger: 'change' }
+    ],
+    managerDeptId: [
+      { required: true, message: '主管部门不能为空', trigger: 'change' }
+    ],
+    hireDeptId: [
+      { required: true, message: '出租单位不能为空', trigger: 'change' }
+    ],
+    lesseeDeptId: [
+      { required: true, message: '承租单位不能为空', trigger: 'change' }
+    ],
+    startLeaseDate: [
+      { required: true, message: '起租日期不能为空', trigger: 'change' }
+    ],
+    handlePersonId: [
+      { required: true, message: '经办人不能为空', trigger: 'change' }
+    ],
+    applyDate: [
+      { required: true, message: '申请时间不能为空', trigger: 'change' }
     ]
   };
   const famAssetLendListEdit = ref();
@@ -41,7 +65,7 @@ export function useFamAssetLendForm({ props: props, emit: emit }) {
   const lookupParams = [
     { fieldName: 'tranType', lookUpType: 'FAM_TRAN_TYPE' }
   ];
-  const colLayout = proxy.$colLayout4; // 调用布局公共方法
+  const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const autoCode = ref(null); // 自动编码ref
   const authJson = ref(null);
