@@ -302,6 +302,11 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
+          <template v-else-if="column.dataIndex === 'batchNo'">
+            <a @click="handleResumeSelect(record)">
+              {{ record.batchNo }}
+            </a>
+          </template>
           <template v-else-if="column.dataIndex === 'billSourceName'">
             <a @click="handleDetail(record)">
               {{ record.billSourceName }}
@@ -347,6 +352,12 @@
       :form-id="formId"
       @close="showDetailModal = false"
     />
+    <wms-cam-item-transaction-manage
+        v-if="showTransactionModal"
+        ref="transactionModal"
+        :info="info"
+        @close="showTransactionModal = false"
+    />
     <AvicExcelImport
       v-if="showImportModal"
       :formData="excelParams"
@@ -356,6 +367,7 @@
       @reloadData="getList"
       @close="showImportModal = false"
     />
+
   </div>
 </template>
 <script lang="ts" setup>
@@ -364,6 +376,9 @@ import { listWmsCamItemInventoryByPage, delWmsCamItemInventory, exportExcel } fr
 import WmsCamItemInventoryAdd from './WmsCamItemInventoryAdd.vue'; // 引入添加页面组件
 import WmsCamItemInventoryEdit from './WmsCamItemInventoryEdit.vue'; // 引入编辑页面组件
 import WmsCamItemInventoryDetail from './WmsCamItemInventoryDetail.vue'; // 引入详情页面组件
+import WmsCamItemTransactionManage from './WmsCamItemTransactionManage.vue';
+import PmsPlanBkManage from '@/views/avic/mms/pms/pmsplan/PmsPlanBkManage.vue';
+
 const { proxy } = getCurrentInstance();
 const layout = {
   labelCol: { flex: '0 0 120px' },
@@ -378,6 +393,15 @@ const columns = [
     width: 60,
     align: 'center',
     fixed: 'left'
+  },
+  {
+    title: '批号',
+    dataIndex: 'batchNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
   },
   {
     title: '输入依据',
@@ -618,11 +642,13 @@ const queryParam = reactive({
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
+const showTransactionModal = ref(false);
 const showImportModal = ref(false); // 是否展示导入弹窗
 const excelParams = ref({ tableName: 'wmsCamItemInventory' }); // 导入Excel数据过滤参数
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
+const info = ref({}); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
@@ -791,5 +817,10 @@ function handleTableChange (pagination, filters, sorter) {
   getList();
 }
 
+/** 履历 */
+function handleResumeSelect (record) {
+  info.value = record;
+  showTransactionModal.value = true;
+}
 </script>
 
