@@ -100,7 +100,8 @@ function getUserAvatar() {
 async function getUserORG() {
   getCurrentMultiOrgInfo().then(res => {
     currentOrgName.value = res.data.currentOrgName;
-    currentDeptName.value = res.data.currentDeptName;
+    // currentDeptName.value = res.data.currentDeptName;
+    currentDeptName.value = proxy.$getLoginUser().entityDeptName;
   });
 }
 const handleLogout = () => {

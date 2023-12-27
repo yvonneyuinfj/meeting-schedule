@@ -432,8 +432,6 @@ const validateRules = {
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
-console.log(props.bpmInstanceObject);
-
 // 非只读状态添加操作列
 if (!props.readOnly) {
   columns.push({

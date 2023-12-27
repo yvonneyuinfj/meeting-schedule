@@ -397,7 +397,7 @@ const columns = [
 ];
 const queryForm = ref<FamAssetTransferDto>({
   bpmState: 'all',
-  bpmType: 'my'
+  bpmType: 'all'
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数
@@ -499,6 +499,10 @@ function handleAdd() {
 function handleEdit() {
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要编辑的数据！');
+    return;
+  }
+  if (selectedRows.value[0].businessstate_ && selectedRows.value[0].businessstate_ !== '拟稿中') {
+    proxy.$message.warning('当前流程状态不可编辑');
     return;
   }
   formId.value = selectedRows.value[0].id;

@@ -93,14 +93,59 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
+    title: '资产编码',
+    dataIndex: 'assetsCode',
+    key: 'assetCode',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
+  {
+    title: '资产名称',
+    dataIndex: 'assetsName',
+    key: 'assetName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '使用部门',
+    dataIndex: 'managerDeptName',
+    key: 'managerDeptName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '存放地点',
+    dataIndex: 'storageLocation',
+    key: 'storageLocation',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产原值',
+    dataIndex: 'assetOriginalValue',
+    key: 'assetOriginalValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '资产净值',
+    dataIndex: 'assetNetValue',
+    key: 'assetNetValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  }
   // {
   //   title: '操作',
   //   dataIndex: 'action',

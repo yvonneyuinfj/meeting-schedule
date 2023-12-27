@@ -45,7 +45,7 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
@@ -62,7 +62,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -74,8 +74,8 @@
                 style="width: 120px"
                 clear
                 v-model:value="shareAmount"
-                  :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                  :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
               />
             </div>
             <a-button
@@ -275,7 +275,7 @@ function getList() {
       initialList.value = proxy.$lodash.cloneDeep(list.value);
       let amountList = [];
       list.value.map(item => {
-        amountList.push({ assetOriginalValue: item.assetOriginalValue, inventoryId: item.id });
+        amountList.push({ assetOriginalValue: item.assetOriginalValue, inventoryId: item.inventoryId });
       });
       originalList.value = amountList;
     })
@@ -429,7 +429,6 @@ const handleShare = e => {
   if (shareAmount.value === 0 || !shareAmount.value) {
     //输入为空或者0时
     loading.value = true;
-
     list.value.map(item => {
       item.assetOriginalValue = originalList.value.filter(
         it => it.inventoryId === item.inventoryId
@@ -440,13 +439,12 @@ const handleShare = e => {
     //计算分摊
     loading.value = true;
     let percentage = 0;
-
     originalList.value.map(item => {
       percentage += Number(item.assetOriginalValue);
     });
     list.value.map((item, index) => {
       let num = Number(
-        (Number(originalList.value[index].assetOriginalValue) / percentage).toFixed(2)
+        (Number(originalList.value[index].assetOriginalValue) / percentage)
       );
       item.assetOriginalValue = Number(shareAmount.value * num).toFixed(2);
     });
@@ -468,6 +466,7 @@ const handleOk = () => {
     amountList.push({ assetOriginalValue: item.assetOriginalValue, inventoryId: item.id });
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
+    item['managerDeptName'] = item.receiveDeptNameAlias;
   });
   // 批量新增数组合并去重
   let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));

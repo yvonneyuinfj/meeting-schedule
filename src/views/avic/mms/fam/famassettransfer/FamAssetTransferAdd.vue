@@ -143,7 +143,7 @@ const props = defineProps({
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
 onMounted(() => {
-  form.value.title = proxy.$getLoginUser().name + dayjs(new Date()).format('YYYYMMDD') + '调拨申请';
+
   form.value.applyDate = dayjs(new Date()).format('YYYY-MM-DD')
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name
   form.value.handlePersonId = proxy.$getLoginUser().id
@@ -165,4 +165,8 @@ const {
   props: props,
   emit: emit
 });
+
+watch(()=>form.value.applyNo , newV=>{
+  form.value.title = proxy.$getLoginUser().name + newV + '调拨申请';
+})
 </script>

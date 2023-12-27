@@ -1684,7 +1684,7 @@ function handlePrintCard(ids, type) {
       createMdsReportConditionByUserId(postData)
         .then(res => {
           if (res.success) {
-            const page = window.open('http://localhost:8075/WebReport/ReportServer?reportlet=famInventory.cpt', '_blank');
+            const page = window.open('http://192.168.1.144:8075/WebReport/ReportServer?reportlet=famInventory.cpt', '_blank');
             page.onLoad = ()=>{
               page.document.title = '资产台账卡片'
             }
