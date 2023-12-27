@@ -162,6 +162,14 @@ export default {
     },
     'bpmInstanceObject.bpmTabs.showTabs': {
       handler(tabs) {
+        if (tabs) {
+          // 流程意见默认不显示
+          tabs.forEach(item => {
+            if (item.code === 'bpm_idea_tab') {
+              item.display = '0';
+            }
+          });
+        }
         this.data = tabs;
       }
     }
