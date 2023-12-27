@@ -213,6 +213,25 @@
             </a-select>
           </a-form-item>
         </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDate')">
+          <a-form-item name="applyDate" label="故障时间" :rules="fieldRequired('applyDate')" has-feedback>
+            <a-date-picker
+              v-model:value="form.applyDate"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              :disabled="fieldDisabled('applyDate')"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('isImproveName')">
+          <a-form-item name="isImproveName" label="是否提高固定资产性能" :rules="fieldRequired('isImproveName')"
+                       has-feedback>
+            <a-input
+              v-model:value="form.isImproveName"
+              :disabled="fieldDisabled('isImproveName')"
+            />
+          </a-form-item>
+        </a-col>
       </a-row>
       <a-row>
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('applyReason')">
@@ -277,16 +296,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyDate')">
-          <a-form-item name="applyDate" label="故障时间" :rules="fieldRequired('applyDate')" has-feedback>
-            <a-date-picker
-              v-model:value="form.applyDate"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-              :disabled="fieldDisabled('applyDate')"
-            />
-          </a-form-item>
-        </a-col>
+
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('telephone')">
           <a-form-item name="telephone" label="联系电话" :rules="fieldRequired('telephone')" has-feedback>
             <a-input
@@ -304,15 +314,8 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('isImproveName')">
-          <a-form-item name="isImproveName" label="是否提高固定资产性能" :rules="fieldRequired('isImproveName')"
-                       has-feedback>
-            <a-input
-              v-model:value="form.isImproveName"
-              :disabled="fieldDisabled('isImproveName')"
-            />
-          </a-form-item>
-        </a-col>
+      </a-row>
+      <a-row>
         <a-col v-bind="colLayout.cols2">
           <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
             <AvicUploader

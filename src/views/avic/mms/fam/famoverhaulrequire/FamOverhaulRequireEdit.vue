@@ -264,6 +264,44 @@
               />
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="applyDate" label="故障时间" has-feedback>
+              <a-date-picker
+                v-model:value="form.applyDate"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                placeholder="请选择故障时间"
+                :disabled-date="
+                  startValue => proxy.$disabledStartDate(startValue,dayjs().add(1, 'day').format('YYYY-MM-DD'))
+                "
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="isImprove"
+              label="是否提高固定资产性能"
+              has-feedback
+            >
+              <a-select
+                v-model:value="form.isImprove"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                @change="changeIsimp"
+                placeholder="请选择是否提高固定资产性能"
+              >
+                <a-select-option
+                  v-for="item in isImproveList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols2">
@@ -332,19 +370,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="applyDate" label="故障时间" has-feedback>
-              <a-date-picker
-                v-model:value="form.applyDate"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择故障时间"
-                :disabled-date="
-                  startValue => proxy.$disabledStartDate(startValue,dayjs().add(1, 'day').format('YYYY-MM-DD'))
-                "
-              />
-            </a-form-item>
-          </a-col>
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="telephone" label="联系电话" has-feedback>
               <a-input
@@ -354,31 +380,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item
-              name="isImprove"
-              label="是否提高固定资产性能"
-              has-feedback
-            >
-              <a-select
-                v-model:value="form.isImprove"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                @change="changeIsimp"
-                placeholder="请选择是否提高固定资产性能"
-              >
-                <a-select-option
-                  v-for="item in isImproveList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+
           <a-col v-bind="colLayout.cols2">
             <a-form-item
               label="附件"
