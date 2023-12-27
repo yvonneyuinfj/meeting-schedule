@@ -76,6 +76,18 @@
               <template #icon><close-circle-outlined /></template>
               不同意
             </a-tag>
+			<a-tag color="green" @click="setText('已办理')">
+			  <template #icon><close-circle-outlined /></template>
+			  已办理
+			</a-tag>
+			<a-tag color="error" @click="setText('不予办理')">
+			  <template #icon><close-circle-outlined /></template>
+			  不予办理
+			</a-tag>
+			<a-tag color="processing" @click="setText('未办理')">
+			  <template #icon><close-circle-outlined /></template>
+			  未办理
+			</a-tag>
             <!-- <a-button size="small" @click="setText('已阅')"></a-button> -->
             <!-- <a-button size="small" @click="setText('同意')">
                           <template #icon><check-circle-outlined /></template>
