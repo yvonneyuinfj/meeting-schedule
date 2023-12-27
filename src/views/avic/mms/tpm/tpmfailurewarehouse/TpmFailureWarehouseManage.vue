@@ -146,7 +146,17 @@
             >
               删除
             </a-button>
-
+            <a-button
+                v-hasPermi="['tpmFailureWarehouse:import']"
+                title="导入"
+                type="primary"
+                ghost
+                @click="handleImport">
+              <template #icon>
+                <import-outlined />
+              </template>
+              导入
+            </a-button>
             <!-- <a-button
               v-hasPermi="['tpmFailureWarehouse:export']"
               title="导出"
@@ -206,6 +216,15 @@
         @reloadData="getList"
         @close="showEditModal = false"
     />
+    <AvicExcelImport
+        v-if="showImportModal"
+        :formData="excelParams"
+        title="单表模板导入"
+        importUrl="/mms/tpm/tpmfailurewarehouses/importData/v1"
+        downloadTemplateUrl="/mms/tpm/tpmfailurewarehouses/downloadTemplate/v1"
+        @reloadData="getList"
+        @close="showImportModal = false"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -214,7 +233,7 @@ import {
   listTpmFailureWarehouseByPage,
   delTpmFailureWarehouse,
   exportExcel,
-  approvalTpmFailureWarehouse, saveFormAndStartProcess
+  saveFormAndStartProcess
 } from '@/api/avic/mms/tpm/TpmFailureWarehouseApi'; // 引入模块API
 import TpmFailureWarehouseAdd from './TpmFailureWarehouseAdd.vue'; // 引入添加页面组件
 import TpmFailureWarehouseEdit from './TpmFailureWarehouseEdit.vue'; // 引入编辑页面组件
@@ -420,7 +439,7 @@ const columns = [
 ];
 const queryForm = ref<TpmFailureWarehouseDto>({
   bpmState: 'all',
-  bpmType: 'my'
+  bpmType: 'all'
 });
 // 高级查询对象
 const queryParam = reactive({
@@ -455,6 +474,8 @@ const lookupParams = [
   { fieldName: 'failureWarehouseType', lookUpType: 'FAILURE_WAREHOUSE_TYPE' }
 ];
 const formCode = 'TpmFailureWarehouse';
+const showImportModal = ref(false); // 是否展示导入弹窗
+const excelParams = ref({ tableName: 'tpmFailureWarehouse' }); // 导入Excel数据过滤参数
 
 onMounted(() => {
   // 加载表格数据
@@ -696,5 +717,10 @@ function handleTableChange(pagination, filters, sorter) {
     queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
   }
   getList();
+}
+
+/** 导入 */
+function handleImport () {
+  showImportModal.value = true;
 }
 </script>
