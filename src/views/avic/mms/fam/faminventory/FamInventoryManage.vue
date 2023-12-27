@@ -845,14 +845,14 @@
               </template>
               导出
             </a-button>
-            <a-button
-              title="打印卡片"
-              type="primary"
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              @click="handlePrintCard(selectedRowKeys, '')"
-            >
-              打印卡片
-            </a-button>
+<!--            <a-button-->
+<!--              title="打印卡片"-->
+<!--              type="primary"-->
+<!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+<!--              @click="handlePrintCard(selectedRowKeys, '')"-->
+<!--            >-->
+<!--              打印卡片-->
+<!--            </a-button>-->
             <a-button
               title="同步浪潮折旧信息"
               type="primary"
