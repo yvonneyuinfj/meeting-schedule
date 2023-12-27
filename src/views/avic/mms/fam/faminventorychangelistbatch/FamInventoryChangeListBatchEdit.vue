@@ -74,8 +74,8 @@
                 style="width: 120px"
                 clear
                 v-model:value="shareAmount"
-                :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                :parser="value => value.replace(/\$\s?|(,*)/g, '')"
+                  :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                  :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
               />
             </div>
             <a-button
