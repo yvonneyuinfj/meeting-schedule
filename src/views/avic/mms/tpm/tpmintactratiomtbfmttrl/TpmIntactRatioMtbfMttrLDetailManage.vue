@@ -1,156 +1,161 @@
 <template>
   <!-- 表格组件 -->
   <div style="padding: 8px 0">
-    <AvicTable v-if="showTable" ref="tpmIntactRatioMtbfMttrL" table-key="tpmIntactRatioMtbfMttrL" :height="300"
-      :columns="columns" :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange,
-        columnWidth: 40,
-        fixed: true
-      }" :showTableSetting="false" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="customRow"
-      @change="handleTableChange">
-      <template v-if="!props.readOnly" #toolBarLeft>
-        <a-space>
-          <a-space>
-            <a-button v-hasPermi="['tpmIntactRatioMtbfMttrL:add']" title="添加" type="primary" @click="handleAdd">
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button v-hasPermi="['tpmIntactRatioMtbfMttrL:del']" title="删除" danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
-                handleDelete(selectedRowKeys, event);
-              }
-              ">
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button v-if="props.mainId ? true : false" v-hasPermi="['tpmIntactRatioMtbfMttrL:import']" title="导入"
-              type="primary" ghost @click="handleImport">
-              <template #icon>
-                <import-outlined />
-              </template>
-              导入
-            </a-button>
-          </a-space>
-        </a-space>
-      </template>
-      <template #bodyCell="{ column, text, record }">
-        <AvicRowEdit v-if="['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8', 'day9', 'day10', 'day11', 'day12', 'day13', 'day14', 'day15', 'day16', 'day17', 'day18', 'day19', 'day20', 'day21', 'day22', 'day23', 'day24', 'day25', 'day26', 'day27', 'day28', 'day29', 'day30', 'day31'].includes(
-          column.dataIndex
-        )" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-tooltip placement="top">
-              <template #title>
-                <span>设备完好填“1”不完好填“0”。</span>
-              </template>
-              <a-input-number v-model:value="record[column.dataIndex]" :maxLength="16" :max="1" :min="0"
-                style="width: 100%" placeholder="请输入" @change="calculateTotal(record)" :readonly="props.readOnly"
-                :formatter="transForm0Or1" :parser="transForm0Or1" @blur="blurInput($event, record, column.dataIndex)">
-              </a-input-number>
-            </a-tooltip>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'secretLevel'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-select v-model:value="record.secretLevel" style="width: 100%" placeholder="请选择密级"
-              @change="(value) => changeControlValue(value, record, 'secretLevel')" :readonly="props.readOnly">
-              <a-select-option v-for="select in secretLevelList" :key="select.sysLookupTlId" :value="select.lookupCode"
-                :title="select.lookupName" :disabled="select.disabled === true">
-                {{ select.lookupName }}
-              </a-select-option>
-            </a-select>
-          </template>
-          <template #default>
-            {{ record['secretLevelName'] }}
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'equipmentCode'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input v-model:value="record.equipmentCode" @click="handleOpen(record)" :readonly="true"
-              placeholder="请选择设备编号" @blur="blurInput($event, record, column.dataIndex)">
-            </a-input>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'equipmentName'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input v-model:value="record.equipmentName" :readonly="true" placeholder="请选择设备名称"
-              @blur="blurInput($event, record, column.dataIndex)">
-            </a-input>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'equipmentStatusTotal'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input-number v-model:value="record.equipmentStatusTotal" :min="0" :max="999999999999" :precision="0"
-              :step="1" style="width: 100%" :readonly="true" placeholder="请输入合计"
-              @blur="blurInput($event, record, column.dataIndex)">
-            </a-input-number>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'equipmentRunTime'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input-number v-model:value="record.equipmentRunTime" placeholder="请输入设备运行时间（h）"
-              @change="calculateMTBFOrMTTR(record)" :readonly="props.readOnly" :min="0" :max="999999999999" :precision="0"
-              :step="1" :formatter="transFormNum" :parser="transFormNum"
-              @blur="blurInput($event, record, column.dataIndex)">
-            </a-input-number>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'repairTime'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input-number v-model:value="record.repairTime" placeholder="请输入设备故障修复时间（h）"
-              @change="calculateMTBFOrMTTR(record)" :readonly="props.readOnly" :min="0" :max="999999999999" :precision="0"
-              :step="1" :formatter="transFormNum" :parser="transFormNum"
-              @blur="blurInput($event, record, column.dataIndex)">
-            </a-input-number>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'failureNumber'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input-number v-model:value="record.failureNumber" placeholder="请输入设备故障次数"
-              @change="calculateMTBFOrMTTR(record)" :readonly="props.readOnly" :min="0" :max="999999999999" :precision="0"
-              :step="1" :formatter="transFormNum" :parser="transFormNum"
-              @blur="blurInput($event, record, column.dataIndex)">
-            </a-input-number>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'mtbf'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input v-model:value="record.mtbf" :readonly="true" @blur="blurInput($event, record, column.dataIndex)">
-            </a-input>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'mttr'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input v-model:value="record.mttr" :readonly="true" @blur="blurInput($event, record, column.dataIndex)">
-            </a-input>
-          </template>
-        </AvicRowEdit>
-        <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
-          <a-button class="inner-btn" type="link" @click="event => {
-            handleDelete([record.id], event);
-          }
-          ">
-            删除
-          </a-button>
-        </template>
-      </template>
-    </AvicTable>
-  </div>
-  <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="模板导入"
-    importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1"
-    downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1" @reloadData="getList"
-    @close="showImportModal = false" />
-  <!--选择设备弹窗-->
-  <a-modal :visible="open" title="选择设备" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
-    <div style="height: 400px;overflow: auto">
-      <Tpm-Intact-Ratio-Mtbf-Mttr-l-select ref="tpmIntactRatioMtbfMttrLSelect">
-      </Tpm-Intact-Ratio-Mtbf-Mttr-l-select>
-    </div>
-  </a-modal>
+                                                  <AvicTable v-if="showTable" ref="tpmIntactRatioMtbfMttrL" table-key="tpmIntactRatioMtbfMttrL" :columns="columns"
+                                                          :row-key="record => record.id" :data-source="list" :loading="loading" :pageParameter="queryParam.pageParameter"
+                                                          :total="totalPage" :row-selection="{
+                                                            selectedRowKeys: selectedRowKeys,
+                                                            columnWidth: 40,
+                                                            onChange: onSelectChange,
+                                                            fixed: true
+                                                          }" :customRow="customRow" @change="handleTableChange" @refresh="getList">
+                                                    <template v-if="!props.readOnly" #toolBarLeft>
+                                                      <a-space>
+                                                        <a-space>
+                                                          <a-button v-hasPermi="['tpmIntactRatioMtbfMttrL:add']" title="添加" type="primary" @click="handleAdd">
+                                                            <template #icon>
+                                                              <plus-outlined />
+                                                            </template>
+                                                            添加
+                                                          </a-button>
+                                                          <a-button v-hasPermi="['tpmIntactRatioMtbfMttrL:del']" title="删除" danger
+                                                            :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="event => {
+                                                              handleDelete(selectedRowKeys, event);
+                                                            }
+                                                            ">
+                                                            <template #icon>
+                                                              <delete-outlined />
+                                                            </template>
+                                                            删除
+                                                          </a-button>
+                                                          <a-button v-if="props.mainId ? true : false" v-hasPermi="['tpmIntactRatioMtbfMttrL:import']" title="导入"
+                                                            type="primary" ghost @click="handleImport">
+                                                            <template #icon>
+                                                              <import-outlined />
+                                                            </template>
+                                                            导入
+                                                          </a-button>
+                                                        </a-space>
+                                                      </a-space>
+                                                    </template>
+                                                    <template #bodyCell="{ column, text, record, index }">
+                                                      <AvicRowEdit v-if="['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8', 'day9', 'day10', 'day11', 'day12', 'day13', 'day14', 'day15', 'day16', 'day17', 'day18', 'day19', 'day20', 'day21', 'day22', 'day23', 'day24', 'day25', 'day26', 'day27', 'day28', 'day29', 'day30', 'day31'].includes(
+                                                        column.dataIndex
+                                                      )" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-tooltip placement="top">
+                                                            <template #title>
+                                                              <span>设备完好填“1”不完好填“0”。</span>
+                                                            </template>
+                                                            <a-input-number v-model:value="record[column.dataIndex]" :maxLength="16" :max="1" :min="0"
+                                                              style="width: 100%" placeholder="请输入" @change="calculateTotal(record)" :readonly="props.readOnly"
+                                                              :formatter="transForm0Or1" :parser="transForm0Or1" @blur="blurInput($event, record, column.dataIndex)">
+                                                            </a-input-number>
+                                                          </a-tooltip>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'secretLevel'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-select v-model:value="record.secretLevel" style="width: 100%" placeholder="请选择密级"
+                                                            @change="(value) => changeControlValue(value, record, 'secretLevel')" :readonly="props.readOnly">
+                                                            <a-select-option v-for="select in secretLevelList" :key="select.sysLookupTlId" :value="select.lookupCode"
+                                                              :title="select.lookupName" :disabled="select.disabled === true">
+                                                              {{ select.lookupName }}
+                                                            </a-select-option>
+                                                          </a-select>
+                                                        </template>
+                                                        <template #default>
+                                                          {{ record['secretLevelName'] }}
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'equipmentCode'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input v-model:value="record.equipmentCode" @click="handleOpen(record)" :readonly="true"
+                                                            placeholder="请选择设备编号" @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'equipmentName'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input v-model:value="record.equipmentName" :readonly="true" placeholder="请选择设备名称"
+                                                            @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'equipmentStatusTotal'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input-number v-model:value="record.equipmentStatusTotal" :min="0" :max="999999999999" :precision="0"
+                                                            :step="1" style="width: 100%" :readonly="true" placeholder="请输入合计"
+                                                            @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input-number>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'equipmentRunTime'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input-number v-model:value="record.equipmentRunTime" placeholder="请输入设备运行时间（h）"
+                                                            @change="calculateMTBFOrMTTR(record)" :readonly="props.readOnly" :min="0" :max="999999999999" :precision="0"
+                                                            :step="1" :formatter="transFormNum" :parser="transFormNum"
+                                                            @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input-number>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'repairTime'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input-number v-model:value="record.repairTime" placeholder="请输入设备故障修复时间（h）"
+                                                            @change="calculateMTBFOrMTTR(record)" :readonly="props.readOnly" :min="0" :max="999999999999" :precision="0"
+                                                            :step="1" :formatter="transFormNum" :parser="transFormNum"
+                                                            @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input-number>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'failureNumber'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input-number v-model:value="record.failureNumber" placeholder="请输入设备故障次数"
+                                                            @change="calculateMTBFOrMTTR(record)" :readonly="props.readOnly" :min="0" :max="999999999999" :precision="0"
+                                                            :step="1" :formatter="transFormNum" :parser="transFormNum"
+                                                            @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input-number>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'mtbf'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input v-model:value="record.mtbf" :readonly="true" @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <AvicRowEdit v-else-if="column.dataIndex === 'mttr'" :record="record" :column="column.dataIndex">
+                                                        <template #edit>
+                                                          <a-input v-model:value="record.mttr" :readonly="true" @blur="blurInput($event, record, column.dataIndex)">
+                                                          </a-input>
+                                                        </template>
+                                                      </AvicRowEdit>
+                                                      <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
+                                                        <a-button class="inner-btn" type="link" @click="event => {
+                                                          handleDelete([record.id], event);
+                                                        }
+                                                        ">
+                                                          删除
+                                                        </a-button>
+                                                      </template>
+                                                      <template v-else-if="column.dataIndex === 'id' && index + 1 < list.length">
+                                                          {{
+                                                            index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
+                                                          }}
+                                                      </template>
+                                                  </template>
+                                                </AvicTable>
+                                              </div>
+                                              <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="模板导入"
+                                                importUrl="/mms/tpm/tpmintactratiomtbfmttrls/importData/v1"
+                                                downloadTemplateUrl="/mms/tpm/tpmintactratiomtbfmttrls/downloadTemplate/v1" @reloadData="getList"
+                                                @close="showImportModal = false" />
+                                              <!--选择设备弹窗-->
+                                              <a-modal :visible="open" title="选择设备" @ok="handleOk" @cancel="handleCancel" width="80%" style="top: 20px">
+                                                <div style="height: 400px;overflow: auto">
+                                                  <Tpm-Intact-Ratio-Mtbf-Mttr-l-select ref="tpmIntactRatioMtbfMttrLSelect">
+                                                  </Tpm-Intact-Ratio-Mtbf-Mttr-l-select>
+                                                </div>
+                                              </a-modal>
 </template>
 <script lang="ts" setup>
 import type { TpmIntactRatioMtbfMttrLDto } from '@/api/avic/mms/tpm/TpmIntactRatioMtbfMttrLApi'; // 引入模块DTO
@@ -885,53 +890,23 @@ function getList() {
   queryParam.searchParams = queryForm.value;
   listTpmIntactRatioMtbfMttrLByPage(queryParam)
     .then(response => {
-      list.value = response.data.result;
+      let array = []
+      array = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
 
       let arr = [];
-      for (let i = 0; i < reportDate.value.daysInMonth(); i++) {
-        arr.push(0);
-      }
-      for (let index = 0; index < list.value.length; index++) {
-        const element = list.value[index];
-        const equipmentStatus = element.equipmentStatus.split(',');
-        for (let i = 0; i < equipmentStatus.length; i++) {
-          const status = equipmentStatus[i];
-          arr[i] = parseFloat(arr[i]) + parseFloat(status);
-        }
-        element.day1 = equipmentStatus[0];
-        element.day2 = equipmentStatus[1];
-        element.day3 = equipmentStatus[2];
-        element.day4 = equipmentStatus[3];
-        element.day5 = equipmentStatus[4];
-        element.day6 = equipmentStatus[5];
-        element.day7 = equipmentStatus[6];
-        element.day8 = equipmentStatus[7];
-        element.day9 = equipmentStatus[8];
-        element.day10 = equipmentStatus[9];
-        element.day11 = equipmentStatus[10];
-        element.day12 = equipmentStatus[11];
-        element.day13 = equipmentStatus[12];
-        element.day14 = equipmentStatus[13];
-        element.day15 = equipmentStatus[14];
-        element.day16 = equipmentStatus[15];
-        element.day17 = equipmentStatus[16];
-        element.day18 = equipmentStatus[17];
-        element.day19 = equipmentStatus[18];
-        element.day20 = equipmentStatus[19];
-        element.day21 = equipmentStatus[20];
-        element.day22 = equipmentStatus[21];
-        element.day23 = equipmentStatus[22];
-        element.day24 = equipmentStatus[23];
-        element.day25 = equipmentStatus[24];
-        element.day26 = equipmentStatus[25];
-        element.day27 = equipmentStatus[26];
-        element.day28 = equipmentStatus[27];
-        element.day29 = equipmentStatus[28];
-        element.day30 = equipmentStatus[29];
-        element.day31 = equipmentStatus[30];
-      }
-      list.value.push({
+
+      array.reduce((pre, cur) => {
+        const equipmentStatus = cur.equipmentStatus.split(',')
+        equipmentStatus.map((item, index) => {
+          pre[index] = (pre[index] || 0) + Number(item)
+          cur['day' + (index + 1)] = item
+        })
+        return pre
+      }, arr)
+      console.log(arr.join(','))
+
+      array.push({
         id: '日完好设备合计',
         day1: arr[0],
         day2: arr[1],
@@ -965,6 +940,7 @@ function getList() {
         day30: arr[29],
         day31: arr[30]
       });
+      list.value = array
       loading.value = false;
       // 查询的初始数据,保存时做比对
       initialList.value = proxy.$lodash.cloneDeep(list.value);

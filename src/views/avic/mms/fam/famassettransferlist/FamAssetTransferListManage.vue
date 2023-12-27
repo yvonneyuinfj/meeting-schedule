@@ -31,7 +31,7 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button
+                <!-- <a-button
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               title="删除"
@@ -42,7 +42,7 @@
                 <delete-outlined />
               </template>
               删除
-            </a-button>
+            </a-button> -->
           </a-space>
         </template>
         <template #toolBarRight>
@@ -189,13 +189,13 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    width: 120,
-    fixed: 'right'
-  }
+  // {
+  //   title: '操作',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   width: 120,
+  //   fixed: 'right'
+  // }
 ];
 const queryParam = reactive({
   // 请求表格数据参数
