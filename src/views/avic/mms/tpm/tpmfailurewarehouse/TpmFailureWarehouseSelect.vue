@@ -481,7 +481,7 @@ const columns = [
 ];
 const queryForm = ref<TpmFailureWarehouseDto>({
   bpmState: 'all',
-  bpmType: 'my'
+  bpmType: 'all'
 });
 // 高级查询对象
 const queryParam = reactive({

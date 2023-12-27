@@ -3,7 +3,6 @@ import {
   getFamAccpet,
   saveFamAccpet,
   saveFormAndStartProcess,
-  getTreeParent
 } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块API
 
 import {
@@ -72,6 +71,11 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' }
   ];
   const authJson = ref(null);
+  const bodyStyle = {
+    height: '500px',
+    overflow: 'hidden',
+    overflowY: 'scroll'
+  };
 
   if (props.params) {
     bpmParams.value = props.params;
@@ -411,7 +415,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   }
 
   /** 附件上传完之后的回调函数 */
-  function afterUploadEvent(successFile, errorFile) {
+  function afterUploadEvent(_successFile, errorFile) {
     if (errorFile.length > 0) {
       // 有附件保存失败的处理
       errorCallback();
@@ -488,6 +492,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
+    bodyStyle,
     secretLevelList,
     accpetTypeList,
     assetTypeList,

@@ -10,15 +10,15 @@
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyNo')">
           <a-form-item name="applyNo" label="申请单编号" :rules="fieldRequired('applyNo')" has-feedback>
-              <AvicAutoCode
-                v-model:value="form.applyNo"
-                ref="autoCode"
-                code-type="FAM_INVENTORY_NO"
-                code-param="FAM_INVENTORY_CHANGE_BATCH"
-                :allow-clear="true"
-                :disabled="fieldDisabled('applyNo')"
-                placeholder="请输入申请单编号"
-              />
+            <AvicAutoCode
+              v-model:value="form.applyNo"
+              ref="autoCode"
+              code-type="FAM_INVENTORY_NO"
+              code-param="FAM_INVENTORY_CHANGE_BATCH"
+              :allow-clear="true"
+              :disabled="fieldDisabled('applyNo')"
+              placeholder="请输入申请单编号"
+            />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyPersonId')">
@@ -50,36 +50,38 @@
             />
           </a-form-item>
         </a-col>
-        </a-row>
-        <a-row>
-        <a-col v-bind="colLayout.cols4" v-if="fieldVisible('changeNote')">
+      </a-row>
+      <a-row>
+        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('changeNote')">
           <a-form-item name="changeNote" label="变更理由" :rules="fieldRequired('changeNote')" has-feedback>
-            <a-textarea v-model:value="form.changeNote" :rows="2" :disabled="fieldDisabled('changeNote')" />
+            <a-textarea v-model:value="form.changeNote" :rows="2" :disabled="fieldDisabled('changeNote')"/>
           </a-form-item>
         </a-col>
-<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('fenqi')">
-          <a-form-item name="fenqi" label="分期金额" :rules="fieldRequired('fenqi')" has-feedback>
-            <a-input
-              v-model:value="form.fenqi"
-              :disabled="fieldDisabled('fenqi')"
+        <!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('fenqi')">
+                  <a-form-item name="fenqi" label="分期金额" :rules="fieldRequired('fenqi')" has-feedback>
+                    <a-input
+                      v-model:value="form.fenqi"
+                      :disabled="fieldDisabled('fenqi')"
+                    />
+                  </a-form-item>
+                </a-col> -->
+      </a-row>
+      <a-row>
+        <a-col v-bind="colLayout.cols2">
+          <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
+            <AvicUploader
+              element-id="1"
+              ref="uploadFile"
+              label="上传附件"
+              :form-id="form.id"
+              :bpm-instance-object="props.bpmInstanceObject"
+              :form-secret-level="form.secretLevel"
+              :allow-download="true"
+              table-name="FAM_INVENTORY_CHANGE_BATCH"
+              @afterUpload="afterUploadEvent"
             />
           </a-form-item>
-        </a-col> -->
-      <a-col v-bind="colLayout.cols4">
-        <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
-          <AvicUploader
-            element-id="1"
-            ref="uploadFile"
-            label="上传附件"
-            :form-id="form.id"
-            :bpm-instance-object="props.bpmInstanceObject"
-            :form-secret-level="form.secretLevel"
-            :allow-download="true"
-            table-name="FAM_INVENTORY_CHANGE_BATCH"
-            @afterUpload="afterUploadEvent"
-          />
-        </a-form-item>
-      </a-col>
+        </a-col>
       </a-row>
     </a-form>
     <FamInventoryChangeListBatchEdit
@@ -112,7 +114,8 @@
 </template>
 <script lang="ts" setup>
 import { useFamInventoryChangeBatchForm, emits } from './ts/FamInventoryChangeBatchForm'; // 引入表单ts
-import FamInventoryChangeListBatchEdit from '@/views/avic/mms/fam/faminventorychangelistbatch/FamInventoryChangeListBatchEdit.vue'; // 引入子表组件
+import FamInventoryChangeListBatchEdit
+  from '@/views/avic/mms/fam/faminventorychangelistbatch/FamInventoryChangeListBatchEdit.vue'; // 引入子表组件
 
 const props = defineProps({
   formId: {

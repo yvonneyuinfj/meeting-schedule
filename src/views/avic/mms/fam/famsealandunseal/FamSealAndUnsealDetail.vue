@@ -170,6 +170,7 @@
       v-if="fieldVisible('FAM_SEAL_AND_UNSEAL_LIST')"
       ref="famSealAndUnsealListEdit"
       :mainId="formId || form.id"
+      read-only="true"
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"
     />

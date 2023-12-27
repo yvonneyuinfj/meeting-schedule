@@ -45,7 +45,7 @@
               @click="handleMostAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               批量添加
             </a-button>
@@ -62,7 +62,7 @@
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -137,8 +137,14 @@ const props = defineProps({
   readOnly: {
     type: Boolean,
     default: false
+  },
+  bpmInstanceObject: {
+    type: Object,
+    default: {}
   }
 });
+
+const task = props.bpmInstanceObject.hasOwnProperty('bpmModel') ? props.bpmInstanceObject.bpmModel : '';
 const columns = [
   {
     title: '资产编码',
@@ -218,6 +224,7 @@ onMounted(() => {
   // 加载表格数据
   getList();
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -239,6 +246,7 @@ function getList() {
       loading.value = false;
     });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -292,6 +300,7 @@ const handleOk = () => {
 
 /** 编辑 */
 function handleEdit(record) {
+  if (task !== 'task2') return;
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
@@ -337,11 +346,13 @@ function customRow(record) {
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -352,10 +363,12 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -372,6 +385,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -387,6 +401,7 @@ function validate(callback) {
     }
   }
 }
+
 defineExpose({
   validate,
   getChangedData
