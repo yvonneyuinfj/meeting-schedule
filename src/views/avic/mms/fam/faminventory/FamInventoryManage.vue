@@ -877,9 +877,9 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'secretLevelName'">
+          <template v-else-if="column.dataIndex === 'assetsCode'">
             <a @click="handleDetail(record)">
-              {{ record.secretLevelName }}
+              {{ record.assetsCode }}
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
@@ -972,14 +972,6 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '资产编号',
     dataIndex: 'assetsCode',
     ellipsis: true,
@@ -987,6 +979,14 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '数据密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '资产名称',

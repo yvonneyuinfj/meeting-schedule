@@ -5,20 +5,20 @@
       <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="备注">
+            <a-form-item label="项目名称">
               <a-input
-                v-model:value="queryForm.note"
-                placeholder="请输入备注"
+                v-model:value="queryForm.projectName"
+                placeholder="请输入项目名称"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="项目名称">
+            <a-form-item label="备注">
               <a-input
-                v-model:value="queryForm.projectName"
-                placeholder="请输入项目名称"
+                v-model:value="queryForm.note"
+                placeholder="请输入备注"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
@@ -176,9 +176,9 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'note'">
+          <template v-else-if="column.dataIndex === 'projectName'">
             <a @click="handleDetail(record)">
-              {{ record.note }}
+              {{ record.projectName }}
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
@@ -254,8 +254,8 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '备注',
-    dataIndex: 'note',
+    title: '项目名称',
+    dataIndex: 'projectName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -263,8 +263,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '项目名称',
-    dataIndex: 'projectName',
+    title: '备注',
+    dataIndex: 'note',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -443,4 +443,3 @@ function handleTableChange (pagination, filters, sorter) {
 }
 
 </script>
-
