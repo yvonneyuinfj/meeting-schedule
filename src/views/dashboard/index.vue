@@ -18,8 +18,8 @@
         margin: 0 -8px -8px -8px;
       "
     >
-      <span style="margin-right: 16px">版权信息：系统版权信息</span>
-      <span>技术支持：010-0000 0000</span>
+      <span style="margin-right: 16px">中国航发动力所-信息技术中心 版权所有</span>
+      <!-- <span>技术支持：信息技术中心</span> -->
     </div>
   </div>
 </template>

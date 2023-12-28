@@ -277,9 +277,9 @@ import { batchHandle, getBatchHandleInfo } from '@/api/avic/bpm/BpmTaskApi'; //�
 import { listBpmTaskListByPage } from '@/api/avic/bpm/BpmTaskDndReadApi';
 import { Pagination } from 'ant-design-vue';
 import bpmUtils from '@/views/avic/bpm/bpmutils/FlowUtils'; //引入流程相关配置及方法
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 const columns = ref<any>([
   {
     title: '标题',
@@ -313,7 +313,7 @@ const columns = ref<any>([
     width: 100
   },
   {
-    title: '接收人',
+    title: '发送人',
     dataIndex: 'taskSendUser',
     align: 'center',
     ellipsis: true,
@@ -528,27 +528,41 @@ function batchHandleTodo(record: any) {
   batchHandleParam.entryIds = record.processInstance;
   batchHandleParam.executionIds = record.executionId;
   batchHandleParam.taskIds = record.dbid;
-  proxy.$Modal.confirm({
-    title: '确定对数据进行办理吗？',
-    content: '提示：只有符合办理前提条件的才会被办理成功',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      batchHandle(batchHandleParam)
-        .then((res: any) => {
-          if (res.success) {
-            let resultData = res.data;
-            let falureCnt = resultData.result[2];
-            if (falureCnt > 0) {
-              proxy.$message.error('不符合办理条件的待办无法办理！');
-            } else {
-              getBatchHandlesInfo();
-            }
-          }
-        })
-        .catch(() => {});
-    }
-  });
+  // proxy.$Modal.confirm({
+  //   title: '确定对数据进行办理吗？',
+  //   content: '提示：只有符合办理前提条件的才会被办理成功',
+  //   okText: '确定',
+  //   cancelText: '取消',
+  //   onOk: () => {
+  //     batchHandle(batchHandleParam)
+  //       .then((res: any) => {
+  //         if (res.success) {
+  //           let resultData = res.data;
+  //           let falureCnt = resultData.result[2];
+  //           if (falureCnt > 0) {
+  //             proxy.$message.error('不符合办理条件的待办无法办理！');
+  //           } else {
+  //             getBatchHandlesInfo();
+  //           }
+  //         }
+  //       })
+  //       .catch(() => {});
+  //   }
+  // });
+  batchHandle(batchHandleParam)
+    .then((res: any) => {
+      if (res.success) {
+        let resultData = res.data;
+        let falureCnt = resultData.result[2];
+        if (falureCnt > 0) {
+          // 如果不能办理，则跳转到流程详情 --于小耘 20231228
+          toFlowDetail(record);
+        } else {
+          getBatchHandlesInfo();
+        }
+      }
+    })
+    .catch(() => {});
 }
 /** 待办办理后的回调 */
 function getBatchHandlesInfo() {
