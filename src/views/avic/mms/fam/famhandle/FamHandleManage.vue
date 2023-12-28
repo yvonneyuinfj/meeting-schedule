@@ -547,7 +547,7 @@ const columns = [
 ];
 const queryForm = ref<FamHandleDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数

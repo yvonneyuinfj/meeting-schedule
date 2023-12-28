@@ -528,7 +528,7 @@ const columns = [
 ];
 const queryForm = ref<TpmMaintPlanReleaseDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 });
 const queryParam = reactive({
   // 请求表格数据参数

@@ -418,7 +418,7 @@ const columns = [
 ];
 const queryForm = ref<Tpm6sResolveCompareDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 });
 // 高级查询对象
 const queryParam = reactive({

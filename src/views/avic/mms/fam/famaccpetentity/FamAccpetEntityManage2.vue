@@ -553,7 +553,7 @@ const columns = [
 ];
 const queryForm = ref<FamAccpetDto>({
   bpmState: 'all',
-  bpmType: 'all',
+  bpmType: 'my',
   assetClass: '2'
 }); // 高级查询对象
 const queryParam = reactive({

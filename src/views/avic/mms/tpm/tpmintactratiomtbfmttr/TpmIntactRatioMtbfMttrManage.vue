@@ -256,7 +256,7 @@ const columns = [
 ];
 const queryForm = ref<TpmIntactRatioMtbfMttrDto>({
   bpmState: 'all',
-  bpmType: 'all',
+  bpmType: 'my',
   reportDeptId: proxy.$getLoginUser().entityDeptId
 }); // 高级查询对象
 const queryParam = reactive({

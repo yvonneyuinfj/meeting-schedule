@@ -428,7 +428,7 @@ const columns = [
 ];
 const queryForm = ref<TpmMaintPlanDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 });
 // 高级查询对象
 const queryParam = reactive({

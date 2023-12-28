@@ -267,7 +267,7 @@ const columns = [
 ];
 const queryForm = ref<TpmCaseShareDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 });
 // 高级查询对象
 const queryParam = reactive({
