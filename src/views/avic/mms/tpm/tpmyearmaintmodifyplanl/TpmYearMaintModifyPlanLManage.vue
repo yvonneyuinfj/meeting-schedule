@@ -2,43 +2,69 @@
   <div class="content-wrapper">
     <!-- 表格组件 -->
     <div class="table-wrapper">
-      <AvicTable ref="tpmYearMaintModifyPlanL" table-key="tpmYearMaintModifyPlanL" :columns="columns"
-                 :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
+      <AvicTable
+        ref="tpmYearMaintModifyPlanL"
+        table-key="tpmYearMaintModifyPlanL"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
-        }" :pageParameter="queryParam.pageParameter" :total="totalPage" :customRow="record => {
-  return {
-    onClick: () => {
-      handleRowSelection(record);
-    }
-  };
-}
-  " @change="handleTableChange" @refresh="getList">
+        }"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="
+          record => {
+            return {
+              onClick: () => {
+                handleRowSelection(record);
+              }
+            };
+          }
+        "
+        @change="handleTableChange"
+        @refresh="getList"
+      >
         <template #toolBarLeft>
           <a-space>
-            <a-button v-hasPermi="['tpmYearMaintModifyPlanL:import']" title="导入" type="primary" ghost
-                      @click="handleImport">
+            <a-button
+              v-hasPermi="['tpmYearMaintModifyPlanL:import']"
+              title="导入"
+              type="primary"
+              ghost
+              @click="handleImport"
+            >
               <template #icon>
-                <import-outlined/>
+                <import-outlined />
               </template>
               导入
             </a-button>
-            <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除"
-                      :loading="delLoading"
-                      @click="handleDelete(selectedRowKeys, '')">
+            <a-button
+              danger
+              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+              title="删除"
+              :loading="delLoading"
+              @click="handleDelete(selectedRowKeys, '')"
+            >
               <template #icon>
-                <delete-outlined/>
+                <delete-outlined />
               </template>
               删除
             </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
-          <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入计划编号"
-                          :allow-clear="true"
-                          @search="handleKeyWordQuery"/>
+          <a-input-search
+            class="opt-btn-commonsearch"
+            style="width: 200px"
+            placeholder="请输入计划编号"
+            :allow-clear="true"
+            @search="handleKeyWordQuery"
+          />
         </template>
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
@@ -52,6 +78,7 @@
         </template>
       </AvicTable>
     </div>
+    <!-- 导入组件 -->
     <AvicExcelImport
       v-if="showImportModal"
       :formData="excelParams"
@@ -87,8 +114,7 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
+    align: 'center'
   },
   {
     title: '计划编号',
@@ -103,19 +129,17 @@ const columns = [
     title: '预算项目',
     dataIndex: 'budgetItems',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '预算分项',
     dataIndex: 'budgetBreakdownItems',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '预算组织',
@@ -123,16 +147,15 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '项目名称',
     dataIndex: 'projectName',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '计划类别',
@@ -148,7 +171,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '项目金额（万元）',
@@ -157,12 +180,13 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '合同预计签订时间',
     dataIndex: 'estContractSignDate',
     ellipsis: true,
+    sorter:true,
     minWidth: 120,
     resizable: true,
     align: 'center'
@@ -171,6 +195,7 @@ const columns = [
     title: '计划验收时间',
     dataIndex: 'estAcceptanceDate',
     ellipsis: true,
+    sorter:true,
     minWidth: 120,
     resizable: true,
     align: 'center'
@@ -181,13 +206,12 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '变更原因',
     dataIndex: 'changeReason',
     ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -196,7 +220,7 @@ const columns = [
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 80,
     resizable: true,
     align: 'center'
   },
@@ -204,7 +228,8 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     ellipsis: true,
-    width: 120,
+    width: 80,
+    align: 'center',
     fixed: 'right'
   }
 ];
@@ -388,4 +413,3 @@ watch(
   { immediate: true }
 );
 </script>
-

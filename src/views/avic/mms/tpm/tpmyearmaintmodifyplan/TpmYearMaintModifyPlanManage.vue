@@ -294,7 +294,7 @@ import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUt
 
 const { proxy } = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '120px' },
+  labelCol: { flex: '90px' },
   wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
@@ -304,21 +304,13 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
-  },
-  {
-    title: '密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 100,
-    resizable: true,
     align: 'center'
   },
   {
     title: '单据号',
     dataIndex: 'billNo',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
@@ -333,12 +325,13 @@ const columns = [
     align: 'center'
   },
   {
-    title: '计划总数（项）',
+    title: '计划总数',
     dataIndex: 'planTotalCount',
     ellipsis: true,
-    minWidth: 120,
+    sorter: true,
+    minWidth: 100,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '填报人',
@@ -346,7 +339,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '填报日期',
@@ -362,7 +355,15 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    width: 80,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '流程状态',
@@ -375,15 +376,17 @@ const columns = [
   {
     title: '流程当前步骤',
     dataIndex: 'activityalias_',
+    ellipsis: true,
     width: 120,
+    align: 'center',
     fixed: 'right'
   },
   {
     title: '当前处理人',
     dataIndex: 'assigneenames_',
     ellipsis: true,
-    width: 130,
-    align: 'left',
+    width: 120,
+    align: 'center',
     fixed: 'right'
   }
 ];
@@ -581,6 +584,7 @@ function getSonList(v) {
   sonnum.value = v;
 }
 
+/** 提交审批回调 */
 const approval = (bpmDefinedInfo, postData) => {
   const param = {
     processDefId: bpmDefinedInfo.dbid,
