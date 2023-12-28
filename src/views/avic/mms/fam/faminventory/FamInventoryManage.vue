@@ -845,14 +845,14 @@
               </template>
               导出
             </a-button>
-<!--            <a-button-->
-<!--              title="打印卡片"-->
-<!--              type="primary"-->
-<!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
-<!--              @click="handlePrintCard(selectedRowKeys, '')"-->
-<!--            >-->
-<!--              打印卡片-->
-<!--            </a-button>-->
+            <!--            <a-button-->
+            <!--              title="打印卡片"-->
+            <!--              type="primary"-->
+            <!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+            <!--              @click="handlePrintCard(selectedRowKeys, '')"-->
+            <!--            >-->
+            <!--              打印卡片-->
+            <!--            </a-button>-->
             <a-button
               title="同步浪潮折旧信息"
               type="primary"
@@ -934,7 +934,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { FamInventoryDto } from '@/api/avic/mms/fam/FamInventoryApi'; // 引入模块DTO
+import type {FamInventoryDto} from '@/api/avic/mms/fam/FamInventoryApi'; // 引入模块DTO
 import {
   listFamInventoryByPage,
   delFamInventory,
@@ -943,12 +943,12 @@ import {
 import FamInventoryAdd from './FamInventoryAdd.vue'; // 引入添加页面组件
 import FamInventoryEdit from './FamInventoryEdit.vue'; // 引入编辑页面组件
 import FamInventoryDetail from './FamInventoryDetail.vue';
-import { createMdsReportConditionByUserId, MdsReportConditionDto } from '@/api/avic/mms/mds/MdsReportConditionApi';
+import {createMdsReportConditionByUserId, MdsReportConditionDto} from '@/api/avic/mms/mds/MdsReportConditionApi';
 
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '0 0 120px' },
-  wrapperCol: { flex: '1 1 0' }
+  labelCol: {flex: '0 0 120px'},
+  wrapperCol: {flex: '1 1 0'}
 };
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const props = defineProps({
@@ -1617,7 +1617,7 @@ const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
 const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'famInventory' }); // 导入Excel数据过滤参数
+const excelParams = ref({tableName: 'famInventory'}); // 导入Excel数据过滤参数
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
@@ -1633,10 +1633,10 @@ const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const assetTypeList = ref([]); // 资产分类通用代码
 const mdsReportConditionDto = ref<MdsReportConditionDto>({});
 const lookupParams = [
-  { fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS' },
-  { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-  { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-  { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' }
+  {fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS'},
+  {fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG'},
+  {fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG'},
+  {fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE'}
 ];
 
 onMounted(() => {
@@ -1684,10 +1684,8 @@ function handlePrintCard(ids, type) {
       createMdsReportConditionByUserId(postData)
         .then(res => {
           if (res.success) {
-            const page = window.open('http://192.168.1.144:8075/WebReport/ReportServer?reportlet=famInventory.cpt', '_blank');
-            page.onLoad = ()=>{
-              page.document.title = '资产台账卡片'
-            }
+            const url = "http://192.168.1.144:8075/WebReport/ReportServer?reportlet=famInventory.cpt" + "&sysUserId=" + proxy.$getLoginUser().id;
+            window.open(url, '_blank', '资产台账卡片');
           }
         })
         .catch((e) => {
