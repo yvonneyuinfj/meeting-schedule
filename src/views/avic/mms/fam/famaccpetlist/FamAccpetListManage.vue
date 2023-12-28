@@ -31,29 +31,29 @@
       >
         <template #toolBarLeft>
           <a-space>
-<!--            <a-button
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              title="删除"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined/>
-              </template>
-              删除
-            </a-button> -->
-  <!--          <a-button
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport"
-            >
-              <template #icon>
-                <import-outlined/>
-              </template>
-              导入
-            </a-button> -->
+            <!--            <a-button
+                          danger
+                          :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                          title="删除"
+                          :loading="delLoading"
+                          @click="handleDelete(selectedRowKeys, '')"
+                        >
+                          <template #icon>
+                            <delete-outlined/>
+                          </template>
+                          删除
+                        </a-button> -->
+            <!--          <a-button
+                        title="导入"
+                        type="primary"
+                        ghost
+                        @click="handleImport"
+                      >
+                        <template #icon>
+                          <import-outlined/>
+                        </template>
+                        导入
+                      </a-button> -->
           </a-space>
         </template>
         <template #toolBarRight>
@@ -77,13 +77,13 @@
             >
               附件
             </a-button>
-<!--            <a-button
-              type="link"
-              class="inner-btn"
-              @click="handleDelete([record.id], 'row')"
-            >
-              删除
-            </a-button> -->
+            <!--            <a-button
+                          type="link"
+                          class="inner-btn"
+                          @click="handleDelete([record.id], 'row')"
+                        >
+                          删除
+                        </a-button> -->
           </template>
         </template>
       </AvicTable>
@@ -103,14 +103,16 @@
         @ok="handleOk"
         width="60%"
       >
+<!--        :form-type="(props.mainBpm && props.mainBpm !== '拟稿中') ? 'detail' :'add'"-->
         <AvicUploader
           element-id="1"
-          form-type="add"
+          form-type="detail"
           ref="uploadFile"
           save-type="Disk"
           :allow-download="true"
           :allow-preview="true"
           :allow-delete="true"
+          :allowAdd="false"
           :allow-update-secret-level="true"
           :form-id="attachId"
           :draggable="true"
@@ -138,6 +140,10 @@ const { proxy } = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
+    type: String,
+    default: ''
+  },
+  mainBpm: {
     type: String,
     default: ''
   }
