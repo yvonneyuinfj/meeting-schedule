@@ -286,7 +286,7 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'pmsTaskNo'">
+          <template v-else-if="column.dataIndex === 'pmsTaskNo' && record.bpmState !== null">
             <a @click="handleFlowDetail(record)">
               {{ record.pmsTaskNo }}
             </a>
@@ -332,12 +332,12 @@ import type {
 import {
   delPmsProcurementInformationReleaseApplication,
   exportExcel,
+  saveFormAndStartProcess,
   listPmsProcurementInformationReleaseApplicationByPage
 } from '@/api/avic/mms/pms/PmsProcurementInformationReleaseApplicationApi'; // 引入模块API
 import PmsProcurementInformationReleaseApplicationAdd from './PmsProcurementInformationReleaseApplicationAdd.vue'; // 引入添加页面组件
 import PmsProcurementInformationReleaseApplicationEdit from './PmsProcurementInformationReleaseApplicationEdit.vue'; // 引入编辑页面组件
 import flowUtils, { openFlowDetail, startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
-import { saveFormAndStartProcess } from '@/api/avic/mms/pms/PmsProcurementRequirementsApi';
 import PmsDeliveryDetailTabManage from './PmsDeliveryDetailTabManage.vue';
 
 const { proxy } = getCurrentInstance();
@@ -492,7 +492,7 @@ const columns = [
 ];
 const queryForm = ref<PmsProcurementInformationReleaseApplicationDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 });
 const props = defineProps({
   formId: {

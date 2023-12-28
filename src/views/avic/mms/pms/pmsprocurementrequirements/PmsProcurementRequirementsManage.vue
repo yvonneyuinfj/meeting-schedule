@@ -349,7 +349,7 @@
               <template v-if="column.dataIndex  === 'id'">
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
               </template>
-              <template v-else-if="column.dataIndex === 'secretLevelName'">
+              <template v-else-if="column.dataIndex === 'secretLevelName' && record.bpmState !== null">
                 <a @click="handleFlowDetail(record)">
                   {{ record.secretLevelName }}
                 </a>
@@ -650,7 +650,7 @@ const props = defineProps({
 });
 const queryForm = ref<PmsProcurementRequirementsDto>({
   bpmState: 'all',
-  bpmType: 'all'
+  bpmType: 'my'
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数
@@ -918,8 +918,8 @@ function handleTableChange(pagination, filters, sorter) {
 
 /** 提交流程 */
 function handleStartFlow() {
-  if (pmsProcurementRequirementsLManage.value.list.length == 1) {
-    proxy.$message.warning('请编辑设备信息再提交流程！');
+  if (pmsProcurementRequirementsLManage.value.list.length === 0) {
+    proxy.$message.warning('请编辑评分再提交流程！');
     return;
   }
   if (selectedRows.value.length !== 1) {

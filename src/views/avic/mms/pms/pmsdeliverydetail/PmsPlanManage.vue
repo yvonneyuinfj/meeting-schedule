@@ -594,7 +594,7 @@ onMounted(() => {
 function getList() {
   queryParam.searchParams.managerUserId = proxy.$getLoginUser().id;
   queryParam.searchParams.planStatus = '5';
-  queryParam.searchParams.mergeFlag = '0';
+  // queryParam.searchParams.mergeFlag = '0';
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;

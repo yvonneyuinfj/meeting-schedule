@@ -378,7 +378,7 @@ const columns = [
 ];
 const queryForm = ref<PmsDeliveryDetailDesignerDto>({
   bpmState: 'all',
-  bpmType: 'all',
+  bpmType: 'my',
   pmsPlanId: props.mainId
 });
 // 高级查询对象
