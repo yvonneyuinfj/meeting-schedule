@@ -403,6 +403,24 @@ const columns = [
     align: 'left'
   },
   {
+    title: '送检状态',
+    dataIndex: 'checkStatusName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '退回原因',
+    dataIndex: 'rejectReason',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '登记日期',
     dataIndex: 'receiveDate',
     ellipsis: true,
@@ -681,6 +699,14 @@ function handleCheck(ids, type) {
   if (!ids || ids.length == 0) {
     proxy.$message.warning('请选择提交的数据！');
     return;
+  }
+  let changedData = list.value.filter(i => selectedRowKeys.value.indexOf(i.id) !== -1).map(i => toRaw(i));
+  for (const detail of changedData) {
+    console.log(detail, 'ha');
+    if (detail.checkStatus === '5') {
+      proxy.$message.warning('已送检数据请勿重复提交！');
+      return;
+    }
   }
   proxy.$confirm({
     title: `确认要提交${type == 'row' ? '当前行的' : '选择的'}数据吗?`,

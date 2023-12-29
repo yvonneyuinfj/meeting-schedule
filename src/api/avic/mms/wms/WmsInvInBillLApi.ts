@@ -1,8 +1,10 @@
 import request from '@/utils/request';
-import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
-import type { downloadParam } from '@/utils/download-util';
-import { downloadSysFile } from '@/utils/download-util';
+import type {BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel} from '@/api/model/baseModel';
+import type {downloadParam} from '@/utils/download-util';
+import {downloadSysFile} from '@/utils/download-util';
+
 const basePath = '/mms/wms/wmsinvinbillls';
+
 /** 入库单子表 */
 export interface WmsInvInBillLDto extends BaseBeanModel {
   /** 密级 */
@@ -297,24 +299,34 @@ export interface WmsInvInBillLDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listWmsInvInBillLByPage (
+export function listWmsInvInBillLByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<WmsInvInBillLDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 保存表单数据 */
-export function saveWmsInvInBillL (form: [WmsInvInBillLDto]): Promise<ResponseBaseData<any>> {
+export function saveWmsInvInBillL(form: [WmsInvInBillLDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 根据id集合删除数据 */
-export function delWmsInvInBillL (ids: [string]): Promise<ResponseBaseData<any>> {
-  return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
+export function delWmsInvInBillL(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.delete(basePath + '/delete-by-ids/v1', {data: ids});
+}
+
+/** 入库登账 */
+export function doWmsInvInRegister(list: any[]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/doWmsInvInRegister', list);
+}
+
+/** 退回 */
+export function doBack(list: any[]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/doBack', list);
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,
