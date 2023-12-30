@@ -33,10 +33,10 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     //   { required: true, message: '是否科研用不能为空', trigger: 'change' }
     // ],
     applyDeptId: [
-      { required: true, message: '申请部门id不能为空', trigger: 'change' }
+      { required: true, message: '申请部门不能为空', trigger: 'change' }
     ],
     handlePersonId: [
-      { required: true, message: '经办人id不能为空', trigger: 'change' }
+      { required: true, message: '经办人不能为空', trigger: 'change' }
     ],
     applyDate: [
       { required: true, message: '申请时间不能为空', trigger: 'change' }
