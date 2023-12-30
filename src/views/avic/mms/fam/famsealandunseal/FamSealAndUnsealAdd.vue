@@ -161,4 +161,7 @@ const {
   props: props,
   emit: emit
 });
+watch(() => form.value.applyNo, newV => {
+  form.value.title = proxy.$getLoginUser().name + newV + '封存/启封申请';
+})
 </script>

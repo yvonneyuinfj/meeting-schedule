@@ -63,7 +63,7 @@ export function useFamSealAndUnsealForm({ props: props, emit: emit }) {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy.$colLayout4; // 调用布局公共方法
+  const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const autoCode = ref(null); // 自动编码ref
   const secretLevelList = ref([]); // SECRET_LEVEL通用代码

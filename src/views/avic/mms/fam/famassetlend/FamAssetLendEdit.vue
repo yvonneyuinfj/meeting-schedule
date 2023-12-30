@@ -74,11 +74,11 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="lesseeDeptId" label="承租单位">
-              <AvicCommonSelect
-                v-model:value="form.lesseeDeptId"
-                type="deptSelect"
-                placeholder="请选择承租单位"
-                :defaultShowValue="form.lesseeDeptIdAlias"
+                <a-input
+                  v-model:value="form.lesseeDeptId"
+                  :maxLength="64"
+                  :auto-focus="true"
+                  placeholder="请输入承租单位"
               />
             </a-form-item>
           </a-col>

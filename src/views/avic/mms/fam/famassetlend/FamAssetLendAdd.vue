@@ -73,10 +73,11 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="lesseeDeptId" label="承租单位">
-              <AvicCommonSelect
-                v-model:value="form.lesseeDeptId"
-                type="deptSelect"
-                placeholder="请选择承租单位"
+                <a-input
+                  v-model:value="form.lesseeDeptId"
+                  :maxLength="64"
+                  :auto-focus="true"
+                  placeholder="请输入承租单位"
               />
             </a-form-item>
           </a-col>
@@ -181,9 +182,7 @@ const props = defineProps({
 });
 const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
-onMounted(()=>{
-  form.value.title = proxy.$getLoginUser().name + dayjs(new Date()).format('YYYYMMDD') + '出租申请';
-});
+
 const {
   form,
   formRef,
@@ -200,4 +199,7 @@ const {
   props: props,
   emit: emit
 });
+watch(() => form.value.applyNo, newV => {
+  form.value.title = proxy.$getLoginUser().name + newV + '出租/出借申请';
+})
 </script>

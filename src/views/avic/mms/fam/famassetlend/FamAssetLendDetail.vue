@@ -72,10 +72,9 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('lesseeDeptId')">
           <a-form-item name="lesseeDeptId" label="承租单位" :rules="fieldRequired('lesseeDeptId')" has-feedback>
-            <AvicCommonSelect
-              v-model:value="form.lesseeDeptId"
-              type="deptSelect"
-              :defaultShowValue="form.lesseeDeptIdAlias"
+              <a-input
+                v-model:value="form.lesseeDeptId"
+                :auto-focus="true"
               :disabled="fieldDisabled('lesseeDeptId')"
             />
           </a-form-item>
