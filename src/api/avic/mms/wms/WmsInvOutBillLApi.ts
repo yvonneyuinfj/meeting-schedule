@@ -211,6 +211,12 @@ export function listWmsInvOutBillLByPage (
 ): Promise<ResponsePageData<WmsInvOutBillLDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
+/** 获取物资出库列表分页数据 */
+export function inventoryListPage (
+  param: QueryParamModel
+): Promise<ResponsePageData<WmsInvOutBillLDto>> {
+  return request.post(basePath + '/inventoryList', param);
+}
 
 /** 根据id加载数据 */
 export function getWmsInvOutBillL (id: string): Promise<ResponseBaseData<WmsInvOutBillLDto>> {
@@ -225,6 +231,11 @@ export function saveWmsInvOutBillL (form: WmsInvOutBillLDto): Promise<ResponseBa
 /** 根据id集合删除数据 */
 export function delWmsInvOutBillL (ids: [string]): Promise<ResponseBaseData<any>> {
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
+}
+
+/** 出库登账 */
+export function doWmsInvOutRegister(list: any[]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/doWmsInvOutRegister', list);
 }
 
 /** 导出Excel */

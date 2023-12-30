@@ -9,10 +9,10 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="单据状态">
                   <a-select v-model:value="queryForm.outBillLStatus"
-                    :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
-                    :show-search="true" :allow-clear="true" placeholder="请选择单据状态">
+                            :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                            :show-search="true" :allow-clear="true" placeholder="请选择单据状态">
                     <a-select-option v-for="item in outBillLStatusList" :key="item.sysLookupTlId"
-                      :value="item.lookupCode">
+                                     :value="item.lookupCode">
                       {{ item.lookupName }}
                     </a-select-option>
                   </a-select>
@@ -21,8 +21,8 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="密级">
                   <a-select v-model:value="queryForm.secretLevel"
-                    :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
-                    :show-search="true" :allow-clear="true" placeholder="请选择密级">
+                            :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                            :show-search="true" :allow-clear="true" placeholder="请选择密级">
                     <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
                       {{ item.lookupName }}
                     </a-select-option>
@@ -32,7 +32,7 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="计划类型">
                   <a-input v-model:value="queryForm.planType" placeholder="请输入计划类型" :allow-clear="true"
-                    @pressEnter="handleQuery" />
+                           @pressEnter="handleQuery"/>
                 </a-form-item>
               </a-col>
 
@@ -40,17 +40,17 @@
                 <div class="table-page-search-submitButtons">
                   <a-space>
                     <a-button type="primary" @click="handleQuery">
-                      <search-outlined />
+                      <search-outlined/>
                       查询
                     </a-button>
                     <a-button type="primary" @click="resetQuery" ghost>
-                      <redo-outlined />
+                      <redo-outlined/>
                       重置
                     </a-button>
                     <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                       {{ advanced ? '收起' : '展开' }}
-                      <up-outlined v-if="advanced" />
-                      <down-outlined v-else />
+                      <up-outlined v-if="advanced"/>
+                      <down-outlined v-else/>
                     </a-button>
                   </a-space>
                 </div>
@@ -61,53 +61,44 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable ref="wmsInvOutBillL" table-key="wmsInvOutBillL" :columns="columns" :row-key="record => record.id"
-            :data-source="list" :loading="loading" :row-selection="{
+                     :data-source="list" :loading="loading" :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }" :pageParameter="queryParam.pageParameter" :total="totalPage" rowClickSelectionType="radio"
-            @change="handleTableChange" @refresh="getList">
+                     @change="handleTableChange" @refresh="getList">
             <template #toolBarLeft>
               <a-space>
-                <a-button v-hasPermi="['wmsInvOutBillL:add']" title="退回" type="primary" @click="handleAdd">
+                <a-button v-hasPermi="['wmsInvOutBillL:add']" title="退回" type="primary" @click="handleBack">
                   <template #icon>
-                    <avic-icon svg='avic-reply-fill' />
+                    <avic-icon svg='avic-reply-fill'/>
                   </template>
                   退回
                 </a-button>
                 <a-button v-hasPermi="['wmsInvOutBillL:del']" title="提交校验" danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
-                  @click="handleDelete(selectedRowKeys, '')">
+                          :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading"
+                          @click="handleSubmitCheckRecord(selectedRowKeys, '')">
                   <template #icon>
-                    <avic-icon svg='avic-upload-2-fill' />
+                    <avic-icon svg='avic-upload-2-fill'/>
                   </template>
                   提交校验
                 </a-button>
-                <a-button v-hasPermi="['wmsInvOutBillL:import']" title="撤回提检" type="primary" ghost @click="handleImport">
+                <a-button v-hasPermi="['wmsInvOutBillL:import']" title="撤回提检" type="primary" ghost
+                          @click="handleBackCheckRecord">
                   <template #icon>
-                    <avic-icon svg='avic-reply-all-fill' />
+                    <avic-icon svg='avic-reply-all-fill'/>
                   </template>
                   撤回提检
                 </a-button>
-                <a-button v-hasPermi="['wmsInvOutBillL:export']" title="出库登账" type="primary" ghost @click="handleExport">
+                <a-button v-hasPermi="['wmsInvOutBillL:export']" title="出库登账" type="primary" ghost
+                          @click="handleInvOutRegister">
                   <template #icon>
-                    <avic-icon svg='avic-logout-box-r-fill' />
+                    <avic-icon svg='avic-logout-box-r-fill'/>
                   </template>
                   出库登账
                 </a-button>
-                <a-button v-hasPermi="['wmsInvOutBillL:export']" title="合计需求数量" type="primary" ghost
-                  @click="handleExport">
-                  <template #icon>
-                    <avic-icon svg='avic-checkbox-circle-line' />
-                  </template>
-                  合计需求数量
-                </a-button>
               </a-space>
-            </template>
-            <template #toolBarRight>
-              <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入申请单主表ID或原始单据表ID"
-                :allow-clear="true" @search="handleKeyWordQuery" />
             </template>
             <template #bodyCell="{ column, text, record, index }">
               <template v-if="column.dataIndex === 'id'">
@@ -123,7 +114,7 @@
                   编辑
                 </a-button>
                 <a-button v-hasPermi="['wmsInvOutBillL:del']" type="link" class="inner-btn"
-                  @click.stop="handleDelete([record.id], 'row')">
+                          @click.stop="handleDelete([record.id], 'row')">
                   删除
                 </a-button>
               </template>
@@ -132,48 +123,74 @@
         </div>
       </div>
       <!-- 添加页面弹窗 -->
-      <wms-inv-out-bill-l-add v-if="showAddModal" ref="addModal" @reloadData="getList" @close="showAddModal = false" />
+      <wms-inv-out-bill-l-add v-if="showAddModal" ref="addModal" @reloadData="getList" @close="showAddModal = false"/>
       <!-- 编辑页面弹窗 -->
       <wms-inv-out-bill-l-edit v-if="showEditModal" ref="editModal" :form-id="formId" @reloadData="getList"
-        @close="showEditModal = false" />
+                               @close="showEditModal = false"/>
       <!-- 详情页面弹窗 -->
       <wms-inv-out-bill-l-detail v-if="showDetailModal" ref="detailModal" :form-id="formId"
-        @close="showDetailModal = false" />
+                                 @close="showDetailModal = false"/>
       <AvicExcelImport v-if="showImportModal" :formData="excelParams" title="模板导入"
-        importUrl="/mms/wms/wmsinvoutbillls/importData/v1"
-        downloadTemplateUrl="/mms/wms/wmsinvoutbillls/downloadTemplate/v1" @reloadData="getList"
-        @close="showImportModal = false" />
+                       importUrl="/mms/wms/wmsinvoutbillls/importData/v1"
+                       downloadTemplateUrl="/mms/wms/wmsinvoutbillls/downloadTemplate/v1" @reloadData="getList"
+                       @close="showImportModal = false"/>
     </AvicPane>
     <AvicPane>
       <!-- 子表组件 -->
-      <!-- <wms-check-record-manage key="wmsCheckRecordManage" ref="wmsCheckRecordManage" :mainId="mainId" /> -->
       <a-tabs v-model:activeKey="activeKey" type="card">
         <a-tab-pane key="1" tab="库存信息">
-          <WmsCheckRecordManage key="mdsCustomerLManage" ref="mdsCustomerLManage" :mainId="mainId" />
+          <AvicSplit>
+            <AvicPane size="48%">
+              <WmsItemInventoryAllocation ref="wmsItemInventoryAllocation" :mainId="mainId"/>
+            </AvicPane>
+            <AvicPane size="4%">
+              <div style="height:100%;display: flex;flex-direction: column;justify-content: center">
+                <a-button type="primary" style="margin-bottom: 10px" @click="allocate">
+                  &gt;&gt;&gt;
+                </a-button>
+                <a-button type="primary" @click="allocateCancel">
+                  &lt;&lt;&lt;
+                </a-button>
+              </div>
+            </AvicPane>
+            <AvicPane>
+              <WmsInvOutAssignLManage ref="wmsInvOutAssignLManage" :mainId="mainId"/>
+            </AvicPane>
+          </AvicSplit>
+
         </a-tab-pane>
         <a-tab-pane key="2" tab="送检信息">
-          <WmsCheckRecordManage key="mdsCustomerLManage" ref="mdsCustomerLManage" :mainId="mainId" />
+          <WmsCheckRecordManage key="mdsCustomerLManage" ref="mdsCustomerLManage" :mainId="mainId"/>
         </a-tab-pane>
-        <a-tab-pane key="3" tab="ERP3.0台账">
-          <WmsCheckRecordManage key="mdsCustomerLManage" ref="mdsCustomerLManage" :mainId="mainId" />
-        </a-tab-pane>
+        <!--        <a-tab-pane key="3" tab="ERP3.0台账">-->
+        <!--        </a-tab-pane>-->
       </a-tabs>
     </AvicPane>
   </AvicSplit>
 </template>
 
 <script lang="ts" setup>
-import type { WmsInvOutBillLDto } from '@/api/avic/mms/wms/WmsInvOutBillLApi'; // 引入模块DTO
-import { listWmsInvOutBillLByPage, delWmsInvOutBillL, exportExcel } from '@/api/avic/mms/wms/WmsInvOutBillLApi'; // 引入模块API
+import type {WmsInvOutBillLDto} from '@/api/avic/mms/wms/WmsInvOutBillLApi'; // 引入模块DTO
+import {
+  inventoryListPage,
+  delWmsInvOutBillL,
+  exportExcel,
+  doWmsInvOutRegister
+} from '@/api/avic/mms/wms/WmsInvOutBillLApi'; // 引入模块API
 import WmsInvOutBillLAdd from './WmsInvOutBillLAdd.vue'; // 引入添加页面组件
 import WmsInvOutBillLEdit from './WmsInvOutBillLEdit.vue'; // 引入编辑页面组件
 import WmsInvOutBillLDetail from './WmsInvOutBillLDetail.vue'; // 引入详情页面组件
-import WmsCheckRecordManage from '../wmscheckrecord/WmsCheckRecordManage.vue'; // 引入子表页面组件
+import WmsCheckRecordManage from '../wmscheckrecord/WmsCheckRecordManage.vue';
+import WmsItemInventoryAllocation from "@/views/avic/mms/wms/wmsinvoutbilll/WmsItemInventoryAllocation.vue";
+import WmsInvOutAssignLManage from "@/views/avic/mms/wms/wmsinvoutassignl/WmsInvOutAssignLManage.vue";
+
 const activeKey = ref('1');
-const { proxy } = getCurrentInstance();
+const wmsItemInventoryAllocation = ref(null);
+const wmsInvOutAssignLManage = ref(null);
+const {proxy} = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '120px' },
-  wrapperCol: { flex: '1' }
+  labelCol: {flex: '120px'},
+  wrapperCol: {flex: '1'}
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
@@ -1005,7 +1022,7 @@ const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
 const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'wmsInvOutBillL' }); // 必填参数tableName全局唯一，与tableKey保持一致
+const excelParams = ref({tableName: 'wmsInvOutBillL'}); // 必填参数tableName全局唯一，与tableKey保持一致
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
@@ -1021,11 +1038,11 @@ const otherSysFlagList = ref([]); // 是否资源选择其它系统通用代码
 const ynInstallFlagList = ref([]); // 是否上机标识通用代码
 const outBillLStatusList = ref([]);//单据状态通用代码
 const lookupParams = [
-  { fieldName: 'ynClose', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-  { fieldName: 'cuttingFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-  { fieldName: 'otherSysFlag', lookUpType: 'YN_FLAG' },
-  { fieldName: 'ynInstallFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-  { fieldName: 'outBillLStatus', lookUpType: 'WMS_OUT_BILL_L_STATUS' }
+  {fieldName: 'ynClose', lookUpType: 'PLATFORM_YES_NO_FLAG'},
+  {fieldName: 'cuttingFlag', lookUpType: 'PLATFORM_YES_NO_FLAG'},
+  {fieldName: 'otherSysFlag', lookUpType: 'YN_FLAG'},
+  {fieldName: 'ynInstallFlag', lookUpType: 'PLATFORM_YES_NO_FLAG'},
+  {fieldName: 'outBillLStatus', lookUpType: 'WMS_OUT_BILL_L_STATUS'}
 ];
 
 // 主表传入子表的id
@@ -1047,24 +1064,25 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  listWmsInvOutBillLByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      // 设置表格初始选中项
-      if (list.value.length > 0) {
-        selectedRowKeys.value = [list.value[0]['id']];
-      } else {
-        selectedRowKeys.value = [];
-      }
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+  inventoryListPage(queryParam)
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        // 设置表格初始选中项
+        if (list.value.length > 0) {
+          selectedRowKeys.value = [list.value[0]['id']];
+        } else {
+          selectedRowKeys.value = [];
+        }
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
@@ -1075,12 +1093,14 @@ function getLookupList() {
     outBillLStatusList.value = result.outBillLStatus;
   });
 }
+
 /** 获取当前用户对应的文档密级 */
 function getUserFileSecretList() {
   proxy.$getUserFileSecretLevelList(result => {
     secretLevelList.value = result;
   });
 }
+
 /** 高级搜索按钮操作 */
 function handleQuery() {
   queryParam.searchParams = queryForm.value;
@@ -1088,15 +1108,18 @@ function handleQuery() {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 高级查询重置按钮操作  */
 function resetQuery() {
   queryForm.value = {};
   handleQuery();
 }
+
 /** 高级查询 展开/收起 */
 function toggleAdvanced() {
   advanced.value = !advanced.value;
 }
+
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -1107,24 +1130,29 @@ function handleKeyWordQuery(value) {
   queryParam.pageParameter.page = 1;
   getList();
 }
+
 /** 添加 */
 function handleAdd() {
   showAddModal.value = true;
 }
+
 /** 编辑 */
 function handleEdit(id) {
   formId.value = id;
   showEditModal.value = true;
 }
+
 /** 详情 */
 function handleDetail(record) {
   formId.value = record.id;
   showDetailModal.value = true;
 }
+
 /** 导入 */
 function handleImport() {
   showImportModal.value = true;
 }
+
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -1141,6 +1169,7 @@ function handleExport() {
     }
   });
 }
+
 /** 删除 */
 function handleDelete(ids, type) {
   if (ids.length == 0) {
@@ -1154,27 +1183,65 @@ function handleDelete(ids, type) {
     onOk: () => {
       delLoading.value = true;
       delWmsInvOutBillL(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
+
+function handleInvOutRegister(ids, e) {
+  if (e) {
+    e.stopPropagation(); // 阻止冒泡
+  }
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交的数据！');
+    return;
+  }
+  let changedData = list.value.filter(i => selectedRowKeys.value.indexOf(i.id) !== -1).map(i => toRaw(i));
+  for (const bill of changedData) {
+    if (bill.outBillLStatus === '5' || bill.outBillLStatus === '15' || bill.outBillLStatus === '40') {
+      let lookup = outBillLStatusList.value.find(i => i.lookupCode === bill.outBillLStatus);
+      proxy.$message.warning(`出库状态为【${lookup.lookupName}】，不能出库登账！`);
+      return;
+    }
+  }
+  proxy.$confirm({
+    title: `确认要提交选择的数据吗？`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      delLoading.value = true;
+      doWmsInvOutRegister(changedData).then(res => {
+        if (res.success) {
+          getList();
+          proxy.$message.success('操作成功！');
+        } else {
+          proxy.$message.error(res.message);
+        }
+      }).finally(() => {
+        delLoading.value = false;
+      });
+    }
+  });
+}
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -1185,7 +1252,22 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+function handleBack() {
+  proxy.$message.success('功能开发中！');
+}
 
+function handleSubmitCheckRecord() {
+  proxy.$message.success('功能开发中！');
+}
+function handleBackCheckRecord() {
+  proxy.$message.success('功能开发中！');
+}
+function allocate() {
+  proxy.$message.success('库存物料分配给出库单！');
+}
+function allocateCancel() {
+  proxy.$message.success('库存物料取消分配给出库单！');
+}
 </script>
 
 <style lang="less">

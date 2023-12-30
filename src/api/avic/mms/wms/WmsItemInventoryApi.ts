@@ -356,7 +356,7 @@ export function getWmsItemInventory (id: string): Promise<ResponseBaseData<WmsIt
 }
 
 /** 保存表单数据 */
-export function saveWmsItemInventory (form: WmsItemInventoryDto): Promise<ResponseBaseData<any>> {
+export function saveWmsItemInventory (form: [WmsItemInventoryDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 

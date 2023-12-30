@@ -313,41 +313,41 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button
-              v-hasPermi="['wmsItemTransaction:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['wmsItemTransaction:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-            <a-button
-              v-hasPermi="['wmsItemTransaction:import']"
-              title="导入"
-              type="primary"
-              ghost
-              @click="handleImport">
-              <template #icon>
-                 <import-outlined />
-              </template>
-              导入
-            </a-button>
+<!--            <a-button-->
+<!--              v-hasPermi="['wmsItemTransaction:add']"-->
+<!--              title="添加"-->
+<!--              type="primary"-->
+<!--              @click="handleAdd"-->
+<!--            >-->
+<!--              <template #icon>-->
+<!--                <plus-outlined />-->
+<!--              </template>-->
+<!--              添加-->
+<!--            </a-button>-->
+<!--            <a-button-->
+<!--              v-hasPermi="['wmsItemTransaction:del']"-->
+<!--              title="删除"-->
+<!--              danger-->
+<!--              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"-->
+<!--              :loading="delLoading"-->
+<!--              @click="handleDelete(selectedRowKeys, '')"-->
+<!--            >-->
+<!--              <template #icon>-->
+<!--                <delete-outlined />-->
+<!--              </template>-->
+<!--              删除-->
+<!--            </a-button>-->
+<!--            <a-button-->
+<!--              v-hasPermi="['wmsItemTransaction:import']"-->
+<!--              title="导入"-->
+<!--              type="primary"-->
+<!--              ghost-->
+<!--              @click="handleImport">-->
+<!--              <template #icon>-->
+<!--                 <import-outlined />-->
+<!--              </template>-->
+<!--              导入-->
+<!--            </a-button>-->
             <a-button
               v-hasPermi="['wmsItemTransaction:export']"
               title="导出"
@@ -654,13 +654,13 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    width: 120,
-    fixed: 'right'
-  }
+  // {
+  //   title: '操作',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   width: 120,
+  //   fixed: 'right'
+  // }
 ];
 const queryForm = ref<WmsItemTransactionDto>({});
 const queryParam = reactive({

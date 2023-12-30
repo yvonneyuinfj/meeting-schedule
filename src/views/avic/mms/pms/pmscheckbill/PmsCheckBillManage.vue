@@ -159,6 +159,9 @@
                 }
               "
             >
+              <template #icon>
+                <avic-icon svg='avic-upload-2-fill' />
+              </template>
               送检
             </a-button>
             <a-button
@@ -171,6 +174,9 @@
                 }
               "
             >
+              <template #icon>
+                <avic-icon svg='avic-logout-box-r-fill' />
+              </template>
               入库
             </a-button>
             <a-button
@@ -181,7 +187,7 @@
               @click="handleSendBack"
             >
               <template #icon>
-                <delete-outlined/>
+                <avic-icon svg='avic-reply-all-fill' />
               </template>
               退回
             </a-button>
