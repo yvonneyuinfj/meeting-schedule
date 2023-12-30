@@ -114,15 +114,15 @@
                       <search-outlined />
                       查询
                     </a-button>
-                    <a-button type="primary" @click="resetQuery" ghost>
+                    <a-button type="primary" @click="resetQuery" ghost style="margin-right:15px">
                       <redo-outlined />
                       重置
                     </a-button>
-                    <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                    <!-- <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                       {{ advanced ? '收起' : '展开' }}
                       <up-outlined v-if="advanced" />
                       <down-outlined v-else />
-                    </a-button>
+                    </a-button> -->
                   </a-space>
                 </div>
               </a-col>

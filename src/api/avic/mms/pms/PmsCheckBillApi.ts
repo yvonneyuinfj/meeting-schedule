@@ -1,8 +1,10 @@
 import request from '@/utils/request';
-import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
-import type { downloadParam } from '@/utils/download-util';
-import { downloadSysFile } from '@/utils/download-util';
+import type {BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel} from '@/api/model/baseModel';
+import type {downloadParam} from '@/utils/download-util';
+import {downloadSysFile} from '@/utils/download-util';
+
 const basePath = '/mms/pms/pmscheckbills';
+
 /** 采购到货检验单表 */
 export interface PmsCheckBillDto extends BaseBeanModel {
   /** 密级 */
@@ -198,35 +200,43 @@ export interface PmsCheckBillDto extends BaseBeanModel {
 }
 
 /** 获取分页数据 */
-export function listPmsCheckBillByPage (
+export function listPmsCheckBillByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<PmsCheckBillDto>> {
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
 /** 保存表单数据 */
-export function savePmsCheckBill (form: [PmsCheckBillDto]): Promise<ResponseBaseData<any>> {
+export function savePmsCheckBill(form: [PmsCheckBillDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
+
 /** 修改到货检验单，同时修改检验方案 */
-export function updateCheckBillWithPlan (form: [PmsCheckBillDto]): Promise<ResponseBaseData<any>> {
+export function updateCheckBillWithPlan(form: [PmsCheckBillDto]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/updateWithPlan', form);
 }
-export function sendBack (list: any): Promise<ResponseBaseData<any>> {
+
+export function sendBack(list: any): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/sendBack', list);
 }
 
 /** 根据id集合删除数据 */
-export function delPmsCheckBill (ids: [string]): Promise<ResponseBaseData<any>> {
-  return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
+export function delPmsCheckBill(ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.delete(basePath + '/delete-by-ids/v1', {data: ids});
 }
 
-export function updateCompType (ids: [string], sendType: string): Promise<ResponseBaseData<any>> {
-  return request.post(basePath + `/updateCompType/${sendType}`,  ids);
+/** 提交送检 */
+export function commitCheck(list: any[]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + `/commitCheck`, list);
+}
+
+/** 无需检验直接提交入库申请 */
+export function commitStorage(list: any[]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + `/commitStorage`, list);
 }
 
 /** 导出Excel */
-export function exportExcel (param: any) {
+export function exportExcel(param: any) {
   const download = {
     url: basePath + '/exportData/v1',
     data: param,

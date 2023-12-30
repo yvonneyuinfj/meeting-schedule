@@ -155,7 +155,7 @@
               :loading="saveLoading"
               @click="
                 event => {
-                  handleUpdateSendType(selectedRowKeys, event,'1');
+                  handleCommitCheck(selectedRowKeys, event);
                 }
               "
             >
@@ -167,7 +167,7 @@
               :loading="saveLoading"
               @click="
                 event => {
-                  handleUpdateSendType(selectedRowKeys, event,'5');
+                  handleCommitStorage(selectedRowKeys, event,'5');
                 }
               "
             >
@@ -347,8 +347,9 @@ import {
   savePmsCheckBill,
   delPmsCheckBill,
   exportExcel,
-  updateCompType, sendBack
-} from '@/api/avic/mms/pms/PmsCheckBillApi'; // 引入模块API
+  commitCheck, sendBack, commitStorage
+} from '@/api/avic/mms/pms/PmsCheckBillApi';
+import {doWmsInvInRegister} from "@/api/avic/mms/wms/WmsInvInBillLApi"; // 引入模块API
 
 const {proxy} = getCurrentInstance();
 const layout = {
@@ -560,17 +561,17 @@ const editingId = ref(''); // 正在编辑中的数据
 const compType = ref('0');
 const accordDescList = ref([]); // 文实相符通用代码
 const lookupParams = [
-  { fieldName: 'accordDesc', lookUpType: 'PMS_UP_TO_STANDARD' }
+  {fieldName: 'accordDesc', lookUpType: 'PMS_UP_TO_STANDARD'}
 ];
 
 onMounted(() => {
   // 加载表格数据
   getList();
-  getLookupList ();
+  getLookupList();
 });
 
 /** 获取通用代码  */
-function getLookupList () {
+function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     accordDescList.value = result.accordDesc;
   });
@@ -606,7 +607,7 @@ function handleQuery() {
 
 /** 高级查询 重置按钮操作  */
 function resetQuery() {
-  queryForm.value = { compType: '0'};
+  queryForm.value = {compType: '0'};
   handleQuery();
 }
 
@@ -730,26 +731,25 @@ function handleSaveAll() {
         proxy.$message.error('操作失败！');
         saveLoading.value = false;
       }
-    })
-      .catch(() => {
-        saveLoading.value = false;
-      });
+    }).finally(() => {
+      saveLoading.value = false;
+    });
   } else {
     saveLoading.value = false;
   }
 }
 
+// 退回
 function handleSendBack() {
   if (saveLoading.value) return;  // 规避正在保存时连续点击
   // 开始处理数据
-  saveLoading.value = true;
   let changedData = list.value.filter(i => selectedRowKeys.value.indexOf(i.id) !== -1).map(i => toRaw(i));
-  console.log(changedData, "<<<");
   if (!changedData || !changedData.length) {
     proxy.$message.warning('请先选择数据！');
     saveLoading.value = false;
+    return;
   }
-  let checkReason = true
+  let checkReason = true;
   for (const bill of changedData) {
     if (!bill.rejectReason) {
       bill.editable = true;
@@ -762,50 +762,101 @@ function handleSendBack() {
     saveLoading.value = false;
     return;
   }
-  sendBack(changedData).then(res => {
-    if (res.success) {
-      getList();
-      proxy.$message.success('操作成功！');
-      saveLoading.value = false;
-    } else {
-      proxy.$message.error('操作失败！');
-      saveLoading.value = false;
-    }
-  }).finally(() => {
-    saveLoading.value = false;
-  });
-}
-
-function handleUpdateSendType(ids, e, type) {
-  if (e) {
-    e.stopPropagation(); // 阻止冒泡
-  }
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要指定的数据！');
-    return;
-  }
   proxy.$confirm({
-    title: `确认要指定${type == 'row' ? '当前行的' : '选择的'}数据吗？`,
+    title: `确认要退回吗？`,
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
       saveLoading.value = true;
-      // 获取所有非新增的数据，执行后台删除逻辑，新增的数据直接界面删除
-      const updateIds = ids.filter(id => id.indexOf('newLine') == -1);
-      if (updateIds.length > 0) {
-        updateCompType(updateIds, type).then(res => {
-          if (res.success) {
-            getList();
-            proxy.$message.success('操作成功！');
-            saveLoading.value = false;
-          } else {
-            proxy.$message.error('操作失败！');
-            saveLoading.value = false;
-          }
-        }).finally(() => {
+      sendBack(changedData).then(res => {
+        if (res.success) {
+          getList();
+          proxy.$message.success('操作成功！');
           saveLoading.value = false;
-        });
-      }
+        } else {
+          proxy.$message.error('操作失败！');
+          saveLoading.value = false;
+        }
+      }).finally(() => {
+        saveLoading.value = false;
+      });
+    }
+  });
+
+}
+
+// 送检
+function handleCommitCheck(ids, e) {
+  if (e) {
+    e.stopPropagation(); // 阻止冒泡
+  }
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要送检的数据！');
+    return;
+  }
+  let changedData = list.value.filter(i => selectedRowKeys.value.indexOf(i.id) !== -1).map(i => toRaw(i));
+  for (const bill of changedData) {
+    bill.compType = '1'
+    if (!bill.accordDesc) {
+      proxy.$message.warning('文实相符列不能为空！');
+      return;
+    }
+  }
+
+  proxy.$confirm({
+    title: `确认要送检选择的数据吗？`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      saveLoading.value = true;
+      commitCheck(changedData).then(res => {
+        if (res.success) {
+          getList();
+          proxy.$message.success('操作成功！');
+        } else {
+          proxy.$message.error(res.message);
+        }
+      }).finally(() => {
+        saveLoading.value = false;
+      });
+    }
+  });
+}
+
+// 无需送检直接提交入库申请
+function handleCommitStorage(ids, e) {
+  if (e) {
+    e.stopPropagation(); // 阻止冒泡
+  }
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要提交的数据！');
+    return;
+  }
+  let changedData = list.value.filter(i => selectedRowKeys.value.indexOf(i.id) !== -1).map(i => toRaw(i));
+  for (const bill of changedData) {
+    bill.compType = '1'
+    if (!bill.accordDesc) {
+      proxy.$message.warning('文实相符列不能为空！');
+      return;
+    }
+  }
+
+  proxy.$confirm({
+    title: `确认要提交选择的数据吗？`,
+    okText: '确定',
+    cancelText: '取消',
+    onOk: () => {
+      saveLoading.value = true;
+      commitStorage(changedData).then(res => {
+        if (res.success) {
+          getList();
+          proxy.$message.success('操作成功！');
+        } else {
+          proxy.$message.error(res.message);
+        }
+      }).finally(() => {
+        saveLoading.value = false;
+      });
     }
   });
 }
@@ -940,7 +991,7 @@ function handleTableChange(pagination, filters, sorter) {
 }
 
 /** 控件变更事件  */
-function changeControlValue (values, record, column) {
+function changeControlValue(values, record, column) {
   let labels = [];
   if (Array.isArray(values)) {
     // 多选处理

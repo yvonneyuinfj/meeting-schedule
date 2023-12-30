@@ -155,7 +155,7 @@
               删除
             </a-button> -->
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+                v-hasPermi="['tpmTempMaintModifyPlan:release']"
                 title="下达"
                 :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 :loading="commitLoading"
@@ -164,7 +164,7 @@
               下达
             </a-button>
             <a-button
-                v-hasPermi="['tpmTempMaintModifyPlan:commit']"
+                v-hasPermi="['tpmTempMaintModifyPlan:return']"
                 title="退回"
                 :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 :loading="commitLoading"

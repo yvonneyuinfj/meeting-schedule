@@ -39,7 +39,6 @@
               </a-select>
             </a-form-item>
           </a-col>
-
           <a-col v-bind="colLayout.cols">
             <a-form-item label="制单状态">
               <a-select
@@ -67,7 +66,7 @@
                   <search-outlined />
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
+                <a-button type="primary" @click="resetQuery" ghost style="margin-right: 15px">
                   <redo-outlined />
                   重置
                 </a-button>
@@ -230,6 +229,14 @@
           <template v-else-if="column.dataIndex === 'attach'">
             <a @click="handleAttach(record)">查看</a>
           </template>
+          <template v-else-if="column.dataIndex === 'businessStatusName'">
+            <a-tag v-if="record['businessStatusName'] === '待指定'" color="blue">
+              {{ record['businessStatusName'] }}
+            </a-tag>
+            <a-tag v-if="record['businessStatusName'] === '已退回'" color="red">
+              {{ record['businessStatusName'] }}
+            </a-tag>
+          </template>
         </template>
       </AvicTable>
     </div>
@@ -259,7 +266,7 @@ import {
 const { proxy } = getCurrentInstance();
 const commitLoading = ref(false); // 提交按钮loading状态
 const layout = {
-  labelCol: { flex: '120px' },
+  labelCol: { flex: '90px' },
   wrapperCol: { flex: '1' }
 };
 const colLayout = proxy.$colLayout4; // 调用布局公共方法
@@ -508,7 +515,7 @@ const columns = [
     dataIndex: 'secretLevelName',
     key: 'secretLevelName',
     ellipsis: true,
-    minWidth: 120,
+    width: 80,
     resizable: true,
     align: 'center'
   },
@@ -517,6 +524,7 @@ const columns = [
     dataIndex: 'businessStatusName',
     key: 'businessStatusName',
     ellipsis: true,
+    sorter: true,
     width: 100,
     resizable: true,
     align: 'center',

@@ -568,7 +568,7 @@ const columns = [
 ];
 const queryForm = ref<FamSealAndUnsealDto>({
   bpmState: 'all',
-  bpmType: 'my'
+  bpmType: 'all'
 }); // 高级查询对象
 const queryParam = reactive({
   // 请求表格数据参数
