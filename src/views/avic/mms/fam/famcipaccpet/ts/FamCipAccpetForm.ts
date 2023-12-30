@@ -37,8 +37,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     orderValue: [{ required: true, message: '合同金额不能为空', trigger: 'change' }],
     procureDeptName: [{ required: true, message: '采购部门名称不能为空', trigger: 'change' }],
     accpetDate: [{ required: true, message: '验收日期不能为空', trigger: 'change' }],
-    managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
-    receiveDeptName: [{ required: true, message: '接收部门名称不能为空', trigger: 'change' }],
+    managerDeptId: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
+    receiveDeptId: [{ required: true, message: '使用部门名称不能为空', trigger: 'change' }],
     assetClass: [{ required: true, message: '资产属性不能为空', trigger: 'change' }],
     fundSource: [{ required: true, message: '资金来源不能为空', trigger: 'change' }],
     otherMatter: [{ required: true, message: '其他事项不能为空', trigger: 'change' }],
@@ -64,12 +64,14 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const equipmentTypeList = ref([]); //设备类型通用代码
   const purchWayList = ref([]); //购置方式通用代码
   const fundSourceList = ref([]); // 资产来源通用代码
+  const ynDemolishedList = ref([]); // 是否已拆除无线模块通用代码
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
     { fieldName: 'purchWay', lookUpType: 'FAM_PURCH_WAY' },
     { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' },
-    { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' }
+    { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
+     { fieldName: 'ynDemolished', lookUpType: 'PLATFORM_YES_NO_FLAG' }
   ];
   const authJson = ref(null);
   const bodyStyle = {
@@ -124,6 +126,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       equipmentTypeList.value = result.equipmentType;
       purchWayList.value = result.purchWay;
       fundSourceList.value = result.fundSource;
+      ynDemolishedList.value = result.ynDemolished;
     });
   }
 
@@ -482,6 +485,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWayList,
     fundSourceList,
     equipmentTypeList,
+    ynDemolishedList,
     uploadFile,
     afterUploadEvent,
     attachmentRequired,

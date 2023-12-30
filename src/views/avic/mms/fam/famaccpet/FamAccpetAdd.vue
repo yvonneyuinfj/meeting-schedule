@@ -182,6 +182,24 @@
               />
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+                      <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
+                        <AvicCommonSelect
+                          v-model:value="form.managerDeptId"
+                          type="deptSelect"
+                          placeholder="请选择主管部门名称"
+                        />
+                      </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+                    <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
+                      <AvicCommonSelect
+                        v-model:value="form.receiveDeptId"
+                        type="deptSelect"
+                        placeholder="请选择使用部门名称"
+                      />
+                    </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input
@@ -219,6 +237,46 @@
               </a-select>
             </a-form-item>
           </a-col>
+           <a-col v-bind="colLayout.cols">
+                      <a-form-item name="ynArchived" label="是否归档案">
+                        <a-select
+                          v-model:value="form.ynArchived"
+                          :get-popup-container="triggerNode => triggerNode.parentNode"
+                          option-filter-prop="children"
+                          :show-search="true"
+                          :allow-clear="true"
+                          placeholder="请选择是否归档案"
+                        >
+                          <a-select-option
+                            v-for="item in ynArchivedList"
+                            :key="item.sysLookupTlId"
+                            :value="item.lookupCode"
+                          >
+                            {{ item.lookupName }}
+                          </a-select-option>
+                        </a-select>
+                      </a-form-item>
+                    </a-col>
+                    <a-col v-bind="colLayout.cols">
+                      <a-form-item name="ynDemolished" label="是否已拆除无线模块">
+                        <a-select
+                          v-model:value="form.ynDemolished"
+                          :get-popup-container="triggerNode => triggerNode.parentNode"
+                          option-filter-prop="children"
+                          :show-search="true"
+                          :allow-clear="true"
+                          placeholder="请选择是否已拆除无线模块"
+                        >
+                          <a-select-option
+                            v-for="item in ynDemolishedList"
+                            :key="item.sysLookupTlId"
+                            :value="item.lookupCode"
+                          >
+                            {{ item.lookupName }}
+                          </a-select-option>
+                        </a-select>
+                      </a-form-item>
+                    </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item v-if="annual === '2'"
                          name="overhaulRequireCode"
@@ -362,6 +420,8 @@ const {
   loading,
   secretLevelList,
   saveAndStartProcess,
+  ynArchivedList,
+  ynDemolishedList,
   assetTypeList,
   accpetTypeList,
   purchWayList,
