@@ -42,6 +42,12 @@ export function useFamHandleForm({ props: props, emit: emit }) {
     ],
     approvalNumber: [
       { required: true, message: '批复文号不能为空', trigger: 'change' }
+    ],
+    handleReason: [
+      { required: true, message: '处置理由不能为空', trigger: 'change' }
+    ],
+    assetAlternateSolution: [
+      { required: true, message: '资产更新替换方案不能为空', trigger: 'change' }
     ]
   };
   const famHandleListEdit = ref();

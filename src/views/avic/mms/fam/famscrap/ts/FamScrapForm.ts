@@ -40,6 +40,12 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     ],
     applyDate: [
       { required: true, message: '申请时间不能为空', trigger: 'change' }
+    ],
+    handleReason: [
+      { required: true, message: '处置理由不能为空', trigger: 'change' }
+    ],
+    assetAlternateSolution: [
+      { required: true, message: '资产更新替换方案不能为空', trigger: 'change' }
     ]
   };
   const famScrapListEdit = ref();
