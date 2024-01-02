@@ -228,9 +228,8 @@
             </a-button>
             <a-button
                 v-hasPermi="['pmsProcurementInformationReleaseApplication:edit']"
-                ghost
                 title="编辑"
-                type="primary"
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                 @click="handleEdit"
             >
               <template #icon>
@@ -286,9 +285,9 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'pmsTaskNo' && record.bpmState !== null">
+          <template v-else-if="column.dataIndex === 'reqPlanName' && record.bpmState !== null">
             <a @click="handleFlowDetail(record)">
-              {{ record.pmsTaskNo }}
+              {{ record.reqPlanName }}
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'procurementRequirements'">
@@ -356,6 +355,15 @@ const columns = [
     fixed: 'left'
   },
   {
+    title: '采购计划名称',
+    dataIndex: 'reqPlanName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '采购任务编号',
     dataIndex: 'pmsTaskNo',
     ellipsis: true,
@@ -367,15 +375,6 @@ const columns = [
   {
     title: '采购计划号',
     dataIndex: 'reqPlanNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购计划名称',
-    dataIndex: 'reqPlanName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,

@@ -284,12 +284,13 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
+    title: '文件名称',
+    dataIndex: 'fileName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   // {
   //   title: '计划ID',
@@ -303,15 +304,6 @@ const columns = [
   {
     title: 'PDM归档编号',
     dataIndex: 'pdmArchiveNumber',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '文件名称',
-    dataIndex: 'fileName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -348,6 +340,14 @@ const columns = [
     title: '附件',
     dataIndex: 'attach',
     key: 'attach',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

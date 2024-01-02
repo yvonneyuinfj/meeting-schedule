@@ -171,7 +171,7 @@
         <a-row>
         </a-row>
         <a-row>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols2">
             <a-form-item label="资质要求" name="qualificationRequirements">
               <a-checkbox-group v-model:value="form.qualificationRequirements">
                 <a-checkbox
@@ -219,7 +219,7 @@
         <a-row>
         </a-row>
         <a-row>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols2">
             <a-form-item label="专业领域" name="professionalField">
               <a-checkbox-group v-model:value="form.professionalField">
                 <a-checkbox

@@ -287,7 +287,7 @@ const {
   secretLevelList,
   procurementMethodList,
   supplierSelectionCriteriaList,
-  // procureStageList,
+  procureStageList,
   processingTypeList,
   publishInformationSecurityLevelList,
   procurementTaskClassificationList,

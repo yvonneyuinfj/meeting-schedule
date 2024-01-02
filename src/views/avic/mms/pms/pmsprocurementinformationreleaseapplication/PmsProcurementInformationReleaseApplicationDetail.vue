@@ -163,7 +163,7 @@
       <a-row>
       </a-row>
       <a-row>
-        <a-col v-if="fieldVisible('qualificationRequirements')" v-bind="colLayout.cols">
+        <a-col v-if="fieldVisible('qualificationRequirements')" v-bind="colLayout.cols2">
           <a-form-item :rules="fieldRequired('qualificationRequirements')" has-feedback
                        label="资质要求" name="qualificationRequirements">
             <a-checkbox-group v-model:value="form.qualificationRequirements"
@@ -213,7 +213,7 @@
       <a-row>
       </a-row>
       <a-row>
-        <a-col v-if="fieldVisible('professionalField')" v-bind="colLayout.cols">
+        <a-col v-if="fieldVisible('professionalField')" v-bind="colLayout.cols2">
           <a-form-item :rules="fieldRequired('professionalField')" has-feedback label="专业领域"
                        name="professionalField">
             <a-checkbox-group v-model:value="form.professionalField" :disabled="fieldDisabled('professionalField')">

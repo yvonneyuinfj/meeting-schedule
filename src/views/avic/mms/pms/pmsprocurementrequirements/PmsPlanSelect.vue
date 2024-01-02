@@ -348,7 +348,7 @@
 </template>
 <script lang="ts" setup>
 import type { PmsPlanDto } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块DTO
-import { listPmsPlanByPage } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块API
+import { listPmsPlanProcurementByPage } from '@/api/avic/mms/pms/PmsPlanApi'; // 引入模块API
 const $emit = defineEmits(['select', 'handleRowDblClick']);
 const pmsPlanSelect = ref();
 const { proxy } = getCurrentInstance();
@@ -367,12 +367,13 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
+    title: '采购计划名称',
+    dataIndex: 'reqPlanName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '采购任务编号',
@@ -534,6 +535,14 @@ const columns = [
     align: 'center'
   },
   {
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '操作',
     dataIndex: 'action',
     ellipsis: true,
@@ -582,11 +591,12 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
-  queryParam.searchParams.reqUserId = proxy.$getLoginUser().id;
+  // queryParam.searchParams.reqUserId = proxy.$getLoginUser().id;
+  queryParam.searchParams.planStatus = '5';
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
-  listPmsPlanByPage(queryParam)
+  listPmsPlanProcurementByPage(queryParam)
       .then(response => {
         list.value = response.data.result;
         totalPage.value = response.data.pageParameter.totalCount;

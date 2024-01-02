@@ -62,16 +62,8 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: 'PDM归档编号',
-    dataIndex: 'pdmArchiveNumber',
+    title: '文件名称',
+    dataIndex: 'fileName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -79,8 +71,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '文件名称',
-    dataIndex: 'fileName',
+    title: 'PDM归档编号',
+    dataIndex: 'pdmArchiveNumber',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -117,6 +109,14 @@ const columns = [
     title: '附件',
     dataIndex: 'attach',
     key: 'attach',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

@@ -143,6 +143,11 @@ export function listPmsPlanInfoReleaseByPage(
 ): Promise<ResponsePageData<PmsPlanDto>> {
   return request.post(basePath + '/search-info-release-by-page/v1', param);
 }
+export function listPmsPlanProcurementByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<PmsPlanDto>> {
+  return request.post(basePath + '/search-procurement-by-page/v1', param);
+}
 
 /** 根据id加载数据 */
 export function getPmsPlan(id: string): Promise<ResponseBaseData<PmsPlanDto>> {

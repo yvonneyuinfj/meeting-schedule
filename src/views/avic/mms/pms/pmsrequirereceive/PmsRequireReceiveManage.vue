@@ -248,14 +248,6 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '采购计划号',
     dataIndex: 'reqPlanNo',
     ellipsis: true,
@@ -414,13 +406,14 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
-    // },
-    // {
-    //   title: '操作',
-    //   dataIndex: 'action',
-    //   ellipsis: true,
-    //   width: 120,
-    //   fixed: 'right'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   }
 ];
 const queryForm = ref<PmsRequireReceiveDto>({});

@@ -398,9 +398,9 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'secretLevelName'">
+          <template v-else-if="column.dataIndex === 'reqPlanName'">
             <a @click="handleDetail(record)">
-              {{ record.secretLevelName }}
+              {{ record.reqPlanName }}
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
@@ -476,12 +476,13 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
+    title: '采购计划名称',
+    dataIndex: 'reqPlanName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '采购任务编号',
@@ -494,15 +495,6 @@ const columns = [
   {
     title: '采购计划号',
     dataIndex: 'reqPlanNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购计划名称',
-    dataIndex: 'reqPlanName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -647,6 +639,14 @@ const columns = [
   {
     title: '技术文件完成日期',
     dataIndex: 'techDocCompleteDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

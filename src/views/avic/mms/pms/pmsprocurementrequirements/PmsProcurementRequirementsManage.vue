@@ -349,9 +349,9 @@
               <template v-if="column.dataIndex  === 'id'">
                 {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
               </template>
-              <template v-else-if="column.dataIndex === 'secretLevelName' && record.bpmState !== null">
+              <template v-else-if="column.dataIndex === 'reqPlanName' && record.bpmState !== null">
                 <a @click="handleFlowDetail(record)">
-                  {{ record.secretLevelName }}
+                  {{ record.reqPlanName }}
                 </a>
               </template>
               <template v-else-if="column.dataIndex === 'attach'">
@@ -447,12 +447,13 @@ const columns = [
   //   align: 'left'
   // },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
+    title: '采购计划名称',
+    dataIndex: 'reqPlanName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '采购任务编号',
@@ -466,15 +467,6 @@ const columns = [
   {
     title: '采购计划号',
     dataIndex: 'reqPlanNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购计划名称',
-    dataIndex: 'reqPlanName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -600,6 +592,14 @@ const columns = [
     title: '交付明细',
     dataIndex: 'attach',
     key: 'attach',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -954,7 +954,7 @@ function handleStartFlow() {
                     openFlowDetail(bpmResult.value, props.bpmOperatorRefresh);
                   }
                   proxy.$message.info('提交流程成功！');
-                  handleQuery();
+                  getList();
                 } else {
                   proxy.$message.info('提交流程失败！');
                 }

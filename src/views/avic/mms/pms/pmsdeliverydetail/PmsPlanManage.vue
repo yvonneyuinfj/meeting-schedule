@@ -366,12 +366,13 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
+    title: '采购计划名称',
+    dataIndex: 'reqPlanName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '采购任务编号',
@@ -392,15 +393,6 @@ const columns = [
   {
     title: '采购计划号',
     dataIndex: 'reqPlanNo',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '采购计划名称',
-    dataIndex: 'reqPlanName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -548,6 +540,14 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   }
 ];
 const queryForm = ref<PmsPlanDto>({});

@@ -367,12 +367,13 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '密级',
-    dataIndex: 'secretLevelName',
+    title: '采购计划名称',
+    dataIndex: 'reqPlanName',
     ellipsis: true,
+    sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'center'
+    align: 'left'
   },
   {
     title: '采购任务编号',
@@ -410,6 +411,14 @@ const columns = [
   {
     title: '是否编制采购要求',
     dataIndex: 'workOutName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -456,7 +465,8 @@ onMounted(() => {
 
 /** 查询数据  */
 function getList() {
-  queryParam.searchParams.abutmentUserId = proxy.$getLoginUser().id;
+  // queryParam.searchParams.abutmentUserId = proxy.$getLoginUser().id;
+  queryParam.searchParams.planStatus = '10';
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
