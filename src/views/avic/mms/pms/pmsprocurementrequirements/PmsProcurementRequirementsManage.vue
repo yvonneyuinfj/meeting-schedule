@@ -950,9 +950,10 @@ function handleStartFlow() {
               .then(res => {
                 if (res.success) {
                   bpmResult.value = res.data;
-                  if (bpmResult.value) {
-                    openFlowDetail(bpmResult.value, props.bpmOperatorRefresh);
-                  }
+                  // if (bpmResult.value) {
+                  //   openFlowDetail(bpmResult.value, props.bpmOperatorRefresh);
+                  // }
+                  handleFlowDetail(postData);
                   proxy.$message.info('提交流程成功！');
                   getList();
                 } else {

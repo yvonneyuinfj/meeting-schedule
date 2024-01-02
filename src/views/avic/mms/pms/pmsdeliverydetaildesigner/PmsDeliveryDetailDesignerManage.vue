@@ -212,9 +212,9 @@
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          <template v-else-if="column.dataIndex === 'secretLevelName' && record.bpmState != null">
+          <template v-else-if="column.dataIndex === 'fileName' && record.bpmState != null">
             <a @click="handleFlowDetail(record)">
-              {{ record.secretLevelName }}
+              {{ record.fileName }}
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'attach'">

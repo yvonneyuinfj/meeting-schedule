@@ -290,7 +290,7 @@ function handleAdd() {
 
 /** 编辑 */
 function handleEdit(record) {
-  record.editable = true;
+  record.editable = !props.readOnly;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
   newData.forEach(item => {
