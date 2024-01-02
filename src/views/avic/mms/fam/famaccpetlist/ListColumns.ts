@@ -120,20 +120,20 @@ export const HouseColumns = [
     },
     align: 'left'
   },
-  {
-    title: '主管部门',
-    dataIndex: 'managerDeptId',
-    key: 'managerDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '主管部门',
+  //   dataIndex: 'managerDeptId',
+  //   key: 'managerDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '责任人',
     dataIndex: 'liablePerson',
@@ -231,20 +231,20 @@ export const HouseColumns = [
     },
     align: 'center'
   },
-  {
-    title: '使用部门',
-    dataIndex: 'receiveDeptId',
-    key: 'receiveDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '使用部门',
+  //   dataIndex: 'receiveDeptId',
+  //   key: 'receiveDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '发票号',
     dataIndex: 'invoiceNo',
@@ -735,20 +735,20 @@ export const DeviceColumns = [
     },
     align: 'center'
   },
-  {
-    title: '使用部门',
-    dataIndex: 'receiveDeptId',
-    key: 'receiveDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '使用部门',
+  //   dataIndex: 'receiveDeptId',
+  //   key: 'receiveDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '资金来源',
     dataIndex: 'fundSource',
@@ -1125,20 +1125,20 @@ export const CarColumns = [
     },
     align: 'left'
   },
-  {
-    title: '主管部门',
-    dataIndex: 'managerDeptId',
-    key: 'managerDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '主管部门',
+  //   dataIndex: 'managerDeptId',
+  //   key: 'managerDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '责任人',
     dataIndex: 'liablePerson',
@@ -1236,20 +1236,20 @@ export const CarColumns = [
     },
     align: 'center'
   },
-  {
-    title: '使用部门',
-    dataIndex: 'receiveDeptId',
-    key: 'receiveDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '使用部门',
+  //   dataIndex: 'receiveDeptId',
+  //   key: 'receiveDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '发票号',
     dataIndex: 'invoiceNo',
@@ -1539,20 +1539,20 @@ export const OfficialColumns = [
     },
     align: 'left'
   },
-  {
-    title: '主管部门',
-    dataIndex: 'managerDeptId',
-    key: 'managerDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '主管部门',
+  //   dataIndex: 'managerDeptId',
+  //   key: 'managerDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '责任人',
     dataIndex: 'liablePerson',
@@ -1664,20 +1664,20 @@ export const OfficialColumns = [
     },
     align: 'center'
   },
-  {
-    title: '使用部门',
-    dataIndex: 'receiveDeptId',
-    key: 'receiveDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '使用部门',
+  //   dataIndex: 'receiveDeptId',
+  //   key: 'receiveDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '发票号',
     dataIndex: 'invoiceNo',
@@ -1892,20 +1892,20 @@ export const ITColumns = [
     },
     align: 'left'
   },
-  {
-    title: '主管部门',
-    dataIndex: 'managerDeptId',
-    key: 'managerDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '主管部门',
+  //   dataIndex: 'managerDeptId',
+  //   key: 'managerDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '责任人',
     dataIndex: 'liablePerson',
@@ -2017,20 +2017,20 @@ export const ITColumns = [
     },
     align: 'center'
   },
-  {
-    title: '使用部门',
-    dataIndex: 'receiveDeptId',
-    key: 'receiveDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+  // {
+  //   title: '使用部门',
+  //   dataIndex: 'receiveDeptId',
+  //   key: 'receiveDeptId',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left'
+  // },
   {
     title: '发票号',
     dataIndex: 'invoiceNo',
