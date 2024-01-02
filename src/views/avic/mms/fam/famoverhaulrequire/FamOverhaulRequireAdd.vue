@@ -181,11 +181,23 @@
               label="主管部门"
               has-feedback
             >
-              <AvicCommonSelect
+              <a-select
                 v-model:value="form.managerDeptId"
-                type="deptSelect"
-                placeholder="请选择主管部门名称"
-              />
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择主管部门"
+              >
+                <a-select-option
+                  v-for="item in managerDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -568,6 +580,7 @@ const {
   isImproveList,
   annualProvisionalList,
   isNeedReviewList,
+  managerDeptIdList,
   toolbarConfig,
   autoCode,
   editorConfig,

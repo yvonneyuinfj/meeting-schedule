@@ -9,7 +9,7 @@ import {
   default as flowUtils,
   startFlowByFormCode,
   closeFlowLoading,
-  
+
   openFlowDetail,
   getFieldAuth,
   getFieldVisible,
@@ -67,6 +67,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const fundSourceList = ref([]); // 资产来源通用代码
   const ynArchivedList = ref([]); // 是否归档案通用代码
   const ynDemolishedList = ref([]); // 是否已拆除无线模块通用代码
+  const managerDeptIdList = ref([]);
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
@@ -74,7 +75,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' },
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
     { fieldName: 'ynArchived', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-    { fieldName: 'ynDemolished', lookUpType: 'PLATFORM_YES_NO_FLAG' }
+    { fieldName: 'ynDemolished', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'managerDept', lookUpType: 'FAM_MANAGER_DEPT' }
   ];
   const authJson = ref(null);
   const bodyStyle = {
@@ -140,6 +142,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       fundSourceList.value = result.fundSource;
       ynArchivedList.value = result.ynArchived;
       ynDemolishedList.value = result.ynDemolished;
+      managerDeptIdList.value = result.managerDept;
     });
   }
 
@@ -498,6 +501,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     assetTypeList,
     purchWayList,
     bodyStyle,
+    managerDeptIdList,
     fundSourceList,
     equipmentTypeList,
     ynArchivedList,

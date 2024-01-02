@@ -119,6 +119,8 @@
               'storageLocation',
               'registrationCode',
               'militaryKeyEquipCode',
+              'countryOfOrigin',
+              'equipmentNumber', 'storageType' ,'storageNumber' ,'storageCode' ,'storageName' ,'ipAddress' ,'storageLevel', 'storageState'
             ].includes(column.dataIndex)
             && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
           "
@@ -611,10 +613,11 @@ import {
   CarColumns,
   OfficialColumns,
   ITColumns,
+  BaseColumns,
   backColumnsObj, Columns
 } from './ListColumns';
 import {
-  CarValidateRules, DeviceValidateRules,
+  CarValidateRules, DeviceValidateRules, BaseValidateRules,
   HouseValidateRules,
   ITValidateRules, OfficialValidateRules
 } from '@/views/avic/mms/fam/famaccpetlist/ValidateRules';
@@ -670,7 +673,7 @@ const props = defineProps({
 });
 let columns = ref([]);
 
-const { getHouseObj, getCarsObj, getOfficialObject, getITObj, getDeviceObj } = backColumnsObj();
+const { getHouseObj, getCarsObj, getOfficialObject, getITObj, getDeviceObj } = backColumnsObj(props.assetClasstObj);
 
 const queryForm = ref<FamAccpetListDto>({});
 const queryParam = reactive({
@@ -1043,7 +1046,7 @@ function handleCopy(ids, e) {
 /** 编辑 */
 function handleEdit(record) {
   if (props.readOnly)
-    if (!['task2', 'task3', 'task4'].includes(props.bpmInstanceObject.bpmModel.activityname))
+    if (!['task2', 'task3', 'task4','task6'].includes(props.bpmInstanceObject.bpmModel.activityname))
       return;
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
@@ -1159,8 +1162,8 @@ function validateRecordData(records) {
 
 /** 校验并执行回调函数*/
 function validate(callback) {
-  const changedData = proxy.$getChangeRecords(list, initialList);
-  if (changedData && validateRecordData(changedData)) {
+  // const changedData = proxy.$getChangeRecords(list, initialList);
+  if (validateRecordData(list.value)) {
     // 校验通过
     if (callback) {
       callback(true);
@@ -1203,28 +1206,53 @@ function allocationColumn(code) {
      */
     switch (code) {
       case'1':
-        columns.value = [...HouseColumns];
-        validateRules = HouseValidateRules;
+        columns.value = [...BaseColumns, ...HouseColumns];
+        validateRules = { ...BaseValidateRules, ...HouseValidateRules };
         break;
       case'4':
-        columns.value = [...CarColumns];
-        validateRules = CarValidateRules;
+        columns.value = [...BaseColumns, ...CarColumns];
+        validateRules = { ...BaseValidateRules, ...CarValidateRules };
         break;
       case'6':
-        columns.value = [...ITColumns];
-        validateRules = ITValidateRules;
+        columns.value = [...BaseColumns, ...ITColumns];
+        validateRules = { ...BaseValidateRules, ...ITValidateRules };
         break;
       case'8':
-        columns.value = [...OfficialColumns];
-        validateRules = OfficialValidateRules;
+        columns.value = [...BaseColumns, ...OfficialColumns];
+        validateRules = { ...BaseValidateRules, ...OfficialValidateRules };
         break;
       default:
-        columns.value = [...DeviceColumns];
-        validateRules = DeviceValidateRules;
+        columns.value = [...BaseColumns, ...DeviceColumns];
+        validateRules = { ...BaseValidateRules, ...DeviceValidateRules };
         // 提交流程
         if (props.readOnly) {
-          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task3') return;
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
           const list = [
+            {
+              title: '设备大类',
+              dataIndex: 'equipClass',
+              key: 'equipClass',
+              width: 120,
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left',
+              hidden: true
+            },
+            {
+              title: '设备编号',
+              dataIndex: 'equipNo',
+              key: 'equipNo',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            },
             {
               title: '是否瓶颈设备',
               dataIndex: 'ynBottleneckEquipmentName',
@@ -1257,6 +1285,9 @@ function allocationColumn(code) {
             validator: validatorMilitaryKeyEquipCode,
             trigger: 'blur'
           }];
+          validateRules['equipClass'] = [
+            { required: true, message: '设备大类不能为空' }
+          ];
           // 特种设备
           const list1 = [
             {
@@ -1293,7 +1324,6 @@ function allocationColumn(code) {
             columns.value = [...columns.value, ...list1];
             validateRules['ynAnnualInspection'] = [{ required: true, message: '是否年检不能为空' }];
             validateRules['registrationCode'] = [{ required: true, message: '特种设备注册码不能为空' }];
-
           }
         }
         break;

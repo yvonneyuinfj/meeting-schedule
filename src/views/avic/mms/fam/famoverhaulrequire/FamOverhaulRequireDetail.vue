@@ -105,12 +105,22 @@
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
           <a-form-item name="managerDeptId" label="主管部门名称" :rules="fieldRequired('managerDeptId')"
                        has-feedback>
-            <AvicCommonSelect
+            <a-select
               v-model:value="form.managerDeptId"
-              type="deptSelect"
-              :defaultShowValue="form.managerDeptIdAlias"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
               :disabled="fieldDisabled('managerDeptId')"
-            />
+            >
+              <a-select-option
+                v-for="item in managerDeptIdList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('isUsedScientificrs')">
@@ -407,6 +417,7 @@ const {
   isUsedScientificrsList,
   annualProvisionalList,
   isNeedReviewList,
+  managerDeptIdList,
   uploadFile,
   afterUploadEvent,
   autoCode,

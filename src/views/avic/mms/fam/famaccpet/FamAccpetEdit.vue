@@ -96,6 +96,7 @@
               <a-select
                 v-model:value="form.assetClass"
                 :auto-focus="true"
+                :disabled="form.accpetType === '1'"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
@@ -197,65 +198,77 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-                      <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
-                        <AvicCommonSelect
-                          v-model:value="form.managerDeptId"
-                          type="deptSelect"
-                          placeholder="请选择主管部门名称"
-                              :defaultShowValue="form.managerDeptIdAlias"
-                        />
-                      </a-form-item>
+            <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
+              <a-select
+                v-model:value="form.managerDeptId"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :disabled="form.managerDeptId === 'C410'"
+                :allow-clear="true"
+                placeholder="请选择主管部门"
+              >
+                <a-select-option
+                  v-for="item in managerDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-                    <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
-                      <AvicCommonSelect
-                        v-model:value="form.receiveDeptId"
-                        type="deptSelect"
-                        placeholder="请选择使用部门名称"
-                            :defaultShowValue="form.receiveDeptIdAlias"
-                      />
-                    </a-form-item>
+            <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
+              <AvicCommonSelect
+                v-model:value="form.receiveDeptId"
+                type="deptSelect"
+                placeholder="请选择使用部门名称"
+                :defaultShowValue="form.receiveDeptIdAlias"
+              />
+            </a-form-item>
           </a-col>
-           <a-col v-bind="colLayout.cols">
-                    <a-form-item name="ynArchived" label="是否归档案">
-                      <a-select
-                        v-model:value="form.ynArchived"
-                        :get-popup-container="triggerNode => triggerNode.parentNode"
-                        option-filter-prop="children"
-                        :show-search="true"
-                        :allow-clear="true"
-                        placeholder="请选择是否归档案"
-                      >
-                        <a-select-option
-                          v-for="item in ynArchivedList"
-                          :key="item.sysLookupTlId"
-                          :value="item.lookupCode"
-                        >
-                          {{ item.lookupName }}
-                        </a-select-option>
-                      </a-select>
-                    </a-form-item>
-                  </a-col>
-                  <a-col v-bind="colLayout.cols">
-                    <a-form-item name="ynDemolished" label="是否已拆除无线模块">
-                      <a-select
-                        v-model:value="form.ynDemolished"
-                        :get-popup-container="triggerNode => triggerNode.parentNode"
-                        option-filter-prop="children"
-                        :show-search="true"
-                        :allow-clear="true"
-                        placeholder="请选择是否已拆除无线模块"
-                      >
-                        <a-select-option
-                          v-for="item in ynDemolishedList"
-                          :key="item.sysLookupTlId"
-                          :value="item.lookupCode"
-                        >
-                          {{ item.lookupName }}
-                        </a-select-option>
-                      </a-select>
-                    </a-form-item>
-                  </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="ynArchived" label="是否归档案">
+              <a-select
+                v-model:value="form.ynArchived"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否归档案"
+              >
+                <a-select-option
+                  v-for="item in ynArchivedList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="ynDemolished" label="是否已拆除无线模块">
+              <a-select
+                v-model:value="form.ynDemolished"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否已拆除无线模块"
+              >
+                <a-select-option
+                  v-for="item in ynDemolishedList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input v-model:value="form.assetClasstName" @click="assetClasstClick">
@@ -507,10 +520,16 @@ function handleSummit() {
   getFamAssetClass(treeNodeId.value)
     .then(async res => {
       if (res.success) {
-        assetClasstObj.value = res.data;
-        form.value.assetClasst = res.data.classCode;
-        form.value.assetClasstName = res.data.className;
-        assetClasstOpen.value = false;
+        if (res.data.treeLeaf === 'Y') {
+          assetClasstObj.value = res.data;
+          form.value.assetClasst = res.data.classCode;
+          form.value.assetClasstName = res.data.className;
+          form.value.managerDeptId = '';
+          if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) form.value.managerDeptId = 'C410';
+          assetClasstOpen.value = false;
+        } else {
+          proxy.$message.warning('该数据不属于末级节点请重新选择！');
+        }
       }
     })
     .catch(error => {
@@ -533,6 +552,7 @@ const {
   accpetTypeList,
   purchWayList,
   fundSourceList,
+  managerDeptIdList,
   uploadFile,
   bodyStyle,
   afterUploadEvent,
@@ -556,6 +576,7 @@ watch(
   () => form.value.accpetType,
   newV => {
     accpetType.value = newV;
+    if (newV === '1') form.value.assetClass = '1';
   }
 );
 

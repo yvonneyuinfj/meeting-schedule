@@ -32,7 +32,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       secretLevel: [{ required: true, message: '数据密级不能为空', trigger: 'change' }],
       billNo: [{ required: true, message: '单据号不能为空', trigger: 'change' }],
       maintPlan: [{ required: true, message: '维修计划不能为空', trigger: 'change' }],
-      maintCategory: [{ required:true, validator: maintCategoryValidator, trigger: 'change' }],
+      maintCategory: [{ required: true, validator: maintCategoryValidator, trigger: 'change' }],
       expectMaintTime: [{ required: true, message: '需求时间不能为空', trigger: 'change' }],
       managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
       // managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
@@ -52,7 +52,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       handlePersonId: [{ required: true, message: '需求申请人不能为空', trigger: 'change' }],
       handlePersonName: [{ required: true, message: '需求申请人名称不能为空', trigger: 'change' }],
       applyDate: [{ validator: applyDateValidator, trigger: 'change' }],
-      telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }],
+      telephone: [{ required: true, message: '联系电话不能为空', trigger: 'change' }]
 
     }
   ;
@@ -71,12 +71,14 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const autoCode = ref(null); // 自动编码ref
   const isNeedReviewList = ref([]); // 是否需要评审通用代码
   const isImproveList = ref([]); // 是否提高固定资产性能
+  const managerDeptIdList = ref([]);
   const lookupParams = [
     { fieldName: 'maintCategory', lookUpType: 'FAM_MAINT_CATEGORY' },
     { fieldName: 'isUsedScientificrs', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'annualProvisional', lookUpType: 'FAM_ANNUAL_PROVISIONAL' },
     { fieldName: 'isNeedReview', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-    { fieldName: 'isImprove', lookUpType: 'PLATFORM_YES_NO_FLAG' }
+    { fieldName: 'isImprove', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'managerDept', lookUpType: 'FAM_MANAGER_DEPT' }
   ];
   const editorRef = shallowRef(null); // 编辑器实例，必须用 shallowRef
   const { toolbarConfig, editorConfig, onCreated, dealRichText, convertImageSrc } = useRichText(
@@ -150,6 +152,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
       annualProvisionalList.value = result.annualProvisional;
       isNeedReviewList.value = result.isNeedReview;
       isImproveList.value = result.isImprove;
+      managerDeptIdList.value = result.managerDept;
     });
   }
 
@@ -464,6 +467,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     isNeedReviewList,
     isImproveList,
     uploadFile,
+    managerDeptIdList,
     afterUploadEvent,
     attachmentRequired,
     toolbarConfig,

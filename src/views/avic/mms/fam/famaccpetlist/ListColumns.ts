@@ -1,19 +1,9 @@
 /** 房屋土地列 （1） */
 export const HouseColumns = [
-
   {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    key: 'assetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    key: 'assetName',
+    title: '地理区域',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -22,24 +12,7 @@ export const HouseColumns = [
         ['class']: 'required-table-title'
       };
     },
-    align: 'left'
-  },
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetClass',
-  //   key: 'assetClass',
-  //   minWidth: 120,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   }
-  // },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClassName',
-    key: 'assetClassName',
-    minWidth: 120
+    align: 'center'
   },
   {
     title: '资产用途',
@@ -56,157 +29,9 @@ export const HouseColumns = [
     align: 'center'
   },
   {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    key: 'assetOriginalValue',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '使用年限',
-    dataIndex: 'useTime',
-    key: 'useTime',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '设备类型',
     dataIndex: 'equipType',
     key: 'equipType',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '地理区域',
-    dataIndex: 'geographicalAreaName',
-    key: 'geographicalAreaName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    key: 'installLocation',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  // {
-  //   title: '主管部门',
-  //   dataIndex: 'managerDeptId',
-  //   key: 'managerDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    key: 'liablePerson',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '入账时累计折旧',
-    dataIndex: 'firstDepreciationValue',
-    key: 'firstDepreciationValue',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '已提月份',
-    dataIndex: 'monthProposed',
-    key: 'monthProposed',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    key: 'producer',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '权属证号',
-    dataIndex: 'ownershipCertNo',
-    key: 'ownershipCertNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '采购合同号',
-    dataIndex: 'procureOrder',
-    key: 'procureOrder',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产密级',
-    dataIndex: 'assetSecretLevel',
-    key: 'assetSecretLevel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -223,84 +48,6 @@ export const HouseColumns = [
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
     minWidth: 200,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  // {
-  //   title: '使用部门',
-  //   dataIndex: 'receiveDeptId',
-  //   key: 'receiveDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    key: 'invoiceNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    key: 'assetSpec',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    key: 'assetUnit',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    key: 'warrantyPeriod',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    key: 'parentAssetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    key: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
@@ -487,9 +234,36 @@ export const HouseColumns = [
     align: 'left'
   },
   {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    key: 'assetNum',
+    title: '使用年限',
+    dataIndex: 'useTime',
+    key: 'useTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '已提月份',
+    dataIndex: 'monthProposed',
+    key: 'monthProposed',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '质保期',
+    dataIndex: 'warrantyPeriod',
+    key: 'warrantyPeriod',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '父资产编号',
+    dataIndex: 'parentAssetNo',
+    key: 'parentAssetNo',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -503,55 +277,11 @@ export const HouseColumns = [
     minWidth: 220,
     resizable: true,
     align: 'center'
-  }
-];
-
-/** 设备列  */
-export const DeviceColumns = [
-  {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    key: 'assetName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetClass',
-  //   key: 'assetClass',
-  //   minWidth: 120,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   }
-  // },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClassName',
-    key: 'assetClassName',
-    minWidth: 120
   },
   {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    key: 'assetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产用途',
-    dataIndex: 'assetsUse',
-    key: 'assetsUse',
+    title: '密级',
+    dataIndex: 'assetSecretLevel',
+    key: 'assetSecretLevel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -561,41 +291,11 @@ export const DeviceColumns = [
       };
     },
     align: 'center'
-  },
-  {
-    title: '设备大类',
-    dataIndex: 'equipClass',
-    key: 'equipClass',
-    width: 120,
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left',
-    hidden: true
-  },
-  {
-    title: '设备编号',
-    dataIndex: 'equipNo',
-    key: 'equipNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '使用年限',
-    dataIndex: 'useTime',
-    key: 'useTime',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  }
+];
+
+/** 设备列  */
+export const DeviceColumns = [
   {
     title: '地理区域',
     dataIndex: 'geographicalAreaName',
@@ -608,278 +308,6 @@ export const DeviceColumns = [
         ['class']: 'required-table-title'
       };
     },
-    align: 'center'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    key: 'installLocation',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '管理部门',
-    dataIndex: 'managerDeptId',
-    key: 'managerDeptId',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    key: 'liablePerson',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '入账时累计折旧',
-    dataIndex: 'firstDepreciationValue',
-    key: 'firstDepreciationValue',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '已提月份',
-    dataIndex: 'monthProposed',
-    key: 'monthProposed',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    key: 'assetModel',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    key: 'producer',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '采购合同号',
-    dataIndex: 'procureOrder',
-    key: 'procureOrder',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产密级',
-    dataIndex: 'assetSecretLevel',
-    key: 'assetSecretLevel',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '是否军工关键设备',
-    dataIndex: 'ynMilitaryKeyEquip',
-    key: 'ynMilitaryKeyEquip',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  // {
-  //   title: '使用部门',
-  //   dataIndex: 'receiveDeptId',
-  //   key: 'receiveDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '资金来源',
-    dataIndex: 'fundSource',
-    key: 'fundSource',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    key: 'invoiceNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    key: 'assetSpec',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    key: 'assetUnit',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    key: 'assetOriginalValue',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    key: 'warrantyPeriod',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否为进口设备',
-    dataIndex: 'importedOrNot',
-    key: 'importedOrNot',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    key: 'parentAssetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    key: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '进口设备国别',
-    dataIndex: 'importedEquipment',
-    key: 'importedEquipment',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '供应商',
-    dataIndex: 'supplier',
-    key: 'supplier',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '对应试验器',
-    dataIndex: 'equipmentNo',
-    key: 'equipmentNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
     align: 'center'
   },
   {
@@ -897,6 +325,70 @@ export const DeviceColumns = [
     align: 'center'
   },
   {
+    title: '资金来源',
+    dataIndex: 'fundSource',
+    key: 'fundSource',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '是否军工关键设备',
+    dataIndex: 'ynMilitaryKeyEquip',
+    key: 'ynMilitaryKeyEquip',
+    ellipsis: true,
+    minWidth: 200,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
+  },
+  {
+    title: '供应商名称',
+    dataIndex: 'supplier',
+    key: 'supplier',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '生产国别',
+    dataIndex: 'countryOfOrigin',
+    key: 'countryOfOrigin',
+    ellipsis: true,
+    minWidth: 200,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '投产时间',
+    dataIndex: 'commissionDate',
+    key: 'commissionDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '质保日期',
+    dataIndex: 'warrantyPeriod',
+    key: 'warrantyPeriod',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '购置日期',
     dataIndex: 'purchaseDate',
     key: 'purchaseDate',
@@ -906,27 +398,18 @@ export const DeviceColumns = [
     align: 'center'
   },
   {
-    title: '资产净值',
-    dataIndex: 'assetNetValue',
-    key: 'assetNetValue',
+    title: '对应试验器',
+    dataIndex: 'equipmentNo',
+    key: 'equipmentNo',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   },
   {
-    title: '启动时间',
-    dataIndex: 'recordDate',
-    key: 'recordDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '投产时间',
-    dataIndex: 'commissionDate',
-    key: 'commissionDate',
+    title: '是否保养',
+    dataIndex: 'ynMaintainName',
+    key: 'ynMaintainName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -941,66 +424,28 @@ export const DeviceColumns = [
     resizable: true,
     align: 'center'
   },
-  // {
-  //   title: '具体位置',
-  //   dataIndex: 'storageLocation',
-  //   key: 'storageLocation',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'center'
-  // },
   {
-    title: '是否保养',
-    dataIndex: 'ynMaintainName',
-    key: 'ynMaintainName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '出厂号',
-    dataIndex: 'factoryNo',
-    key: 'factoryNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '入账前当年折旧',
-    dataIndex: 'currentYearDepreciation',
-    key: 'currentYearDepreciation',
+    title: '是否为进口设备',
+    dataIndex: 'importedOrNot',
+    key: 'importedOrNot',
     ellipsis: true,
     minWidth: 200,
     resizable: true,
     align: 'center'
-  }
-];
-
-/** 车辆列  （4）*/
-export const CarColumns = [
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetClass',
-  //   key: 'assetClass',
-  //   minWidth: 120,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   }
-  // },
+  },
   {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    key: 'assetName',
+    title: '备注',
+    key: 'note',
+    dataIndex: 'note',
+    ellipsis: true,
+    minWidth: 220,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '资产密级',
+    dataIndex: 'assetSecretLevel',
+    key: 'assetSecretLevel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1009,22 +454,25 @@ export const CarColumns = [
         ['class']: 'required-table-title'
       };
     },
-    align: 'left'
-  },
+    align: 'center'
+  }
+];
+
+/** 车辆列  （4）*/
+export const CarColumns = [
   {
-    title: '资产类别',
-    dataIndex: 'assetClassName',
-    key: 'assetClassName',
-    minWidth: 120
-  },
-  {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    key: 'assetNo',
+    title: '地理区域',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
   },
   {
     title: '设备大类',
@@ -1052,166 +500,9 @@ export const CarColumns = [
     align: 'left'
   },
   {
-    title: '使用年限',
-    dataIndex: 'useTime',
-    key: 'useTime',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    key: 'assetNum',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂号',
-    dataIndex: 'factoryNo',
-    key: 'factoryNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
     title: '设备类型',
     dataIndex: 'equipType',
     key: 'equipType',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '地理区域',
-    dataIndex: 'geographicalAreaName',
-    key: 'geographicalAreaName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    key: 'installLocation',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  // {
-  //   title: '主管部门',
-  //   dataIndex: 'managerDeptId',
-  //   key: 'managerDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    key: 'liablePerson',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '入账时累计折旧',
-    dataIndex: 'firstDepreciationValue',
-    key: 'firstDepreciationValue',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '已提月份',
-    dataIndex: 'monthProposed',
-    key: 'monthProposed',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    key: 'assetModel',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    key: 'producer',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '采购合同号',
-    dataIndex: 'procureOrder',
-    key: 'procureOrder',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产密级',
-    dataIndex: 'assetSecretLevel',
-    key: 'assetSecretLevel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1228,84 +519,6 @@ export const CarColumns = [
     key: 'ynMilitaryKeyEquip',
     ellipsis: true,
     minWidth: 200,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  // {
-  //   title: '使用部门',
-  //   dataIndex: 'receiveDeptId',
-  //   key: 'receiveDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    key: 'invoiceNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    key: 'assetSpec',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    key: 'assetUnit',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    key: 'warrantyPeriod',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    key: 'parentAssetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    key: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
     resizable: true,
     customHeaderCell() {
       return {
@@ -1341,20 +554,6 @@ export const CarColumns = [
       };
     },
     align: 'center'
-  },
-  {
-    title: '品牌',
-    dataIndex: 'brand',
-    key: 'brand',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
   },
   {
     title: '车牌号',
@@ -1399,6 +598,42 @@ export const CarColumns = [
     align: 'left'
   },
   {
+    title: '已提月份',
+    dataIndex: 'monthProposed',
+    key: 'monthProposed',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '使用年限',
+    dataIndex: 'useTime',
+    key: 'useTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '质保期',
+    dataIndex: 'warrantyPeriod',
+    key: 'warrantyPeriod',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '父资产编号',
+    dataIndex: 'parentAssetNo',
+    key: 'parentAssetNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '入账前当年折旧',
     dataIndex: 'currentYearDepreciation',
     key: 'currentYearDepreciation',
@@ -1414,6 +649,20 @@ export const CarColumns = [
     ellipsis: true,
     minWidth: 220,
     resizable: true,
+    align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'assetSecretLevel',
+    key: 'assetSecretLevel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
     align: 'center'
   }
 ];
@@ -1421,97 +670,6 @@ export const CarColumns = [
 /** 办公家具列 （8）*/
 export const OfficialColumns = [
   {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    key: 'assetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    key: 'assetName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetClass',
-  //   key: 'assetClass',
-  //   minWidth: 120,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   }
-  // },
-  {
-    title: '资产类别',
-    dataIndex: 'assetClassName',
-    key: 'assetClassName',
-    minWidth: 120
-  },
-  {
-    title: '资产用途',
-    dataIndex: 'assetsUse',
-    key: 'assetsUse',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    key: 'assetOriginalValue',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '使用年限',
-    dataIndex: 'useTime',
-    key: 'useTime',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '设备类型',
-    dataIndex: 'equipType',
-    key: 'equipType',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
     title: '地理区域',
     dataIndex: 'geographicalAreaName',
     key: 'geographicalAreaName',
@@ -1526,239 +684,94 @@ export const OfficialColumns = [
     align: 'center'
   },
   {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    key: 'installLocation',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  // {
-  //   title: '主管部门',
-  //   dataIndex: 'managerDeptId',
-  //   key: 'managerDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    key: 'liablePerson',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '权属证号',
-    dataIndex: 'ownershipCertNo',
-    key: 'ownershipCertNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '入账时累计折旧',
-    dataIndex: 'firstDepreciationValue',
-    key: 'firstDepreciationValue',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '已提月份',
-    dataIndex: 'monthProposed',
-    key: 'monthProposed',
+    title: '供应商名称',
+    dataIndex: 'supplier',
+    key: 'supplier',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   },
   {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    key: 'assetModel',
+    title: '启用时间',
+    dataIndex: 'recordDate',
+    key: 'recordDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    key: 'producer',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '采购合同号',
-    dataIndex: 'procureOrder',
-    key: 'procureOrder',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产密级',
-    dataIndex: 'assetSecretLevel',
-    key: 'assetSecretLevel',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'center'
   },
   {
-    title: '是否军工关键设备',
-    dataIndex: 'ynMilitaryKeyEquip',
-    key: 'ynMilitaryKeyEquip',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  // {
-  //   title: '使用部门',
-  //   dataIndex: 'receiveDeptId',
-  //   key: 'receiveDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    key: 'invoiceNo',
+    title: '设备序列号',
+    dataIndex: 'equipmentNumber',
+    key: 'equipmentNumber',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    key: 'assetSpec',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    key: 'assetUnit',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    key: 'warrantyPeriod',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    key: 'parentAssetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    key: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'center'
   },
   {
-    title: '入账前当年折旧',
-    dataIndex: 'currentYearDepreciation',
-    key: 'currentYearDepreciation',
+    title: '存储介质类型',
+    dataIndex: 'storageType',
+    key: 'storageType',
     ellipsis: true,
-    minWidth: 200,
+    minWidth: 180,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    key: 'assetNum',
+    title: '存储介质序列号',
+    dataIndex: 'storageNumber',
+    key: 'storageNumber',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质编码',
+    dataIndex: 'storageCode',
+    key: 'storageCode',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质名称',
+    dataIndex: 'storageName',
+    key: 'storageName',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '联网设备IP地址',
+    dataIndex: 'ipAddress',
+    key: 'ipAddress',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '存储介质密级',
+    dataIndex: 'storageLevel',
+    key: 'storageLevel',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质使用状态',
+    dataIndex: 'storageState',
+    key: 'storageState',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '备注',
@@ -1768,24 +781,11 @@ export const OfficialColumns = [
     minWidth: 220,
     resizable: true,
     align: 'center'
-  }
-];
-
-/** IT列 (6) */
-export const ITColumns = [
-  {
-    title: '资产编号',
-    dataIndex: 'assetNo',
-    key: 'assetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
   },
   {
-    title: '资产名称',
-    dataIndex: 'assetName',
-    key: 'assetName',
+    title: '资产密级',
+    dataIndex: 'assetSecretLevel',
+    key: 'assetSecretLevel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -1794,24 +794,25 @@ export const ITColumns = [
         ['class']: 'required-table-title'
       };
     },
-    align: 'left'
-  },
-  // {
-  //   title: '资产类别',
-  //   dataIndex: 'assetClass',
-  //   key: 'assetClass',
-  //   minWidth: 120,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   }
-  // },
+    align: 'center'
+  }
+];
+
+/** IT列 (6) */
+export const ITColumns = [
   {
-    title: '资产类别',
-    dataIndex: 'assetClassName',
-    key: 'assetClassName',
-    minWidth: 120
+    title: '地理区域',
+    dataIndex: 'geographicalAreaName',
+    key: 'geographicalAreaName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
   },
   {
     title: '资产用途',
@@ -1828,171 +829,9 @@ export const ITColumns = [
     align: 'center'
   },
   {
-    title: '资产原值',
-    dataIndex: 'assetOriginalValue',
-    key: 'assetOriginalValue',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '使用年限',
-    dataIndex: 'useTime',
-    key: 'useTime',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '设备类型',
     dataIndex: 'equipType',
     key: 'equipType',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '地理区域',
-    dataIndex: 'geographicalAreaName',
-    key: 'geographicalAreaName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '存放地点',
-    dataIndex: 'installLocation',
-    key: 'installLocation',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  // {
-  //   title: '主管部门',
-  //   dataIndex: 'managerDeptId',
-  //   key: 'managerDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '责任人',
-    dataIndex: 'liablePerson',
-    key: 'liablePerson',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '权属证号',
-    dataIndex: 'ownershipCertNo',
-    key: 'ownershipCertNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '入账时累计折旧',
-    dataIndex: 'firstDepreciationValue',
-    key: 'firstDepreciationValue',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '已提月份',
-    dataIndex: 'monthProposed',
-    key: 'monthProposed',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '资产型号',
-    dataIndex: 'assetModel',
-    key: 'assetModel',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '厂商',
-    dataIndex: 'producer',
-    key: 'producer',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '采购合同号',
-    dataIndex: 'procureOrder',
-    key: 'procureOrder',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产密级',
-    dataIndex: 'assetSecretLevel',
-    key: 'assetSecretLevel',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -2016,102 +855,6 @@ export const ITColumns = [
       };
     },
     align: 'center'
-  },
-  // {
-  //   title: '使用部门',
-  //   dataIndex: 'receiveDeptId',
-  //   key: 'receiveDeptId',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   customHeaderCell() {
-  //     return {
-  //       ['class']: 'required-table-title'
-  //     };
-  //   },
-  //   align: 'left'
-  // },
-  {
-    title: '发票号',
-    dataIndex: 'invoiceNo',
-    key: 'invoiceNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产规格',
-    dataIndex: 'assetSpec',
-    key: 'assetSpec',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产单价',
-    dataIndex: 'assetUnit',
-    key: 'assetUnit',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
-  {
-    title: '质保期',
-    dataIndex: 'warrantyPeriod',
-    key: 'warrantyPeriod',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '父资产编号',
-    dataIndex: 'parentAssetNo',
-    key: 'parentAssetNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '出厂日期',
-    dataIndex: 'productionDate',
-    key: 'productionDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '入账前当年折旧',
-    dataIndex: 'currentYearDepreciation',
-    key: 'currentYearDepreciation',
-    ellipsis: true,
-    minWidth: 200,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '资产数量',
-    dataIndex: 'assetNum',
-    key: 'assetNum',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
   },
   {
     title: '使用位置',
@@ -2128,18 +871,49 @@ export const ITColumns = [
     align: 'center'
   },
   {
-    title: '出厂序列号',
-    dataIndex: 'factoryNo',
-    key: 'factoryNo',
+    title: '使用年限',
+    dataIndex: 'useTime',
+    key: 'useTime',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
+    align: 'left'
+  },
+  {
+    title: '已提月份',
+    dataIndex: 'monthProposed',
+    key: 'monthProposed',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
     align: 'center'
+  },
+  {
+    title: '质保期',
+    dataIndex: 'warrantyPeriod',
+    key: 'warrantyPeriod',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '父资产编号',
+    dataIndex: 'parentAssetNo',
+    key: 'parentAssetNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '入账前当年折旧',
+    dataIndex: 'currentYearDepreciation',
+    key: 'currentYearDepreciation',
+    ellipsis: true,
+    minWidth: 200,
+    resizable: true,
+    align: 'left'
   },
   {
     title: '备注',
@@ -2149,10 +923,245 @@ export const ITColumns = [
     minWidth: 220,
     resizable: true,
     align: 'center'
+  },
+  {
+    title: '密级',
+    dataIndex: 'assetSecretLevel',
+    key: 'assetSecretLevel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'center'
   }
 ];
 
+/** 基础列 */
+export const BaseColumns = [
+  {
+    title: '资产编号',
+    dataIndex: 'assetNo',
+    key: 'assetNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left',
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    }
+  },
+  {
+    title: '资产名称',
+    dataIndex: 'assetName',
+    key: 'assetName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '资产类别',
+    dataIndex: 'assetClassName',
+    key: 'assetClassName',
+    minWidth: 120,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    }
+  },
+  {
+    title: '资产型号',
+    dataIndex: 'assetModel',
+    key: 'assetModel',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '资产单价',
+    dataIndex: 'assetUnit',
+    key: 'assetUnit',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '资产数量',
+    dataIndex: 'assetNum',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left',
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    }
+  },
+  {
+    title: '资产原值',
+    dataIndex: 'assetOriginalValue',
+    key: 'assetOriginalValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '品牌',
+    dataIndex: 'brand',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left',
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    }
+  },
+  {
+    title: '存放地点',
+    dataIndex: 'installLocation',
+    key: 'installLocation',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '责任人',
+    dataIndex: 'liablePerson',
+    key: 'liablePerson',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    },
+    align: 'left'
+  },
+  {
+    title: '资产规格',
+    dataIndex: 'assetSpec',
+    key: 'assetSpec',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '净值',
+    dataIndex: 'assetNetValue',
+    key: 'assetNetValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '累计折旧值',
+    dataIndex: 'firstDepreciationValue',
+    key: 'firstDepreciationValue',
+    ellipsis: true,
+    minWidth: 200,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '采购合同编号',
+    dataIndex: 'procureOrder',
+    key: 'procureOrder',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '发票号',
+    dataIndex: 'invoiceNo',
+    key: 'invoiceNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '生产商',
+    dataIndex: 'producer',
+    key: 'producer',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true
+  },
+  {
+    title: '出厂号',
+    dataIndex: 'factoryNo',
+    key: 'factoryNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '权属证号',
+    dataIndex: 'ownershipCertNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '出厂日期',
+    dataIndex: 'productionDate',
+    key: 'productionDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  }
+];
 /** 全部的输入列 */
+
 export const AllColumns = [
   {
     title: '资产名称',
@@ -2647,6 +1656,78 @@ export const AllColumns = [
     resizable: true,
     align: 'center'
   },
+  {
+    title: '设备序列号',
+    dataIndex: 'equipmentNumber',
+    key: 'equipmentNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质类型',
+    dataIndex: 'storageType',
+    key: 'storageType',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质序列号',
+    dataIndex: 'storageNumber',
+    key: 'storageNumber',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质编码',
+    dataIndex: 'storageCode',
+    key: 'storageCode',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质名称',
+    dataIndex: 'storageName',
+    key: 'storageName',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '联网设备IP地址',
+    dataIndex: 'ipAddress',
+    key: 'ipAddress',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质密级',
+    dataIndex: 'storageLevel',
+    key: 'storageLevel',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质使用状态',
+    dataIndex: 'storageState',
+    key: 'storageState',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  }
 ];
 
 export const Columns = [
@@ -3071,40 +2152,120 @@ export const Columns = [
     resizable: true,
     align: 'center'
   },
+  {
+    title: '生产国别',
+    dataIndex: 'countryOfOrigin',
+    key: 'countryOfOrigin',
+    ellipsis: true,
+    minWidth: 200,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '设备序列号',
+    dataIndex: 'equipmentNumber',
+    key: 'equipmentNumber',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质类型',
+    dataIndex: 'storageType',
+    key: 'storageType',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质序列号',
+    dataIndex: 'storageNumber',
+    key: 'storageNumber',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质编码',
+    dataIndex: 'storageCode',
+    key: 'storageCode',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质名称',
+    dataIndex: 'storageName',
+    key: 'storageName',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '联网设备IP地址',
+    dataIndex: 'ipAddress',
+    key: 'ipAddress',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质密级',
+    dataIndex: 'storageLevel',
+    key: 'storageLevel',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '存储介质使用状态',
+    dataIndex: 'storageState',
+    key: 'storageState',
+    ellipsis: true,
+    minWidth: 180,
+    resizable: true,
+    align: 'center'
+  }
 ];
 
-export function backColumnsObj() {
+export function backColumnsObj(props) {
   const { proxy } = getCurrentInstance();
+  const baseObj = {
+    id: 'newLine' + proxy.$uuid(),
+    operationType_: 'insert',
+    isNewAsset: undefined,
+    assetName: '',
+    assetModel: '',
+    assetUnit: '',
+    brand: '',
+    assetOriginalValue: '',
+    installLocation: '',
+    liablePerson: '',
+    importedOrNot: undefined,
+    editable: true, // true为编辑中, false为未编辑
+    assetNum: '1'
+  };
   /** 获取房屋的对象 */
   const getHouseObj = (props) => {
     return {
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      isNewAsset: undefined,
-      assetNo: '',
-      assetName: '',
+      ...baseObj,
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
-      assetOriginalValue: '',
+      assetsUse: '',
       equipType: '',
-      geographicalArea: '',
-      installLocation: '',
-      managerDeptId: '',
-      liablePerson: '',
-      firstDepreciationValue: '',
-      monthProposed: '',
+      geographicalAreaName: '',
       producer: '',
       ownershipCertNo: '',
-      procureOrder: '',
       assetSecretLevel: '',
       ynMilitaryKeyEquip: '',
-      receiveDeptId: '',
-      invoiceNo: '',
-      assetSpec: '',
-      assetUnit: '',
-      warrantyPeriod: '',
-      parentAssetNo: '',
       productionDate: '',
       floorspace: '',
       commencementTime: '',
@@ -3117,153 +2278,79 @@ export function backColumnsObj() {
       planningPermit: '',
       notice: '',
       attachedFileNumber: '',
-      isFactoryBuilding: '',
-      currentYearDepreciation: '',
-      importedOrNot: undefined,
-      editable: true, // true为编辑中, false为未编辑
-      assetNum: '1',
-      note: ''
+      isFactoryBuilding: ''
     };
   };
 
   /** 获取车辆的对象 */
   const getCarsObj = (props) => {
     return {
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      isNewAsset: undefined,
+      ...baseObj,
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
-      assetNo: '',
-      equipClass: '',
-      equipNo: '',
-      assetNum: '',
-      factoryNo: '',
+      assetsUse: '',
       equipType: '',
-      geographicalArea: '',
-      installLocation: '',
-      managerDeptId: '',
-      liablePerson: '',
-      firstDepreciationValue: '',
-      monthProposed: '',
-      assetModel: '',
+      geographicalAreaName: '',
       producer: '',
-      procureOrder: '',
       assetSecretLevel: '',
       ynMilitaryKeyEquip: '',
-      receiveDeptId: '',
-      invoiceNo: '',
-      assetSpec: '',
-      assetUnit: '',
-      warrantyPeriod: '',
-      parentAssetNo: '',
       productionDate: '',
       vehicleUsage: '',
       vehicleNumber: '',
-      brand: '',
       licensePlateNumber: '',
       airDisplacement: '',
-      engineNo: '',
-      importedOrNot: undefined,
-      editable: true // true为编辑中, false为未编辑
+      engineNo: ''
     };
   };
 
   /** 获取家具的对象 */
   const getOfficialObject = (props) => {
     return {
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      isNewAsset: undefined,
+      ...baseObj,
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
-      assetName: '',
-      assetsUse: '',
-      assetOriginalValue: '',
-      equipType: '',
-      geographicalArea: '',
-      installLocation: '',
-      managerDeptId: '',
-      liablePerson: '',
-      assetModel: '',
-      producer: '',
-      assetNum: '1',
-      ownershipCertNo: '',
-      assetSecretLevel: '',
-      ynMilitaryKeyEquip: '',
-      receiveDeptId: '',
-      assetUnit: '',
-      productionDate: '',
-      importedOrNot: undefined,
-      editable: true // true为编辑中, false为未编辑
+      geographicalAreaName: '',
+      assetSecretLevel: ''
     };
   };
 
   /** 获取IT的对象 */
   const getITObj = (props) => {
     return {
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      isNewAsset: undefined,
+      ...baseObj,
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
-      assetOriginalValue: '',
+      assetsUse: '',
       equipType: '',
-      geographicalArea: '',
-      installLocation: '',
-      managerDeptId: '',
-      liablePerson: '',
-      assetModel: '',
+      geographicalAreaName: '',
       producer: '',
-      assetNum: '1',
       ownershipCertNo: '',
       assetSecretLevel: '',
       ynMilitaryKeyEquip: '',
-      receiveDeptId: '',
-      assetUnit: '',
       productionDate: '',
       usePosition: '',
-      factoryNo: '',
-      importedOrNot: undefined,
-      editable: true // true为编辑中, false为未编辑
+      factoryNo: ''
     };
   };
 
   const getDeviceObj = (props) => {
     return {
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      isNewAsset: undefined,
+      ...baseObj,
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
-      assetName: '',
-      assetsUse: '',
+      geographicalAreaName: '',
       abcdType: '',
-      assetOriginalValue: '',
-      geographicalArea: '',
-      installLocation: '',
-      managerDeptId: '',
-      liablePerson: '',
-      assetModel: '',
-      producer: '',
-      assetSecretLevel: '',
-      ynMilitaryKeyEquip: '',
-      receiveDeptId: '',
       fundSource: '',
-      assetUnit: '',
-      productionDate: '',
-      militaryKeyEquipCode: '',
       equipClass: '',
-      // storageLocation: '',
+      militaryKeyEquipCode: '',
       ynAnnualInspection: '',
       registrationCode: '',
-      assetNum: '1',
-      importedOrNot: undefined,
-      editable: true // true为编辑中, false为未编辑
+      ynMilitaryKeyEquip: '',
+      assetSecretLevel: ''
     };
   };
 
