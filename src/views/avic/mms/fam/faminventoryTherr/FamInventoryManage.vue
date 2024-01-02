@@ -700,28 +700,21 @@ const layout = {
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    ellipsis: true,
-    width: 60,
-    align: 'center',
-    fixed: 'left'
-  },
-  {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   ellipsis: true,
+  //   width: 80,
+  //   align: 'center',
+  //   fixed: 'left'
+  // },
+
   {
     title: '资产编号',
     dataIndex: 'assetsCode',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 250,
     resizable: true,
     align: 'left'
   },
@@ -1156,7 +1149,7 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  
+
   // =================================================
   // =================================================
   // =================================================
@@ -1323,6 +1316,14 @@ const columns = [
   {
     title: '供应商',
     dataIndex: 'supplier',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '数据密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,

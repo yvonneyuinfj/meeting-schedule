@@ -981,14 +981,6 @@ const columns = [
     align: 'left'
   },
   {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '资产名称',
     dataIndex: 'assetsName',
     ellipsis: true,
@@ -1586,6 +1578,14 @@ const columns = [
   {
     title: '供应商',
     dataIndex: 'supplier',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '数据密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
