@@ -422,6 +422,15 @@ const columns = [
     fixed: 'left'
   },
   {
+    title: '批次',
+    dataIndex: 'batchNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '事务处理流水号',
     dataIndex: 'transactionCode',
     ellipsis: true,

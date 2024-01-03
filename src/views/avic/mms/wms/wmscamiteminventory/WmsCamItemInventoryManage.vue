@@ -395,7 +395,7 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '批号',
+    title: '批次',
     dataIndex: 'batchNo',
     ellipsis: true,
     sorter: true,
