@@ -82,7 +82,7 @@
         <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"
-            style="width: 200px"
+            style="width: 250px"
             placeholder="请输入保养部位或保养项目"
             :allow-clear="true"
             @search="handleKeyWordQuery"
@@ -162,8 +162,7 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
+    align: 'center'
   },
   {
     title: '保养项目',
@@ -172,7 +171,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养部位',
@@ -181,7 +180,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养依据',
@@ -190,7 +189,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养内容',
@@ -199,7 +198,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养要求',
@@ -208,7 +207,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养责任人',
@@ -216,7 +215,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '上次保养日期',
@@ -232,7 +231,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '小时数',
@@ -240,7 +239,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '是否自主维护',
@@ -262,7 +261,7 @@ const columns = [
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
-    minWidth: 120,
+    width: 80,
     resizable: true,
     align: 'center'
   },
@@ -287,6 +286,7 @@ const columns = [
     dataIndex: 'action',
     ellipsis: true,
     width: 120,
+    align: 'center',
     fixed: 'right'
   }
 ];

@@ -64,6 +64,8 @@ export interface TpmStandardDto extends BaseBeanModel {
   areaName?: string;
   /** 具体位置 */
   storageLocation?: string;
+  /** 设备代号 */
+  equipmentMark?: string;
 }
 
 /** 获取分页数据 */
