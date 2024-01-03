@@ -291,7 +291,7 @@
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'procurementRequirements'">
-            <a @click="handleAttach(record)">
+            <a @click="handleProcurementRequirements(record)">
               查看
             </a>
           </template>
@@ -322,6 +322,11 @@
     <!-- 子表组件 -->
     <pms-delivery-detail-tab-manage v-if="attachOpen" ref="pmsDeliveryDetailTabManage" :form-id="pmsPlanId"
                                     @close="attachOpen = false"/>
+
+    <!-- 子表组件 -->
+    <pms-procurement-requirements-detail v-if="procurementRequirementsOpen" ref="pmsProcurementRequirementsDetail"
+                                       :form-id="pmsProcurementRequirementsId"
+                                       @close="procurementRequirementsOpen = false"/>
   </div>
 </template>
 <script lang="ts" setup>
@@ -331,13 +336,14 @@ import type {
 import {
   delPmsProcurementInformationReleaseApplication,
   exportExcel,
-  saveFormAndStartProcess,
-  listPmsProcurementInformationReleaseApplicationByPage
+  listPmsProcurementInformationReleaseApplicationByPage,
+  saveFormAndStartProcess
 } from '@/api/avic/mms/pms/PmsProcurementInformationReleaseApplicationApi'; // 引入模块API
 import PmsProcurementInformationReleaseApplicationAdd from './PmsProcurementInformationReleaseApplicationAdd.vue'; // 引入添加页面组件
 import PmsProcurementInformationReleaseApplicationEdit from './PmsProcurementInformationReleaseApplicationEdit.vue'; // 引入编辑页面组件
-import flowUtils, { openFlowDetail, startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import PmsDeliveryDetailTabManage from './PmsDeliveryDetailTabManage.vue';
+import PmsProcurementRequirementsDetail from './PmsProcurementRequirementsDetail.vue';
 
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -555,7 +561,9 @@ const lookupParams = [
 ];
 const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
 const attachOpen = ref(false); // 附件弹窗
+const procurementRequirementsOpen = ref(false); // 附件弹窗
 const pmsPlanId = ref(''); // 当前行数据id
+const pmsProcurementRequirementsId = ref(''); // 当前行数据id
 const approvalLoading = ref(false);
 
 onMounted(() => {
@@ -806,5 +814,11 @@ function handleStartFlow() {
 function handleAttach(record) {
   pmsPlanId.value = record.pmsPlanId;
   attachOpen.value = true;
+}
+
+/** 查看 */
+function handleProcurementRequirements(record) {
+  pmsProcurementRequirementsId.value = record.pmsProcurementRequirementsId;
+  procurementRequirementsOpen.value = true;
 }
 </script>

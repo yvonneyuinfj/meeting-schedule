@@ -230,6 +230,7 @@
         ref="pmsProcurementRequirementsLEdit"
         :bpmInstanceObject="bpmInstanceObject"
         :bpmParams="bpmParams"
+        :read-only="form.bpmState !== 'start'"
         :mainId="formId || form.id"
     />
     <!--子表按钮的流程解析，用于权限控制-->
