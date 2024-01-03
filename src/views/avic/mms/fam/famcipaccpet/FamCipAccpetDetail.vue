@@ -251,25 +251,37 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
-             <a-form-item name="managerDeptId" label="主管部门名称" :rules="fieldRequired('managerDeptId')" has-feedback>
-               <AvicCommonSelect
-                 v-model:value="form.managerDeptId"
-                 type="deptSelect"
-                 :defaultShowValue="form.managerDeptIdAlias"
-                 :disabled="fieldDisabled('managerDeptId')"
-               />
-             </a-form-item>
-           </a-col>
-           <a-col v-bind="colLayout.cols" v-if="fieldVisible('receiveDeptId')">
-             <a-form-item name="receiveDeptId" label="使用部门名称" :rules="fieldRequired('receiveDeptId')" has-feedback>
-               <AvicCommonSelect
-                 v-model:value="form.receiveDeptId"
-                 type="deptSelect"
-                 :defaultShowValue="form.receiveDeptIdAlias"
-                 :disabled="fieldDisabled('receiveDeptId')"
-               />
-             </a-form-item>
-           </a-col>
+          <a-form-item name="managerDeptId" label="主管部门名称" :rules="fieldRequired('managerDeptId')" has-feedback>
+            <a-select
+              v-model:value="form.managerDeptId"
+              :auto-focus="true"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              placeholder="请选择主管部门名称"
+              :disabled="fieldDisabled('managerDeptId')"
+            >
+              <a-select-option
+                v-for="item in managerDeptIdList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('receiveDeptId')">
+          <a-form-item name="receiveDeptId" label="使用部门名称" :rules="fieldRequired('receiveDeptId')" has-feedback>
+            <AvicCommonSelect
+              v-model:value="form.receiveDeptId"
+              type="deptSelect"
+              :defaultShowValue="form.receiveDeptIdAlias"
+              :disabled="fieldDisabled('receiveDeptId')"
+            />
+          </a-form-item>
+        </a-col>
         <a-col v-bind="colLayout.cols">
           <a-form-item name="ynDemolished" label="是否已拆除无线模块">
             <a-select
@@ -434,6 +446,7 @@ const {
   autoCode,
   purchWayList,
   fundSourceList,
+  managerDeptIdList,
   famCipAccpetListEdit,
   fieldVisible,
   fieldDisabled,

@@ -65,13 +65,15 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const purchWayList = ref([]); //购置方式通用代码
   const fundSourceList = ref([]); // 资产来源通用代码
   const ynDemolishedList = ref([]); // 是否已拆除无线模块通用代码
+  const managerDeptIdList = ref([]);
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
     { fieldName: 'purchWay', lookUpType: 'FAM_PURCH_WAY' },
     { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' },
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
-     { fieldName: 'ynDemolished', lookUpType: 'PLATFORM_YES_NO_FLAG' }
+    { fieldName: 'ynDemolished', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'managerDept', lookUpType: 'FAM_MANAGER_DEPT' }
   ];
   const authJson = ref(null);
   const bodyStyle = {
@@ -127,6 +129,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       purchWayList.value = result.purchWay;
       fundSourceList.value = result.fundSource;
       ynDemolishedList.value = result.ynDemolished;
+      managerDeptIdList.value = result.managerDept;
     });
   }
 
@@ -481,6 +484,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     loading,
     secretLevelList,
     accpetTypeList,
+    managerDeptIdList,
     assetTypeList,
     purchWayList,
     fundSourceList,

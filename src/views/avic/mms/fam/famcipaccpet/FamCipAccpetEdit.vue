@@ -197,24 +197,35 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-                      <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
-                        <AvicCommonSelect
-                          v-model:value="form.managerDeptId"
-                          type="deptSelect"
-                          placeholder="请选择主管部门名称"
-                              :defaultShowValue="form.managerDeptIdAlias"
-                        />
-                      </a-form-item>
+            <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
+              <a-select
+                v-model:value="form.managerDeptId"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择主管部门"
+              >
+                <a-select-option
+                  v-for="item in managerDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-                    <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
-                      <AvicCommonSelect
-                        v-model:value="form.receiveDeptId"
-                        type="deptSelect"
-                        placeholder="请选择使用部门名称"
-                            :defaultShowValue="form.receiveDeptIdAlias"
-                      />
-                    </a-form-item>
+            <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
+              <AvicCommonSelect
+                v-model:value="form.receiveDeptId"
+                type="deptSelect"
+                placeholder="请选择使用部门名称"
+                :defaultShowValue="form.receiveDeptIdAlias"
+              />
+            </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="ynDemolished" label="是否已拆除无线模块">
@@ -247,7 +258,8 @@
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols" v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
+          <a-col v-bind="colLayout.cols"
+                 v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
             <a-form-item name="equipmentType" label="设备类型" has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -323,7 +335,7 @@
     </template>
   </AvicModal>
   <!-- 树节点 -->
-  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle"  @ok="handleSummit">
+  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
     <a-spin :spinning="treeLoading">
       <a-tree
         v-if="treeData && treeData.length > 0"
@@ -510,6 +522,7 @@ const {
   loading,
   ynDemolishedList,
   secretLevelList,
+  managerDeptIdList,
   accpetTypeList,
   purchWayList,
   fundSourceList,
