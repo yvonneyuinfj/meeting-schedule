@@ -4,13 +4,23 @@
       <div class="content-wrapper">
         <!-- 表格组件 -->
         <div class="table-wrapper">
-          <AvicTable ref="tpmMaintainReminder" table-key="tpmMaintainReminder" :columns="columns"
-                     :row-key="record => record.id" :data-source="list" :loading="loading"
-                     :pageParameter="queryParam.pageParameter" :total="totalPage" @refresh="getList"
-                     :custom-row="customRow">
+          <AvicTable
+            ref="tpmMaintainReminder"
+            table-key="tpmMaintainReminder"
+            :columns="columns"
+            :row-key="record => record.id"
+            :data-source="list"
+            :loading="loading"
+            :pageParameter="queryParam.pageParameter"
+            :total="totalPage"
+            @refresh="getList"
+            :custom-row="customRow"
+          >
             <template #bodyCell="{ column, text, record, index }">
               <template v-if="column.dataIndex === 'id'">
-                {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+                {{
+                  index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
+                }}
               </template>
             </template>
           </AvicTable>
@@ -32,41 +42,16 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
+    align: 'center'
   },
   {
-    title: '设备编号',
-    dataIndex: 'equipmentCode',
+    title: '计划保养日期',
+    dataIndex: 'planMaintenDate',
     ellipsis: true,
     sorter: false,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  }, {
-    title: '设备名称',
-    dataIndex: 'equipmentName',
-    ellipsis: true,
-    sorter: false,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  }, {
-    title: '保养项目',
-    dataIndex: 'maintenanceItems',
-    ellipsis: true,
-    sorter: false,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  }, {
-    title: '保养部位',
-    dataIndex: 'maintenancePosition',
-    ellipsis: true,
-    sorter: false,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '上次保养日期',
@@ -75,44 +60,76 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
-  }, {
+  },
+  {
+    title: '设备编号',
+    dataIndex: 'equipmentCode',
+    ellipsis: true,
+    sorter: false,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '设备名称',
+    dataIndex: 'equipmentName',
+    ellipsis: true,
+    sorter: false,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养项目',
+    dataIndex: 'maintenanceItems',
+    ellipsis: true,
+    sorter: false,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养部位',
+    dataIndex: 'maintenancePosition',
+    ellipsis: true,
+    sorter: false,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '保养周期(月)',
     dataIndex: 'maintenanceCycle',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
-  }, {
+    align: 'center'
+  },
+  {
     title: '小时数',
     dataIndex: 'maintenanceHours',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
-  }, {
-    title: '计划保养日期',
-    dataIndex: 'planMaintenDate',
-    ellipsis: true,
-    sorter: false,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  }, {
+    align: 'center'
+  },
+  {
     title: '使用部门',
     dataIndex: 'useDeptName',
     ellipsis: true,
     sorter: false,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  }, {
+    align: 'center'
+  },
+  {
     title: '保养负责人',
     dataIndex: 'techUserIdAlias',
     ellipsis: true,
     sorter: false,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   }
 ];
 const queryForm = ref<TpmMaintainReminderDto>({
@@ -142,27 +159,26 @@ onMounted(() => {
 function getList() {
   loading.value = true;
   listTpmStandardByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 const customRow = (record, index) => {
   const newDate = dayjs(new Date());
   const timeDifference = newDate.diff(record.planMaintenDate, 'day');
   if (timeDifference >= 7) {
-    return { style: { background: 'red' } };
+    // return { style: { background: 'salmon',color:'azure' } };
+    return { style: { background: `rgba(${231}, ${78}, ${85}, ${0.7})`,color:'#fff' } };
   } else {
-    return {  };
+    return {};
   }
 };
-
 </script>
-
