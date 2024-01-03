@@ -172,7 +172,7 @@
               :defaultShowValue="record.liablePersonIdAlias"
               @callback="
                 (value, _selectRows) => {
-                  changeCommonSelect(value, record, 'liablePerson');
+                  changeCommonSelect(value, record, 'liablePersonId');
                 }
               "
             />

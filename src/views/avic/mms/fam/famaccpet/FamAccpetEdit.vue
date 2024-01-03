@@ -205,7 +205,7 @@
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
-                :disabled="form.managerDeptId === 'C410'"
+                :disabled="deptDisabled"
                 :allow-clear="true"
                 placeholder="请选择主管部门"
               >
@@ -428,6 +428,7 @@ const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
 const assetClasstObj = ref({});
 const emit = defineEmits(emits);
+const deptDisabled = ref(false);
 const maintPlanModal = ref<boolean>(false);
 
 function accpetTypeChange(v) {
@@ -524,8 +525,9 @@ function handleSummit() {
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           form.value.assetClasstName = res.data.className;
-          form.value.managerDeptId = '';
-          if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) form.value.managerDeptId = 'C410';
+          if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+            form.value.managerDeptId = 'C410';
+          }
           assetClasstOpen.value = false;
         } else {
           proxy.$message.warning('该数据不属于末级节点请重新选择！');
@@ -584,6 +586,21 @@ watch(
   () => form.value.assetClass,
   newV => {
     assetClass.value = newV;
+  }
+);
+
+watch(
+  () => form.value.assetClasst,
+  newV => {
+    if (newV) {
+      if (['7', '3', '2'].includes(newV.charAt(0))) {
+        deptDisabled.value = true;
+      } else {
+        deptDisabled.value = false;
+      }
+    } else {
+      deptDisabled.value = false;
+    }
   }
 );
 </script>

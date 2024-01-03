@@ -33,7 +33,7 @@ export const HouseColumns = [
     dataIndex: 'equipType',
     key: 'equipType',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 180,
     resizable: true,
     customHeaderCell() {
       return {
@@ -474,37 +474,37 @@ export const CarColumns = [
     },
     align: 'center'
   },
-  {
-    title: '设备大类',
-    dataIndex: 'equipClass',
-    key: 'equipClass',
-    width: 120,
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left',
-    hidden: true
-  },
-  {
-    title: '设备编号',
-    dataIndex: 'equipNo',
-    key: 'equipNo',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '设备大类',
+  //   dataIndex: 'equipClass',
+  //   key: 'equipClass',
+  //   width: 120,
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   customHeaderCell() {
+  //     return {
+  //       ['class']: 'required-table-title'
+  //     };
+  //   },
+  //   align: 'left',
+  //   hidden: true
+  // },
+  // {
+  //   title: '设备编号',
+  //   dataIndex: 'equipNo',
+  //   key: 'equipNo',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '设备类型',
     dataIndex: 'equipType',
     key: 'equipType',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 180,
     resizable: true,
     customHeaderCell() {
       return {
@@ -532,7 +532,7 @@ export const CarColumns = [
     dataIndex: 'vehicleUsage',
     key: 'vehicleUsage',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 180,
     resizable: true,
     customHeaderCell() {
       return {
@@ -833,7 +833,7 @@ export const ITColumns = [
     dataIndex: 'equipType',
     key: 'equipType',
     ellipsis: true,
-    minWidth: 120,
+    minWidth: 180,
     resizable: true,
     customHeaderCell() {
       return {
@@ -2238,7 +2238,7 @@ export const Columns = [
 export function backColumnsObj(props) {
   const { proxy } = getCurrentInstance();
   const baseObj = {
-    id: 'newLine' + proxy.$uuid(),
+
     operationType_: 'insert',
     isNewAsset: undefined,
     assetName: '',
@@ -2256,6 +2256,7 @@ export function backColumnsObj(props) {
   const getHouseObj = (props) => {
     return {
       ...baseObj,
+      id: 'newLine' + proxy.$uuid(),
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
@@ -2286,6 +2287,7 @@ export function backColumnsObj(props) {
   const getCarsObj = (props) => {
     return {
       ...baseObj,
+      id: 'newLine' + proxy.$uuid(),
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
@@ -2308,6 +2310,7 @@ export function backColumnsObj(props) {
   const getOfficialObject = (props) => {
     return {
       ...baseObj,
+      id: 'newLine' + proxy.$uuid(),
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
@@ -2320,6 +2323,7 @@ export function backColumnsObj(props) {
   const getITObj = (props) => {
     return {
       ...baseObj,
+      id: 'newLine' + proxy.$uuid(),
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
@@ -2339,6 +2343,7 @@ export function backColumnsObj(props) {
   const getDeviceObj = (props) => {
     return {
       ...baseObj,
+      id: 'newLine' + proxy.$uuid(),
       assetClass: props ? props.classCode : '',
       assetClassName: props ? props.className : '',
       useTime: props ? props.useTime : '',
