@@ -688,6 +688,10 @@ function handleBack(ids, type) {
     if (!validateRecordData([target], 'return')) {
       return;
     }
+    if (target.businessStatus === '10'){
+      proxy.$message.warning('选中的临时计划已下达，不允许退回！');
+      return;
+    }
   }
   proxy.$confirm({
     title: `确认要退回${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
@@ -811,7 +815,8 @@ function resetQuery() {
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
-    planNo: value
+    planNo: value,
+    agentId: proxy.$getLoginUser().id
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;

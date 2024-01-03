@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
+import type { BaseBeanModel, QueryParamModel, ResponseBaseData, ResponsePageData } from '@/api/model/baseModel';
 import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
@@ -92,6 +92,10 @@ export function delTpmStandard(ids: [string]): Promise<ResponseBaseData<any>> {
 
 export function saveTpmStandardByTpmInventoryIds(ids: [string]): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-by-ids/v1', { ids: ids });
+}
+
+export function saveTpmStandardCopyLByTpmInventoryIds(id: string, ids: [string]): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/save-copy-l-by-ids/v1', { id: id, ids: ids });
 }
 
 /** 导出Excel */

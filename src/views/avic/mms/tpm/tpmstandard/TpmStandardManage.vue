@@ -131,6 +131,17 @@
                   </template>
                   导入
                 </a-button>
+                <a-button
+                    v-hasPermi="['tpmStandard:add']"
+                    title="复制"
+                    type="primary"
+                    @click="handleCopy"
+                >
+                  <template #icon>
+                    <plus-outlined/>
+                  </template>
+                  复制
+                </a-button>
                 <!--                <a-button-->
                 <!--                    v-hasPermi="['tpmStandard:export']"-->
                 <!--                    title="导出"-->
@@ -221,13 +232,21 @@
         @reloadData="getList"
         @close="showImportModal = false"
       />
+      <a-modal
+          :visible="copyMoadl"
+          title="复制"
+          @ok="handleCopyModal"
+          @cancel="handleCopyClose"
+          width="80%"
+          style="top: 20px"
+      >
+        <div style="height: 400px;overflow: auto">
+          <Tpm-inventory-copy-l-select
+              ref="tpmInventoryCopyLSelect" :form-id="mainId">
+          </Tpm-inventory-copy-l-select>
+        </div>
+      </a-modal>
     </AvicPane>
-    <a-modal
-      :visible="copyMoadl"
-      @ok="handleCopyModal"
-      @cancel="copyMoadl = false"
-      title="复制"
-    ></a-modal>
     <AvicPane>
       <!-- 子表组件 -->
       <tpm-standard-maintenance-manage
@@ -242,10 +261,11 @@
 <script lang="ts" setup>
 import type { TpmStandardDto } from '@/api/avic/mms/tpm/TpmStandardApi'; // 引入模块DTO
 import {
-  listTpmStandardByPage,
   delTpmStandard,
   exportExcel,
-  saveTpmStandardByTpmInventoryIds
+  listTpmStandardByPage,
+  saveTpmStandardByTpmInventoryIds,
+  saveTpmStandardCopyLByTpmInventoryIds
 } from '@/api/avic/mms/tpm/TpmStandardApi'; // 引入模块API
 import { saveTpmInventoryList } from '@/api/avic/mms/tpm/TpmInventoryApi';
 import TpmStandardAdd from './TpmStandardAdd.vue'; // 引入添加页面组件
@@ -253,6 +273,7 @@ import TpmStandardEdit from './TpmStandardEdit.vue'; // 引入编辑页面组件
 import TpmStandardDetail from './TpmStandardDetail.vue'; // 引入详情页面组件
 import TpmStandardMaintenanceManage from '../tpmstandardmaintenance/TpmStandardMaintenanceManage.vue';
 import TpmInventoryStandardSelect from './TpmInventoryStandardSelect.vue';
+import TpmInventoryCopyLSelect from './TpmInventoryCopyLSelect.vue';
 import dayjs from 'dayjs';
 
 const { proxy } = getCurrentInstance();
@@ -398,6 +419,7 @@ const delLoading = ref(false);
 const totalPage = ref(0);
 const open = ref<boolean>(false);
 const tpmInventoryStandardSelect = ref(null);
+const tpmInventoryCopyLSelect = ref(null);
 
 // 主表传入子表的id
 const mainId = computed(() => {
@@ -477,13 +499,34 @@ function handleOpenAdd() {
 }
 
 /** 复制 */
-function handleCopy(rows, ids) {
+function handleCopy() {
   copyMoadl.value = true;
+  tpmInventoryCopyLSelect.value.getList();
 }
 
+function handleCopyClose() {
+  copyMoadl.value = false;
+}
 /** 提交复制 */
 function handleCopyModal() {
-  copyMoadl.value = false;
+  const selectedKeys = tpmInventoryCopyLSelect.value.selectedRowIdKeys;
+  if (selectedKeys.length == 0) {
+    proxy.$message.warning('请选择要操作的数据！');
+    return;
+  }
+  saveTpmStandardCopyLByTpmInventoryIds(mainId.value, selectedKeys).then(res => {
+    if (res.success) {
+      proxy.$message.success('添加成功！');
+      // 清空选中
+      selectedRowKeys.value = [];
+      selectedRows.value = [];
+      getList();
+    }
+    copyMoadl.value = false;
+  }).catch((error) => {
+    proxy.$message.warning(error.message);
+    copyMoadl.value = false;
+  });
 }
 
 const handleCancel = () => {

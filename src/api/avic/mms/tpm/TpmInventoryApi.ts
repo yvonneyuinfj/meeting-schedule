@@ -262,6 +262,8 @@ export interface TpmInventoryDto extends BaseBeanModel {
   storageMediaNameSecretLevel?: string;
   /** 存储介质状态 */
   storageMediaStatus?: string;
+  /** 设备标准管理表ID */
+  tpmStandardId?: string;
 }
 
 /** 获取分页数据 */
@@ -313,6 +315,12 @@ export function standardListTpmInventorySelectByPage(
   param: QueryParamModel
 ): Promise<ResponsePageData<TpmInventoryDto>> {
   return request.post(basePath + '/searchStandard-by-page/v1', param);
+}
+
+export function standardListTpmInventoryCopyLSelectByPage(
+  param: QueryParamModel
+): Promise<ResponsePageData<TpmInventoryDto>> {
+  return request.post(basePath + '/searchStandardCopyL-by-page/v1', param);
 }
 
 /** 批量保存表单数据 */
