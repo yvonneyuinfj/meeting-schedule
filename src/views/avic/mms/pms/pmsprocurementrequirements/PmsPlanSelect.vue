@@ -114,26 +114,26 @@
           <!--              />-->
           <!--            </a-form-item>-->
           <!--          </a-col>-->
-<!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
-<!--            <a-form-item label="产品需求分类">-->
-<!--              <a-input-->
-<!--                  v-model:value="queryForm.productReqClassify"-->
-<!--                  :allow-clear="true"-->
-<!--                  placeholder="请输入产品需求分类"-->
-<!--                  @pressEnter="handleQuery"-->
-<!--              />-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
-<!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
-<!--            <a-form-item label="产品类型">-->
-<!--              <a-input-->
-<!--                  v-model:value="queryForm.productType"-->
-<!--                  :allow-clear="true"-->
-<!--                  placeholder="请输入产品类型"-->
-<!--                  @pressEnter="handleQuery"-->
-<!--              />-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="产品需求分类">-->
+          <!--              <a-input-->
+          <!--                  v-model:value="queryForm.productReqClassify"-->
+          <!--                  :allow-clear="true"-->
+          <!--                  placeholder="请输入产品需求分类"-->
+          <!--                  @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-show="advanced" v-bind="colLayout.cols">-->
+          <!--            <a-form-item label="产品类型">-->
+          <!--              <a-input-->
+          <!--                  v-model:value="queryForm.productType"-->
+          <!--                  :allow-clear="true"-->
+          <!--                  placeholder="请输入产品类型"-->
+          <!--                  @pressEnter="handleQuery"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="所属项目课题号">
               <a-input
@@ -641,7 +641,8 @@ function toggleAdvanced() {
 function handleKeyWordQuery(value) {
   const keyWord = {
     pmsTaskNo: value,
-    reqPlanNo: value
+    reqPlanNo: value,
+    planStatus: '5'
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;

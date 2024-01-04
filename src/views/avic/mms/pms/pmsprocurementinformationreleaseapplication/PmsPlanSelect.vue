@@ -515,7 +515,8 @@ function toggleAdvanced() {
 function handleKeyWordQuery(value) {
   const keyWord = {
     pmsTaskNo: value,
-    reqPlanNo: value
+    reqPlanNo: value,
+    planStatus: '10'
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
