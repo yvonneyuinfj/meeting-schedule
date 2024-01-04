@@ -407,7 +407,9 @@ function toggleAdvanced() {
 function handleKeyWordQuery(value) {
   const keyWord = {
     reqPlanNo: value,
-    reqPlanName: value
+    reqPlanName: value,
+    managerUserId: proxy.$getLoginUser().id,
+    reqStatus: '0'
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
