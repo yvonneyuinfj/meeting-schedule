@@ -1,25 +1,44 @@
-import type { MdsVendorProveDto } from '@/api/avic/mms/mds/MdsVendorProveApi'; // 引入模块DTO
-import { getMdsVendorProve, saveMdsVendorProve } from '@/api/avic/mms/mds/MdsVendorProveApi'; // 引入模块API
+import request from '@/utils/request';
+import type { PmsReleaseRecordDto } from '@/api/avic/mms/pms/PmsReleaseRecordApi'; // 引入模块DTO
+import { getPmsReleaseRecord, savePmsReleaseRecord } from '@/api/avic/mms/pms/PmsReleaseRecordApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
-export function useMdsVendorProveForm({
+export function usePmsReleaseRecordForm({
   props: props,
   emit: emit
 }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<MdsVendorProveDto>({});
+  const form = ref<PmsReleaseRecordDto>({});
   const formRef = ref(null);
   const rules: Record<string, Rule[]> = {
-    mdsVendorId: [
-      { required: true, message: '供应商信息表主键ID不能为空', trigger: 'change' }
+    pmsTaskNo: [
+      { required: true, message: '采购任务编号不能为空', trigger: 'change' }
     ],
-    proveNo: [
-      { required: true, message: '资质编号不能为空', trigger: 'change' }
+    reqPlanNo: [
+      { required: true, message: '采购计划号不能为空', trigger: 'change' }
     ],
-    proveName: [
-      { required: true, message: '资质名称不能为空', trigger: 'change' }
+    reqPlanName: [
+      { required: true, message: '采购计划名称不能为空', trigger: 'change' }
+    ],
+    powerLetterNumber: [
+      { required: true, message: '动力函号不能为空', trigger: 'change' }
+    ],
+    decryptionReleaseName: [
+      { required: true, message: '脱密发布名称不能为空', trigger: 'change' }
+    ],
+    releaseDate: [
+      { required: true, message: '发布日期不能为空', trigger: 'change' }
+    ],
+    releaseEndDate: [
+      { required: true, message: '截止日期不能为空', trigger: 'change' }
+    ],
+    releaseUnifiedCode: [
+      { required: true, message: '发布统一编码不能为空', trigger: 'change' }
+    ],
+    releaseUserId: [
+      { required: true, message: '发布人不能为空', trigger: 'change' }
     ],
     secretLevel: [
-      { required: true, message: '密级 ^ 通用代码MMS_DATA_SECRET_LEVEL不能为空', trigger: 'change' }
+      { required: true, message: '密级不能为空', trigger: 'change' }
     ]
   };
   const layout = {
@@ -28,17 +47,9 @@ export function useMdsVendorProveForm({
   };
   const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
-  const proveTypeList = ref([]); // 资质类型 ^ SRM_PROVE_TYPE: 1-质量认证，2-环境认证，3-NADCAP认证，4-适航认证， 5-武器装备承制资格认证，6-保密认证，7-武器装备，8-科研生产许可认证通用代码
-  const proveGradeList = ref([]); // 资质等级 ^ SRM_PROVE_GRADE:0-I,1-II,2-III通用代码
-  const secretLevelList = ref([]); // 密级 ^ 通用代码MMS_DATA_SECRET_LEVEL通用代码
-  const lookupParams = [
-    { fieldName: 'proveType', lookUpType: 'MDS_PROVE_TYPE' },
-    { fieldName: 'proveGrade', lookUpType: 'MDS_VENDOR_LEVEL' }
-    ];
+  const secretLevelList = ref([]); // 密级通用代码
 
   onMounted(() => {
-    // 加载查询区所需通用代码
-    getLookupList();
     // 获取当前用户对应的文档密级
     getUserFileSecretList();
     if (props.formId) {
@@ -47,15 +58,8 @@ export function useMdsVendorProveForm({
     }
   });
 
-  /** 获取通用代码  */
-  function getLookupList () {
-    proxy.$getLookupByType(lookupParams, result => {
-    proveTypeList.value = result.proveType;
-    proveGradeList.value = result.proveGrade;
-    });
-  }
   /** 获取当前用户对应的文档密级 */
-  function getUserFileSecretList () {
+  function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
@@ -64,14 +68,14 @@ export function useMdsVendorProveForm({
    * 编辑、详情页面加载数据
    * @param {String} id 行数据的id
    */
-  function getFormData (id) {
+  function getFormData(id) {
     loading.value = true;
-    getMdsVendorProve(id)
+    getPmsReleaseRecord(id)
       .then(async (res) => {
         if (res.success) {
           form.value = res.data;
           // 处理数据
- loading.value = false;
+          loading.value = false;
         }
       })
       .catch(() => {
@@ -80,15 +84,15 @@ export function useMdsVendorProveForm({
       });
   }
   /** 保存 */
-  function saveForm () {
+  function saveForm() {
     formRef.value
       .validate()
-      .then( () => {
+      .then(() => {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        saveMdsVendorProve(postData)
+        savePmsReleaseRecord(postData)
           .then((res) => {
             if (res.success) {
               successCallback();
@@ -106,15 +110,22 @@ export function useMdsVendorProveForm({
       });
   }
   /** 数据保存成功的回调 */
-  function successCallback () {
+  function successCallback() {
     proxy.$message.success('保存成功！');
     emit('reloadData');
     emit('close');
   }
   /** 返回关闭事件 */
-  function closeModal () {
+  function closeModal() {
     emit('close');
   }
+  /** 回填职工号&职工姓名 lvmin 2024-01-04*/
+  const getSelectUserCode = function (e, code, name) {
+    request.get('/appsys/user/UserRest/get/' + e.ids + '/v1').then(res => {
+      form.value[code] = res.data.no;
+    });
+    form.value[name] = e.names;
+  };
   return {
     form,
     formRef,
@@ -122,11 +133,10 @@ export function useMdsVendorProveForm({
     layout,
     colLayout,
     loading,
-    proveTypeList,
-    proveGradeList,
     secretLevelList,
     saveForm,
-    closeModal
+    closeModal,
+    getSelectUserCode
   };
 }
 
