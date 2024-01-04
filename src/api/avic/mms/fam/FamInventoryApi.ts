@@ -67,6 +67,8 @@ export interface FamInventoryDto extends BaseBeanModel {
   monDepreciation?: string;
   /** 存放地点 */
   storageLocation?: string;
+  /** 安装地点 */
+  installLocation?: string;
   /** 部门名称 */
   deptName?: string;
   /** 主管部门id */
@@ -157,6 +159,10 @@ export interface FamInventoryDto extends BaseBeanModel {
   assetType?: any;
   /** 质保期 */
   warrantyPeriod?: string;
+  /** 更改原因 */
+  changeReason?: string;
+  /** 申请单编号 */
+  changeApplyNo?: string;
 }
 
 /** 获取分页数据 */

@@ -1,17 +1,21 @@
 import type { FamInventoryChangeDto } from '@/api/avic/mms/fam/FamInventoryChangeApi'; // 引入模块DTO
-import { getFamInventoryChange, saveFamInventoryChange, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamInventoryChangeApi'; // 引入模块API
 import {
-  default as flowUtils,
-  startFlowByFormCode,
+  getFamInventoryChange,
+  saveFamInventoryChange,
+  saveFormAndStartProcess
+} from '@/api/avic/mms/fam/FamInventoryChangeApi'; // 引入模块API
+import {
   closeFlowLoading,
-  openFlowDetail,
   getFieldAuth,
-  getFieldVisible,
   getFieldDisabled,
-  getFieldRequired
+  getFieldRequired,
+  getFieldVisible,
+  openFlowDetail,
+  startFlowByFormCode
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 export const emits = ['reloadData', 'close'];
+
 export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<FamInventoryChangeDto>({});
@@ -21,14 +25,13 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
-  const rules: Record<string, Rule[]> = {
-  };
+  const rules: Record<string, Rule[]> = {};
   const famInventoryChangeListEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout4; // 调用布局公共方法
+  const colLayout = proxy.$colLayout4; // 调用布局公共方法
   const loading = ref(false);
   const secretLevelList = ref([]); // 数据密级通用代码
   const assetsStatusList = ref([]); // 资产状态通用代码
@@ -41,14 +44,16 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' }
-    ];
+  ];
   const authJson = ref(null);
+  const formDisable: Map<string, boolean> = new Map();
+  const formList = ['assetsStatus', 'assetsUse', 'entryDate', 'assetOriginalValue', 'depreciationValue', 'depreciationWay', 'assetNum', 'useTime', 'assetNetValue', 'monDepreciation', 'storageLocation', 'deptName', 'managerDeptId', 'responseUserId', 'firstDepreciationValue', 'monthProposed', 'brandModel', 'purchaseDate', 'currentYearDepreciation', 'newaCurrentmProvision', 'other', 'resetVoucherNo', 'productionNo', 'voucherNo', 'factoryOwner', 'buildProject', 'brand', 'ownershipCertNo', 'procureOrderNo', 'assetSecretLevel', 'ynMilitaryKeyEquip', 'receiveDeptId', 'assetClass', 'fundSource', 'projectName', 'handlePersonId', 'assetSpec', 'assetModel', 'assetUnit', 'invoiceNo', 'productionDate', 'importedOrNot', 'assetType', 'warrantyPeriod', 'changeReason', 'installLocation'];
 
   if (props.params) {
     bpmParams.value = props.params;
   } else {
     if (proxy.$route) {
-      bpmParams.value = proxy. $route.query;
+      bpmParams.value = proxy.$route.query;
     }
   }
   if (bpmParams) {
@@ -58,6 +63,29 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   }
 
   onMounted(() => {
+    switch (proxy.$getLoginUser().entityDeptCode) {
+      case 'C150':
+      case 'C410':
+      case 'A220':
+      case 'A140':
+      case 'C450':
+      case 'C310':
+      case 'C350':
+        formList.forEach((value) => {
+          formDisable.set(value, false);
+        });
+        break;
+      default :
+        formList.forEach((value) => {
+          if (value === 'responseUserId' || value === 'installLocation') {
+            formDisable.set(value, false);
+          } else {
+            formDisable.set(value, true);
+          }
+        });
+        break;
+    }
+
     // 加载查询区所需通用代码
     getLookupList();
     // 获取当前用户对应的文档密级
@@ -70,21 +98,24 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
   /** 获取通用代码  */
-  function getLookupList () {
+  function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
-    assetsStatusList.value = result.assetsStatus;
-    ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
-    importedOrNotList.value = result.importedOrNot;
-    assetTypeList.value = result.assetType;
+      assetsStatusList.value = result.assetsStatus;
+      ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
+      importedOrNotList.value = result.importedOrNot;
+      assetTypeList.value = result.assetType;
     });
   }
+
   /** 获取当前用户对应的文档密级 */
-  function getUserFileSecretList () {
+  function getUserFileSecretList() {
     proxy.$getUserFileSecretLevelList(result => {
       secretLevelList.value = result;
     });
   }
+
   /**
    * 编辑详情页面加载数据
    * @param {String} id 行数据的id
@@ -98,8 +129,8 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       .then(async res => {
         if (res.data) {
           form.value = res.data;
-        // 处理数据
-           loading.value = false;
+          // 处理数据
+          loading.value = false;
         } else {
           initForm();
           loading.value = false;
@@ -110,6 +141,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
   function saveForm(params) {
     formRef.value
@@ -132,8 +164,8 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
                   if (props.bpmInstanceObject) {
                     bpmButtonParams.value = { params, result: res.data };
                   }
-                  if (!form.value.id){
-                    form.value.id=res.data;
+                  if (!form.value.id) {
+                    form.value.id = res.data;
                   }
                   successCallback();
                 } else {
@@ -154,6 +186,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -161,6 +194,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     formRef.value
@@ -190,6 +224,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     // 点击保存并启动流程按钮触发
@@ -206,7 +241,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
         // 获取编码码段值
         postData.changeApplyNo = autoCode.value.getSegmentValue();
       }
-      
+
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
@@ -220,8 +255,8 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
               bpmButtonParams.value = { params, result: res.data };
             }
             bpmResult.value = res.data;
-            if (!form.value.id){
-              form.value.id=res.data.formId;
+            if (!form.value.id) {
+              form.value.id = res.data.formId;
             }
             successCallback();
           } else {
@@ -233,6 +268,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
         });
     }
   }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -254,6 +290,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -265,37 +302,44 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
@@ -316,6 +360,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     ynMilitaryKeyEquipList,
     importedOrNotList,
     assetTypeList,
+    formDisable,
     saveForm,
     saveAndStartProcess,
     closeModal,

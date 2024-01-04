@@ -89,6 +89,7 @@
                 :show-search="true"
                 :allow-clear="true"
                 placeholder="请选择资产状态"
+                :disabled="formDisable.get('assetsStatus')"
               >
                 <a-select-option
                   v-for="item in assetsStatusList"
@@ -106,6 +107,7 @@
                 v-model:value="form.assetsUse"
                 :maxLength="64"
                 placeholder="请输入资产用途"
+                :disabled="formDisable.get('assetsUse')"
               />
             </a-form-item>
           </a-col>
@@ -116,6 +118,7 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择入账日期"
+                :disabled="formDisable.get('entryDate')"
               />
             </a-form-item>
           </a-col>
@@ -129,6 +132,7 @@
                 :step="0.01"
                 placeholder="请输入资产原值"
                 style="width: 100%"
+                :disabled="formDisable.get('assetOriginalValue')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -142,6 +146,7 @@
                 :step="0.01"
                 placeholder="请输入累计折旧"
                 style="width: 100%"
+                :disabled="formDisable.get('depreciationValue')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -151,6 +156,7 @@
                 v-model:value="form.depreciationWay"
                 :maxLength="64"
                 placeholder="请输入折旧方法"
+                :disabled="formDisable.get('depreciationWay')"
               />
             </a-form-item>
           </a-col>
@@ -162,6 +168,7 @@
                 :min="-999999999999"
                 placeholder="请输入资产数量"
                 style="width: 100%"
+                :disabled="formDisable.get('assetNum')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -171,6 +178,7 @@
                 v-model:value="form.useTime"
                 :maxLength="16"
                 placeholder="请输入使用年限"
+                :disabled="formDisable.get('useTime')"
               />
             </a-form-item>
           </a-col>
@@ -184,6 +192,7 @@
                 :step="0.01"
                 placeholder="请输入资产净值"
                 style="width: 100%"
+                :disabled="formDisable.get('assetNetValue')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -197,6 +206,7 @@
                 :step="0.01"
                 placeholder="请输入月折旧额"
                 style="width: 100%"
+                :disabled="formDisable.get('monDepreciation')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -206,6 +216,7 @@
                 v-model:value="form.storageLocation"
                 :maxLength="64"
                 placeholder="请输入存放地点"
+                :disabled="formDisable.get('storageLocation')"
               />
             </a-form-item>
           </a-col>
@@ -215,6 +226,7 @@
                 v-model:value="form.deptName"
                 :maxLength="64"
                 placeholder="请输入部门名称"
+                :disabled="formDisable.get('deptName')"
               />
             </a-form-item>
           </a-col>
@@ -224,6 +236,7 @@
                 v-model:value="form.managerDeptId"
                 type="deptSelect"
                 placeholder="请选择主管部门"
+                :disabled="formDisable.get('managerDeptId')"
               />
             </a-form-item>
           </a-col>
@@ -233,6 +246,7 @@
                 v-model:value="form.responseUserId"
                 type="userSelect"
                 placeholder="请选择责任人"
+                :disabled="formDisable.get('responseUserId')"
               />
             </a-form-item>
           </a-col>
@@ -246,6 +260,7 @@
                 :step="0.01"
                 placeholder="请输入入账时累计折旧"
                 style="width: 100%"
+                :disabled="formDisable.get('firstDepreciationValue')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -256,6 +271,7 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择已提月份"
+                :disabled="formDisable.get('monthProposed')"
               />
             </a-form-item>
           </a-col>
@@ -265,6 +281,7 @@
                 v-model:value="form.brandModel"
                 :maxLength="50"
                 placeholder="请输入品牌型号"
+                :disabled="formDisable.get('brandModel')"
               />
             </a-form-item>
           </a-col>
@@ -275,6 +292,7 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择购置日期"
+                :disabled="formDisable.get('purchaseDate')"
               />
             </a-form-item>
           </a-col>
@@ -288,6 +306,7 @@
                 :step="0.01"
                 placeholder="请输入入账前当年折旧"
                 style="width: 100%"
+                :disabled="formDisable.get('currentYearDepreciation')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -297,6 +316,7 @@
                 v-model:value="form.newaCurrentmProvision"
                 :maxLength="64"
                 placeholder="请输入新增当月计提"
+                :disabled="formDisable.get('newaCurrentmProvision')"
               />
             </a-form-item>
           </a-col>
@@ -306,6 +326,7 @@
                 v-model:value="form.other"
                 :maxLength="64"
                 placeholder="请输入其他"
+                :disabled="formDisable.get('other')"
               />
             </a-form-item>
           </a-col>
@@ -315,6 +336,7 @@
                 v-model:value="form.resetVoucherNo"
                 :maxLength="64"
                 placeholder="请输入重置凭证号"
+                :disabled="formDisable.get('resetVoucherNo')"
               />
             </a-form-item>
           </a-col>
@@ -333,6 +355,7 @@
                 v-model:value="form.productionNo"
                 :maxLength="64"
                 placeholder="请输入出厂编号"
+                :disabled="formDisable.get('productionNo')"
               />
             </a-form-item>
           </a-col>
@@ -342,6 +365,7 @@
                 v-model:value="form.voucherNo"
                 :maxLength="128"
                 placeholder="请输入凭证号"
+                :disabled="formDisable.get('voucherNo')"
               />
             </a-form-item>
           </a-col>
@@ -351,6 +375,7 @@
                 v-model:value="form.factoryOwner"
                 :maxLength="64"
                 placeholder="请输入厂商"
+                :disabled="formDisable.get('factoryOwner')"
               />
             </a-form-item>
           </a-col>
@@ -360,6 +385,7 @@
                 v-model:value="form.buildProject"
                 :maxLength="64"
                 placeholder="请输入建设项目"
+                :disabled="formDisable.get('buildProject')"
               />
             </a-form-item>
           </a-col>
@@ -369,6 +395,7 @@
                 v-model:value="form.brand"
                 :maxLength="64"
                 placeholder="请输入品牌"
+                :disabled="formDisable.get('brand')"
               />
             </a-form-item>
           </a-col>
@@ -378,6 +405,7 @@
                 v-model:value="form.ownershipCertNo"
                 :maxLength="64"
                 placeholder="请输入权属证号"
+                :disabled="formDisable.get('ownershipCertNo')"
               />
             </a-form-item>
           </a-col>
@@ -387,6 +415,7 @@
                 v-model:value="form.procureOrderNo"
                 :maxLength="64"
                 placeholder="请输入采购合同号"
+                :disabled="formDisable.get('procureOrderNo')"
               />
             </a-form-item>
           </a-col>
@@ -396,6 +425,7 @@
                 v-model:value="form.assetSecretLevel"
                 :maxLength="64"
                 placeholder="请输入资产密级"
+                :disabled="formDisable.get('assetSecretLevel')"
               />
             </a-form-item>
           </a-col>
@@ -408,6 +438,7 @@
                 :show-search="true"
                 :allow-clear="true"
                 placeholder="请选择是否军工关键设备"
+                :disabled="formDisable.get('ynMilitaryKeyEquip')"
               >
                 <a-select-option
                   v-for="item in ynMilitaryKeyEquipList"
@@ -425,6 +456,7 @@
                 v-model:value="form.receiveDeptId"
                 type="deptSelect"
                 placeholder="请选择接收部门"
+                :disabled="formDisable.get('receiveDeptId')"
               />
             </a-form-item>
           </a-col>
@@ -434,6 +466,7 @@
                 v-model:value="form.assetClass"
                 :maxLength="64"
                 placeholder="请输入资产类别"
+                :disabled="formDisable.get('assetClass')"
               />
             </a-form-item>
           </a-col>
@@ -443,6 +476,7 @@
                 v-model:value="form.fundSource"
                 :maxLength="64"
                 placeholder="请输入资金来源"
+                :disabled="formDisable.get('fundSource')"
               />
             </a-form-item>
           </a-col>
@@ -452,6 +486,7 @@
                 v-model:value="form.projectName"
                 :maxLength="32"
                 placeholder="请输入项目名称"
+                :disabled="formDisable.get('projectName')"
               />
             </a-form-item>
           </a-col>
@@ -461,6 +496,7 @@
                 v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择经办人"
+                :disabled="formDisable.get('handlePersonId')"
               />
             </a-form-item>
           </a-col>
@@ -479,6 +515,7 @@
                 v-model:value="form.assetSpec"
                 :maxLength="32"
                 placeholder="请输入资产规格"
+                :disabled="formDisable.get('assetSpec')"
               />
             </a-form-item>
           </a-col>
@@ -488,6 +525,7 @@
                 v-model:value="form.assetModel"
                 :maxLength="32"
                 placeholder="请输入资产型号"
+                :disabled="formDisable.get('assetModel')"
               />
             </a-form-item>
           </a-col>
@@ -501,6 +539,7 @@
                 :step="0.01"
                 placeholder="请输入资产单价"
                 style="width: 100%"
+                :disabled="formDisable.get('assetUnit')"
               ></a-input-number>
             </a-form-item>
           </a-col>
@@ -510,6 +549,7 @@
                 v-model:value="form.invoiceNo"
                 :maxLength="64"
                 placeholder="请输入发票号"
+                :disabled="formDisable.get('invoiceNo')"
               />
             </a-form-item>
           </a-col>
@@ -520,6 +560,7 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择出厂日期"
+                :disabled="formDisable.get('productionDate')"
               />
             </a-form-item>
           </a-col>
@@ -541,6 +582,7 @@
                 :show-search="true"
                 :allow-clear="true"
                 placeholder="请选择是否为进口设备"
+                :disabled="formDisable.get('importedOrNot')"
               >
                 <a-select-option
                   v-for="item in importedOrNotList"
@@ -561,6 +603,7 @@
                 :show-search="true"
                 :allow-clear="true"
                 placeholder="请选择资产分类"
+                :disabled="formDisable.get('assetType')"
               >
                 <a-select-option
                   v-for="item in assetTypeList"
@@ -579,6 +622,17 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择质保期"
+                :disabled="formDisable.get('warrantyPeriod')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols2">
+            <a-form-item name="installLocation" label="安装地点" has-feedback>
+              <a-input
+                  v-model:value="form.installLocation"
+                  :maxLength="64"
+                  placeholder="请输入安装地点"
+                  :disabled="formDisable.get('installLocation')"
               />
             </a-form-item>
           </a-col>
@@ -594,6 +648,7 @@
                 :rows="2"
                 :maxLength="4000"
                 placeholder="请输入更改原因"
+                :disabled="formDisable.get('changeReason')"
               />
             </a-form-item>
           </a-col>
@@ -639,6 +694,7 @@ const {
   autoCode,
   colLayout,
   loading,
+  formDisable,
   secretLevelList,
   assetsStatusList,
   ynMilitaryKeyEquipList,
