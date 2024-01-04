@@ -26,13 +26,14 @@ import './app.less';
 import './router/router-guards';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-
+import print from 'vue3-print-nb';
 dayjs.extend(relativeTime);
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 app.use(pinia);
+app.use(print);
 app
   .use(locale as any)
   .use(router)

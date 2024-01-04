@@ -52,6 +52,7 @@
     "vue-router": "^4.0.14",
     "vue-upload-component": "^3.1.8",
     "vue3-colorpicker": "^2.1.5",
+    "vue3-print-nb": "^0.1.4",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
