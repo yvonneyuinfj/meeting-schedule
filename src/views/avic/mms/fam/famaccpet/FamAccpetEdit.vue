@@ -281,7 +281,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols"
-                 v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
+                 v-if="form.assetClasst && filterEquipmentTypeList.length > 0 ">
             <a-form-item name="equipmentType" label="设备类型" has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -292,7 +292,7 @@
                 :allow-clear="true"
               >
                 <a-select-option
-                  v-for="item in equipmentTypeList"
+                  v-for="item in filterEquipmentTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -429,6 +429,7 @@ const treeNodeId = ref();
 const assetClasstObj = ref({});
 const emit = defineEmits(emits);
 const deptDisabled = ref(false);
+const filterEquipmentTypeList = ref([]);
 const maintPlanModal = ref<boolean>(false);
 
 function accpetTypeChange(v) {
@@ -525,7 +526,7 @@ function handleSummit() {
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           form.value.assetClasstName = res.data.className;
-          if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+          if (['7', '3', '2' , '8'].includes(form.value.assetClasst.charAt(0))) {
             form.value.managerDeptId = 'C410';
           }
           assetClasstOpen.value = false;
@@ -592,13 +593,19 @@ watch(
 watch(
   () => form.value.assetClasst,
   newV => {
-    if (newV) {
-      if (['7', '3', '2'].includes(newV.charAt(0))) {
-        deptDisabled.value = true;
-      } else {
-        deptDisabled.value = false;
-      }
+    if (['7', '3', '2'].includes(newV.charAt(0))) {
+      filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+        item.lookupName !== '办公自动化设备' && item.lookupName !== '视频监控、硬盘录像设备');
+      form.value.equipmentType = '';
+      deptDisabled.value = true;
     } else {
+      if (['8'].includes(newV.charAt(0))) {
+        filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+          item.lookupName === '办公自动化设备' || item.lookupName === '视频监控、硬盘录像设备');
+        form.value.equipmentType = '';
+      } else {
+        filterEquipmentTypeList.value = [];
+      }
       deptDisabled.value = false;
     }
   }

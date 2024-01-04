@@ -229,8 +229,9 @@
               </a-input>
             </a-form-item>
           </a-col>
+
           <a-col v-bind="colLayout.cols"
-                 v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) ">
+                 v-if="form.assetClasst  && filterEquipmentTypeList.length > 0 ">
             <a-form-item name="equipmentType" label="设备类型" has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -242,7 +243,7 @@
                 placeholder="请选择设备类型"
               >
                 <a-select-option
-                  v-for="item in equipmentTypeList"
+                  v-for="item in filterEquipmentTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -406,11 +407,14 @@ const props = defineProps({
   }
 });
 
+// 初始化
 onMounted(() => {
   getTreeList();
   form.value.handlePersonId = proxy.$getLoginUser().id;
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
 });
+
+
 const famOverhaulRequireSelect = ref(null);
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
@@ -425,6 +429,8 @@ const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
 const deptDisabled = ref(false);
 const assetClasstObj = ref({});
+const filterEquipmentTypeList = ref([]); // 过滤后设备类型
+
 const emit = defineEmits(emits);
 const {
   form,
@@ -435,6 +441,7 @@ const {
   loading,
   secretLevelList,
   managerDeptIdList,
+  selecrAssetClasst,
   saveAndStartProcess,
   ynArchivedList,
   ynDemolishedList,
@@ -494,8 +501,9 @@ function handleSummit() {
             assetClasstObj.value = res.data;
             form.value.assetClasst = res.data.classCode;
             form.value.assetClasstName = res.data.className;
-            // form.value.managerDeptId = '';
-            if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+
+            // 设置主管部门默认值
+            if (['7', '3', '2','8'].includes(form.value.assetClasst.charAt(0))) {
               form.value.managerDeptId = 'C410';
             }
             assetClasstOpen.value = false;
@@ -516,17 +524,18 @@ function handleExpand(keys) {
   expandedKeys.value = keys;
 }
 
+// 验收类型
 const annualChange = (v) => {
   annual.value = v;
   if (v === '1') form.value.assetClass = '1';
 };
+
 const getPlanNo = (v) => {
   form.value.overhaulRequireCode = v.billNo;
   form.value.overhaulRequireId = v.id;
   if (v.maintCategory === '1') {
     proxy.$message.warning(' 请选择改造申请！');
   }
-
   maintPlanModal.value = false;
 };
 
@@ -554,6 +563,7 @@ const assetClasstClick = () => {
   assetClasstOpen.value = true;
 };
 
+
 watch(
   () => form.value.accpetType,
   newV => {
@@ -572,13 +582,19 @@ watch(
 watch(
   () => form.value.assetClasst,
   newV => {
-    if (newV) {
-      if (['7', '3', '2'].includes(newV.charAt(0))) {
-        deptDisabled.value = true;
-      } else {
-        deptDisabled.value = false;
-      }
+    if (['7', '3', '2'].includes(newV.charAt(0))) {
+      filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+        item.lookupName !== '办公自动化设备' && item.lookupName !== '视频监控、硬盘录像设备');
+      form.value.equipmentType = ''
+      deptDisabled.value = true;
     } else {
+      if (['8'].includes(newV.charAt(0))) {
+        filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+          item.lookupName === '办公自动化设备' || item.lookupName === '视频监控、硬盘录像设备');
+        form.value.equipmentType = ''
+      } else {
+        filterEquipmentTypeList.value = [];
+      }
       deptDisabled.value = false;
     }
   }

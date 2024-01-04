@@ -120,7 +120,7 @@
               'registrationCode',
               'militaryKeyEquipCode',
               'countryOfOrigin',
-              'equipmentNumber', 'storageType' ,'storageNumber' ,'storageCode' ,'storageName' ,'ipAddress' ,'storageLevel', 'storageState'
+              'equipmentNumber', 'storageType' ,'storageNumber' ,'storageCode' ,'storageName' ,'ipAddress' ,'storageLevel', 'storageState','geographicLocation','certificateNumber'
             ].includes(column.dataIndex)
             && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
           "
@@ -242,6 +242,7 @@
               'purchaseDate',
               'recordDate',
               'commissionDate',
+              'acceptanceTime',
             ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
@@ -432,10 +433,10 @@
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'assetNo'">
-          {{ props.accpetType === '1' ? '提交后自动生成' : record.assetNo }}
+          {{ record.assetNo || '提交后自动生成' }}
         </template>
         <template v-else-if="column.dataIndex === 'equipNo'">
-          {{ props.accpetType === '1' ? '提交后自动生成' : record.equipNo }}
+          {{ record.equipNo || '提交后自动生成' }}
         </template>
 
         <!-- 选择框-->
@@ -448,7 +449,7 @@
               'fundSource',
               'equipType',
               'assetSecretLevel',
-              'assetsUse',
+              'assetsUse','housingType'
             ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
@@ -601,26 +602,14 @@
 </template>
 <script lang="ts" setup>
 import type { FamAccpetListDto } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块DTO
-import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
+import { listFamAccpetListByPage, getEquipClassCode } from '@/api/avic/mms/fam/FamAccpetListApi'; // 引入模块API
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
 import { getTpmAssetClass, getTreeData as getTpmTreeData } from '@/api/avic/mms/tpm/TpmAssetClassApi'; // 引入模块API
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
 import TreeModal from '@/components/tree-modal/TreeModal.vue';
-import {
-  HouseColumns,
-  DeviceColumns,
-  CarColumns,
-  OfficialColumns,
-  ITColumns,
-  BaseColumns,
-  backColumnsObj, Columns
-} from './ListColumns';
-import {
-  CarValidateRules, DeviceValidateRules, BaseValidateRules,
-  HouseValidateRules,
-  ITValidateRules, OfficialValidateRules
-} from '@/views/avic/mms/fam/famaccpetlist/ValidateRules';
+import { ListColumns, backColumnsObj } from './ListColumns';
+import { validateRules as Rules } from '@/views/avic/mms/fam/famaccpetlist/ValidateRules';
 
 const { proxy } = getCurrentInstance();
 const assetClassOpen = ref<boolean>(false);
@@ -628,7 +617,7 @@ const equipClassOpen = ref<boolean>(false);
 const bodyStyle = {
   overflow: 'hidden',
   overflowY: 'scroll',
-  height: '600px'
+  height: '400px'
 };
 const FamInventoryManageComponent = FamInventoryManage;
 const props = defineProps({
@@ -673,9 +662,10 @@ const props = defineProps({
 });
 let columns = ref([]);
 
-const { getHouseObj, getCarsObj, getOfficialObject, getITObj, getDeviceObj } = backColumnsObj(props.assetClasstObj);
+const { getHouseObj, getCarsObj, getOfficialObject, getITObj, getDeviceObj } = backColumnsObj();
 
 const queryForm = ref<FamAccpetListDto>({});
+
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -720,6 +710,7 @@ const assetSecretLevelList = ref([]);
 const abcdTypeList = ref([]);
 const energyefficiencyNameList = ref([]);
 const fundSourceList = ref([]);
+const housingTypeList = ref([]);
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
@@ -731,7 +722,8 @@ const lookupParams = [
   { fieldName: 'vehicleUsage', lookUpType: 'FAM_VEHICLE_USAGE' },
   { fieldName: 'abcdType', lookUpType: 'TPM_ABCD_TYPE' },
   { fieldName: 'energyefficiencyName', lookUpType: 'TPM_ENERGY_EFFICIENCY' },
-  { fieldName: 'fundSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
+  { fieldName: 'fundSource', lookUpType: 'TPM_CAPITAL_SOURCE' },
+  { fieldName: 'housingType', lookUpType: 'FAM_HOUSE_TYPE' }
 ];
 let validateRules = {};
 const addObj = ref();
@@ -771,6 +763,7 @@ function tableSelectList(columns) {
   if (columns === 'assetSecretLevel') return assetSecretLevelList.value;
   if (columns === 'geographicalArea') return geographicalAreaList.value;
   if (columns === 'assetsUse') return assetsUseList.value;
+  if (columns === 'housingType') return housingTypeList.value;
 }
 
 /** 树节点展开事件 */
@@ -885,6 +878,10 @@ function equiphandleSummit() {
         const record = list.value.filter(item => item.id === equiphClassRecord.value.id)[0];
         record.equipClass = res.data.classCode;
         record.equipClassName = res.data.className;
+        getEquipClassCode(record.equipClass).then(r => {
+          if (r.success)
+            record.equipNo = r.data;
+        });
         equipClassOpen.value = false;
         equiphClassRecord.value = null;
       }
@@ -943,6 +940,7 @@ function getLookupList() {
     abcdTypeList.value = result.abcdType;
     energyefficiencyNameList.value = result.energyefficiencyName;
     fundSourceList.value = result.fundSource;
+    housingTypeList.value = result.housingType;
   });
 }
 
@@ -1009,7 +1007,8 @@ function handleAdd() {
   newData.forEach(item => {
     item.editable = false;
   });
-  getAddObj(code.value);
+  const uuid = proxy.$uuid();
+  getAddObj(code.value, uuid);
   newData.unshift(addObj.value);
   list.value = newData;
 }
@@ -1046,7 +1045,7 @@ function handleCopy(ids, e) {
 /** 编辑 */
 function handleEdit(record) {
   if (props.readOnly)
-    if (!['task2', 'task3', 'task4','task6'].includes(props.bpmInstanceObject.bpmModel.activityname))
+    if (!['task2', 'task3', 'task4', 'task6'].includes(props.bpmInstanceObject.bpmModel.activityname))
       return;
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
@@ -1177,22 +1176,24 @@ function validate(callback) {
 }
 
 /** 分配对象 */
-function getAddObj(code) {
+function getAddObj(code, uuid) {
   switch (code) {
     case'1':
-      addObj.value = getHouseObj(props.assetClasstObj);
+      addObj.value = getHouseObj(props.assetClasstObj, uuid);
       break;
     case'4':
-      addObj.value = getCarsObj(props.assetClasstObj);
+      addObj.value = getCarsObj(props.assetClasstObj, uuid);
       break;
-    case'6':
-      addObj.value = getITObj(props.assetClasstObj);
+    case '6':
+    case '9' :
+    case'5':
+      addObj.value = getITObj(props.assetClasstObj, uuid);
       break;
     case'8':
-      addObj.value = getOfficialObject(props.assetClasstObj);
+      addObj.value = getOfficialObject(props.assetClasstObj, uuid);
       break;
     default:
-      addObj.value = getDeviceObj(props.assetClasstObj);
+      addObj.value = getDeviceObj(props.assetClasstObj, uuid);
       break;
   }
 }
@@ -1205,25 +1206,66 @@ function allocationColumn(code) {
      * 新增
      */
     switch (code) {
+      //房屋
       case'1':
-        columns.value = [...BaseColumns, ...HouseColumns];
-        validateRules = { ...BaseValidateRules, ...HouseValidateRules };
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.HouseColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.HouseValidateRules };
         break;
+      // 车辆
       case'4':
-        columns.value = [...BaseColumns, ...CarColumns];
-        validateRules = { ...BaseValidateRules, ...CarValidateRules };
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.CarColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.CarValidateRules };
         break;
-      case'6':
-        columns.value = [...BaseColumns, ...ITColumns];
-        validateRules = { ...BaseValidateRules, ...ITValidateRules };
+      //9 6 5
+      case '6':
+      case '9' :
+      case'5':
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.ITColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.ITValidateRules };
         break;
+      //办公自动化
       case'8':
-        columns.value = [...BaseColumns, ...OfficialColumns];
-        validateRules = { ...BaseValidateRules, ...OfficialValidateRules };
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.OfficialColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.OfficialValidateRules };
+        if (props.readOnly) {
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
+          const list = [
+            {
+              title: '设备大类',
+              dataIndex: 'equipClass',
+              key: 'equipClass',
+              width: 120,
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left',
+              hidden: true
+            },
+            {
+              title: '设备编号',
+              dataIndex: 'equipNo',
+              key: 'equipNo',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            }
+          ];
+          validateRules['equipClass'] = [
+            { required: true, message: '设备大类不能为空' }
+          ];
+          columns.value = [...columns.value, ...list];
+        }
         break;
+      //设备
       default:
-        columns.value = [...BaseColumns, ...DeviceColumns];
-        validateRules = { ...BaseValidateRules, ...DeviceValidateRules };
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.DeviceColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.DeviceValidateRules };
         // 提交流程
         if (props.readOnly) {
           if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
@@ -1330,12 +1372,12 @@ function allocationColumn(code) {
     }
     if (props.accpetType === '2' && props.assetClass === '2')
       validateRules['parentAssetNo'] = [{ required: true, message: '父资产编号不能为空' }];
-    getAddObj(code);
+    getAddObj(code, proxy.$uuid());
   } else {
     /**
      *  改造 固定资产
      */
-    columns.value = [...Columns];
+    columns.value = [...ListColumns.Columns];
     validateRules = {
       assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
     };
@@ -1343,7 +1385,7 @@ function allocationColumn(code) {
 
   setTimeout(() => {
     showTable.value = true;
-  }, 500);
+  }, 1000);
 }
 
 function validatorMilitaryKeyEquipCode(value, record) {
