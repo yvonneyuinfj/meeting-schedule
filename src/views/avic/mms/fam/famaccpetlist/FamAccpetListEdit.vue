@@ -8,6 +8,7 @@
       :height="300"
       :columns="columns"
       :row-key="record => record.id"
+      :pagination="false"
       :data-source="list"
       :loading="loading"
       :row-selection="{
@@ -17,16 +18,17 @@
         fixed: true
       }"
       :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
-      :total="totalPage"
       :customRow="customRow"
       @change="handleTableChange"
+
+      :total="totalPage"
     >
+<!--      :pageParameter="queryParam.pageParameter"-->
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button
-              v-if="props.accpetType === '1'"
+              v-if="props.accpetType === '1' && props.assetClasst"
               v-hasPermi="['famAccpetList:add']"
               title="添加"
               type="primary"
@@ -49,6 +51,17 @@
               </template>
               批量添加
             </a-button>
+            <!--            复制数量-->
+            <a-input-number
+              v-if="props.accpetType === '1'"
+              style="width: 150px"
+              v-model:value="copyNumber"
+              :min="0"
+              :max="100"
+              :precision="0"
+              :step="1"
+              placeholder="请输入复制数量"
+            />
             <a-button
               v-if="props.accpetType === '1'"
               v-hasPermi="['famAccpetList:add']"
@@ -61,6 +74,7 @@
               </template>
               复制
             </a-button>
+
             <a-button
               v-hasPermi="['famAccpetList:del']"
               title="删除"
@@ -517,7 +531,9 @@
         </template>
       </template>
     </AvicTable>
-
+    <div style="padding-left: 10px;">
+      已选择{{ selectedRows.length }}条
+    </div>
     <a-modal :visible="assetClassOpen" :body-style="bodyStyle" @cancel="handleCancel" @ok="handleSummit">
       <a-spin :spinning="treeLoading">
         <a-tree
@@ -668,10 +684,10 @@ const queryForm = ref<FamAccpetListDto>({});
 
 const queryParam = reactive({
   // 请求表格数据参数
-  pageParameter: {
-    page: 1, // 页数
-    rows: 20 // 每页条数
-  },
+  // pageParameter: {
+  //   page: 1, // 页数
+  //   rows: 20 // 每页条数
+  // },
   searchParams: {},
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -711,6 +727,8 @@ const abcdTypeList = ref([]);
 const energyefficiencyNameList = ref([]);
 const fundSourceList = ref([]);
 const housingTypeList = ref([]);
+const copyNumber = ref();
+
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
@@ -1029,15 +1047,18 @@ function handleCopy(ids, e) {
     return;
   }
   let itemList = [];
-  selectedRows.value.map(rows => {
-    let item = {
-      ...rows,
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      editable: false // true为编辑中, false为未编辑
-    };
-    itemList.unshift(item);
-  });
+
+  for (let i = 0; i < (copyNumber.value || 1); i++) {
+    selectedRows.value.map(rows => {
+      let item = {
+        ...rows,
+        id: 'newLine' + proxy.$uuid(),
+        operationType_: 'insert',
+        editable: false // true为编辑中, false为未编辑
+      };
+      itemList.unshift(item);
+    });
+  }
   newData = [...itemList, ...newData];
   list.value = newData;
 }
@@ -1101,8 +1122,8 @@ function onSelectChange(rowKeys, rows) {
 
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
-  queryParam.pageParameter.page = pagination.current;
-  queryParam.pageParameter.rows = pagination.pageSize;
+  // queryParam.pageParameter.page = pagination.current;
+  // queryParam.pageParameter.rows = pagination.pageSize;
   if (proxy.$objIsNotBlank(sorter.field)) {
     queryParam.sidx = sorter.field;
     queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
@@ -1177,6 +1198,7 @@ function validate(callback) {
 
 /** 分配对象 */
 function getAddObj(code, uuid) {
+
   switch (code) {
     case'1':
       addObj.value = getHouseObj(props.assetClasstObj, uuid);
@@ -1377,7 +1399,7 @@ function allocationColumn(code) {
     /**
      *  改造 固定资产
      */
-    columns.value = [...ListColumns.Columns];
+    columns.value = [...ListColumns.BaseColumns];
     validateRules = {
       assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
     };
@@ -1388,6 +1410,7 @@ function allocationColumn(code) {
   }, 1000);
 }
 
+/** 军工关键设备 校验 */
 function validatorMilitaryKeyEquipCode(value, record) {
   if (record.ynMilitaryKeyEquip === '1' && !value) {
     return {
@@ -1429,7 +1452,9 @@ watch(
     code.value = props.assetClasst.charAt(0);
     allocationColumn(code.value);
     if (oldV) {
-      list.value = [];
+      let ids = [];
+      list.value.map(item => ids.push(item.id));
+      handleDelete(ids);
     }
   }
 );

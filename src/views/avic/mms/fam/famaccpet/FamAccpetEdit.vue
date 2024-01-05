@@ -45,6 +45,52 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="addAccpetNo" label="新增申请单号" has-feedback>
+              <AvicModalSelect
+                v-model:value="form.addAccpetNo"
+                title="选择弹窗"
+                placeholder="请选择弹窗"
+                valueField="applyNo"
+                showField="applyNo"
+                :defaultShowValue="form.addAccpetNo"
+                :selectComponent="FamAddApplyManageManageComponent"
+                :isMultiSelection="false"
+                :allow-clear="true"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
+                v-model:value="form.assetClass"
+                :auto-focus="true"
+                :disabled="form.accpetType === '1'"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols2" v-if="!form.addAccpetNo && form.accpetType==='1'">
+            <a-form-item name="addNote" label="拒绝理由" has-feedback>
+              <a-textarea
+                v-model:value="form.addNote"
+                :rows="2"
+                placeholder="请输入拒绝理由"
+                :maxLength="4000"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="orderName" label="合同名称" has-feedback>
               <a-input
                 v-model:value="form.orderName"
@@ -89,27 +135,6 @@
                 value-format="YYYY-MM-DD"
                 placeholder="请选择验收日期"
               />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产属性" has-feedback>
-              <a-select
-                v-model:value="form.assetClass"
-                :auto-focus="true"
-                :disabled="form.accpetType === '1'"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-              >
-                <a-select-option
-                  v-for="item in assetTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
             </a-form-item>
           </a-col>
           <!-- <a-col v-bind="colLayout.cols">
@@ -526,7 +551,7 @@ function handleSummit() {
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           form.value.assetClasstName = res.data.className;
-          if (['7', '3', '2' , '8'].includes(form.value.assetClasst.charAt(0))) {
+          if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
             form.value.managerDeptId = 'C410';
           }
           assetClasstOpen.value = false;

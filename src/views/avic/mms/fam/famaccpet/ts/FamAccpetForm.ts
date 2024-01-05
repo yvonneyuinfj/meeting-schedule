@@ -47,7 +47,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
     assetClasst: [{ required: true, validator: validatorAssetClasst, trigger: 'change' }],
-    equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }]
+    equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }],
+    addNote: [{ required: true, validator: validatorRefusalReason, trigger: 'blur' }]
   };
   const famAccpetListEdit = ref();
   const layout = {
@@ -131,6 +132,17 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     }
   }
 
+  async function validatorRefusalReason(_rule, value, _record) {
+    if (form.value.accpetType === '1' && !form.a) {
+      if (value) {
+        return Promise.resolve();
+      }
+      return Promise.reject(new Error('拒绝理由必填！'));
+    } else {
+      return Promise.resolve();
+    }
+  }
+
 
   /** 获取通用代码  */
   function getLookupList() {
@@ -145,7 +157,6 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       managerDeptIdList.value = result.managerDept;
     });
   }
-
 
 
   /**

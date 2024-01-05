@@ -87,6 +87,7 @@
           </template>
         </template>
       </AvicTable>
+
       <AvicExcelImport
         v-if="showImportModal"
         :formData="excelParams"
