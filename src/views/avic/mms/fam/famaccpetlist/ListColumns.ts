@@ -222,6 +222,33 @@ export const BaseColumns = [
     minWidth: 120,
     resizable: true,
     align: 'center'
+  },
+  {
+    title: '父资产编号',
+    dataIndex: 'parentAssetNo',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '质保期',
+    dataIndex: 'warrantyPeriod',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '使用年限',
+    dataIndex: 'useTime',
+    key: 'useTime',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
   }
 ];
 /** 全部的输入列 */
@@ -1324,7 +1351,7 @@ export const Columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
-  },
+  }
 ];
 
 export const baseObj = {
