@@ -134,6 +134,8 @@ export interface TpmMaintPlanDto extends BaseBeanModel {
   tpmWorkflowId?: string;
   /**表名*/
   originalOrderTabName?: string;
+
+  useDeptId?: string;
 }
 
 /** 获取分页数据 */
