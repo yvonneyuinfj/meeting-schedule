@@ -510,7 +510,7 @@ const lookupParams = [
   { fieldName: 'ynScientific', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'ynReview', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
-
+const $emit = defineEmits(['select', 'handleRowDblClick']);
 onMounted(() => {
   // 加载表格数据
   getList();
@@ -661,6 +661,7 @@ function handleExport() {
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
+  $emit('select', selectedRows.value);
 }
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
