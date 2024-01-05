@@ -53,7 +53,7 @@
                 valueField="applyNo"
                 showField="applyNo"
                 :defaultShowValue="form.addAccpetNo"
-                :selectComponent="FamAddApplyManageManageComponent"
+                :selectComponent="FamAddApplySelectComponent"
                 :isMultiSelection="false"
                 :allow-clear="true"
               />
@@ -417,6 +417,7 @@ import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListE
 import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
 import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
+import FamAddApplySelect from '@/views/avic/mms/fam/famaccpet/FamAddApplySelect.vue';
 
 const props = defineProps({
   formId: {
@@ -442,6 +443,7 @@ onMounted(() => {
   getTreeList();
 });
 
+const FamAddApplySelectComponent = FamAddApplySelect
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
 const assetClass = ref();

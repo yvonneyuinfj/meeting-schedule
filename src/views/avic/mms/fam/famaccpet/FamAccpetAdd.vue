@@ -54,7 +54,7 @@
                 valueField="applyNo"
                 showField="applyNo"
                 :defaultShowValue="form.addAccpetNo"
-                :selectComponent="FamAddApplyManageManageComponent"
+                :selectComponent="FamAddApplySelectComponent"
                 :isMultiSelection="false"
                 :allow-clear="true"
               />
@@ -412,7 +412,7 @@ import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListE
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
 import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
 import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
-import FamAddApplyManageManage from '@/views/avic/mms/fam/famaddapplymanage/FamAddApplyManageManage.vue';
+import FamAddApplySelect from '@/views/avic/mms/fam/famaccpet/FamAddApplySelect.vue';
 
 const props = defineProps({
   formId: {
@@ -441,7 +441,7 @@ onMounted(() => {
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
 });
 
-const FamAddApplyManageManageComponent = FamAddApplyManageManage
+const FamAddApplySelectComponent = FamAddApplySelect
 const famOverhaulRequireSelect = ref(null);
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
