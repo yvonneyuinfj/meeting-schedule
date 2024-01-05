@@ -295,6 +295,15 @@ const columns = [
     align: 'center'
   },
   {
+    title: '退回原因',
+    dataIndex: 'returnReason',
+    key: 'returnReason',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '预算项目',
     dataIndex: 'budgetItems',
     key: 'budgetItems',
