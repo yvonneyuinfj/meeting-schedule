@@ -108,5 +108,7 @@ export function delFamAccpetList(ids: [string]): Promise<ResponseBaseData<any>> 
   return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
 }
 
-
-
+/** 根据设备大类获取设备编码 */
+export function getEquipClassCode(equipClass: [string]): Promise<ResponseBaseData<any>> {
+  return request.get(basePath + '/getEquipClassCode/' + equipClass + '/v1');
+}

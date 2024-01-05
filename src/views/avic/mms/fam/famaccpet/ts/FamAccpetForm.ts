@@ -21,7 +21,6 @@ export const emits = ['reloadData', 'close'];
 
 export function useFamAccpetForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  console.log(getCurrentInstance);
   const form = ref<FamAccpetDto>({});
   const formRef = ref(null);
   const formCode = 'FamAccpet';
@@ -68,6 +67,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const ynArchivedList = ref([]); // 是否归档案通用代码
   const ynDemolishedList = ref([]); // 是否已拆除无线模块通用代码
   const managerDeptIdList = ref([]);
+
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
@@ -80,7 +80,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   ];
   const authJson = ref(null);
   const bodyStyle = {
-    height: '600px',
+    height: '400px',
     overflow: 'hidden',
     overflowY: 'scroll'
   };
@@ -145,6 +145,8 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       managerDeptIdList.value = result.managerDept;
     });
   }
+
+
 
   /**
    * 编辑详情页面加载数据

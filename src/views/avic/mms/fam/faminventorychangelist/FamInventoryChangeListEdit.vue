@@ -113,10 +113,10 @@
       style="top: 20px"
     >
       <div style="height: 600px;overflow: auto">
-        <fam-inventory-manage
-          :isAdd="'true'"
+        <Fam-inventory-manage
+          :isAdd="true"
           ref="famInventoryManage"
-        ></fam-inventory-manage>
+        ></Fam-inventory-manage>
       </div>
     </a-modal>
   </div>
