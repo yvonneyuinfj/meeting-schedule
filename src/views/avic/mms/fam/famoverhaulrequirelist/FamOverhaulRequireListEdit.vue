@@ -19,7 +19,6 @@
       :pageParameter="queryParam.pageParameter"
       :total="totalPage"
       :customRow="customRow"
-      @change="handleTableChange"
     >
       <template v-if="!props.readOnly ||  task==='task2'" #toolBarLeft>
         <a-space>
@@ -101,6 +100,12 @@
             >
             </a-input>
           </template>
+          <template #default>
+            <div @click="showAssetNo(record)"
+                 :class=" !props.bpmInstanceObject.hasOwnProperty('bpmModel') ? '' : 'assetNoLink'">
+              {{ record.assetNo }}
+            </div>
+          </template>
         </AvicRowEdit>
 
         <AvicRowEdit
@@ -171,6 +176,9 @@
           <template v-if="column.dataIndex === 'creationDate'">
             {{ dayjs(record.creationDate).format('YYYY-MM-DD') }}
           </template>
+          <template v-if="column.dataIndex === 'applyReason'">
+            <div v-html="record.applyReason"></div>
+          </template>
         </template>
       </AvicTable>
     </a-modal>
@@ -199,25 +207,12 @@ const props = defineProps({
   bpmInstanceObject: {
     type: Object,
     default: {}
-  },
+  }
 });
 const task = props.bpmInstanceObject.hasOwnProperty('bpmModel') ? props.bpmInstanceObject.bpmModel : '';
 
 const columns = [
-  {
-    title: '资产类别',
-    dataIndex: 'assetClassName',
-    key: 'assetClassName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'left'
-  },
+
   {
     title: '资产编号',
     dataIndex: 'assetNo',
@@ -225,11 +220,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -239,11 +229,15 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
+    align: 'left'
+  },
+  {
+    title: '资产类别',
+    dataIndex: 'assetClassName',
+    key: 'assetClassName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
     align: 'left'
   },
   {
@@ -253,11 +247,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -267,13 +256,9 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
+
   {
     title: '资产型号',
     dataIndex: 'assetModel',
@@ -281,11 +266,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -295,11 +275,6 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'left'
   },
   {
@@ -309,21 +284,16 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell() {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
     align: 'center'
   }
 ] as any[];
 
 const assetNoColumns = [
-  {
-    title: '流程状态',
-    dataIndex: 'businessstate_',
-    key: 'businessstate_'
-  },
+  // {
+  //   title: '流程状态',
+  //   dataIndex: 'businessstate_',
+  //   key: 'businessstate_'
+  // },
   {
     title: '单据号',
     dataIndex: 'billNo',
@@ -350,10 +320,20 @@ const assetNoColumns = [
     dataIndex: 'creationDate'
   },
   {
-    title: '联系电话',
-    key: 'telephone',
-    dataIndex: 'telephone'
+    title: '维修金额',
+    key: 'expectedMaintenance',
+    dataIndex: 'expectedMaintenance'
+  },
+  {
+    title: '申请理由',
+    key: 'applyReason',
+    dataIndex: 'applyReason'
   }
+  // {
+  //   title: '联系电话',
+  //   key: 'telephone',
+  //   dataIndex: 'telephone'
+  // }
   // {
   //   title: '密级',
   //   key: 'action'
@@ -515,13 +495,22 @@ const handleOk = () => {
     code = list.value[0].assetClass.charAt(0);
   }
   const selectRow = famInventoryManage.value.selectedRow(code);
+  let selectRowList = [];
   selectRow.map(item => {
     item['assetNo'] = item.assetsName;
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
+    if(!item.warrantyPeriod){
+      selectRowList.push(item)
+    }
+    if(item.warrantyPeriod && dayjs().isAfter(dayjs(item.warrantyPeriod))){
+      selectRowList.push(item)
+    }else{
+     proxy.$message.warning('该资产在质保期内，不需提维修申请。')
+    }
   });
-  list.value = [...list.value, ...selectRow];
-  let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));
+  list.value = [...list.value, ...selectRowList];
+  let array = JSON.parse(JSON.stringify([...list.value, ...selectRowList]));
   let obj = {};
   array = array.reduce((cur, next) => {
     obj[next.id] ? '' : (obj[next.id] = true && cur.push(next));
@@ -560,15 +549,16 @@ function handleAdd() {
 
 /** 编辑 */
 function handleEdit(record) {
-  record.editable = true;
-  record.operationType_ = record.operationType_ || 'update';
-  const newData = [...list.value];
-  newData.forEach(item => {
-    if (item.id !== record.id) {
-      item.editable = false;
-    }
-  });
-  list.value = newData;
+  return;
+  // record.editable = true;
+  // record.operationType_ = record.operationType_ || 'update';
+  // const newData = [...list.value];
+  // newData.forEach(item => {
+  //   if (item.id !== record.id) {
+  //     item.editable = false;
+  //   }
+  // });
+  // list.value = newData;
 }
 
 
@@ -614,15 +604,15 @@ function onSelectChange(rowKeys, rows) {
 }
 
 /** 表头排序 */
-function handleTableChange(pagination, _filters, sorter) {
-  queryParam.pageParameter.page = pagination.current;
-  queryParam.pageParameter.rows = pagination.pageSize;
-  if (proxy.$objIsNotBlank(sorter.field)) {
-    queryParam.sidx = sorter.field;
-    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
-  }
-  getList();
-}
+// function handleTableChange(pagination, _filters, sorter) {
+//   queryParam.pageParameter.page = pagination.current;
+//   queryParam.pageParameter.rows = pagination.pageSize;
+//   if (proxy.$objIsNotBlank(sorter.field)) {
+//     queryParam.sidx = sorter.field;
+//     queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
+//   }
+//   getList();
+// }
 
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
@@ -694,6 +684,10 @@ defineExpose({
 });
 </script>
 <style lang="less" scoped>
+.assetNoLink {
+  color: #1f76cb;
+  cursor: pointer
+}
 </style>
 
 

@@ -7,27 +7,27 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="设备编号">
               <a-input
-                v-model:value="queryForm.equipmentCode"
-                placeholder="请输入设备编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.equipmentCode"
+                  placeholder="请输入设备编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="保养状态">
               <a-select
-                v-model:value="queryForm.maintenanceStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择保养状态"
+                  v-model:value="queryForm.maintenanceStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择保养状态"
               >
                 <a-select-option
-                  v-for="item in maintenanceStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in maintenanceStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -38,11 +38,11 @@
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
+                  <search-outlined/>
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost style="margin-right: 15px">
-                  <redo-outlined />
+                  <redo-outlined/>
                   重置
                 </a-button>
                 <!-- <a-button type="link" @click="toggleAdvanced" style="margin: 0">
@@ -59,22 +59,22 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmMaintPlan"
-        table-key="tpmMaintPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmMaintPlan"
+          table-key="tpmMaintPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
@@ -97,67 +97,67 @@
               placeholder="请选择结束时间"
             /> -->
             <a-range-picker
-              v-model:value="dateRange"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-              @change="
+                v-model:value="dateRange"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                @change="
                 rangeValue => {
                   barForm.startDate = rangeValue[0];
                   barForm.endDate = rangeValue[1];
                 }
               "
-              :allowClear = "true"
-              style="width: 230px"
+                :allowClear="true"
+                style="width: 230px"
             ></a-range-picker>
             <a-button type="primary" @click="handleCreative" :loading="creativeLoading">
               <template #icon>
-                <FileAddOutlined />
+                <FileAddOutlined/>
               </template>
               生成
             </a-button>
             <a-button
-              type="primary"
-              @click="handleApproval(selectedRows, selectedRowKeys)"
-              :loading="approvalLoading"
+                type="primary"
+                @click="handleApproval(selectedRows, selectedRowKeys)"
+                :loading="approvalLoading"
             >
               <template #icon>
-                <check-circle-outlined />
+                <check-circle-outlined/>
               </template>
               提交审批
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['tpmMaintPlan:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
             <a-button
-              title="取消计划"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="cancelLoading"
-              @click="handleCancelPlans(selectedRows, selectedRowKeys)"
+                title="取消计划"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="cancelLoading"
+                @click="handleCancelPlans(selectedRows, selectedRowKeys)"
             >
               <template #icon>
-                <close-circle-outlined />
+                <close-circle-outlined/>
               </template>
               取消计划
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmMaintPlan:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
               手动添加
             </a-button>
@@ -177,11 +177,11 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpmMaintPlan:all']"
-              :myFileAuth="['tpmMaintPlan:my']"
-              :defaultBpmType="queryForm.bpmType"
-              :defaultBpmState="queryForm.bpmState"
-              @change="changeBpmFilter"
+                :allFileAuth="['tpmMaintPlan:all']"
+                :myFileAuth="['tpmMaintPlan:my']"
+                :defaultBpmType="queryForm.bpmType"
+                :defaultBpmState="queryForm.bpmState"
+                @change="changeBpmFilter"
             />
           </a-space>
         </template>
@@ -199,19 +199,19 @@
     </div>
     <!-- 添加页面弹窗 -->
     <TpmMaintPlanAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <TpmMaintPlanEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
   </div>
 </template>
@@ -547,41 +547,42 @@ const handleCreative = () => {
   creativeLoading.value = true;
   //生成逻辑
   creativeMaintPlan(data)
-    .then(res => {
-      if (res.success) {
-        if (res.data > 0) {
-          proxy.$message.success(`生成成功！共生成${res.data}条数据。`);
-          getList();
-        } else {
-          proxy.$message.info('该时段内没有可生成的数据。');
+      .then(res => {
+        if (res.success) {
+          if (res.data > 0) {
+            proxy.$message.success(`生成成功！共生成${res.data}条数据。`);
+            getList();
+          } else {
+            proxy.$message.info('该时段内没有可生成的数据。');
+          }
         }
-      }
-    })
-    .catch(e => {
-      proxy.$message.error(e.message);
-      getList();
-    })
-    .finally(() => {
-      creativeLoading.value = false;
-    });
+      })
+      .catch(e => {
+        proxy.$message.error(e.message);
+        getList();
+      })
+      .finally(() => {
+        creativeLoading.value = false;
+      });
 };
 
 /** 查询数据 */
 function getList() {
+  queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   listTpmMaintPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码 */
@@ -696,24 +697,24 @@ const approval = bpmDefinedInfo => {
     formCode: 'TpmMaintPlan'
   };
   approvalMaintPlan(param)
-    .then(res => {
-      if (res.success) {
-        approvalLoading.value = false;
-        if (res.data.formId) {
-          flowUtils.detailByOptions({
-            formId: res.data.formId,
-            bpmOperatorRefresh: getList
-          });
+      .then(res => {
+        if (res.success) {
+          approvalLoading.value = false;
+          if (res.data.formId) {
+            flowUtils.detailByOptions({
+              formId: res.data.formId,
+              bpmOperatorRefresh: getList
+            });
+          }
+          proxy.$message.success('提交成功!');
+          getList();
+        } else {
+          approvalLoading.value = false;
         }
-        proxy.$message.success('提交成功!');
-        getList();
-      } else {
+      })
+      .catch(() => {
         approvalLoading.value = false;
-      }
-    })
-    .catch(() => {
-      approvalLoading.value = false;
-    });
+      });
 };
 
 /** 取消计划 */
@@ -737,17 +738,17 @@ const handleCancelPlans = (rows, ids) => {
     onOk: () => {
       cancelLoading.value = true;
       cancelTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('取消成功！');
-            getList();
-          }
-        })
-        .catch((e) => {
-          proxy.$message.error(e.message);
-        }).finally(() => {
-          cancelLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('取消成功！');
+              getList();
+            }
+          })
+          .catch((e) => {
+            proxy.$message.error(e.message);
+          }).finally(() => {
+        cancelLoading.value = false;
+      });
     }
   });
 };
@@ -769,16 +770,16 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
