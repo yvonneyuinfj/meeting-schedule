@@ -5,7 +5,7 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="applyNo" label="申请单号">
-              <a-input v-model:value="form.applyNo" :maxLength="64" :auto-focus="true" placeholder="请输入申请单号" />
+                <a-input v-model:value="form.applyNo" disabled />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">

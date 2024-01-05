@@ -4,7 +4,7 @@
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyNo')">
           <a-form-item name="applyNo" label="申请单号" :rules="fieldRequired('applyNo')" has-feedback>
-            <a-input v-model:value="form.applyNo" :auto-focus="true" :disabled="fieldDisabled('applyNo')" />
+              <a-input v-model:value="form.applyNo" :disabled="fieldDisabled('applyNo')" />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('capitalAssetName')">
