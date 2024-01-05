@@ -19,11 +19,8 @@
       }"
       :showTableSetting="false"
       :customRow="customRow"
-      @change="handleTableChange"
-
       :total="totalPage"
     >
-<!--      :pageParameter="queryParam.pageParameter"-->
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
@@ -1121,15 +1118,15 @@ function onSelectChange(rowKeys, rows) {
 }
 
 /** 表头排序 */
-function handleTableChange(pagination, _filters, sorter) {
-  // queryParam.pageParameter.page = pagination.current;
-  // queryParam.pageParameter.rows = pagination.pageSize;
-  if (proxy.$objIsNotBlank(sorter.field)) {
-    queryParam.sidx = sorter.field;
-    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
-  }
-  getList();
-}
+// function handleTableChange(pagination, _filters, sorter) {
+//   // queryParam.pageParameter.page = pagination.current;
+//   // queryParam.pageParameter.rows = pagination.pageSize;
+//   if (proxy.$objIsNotBlank(sorter.field)) {
+//     queryParam.sidx = sorter.field;
+//     queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
+//   }
+//   getList();
+// }
 
 function getTreeNodeTitle(nodeTitle, record, name) {
   record[name] = nodeTitle;

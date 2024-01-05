@@ -95,15 +95,6 @@ export const DeviceColumns = [
     align: 'center'
   },
   {
-    title: '质保日期',
-    dataIndex: 'warrantyPeriod',
-    key: 'warrantyPeriod',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '购置日期',
     dataIndex: 'purchaseDate',
     key: 'purchaseDate',

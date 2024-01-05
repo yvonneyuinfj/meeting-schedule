@@ -86,7 +86,32 @@
               />
             </a-form-item>
           </a-col>
-
+          <a-col v-bind="colLayout.cols">
+            <a-form-item
+              name="managerDeptId"
+              label="主管部门"
+              has-feedback
+            >
+              <a-select
+                v-model:value="form.managerDeptId"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                @change="changeManagerDept"
+                placeholder="请选择主管部门"
+              >
+                <a-select-option
+                  v-for="item in managerDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="annualProvisional"
@@ -97,6 +122,7 @@
                   v-for="item in annualProvisionalList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
+                  :disabled="item.disabled"
                 >
                   {{ item.lookupName }}
                 </a-radio>
@@ -175,31 +201,7 @@
               />
             </a-form-item>
           </a-col> -->
-          <a-col v-bind="colLayout.cols">
-            <a-form-item
-              name="managerDeptId"
-              label="主管部门"
-              has-feedback
-            >
-              <a-select
-                v-model:value="form.managerDeptId"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择主管部门"
-              >
-                <a-select-option
-                  v-for="item in managerDeptIdList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+
           <a-col v-bind="colLayout.cols">
             <a-form-item
               name="isUsedScientificrs"
@@ -480,7 +482,6 @@
           </a-col>
 
 
-
           <!--          <a-col v-bind="colLayout.cols">-->
           <!--            <a-form-item-->
           <!--              name="annex"-->
@@ -541,7 +542,7 @@ import AnnualMaintPlan from '@/views/avic/mms/fam/components/AnnualMaintPlan.vue
 import FamOverhaulRequireListEdit from '@/views/avic/mms/fam/famoverhaulrequirelist/FamOverhaulRequireListEdit.vue'; // 引入子表组件
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'; // 引入富文本依赖
 import '@wangeditor/editor/dist/css/style.css'; // 引入富文本样式
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -587,6 +588,7 @@ const {
   editorRef,
   onCreated,
   uploadFile,
+  changeManagerDept,
   afterUploadEvent,
   closeModal,
   saveAndStartProcess,

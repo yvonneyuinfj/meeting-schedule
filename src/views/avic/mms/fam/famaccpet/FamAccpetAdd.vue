@@ -83,7 +83,7 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2" v-if="!form.addAccpetNo && form.accpetType==='1'">
-            <a-form-item name="addNote" label="拒绝理由" has-feedback>
+            <a-form-item name="addNote" label="不新增申请理由" has-feedback>
               <a-textarea
                 v-model:value="form.addNote"
                 :rows="2"
@@ -248,7 +248,7 @@
                 @click="assetClasstClick"
               >
                 <template #suffix>
-                  <a-tooltip title="Extra information">
+                  <a-tooltip @click="assetClasstClick">
                     <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                   </a-tooltip>
                 </template>
