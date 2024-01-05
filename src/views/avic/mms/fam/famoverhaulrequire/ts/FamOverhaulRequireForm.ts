@@ -144,6 +144,27 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     editor.destroy(); // 组件销毁时，及时销毁编辑器
   });
 
+  function changeManagerDept(v, type) {
+    if (v && (v === 'C410' || v === 'A140')) {
+      annualProvisionalList.value.map(item => {
+        item['disabled'] = false;
+        if (item.lookupCode == '3') {
+          item['disabled'] = true;
+          if (type && type !== 'init') form.value.annualProvisional = '';
+        }
+      });
+    }
+    if (v && (v !== 'C410' && v !== 'A140')) {
+      annualProvisionalList.value.map(item => {
+        item['disabled'] = false;
+        if (item.lookupCode !== '3') {
+          item['disabled'] = true;
+          if (type && type !== 'init') form.value.annualProvisional = '';
+        }
+      });
+    }
+  }
+
   /** 获取通用代码  */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
@@ -184,6 +205,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
             editorRef.value.disable();
           }
           loading.value = false;
+          changeManagerDept(form.value.managerDeptId, 'init');
         } else {
           initForm();
           loading.value = false;
@@ -452,6 +474,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     }
   }
 
+
   return {
     form,
     formRef,
@@ -463,6 +486,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     secretLevelList,
     maintCategoryList,
     isUsedScientificrsList,
+    changeManagerDept,
     annualProvisionalList,
     isNeedReviewList,
     isImproveList,

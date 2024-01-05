@@ -5,10 +5,30 @@
       <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
-            <a-form-item label="保养部位">
+            <a-form-item label="设备编号">
               <a-input
-                v-model:value="queryForm.maintenancePosition"
-                placeholder="请输入保养部位"
+                v-model:value="queryForm.equipmentCode"
+                placeholder="请输入设备编号"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item label="设备名称">
+              <a-input
+                v-model:value="queryForm.equipmentName"
+                placeholder="请输入设备名称"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item label="设备型号">
+              <a-input
+                v-model:value="queryForm.model"
+                placeholder="请输入设备型号"
                 :allow-clear="true"
                 @pressEnter="handleQuery"
               />
@@ -25,6 +45,17 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" v-show="advanced">
+            <a-form-item label="保养部位">
+              <a-input
+                v-model:value="queryForm.maintenancePosition"
+                placeholder="请输入保养部位"
+                :allow-clear="true"
+                @pressEnter="handleQuery"
+              />
+            </a-form-item>
+          </a-col>
+
+          <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="保养依据">
               <a-input
                 v-model:value="queryForm.maintenanceBasis"
@@ -61,7 +92,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择申请日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.applyDateEnd)"
+                :disabled-date="
+                  startValue => proxy.$disabledStartDate(startValue, queryForm.applyDateEnd)
+                "
               />
             </a-form-item>
           </a-col>
@@ -72,7 +105,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择申请日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.applyDateBegin)"
+                :disabled-date="
+                  endValue => proxy.$disabledEndDate(endValue, queryForm.applyDateBegin)
+                "
               />
             </a-form-item>
           </a-col>
@@ -103,7 +138,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择上次保养日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.lastMaintenDateEnd)"
+                :disabled-date="
+                  startValue => proxy.$disabledStartDate(startValue, queryForm.lastMaintenDateEnd)
+                "
               />
             </a-form-item>
           </a-col>
@@ -114,7 +151,9 @@
                 format="YYYY-MM-DD"
                 value-format="YYYY-MM-DD"
                 placeholder="请选择上次保养日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.lastMaintenDateBegin)"
+                :disabled-date="
+                  endValue => proxy.$disabledEndDate(endValue, queryForm.lastMaintenDateBegin)
+                "
               />
             </a-form-item>
           </a-col>
@@ -152,7 +191,7 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <!--          <a-col v-bind="colLayout.cols" v-show="advanced">-->
           <!--            <a-form-item label="密级">-->
           <!--              <a-select-->
@@ -173,24 +212,21 @@
           <!--              </a-select>-->
           <!--            </a-form-item>-->
           <!--          </a-col>-->
-          <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
-          >
+          <a-col v-bind="colLayout.cols" style="margin-left: auto">
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
-                  <search-outlined/>
+                  <search-outlined />
                   查询
                 </a-button>
                 <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined/>
+                  <redo-outlined />
                   重置
                 </a-button>
                 <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced"/>
-                  <down-outlined v-else/>
+                  <up-outlined v-if="advanced" />
+                  <down-outlined v-else />
                 </a-button>
               </a-space>
             </div>
@@ -236,19 +272,19 @@ const $emit = defineEmits(['select', 'handleRowDblClick']);
 const tpmStandardMaintenanceSelect = ref();
 const { proxy } = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '0 0 120px' },
+  labelCol: { flex: '0 0 80px' },
   wrapperCol: { flex: '1 1 0' }
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
-  {
-    title: '序号',
-    dataIndex: 'id',
-    ellipsis: true,
-    width: 60,
-    align: 'center',
-    fixed: 'left'
-  },
+  // {
+  //   title: '序号',
+  //   dataIndex: 'id',
+  //   ellipsis: true,
+  //   width: 60,
+  //   align: 'center',
+  //   fixed: 'left'
+  // },
   {
     title: '设备编号',
     dataIndex: 'equipmentCode',
@@ -256,7 +292,8 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center',
+    fixed: 'left'
   },
   {
     title: '设备名称',
@@ -265,7 +302,24 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '小时数',
+    dataIndex: 'maintenanceHours',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养周期(月)',
+    dataIndex: 'maintenanceCycle',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '型号',
@@ -274,7 +328,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '设备规格',
@@ -283,7 +337,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   // {
   //   title: '使用部门',
@@ -301,7 +355,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养部位',
@@ -310,7 +364,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养依据',
@@ -356,32 +410,8 @@ const columns = [
     align: 'center'
   },
   {
-    title: '保养周期(月)',
-    dataIndex: 'maintenanceCycle',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
-    title: '小时数',
-    dataIndex: 'maintenanceHours',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
     title: '是否自主维护',
     dataIndex: 'ynSelfMaintenanceName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '密级',
-    dataIndex: 'secretLevelName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -404,12 +434,20 @@ const columns = [
     align: 'center'
   },
   {
-    title: '操作',
-    dataIndex: 'action',
+    title: '密级',
+    dataIndex: 'secretLevelName',
     ellipsis: true,
-    width: 120,
-    fixed: 'right'
+    width: 90,
+    resizable: true,
+    align: 'center'
   }
+  // {
+  //   title: '操作,',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   width: 120,
+  //   fixed: 'right'
+  // }
 ];
 const queryForm = ref<TpmStandardMaintenanceDto>({});
 const queryParam = reactive({
@@ -433,9 +471,7 @@ const loading = ref(false);
 const totalPage = ref(0);
 const ynSelfMaintenanceList = ref([]); // 是否自主维护通用代码
 const secretLevelList = ref([]); // 密级通用代码
-const lookupParams = [
-  { fieldName: 'ynSelfMaintenance', lookUpType: 'PLATFORM_YES_NO_FLAG' }
-];
+const lookupParams = [{ fieldName: 'ynSelfMaintenance', lookUpType: 'PLATFORM_YES_NO_FLAG' }];
 
 onMounted(() => {
   // 加载表格数据
@@ -499,15 +535,15 @@ function toggleAdvanced() {
 }
 
 /** 快速查询逻辑 */
-function handleKeyWordQuery(value) {
-  const keyWord = {
-    tpmStandardId: value,
-    maintenancePosition: value
-  };
-  queryParam.keyWord = JSON.stringify(keyWord);
-  queryParam.pageParameter.page = 1;
-  getList();
-}
+// function handleKeyWordQuery(value) {
+//   const keyWord = {
+//     tpmStandardId: value,
+//     maintenancePosition: value
+//   };
+//   queryParam.keyWord = JSON.stringify(keyWord);
+//   queryParam.pageParameter.page = 1;
+//   getList();
+// }
 
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
@@ -539,9 +575,7 @@ function customRow(record) {
   };
 }
 
-
 defineExpose({
   selectedRows
 });
 </script>
-

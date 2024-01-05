@@ -7,52 +7,49 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="设备编号">
               <a-input
-                v-model:value="queryForm.equipmentCode"
-                placeholder="请输入设备编号"
-                :allow-clear="true"
-                @pressEnter="handleQuery"
+                  v-model:value="queryForm.equipmentCode"
+                  placeholder="请输入设备编号"
+                  :allow-clear="true"
+                  @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="保养状态">
               <a-select
-                v-model:value="queryForm.maintenanceStatus"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择保养状态"
+                  v-model:value="queryForm.maintenanceStatus"
+                  :get-popup-container="triggerNode => triggerNode.parentNode"
+                  option-filter-prop="children"
+                  :show-search="true"
+                  :allow-clear="true"
+                  placeholder="请选择保养状态"
               >
                 <a-select-option
-                  v-for="item in maintenanceStatusList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in maintenanceStatusList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
-          >
+          <a-col v-bind="colLayout.cols" style="margin-left: auto">
             <div class="table-page-search-submitButtons">
               <a-space>
                 <a-button type="primary" @click="handleQuery">
                   <search-outlined/>
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
+                <a-button type="primary" @click="resetQuery" ghost style="margin-right: 15px">
                   <redo-outlined/>
                   重置
                 </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                <!-- <a-button type="link" @click="toggleAdvanced" style="margin: 0">
                   {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced"/>
-                  <down-outlined v-else/>
-                </a-button>
+                  <up-outlined v-if="advanced" />
+                  <down-outlined v-else />
+                </a-button> -->
               </a-space>
             </div>
           </a-col>
@@ -62,77 +59,107 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="tpmMaintPlan"
-        table-key="tpmMaintPlan"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
+          ref="tpmMaintPlan"
+          table-key="tpmMaintPlan"
+          :columns="columns"
+          :row-key="record => record.id"
+          :data-source="list"
+          :loading="loading"
+          :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
+          :pageParameter="queryParam.pageParameter"
+          :total="totalPage"
+          @change="handleTableChange"
+          @refresh="getList"
       >
         <template #toolBarLeft>
           <a-space>
-            <div style="width: 80px">
-              保养时间(从)
-            </div>
-            <a-date-picker style="width: 125px"
-                           v-model:value="barForm.startDate"
-                           :disabled-date="disabledStartDate"
-                           value-format="YYYY-MM-DD"
-                           placeholder="请选择开始时间"
-                           format="YYYY-MM-DD"
+            <div style="padding-left: 8px">保养时间:</div>
+            <!-- <a-date-picker
+              style="width: 125px"
+              v-model:value="barForm.startDate"
+              :disabled-date="disabledStartDate"
+              value-format="YYYY-MM-DD"
+              placeholder="请选择开始时间"
+              format="YYYY-MM-DD"
             />
-            <div style="width: 80px">
-              保养时间(至)
-            </div>
-            <a-date-picker style="width: 125px"
-                           v-model:value="barForm.endDate"
-                           format="YYYY-MM-DD"
-                           value-format="YYYY-MM-DD"
-                           :disabled-date="disabledEndDate"
-                           placeholder="请选择结束时间"
-            />
-            <a-button type="primary" @click="handleCreative">
+            <div style="width: 80px">保养时间(至)</div>
+            <a-date-picker
+              style="width: 125px"
+              v-model:value="barForm.endDate"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              :disabled-date="disabledEndDate"
+              placeholder="请选择结束时间"
+            /> -->
+            <a-range-picker
+                v-model:value="dateRange"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                @change="
+                rangeValue => {
+                  barForm.startDate = rangeValue[0];
+                  barForm.endDate = rangeValue[1];
+                }
+              "
+                :allowClear="true"
+                style="width: 230px"
+            ></a-range-picker>
+            <a-button type="primary" @click="handleCreative" :loading="creativeLoading">
+              <template #icon>
+                <FileAddOutlined/>
+              </template>
               生成
             </a-button>
-            <a-button type="primary" @click="handleApproval(selectedRows, selectedRowKeys)" :loading="approvalLoading">
+            <a-button
+                type="primary"
+                @click="handleApproval(selectedRows, selectedRowKeys)"
+                :loading="approvalLoading"
+            >
+              <template #icon>
+                <check-circle-outlined/>
+              </template>
               提交审批
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="handleDelete(selectedRows, selectedRowKeys)"
+                v-hasPermi="['tpmMaintPlan:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
                 <delete-outlined/>
               </template>
               删除
             </a-button>
-            <a-button @click="handleCancelPlans(selectedRows, selectedRowKeys)">
+            <a-button
+                title="取消计划"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="cancelLoading"
+                @click="handleCancelPlans(selectedRows, selectedRowKeys)"
+            >
+              <template #icon>
+                <close-circle-outlined/>
+              </template>
               取消计划
             </a-button>
             <a-button
-              v-hasPermi="['tpmMaintPlan:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['tpmMaintPlan:add']"
+                title="添加"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
                 <plus-outlined/>
               </template>
-              添加
+              手动添加
             </a-button>
             <!--            <a-button-->
             <!--              v-hasPermi="['tpmMaintPlan:export']"-->
@@ -150,11 +177,11 @@
         <template #toolBarRight>
           <a-space>
             <AvicBpmFilter
-              :allFileAuth="['tpmMaintPlan:all']"
-              :myFileAuth="['tpmMaintPlan:my']"
-              :defaultBpmType='queryForm.bpmType'
-              :defaultBpmState='queryForm.bpmState'
-              @change="changeBpmFilter"
+                :allFileAuth="['tpmMaintPlan:all']"
+                :myFileAuth="['tpmMaintPlan:my']"
+                :defaultBpmType="queryForm.bpmType"
+                :defaultBpmState="queryForm.bpmState"
+                @change="changeBpmFilter"
             />
           </a-space>
         </template>
@@ -172,19 +199,19 @@
     </div>
     <!-- 添加页面弹窗 -->
     <TpmMaintPlanAdd
-      v-if="showAddModal"
-      ref="addModal"
-      :bpmOperatorRefresh="getList"
-      @reloadData="getList"
-      @close="showAddModal = false"
+        v-if="showAddModal"
+        ref="addModal"
+        :bpmOperatorRefresh="getList"
+        @reloadData="getList"
+        @close="showAddModal = false"
     />
     <!-- 编辑页面弹窗 -->
     <TpmMaintPlanEdit
-      v-if="showEditModal"
-      ref="editModal"
-      :form-id="formId"
-      @reloadData="getList"
-      @close="showEditModal = false"
+        v-if="showEditModal"
+        ref="editModal"
+        :form-id="formId"
+        @reloadData="getList"
+        @close="showEditModal = false"
     />
   </div>
 </template>
@@ -195,17 +222,17 @@ import {
   delTpmMaintPlan,
   cancelTpmMaintPlan,
   exportExcel,
-  creativeMaintPlan, approvalMaintPlan
+  creativeMaintPlan,
+  approvalMaintPlan
 } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
 import TpmMaintPlanAdd from './TpmMaintPlanAdd.vue'; // 引入添加页面组件
 import TpmMaintPlanEdit from './TpmMaintPlanEdit.vue'; // 引入编辑页面组件
 import flowUtils, { startFlowByFormCode } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import dayjs from 'dayjs';
-import { forEach } from 'lodash';
 
 const { proxy } = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '0 0 120px' },
+  labelCol: { flex: '0 0 90px' },
   wrapperCol: { flex: '1 1 0' }
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
@@ -215,10 +242,8 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
+    align: 'center'
   },
-
   {
     title: '计划编号',
     dataIndex: 'billNo',
@@ -226,8 +251,9 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
+
   {
     title: '设备编号',
     dataIndex: 'equipmentCode',
@@ -235,89 +261,22 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  }, {
+    align: 'center'
+  },
+  {
     title: '设备名称',
     dataIndex: 'equipmentName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  }, {
-    title: '型号',
-    dataIndex: 'model',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  }, {
-    title: '设备规格',
-    dataIndex: 'specs',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  }, {
-    title: '使用部门',
-    dataIndex: 'useDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '保养项目',
-    dataIndex: 'maintenanceItems',
+    title: '计划保养日期',
+    dataIndex: 'planMaintenanceDate',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养部位',
-    dataIndex: 'maintenancePosition',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养依据',
-    dataIndex: 'maintenanceBasis',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养内容',
-    dataIndex: 'maintenanceContent',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养要求',
-    dataIndex: 'maintenanceRequirement',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '保养负责人',
-    dataIndex: 'maintUserIdAlias',
-    ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
@@ -331,12 +290,93 @@ const columns = [
     align: 'center'
   },
   {
+    title: '型号',
+    dataIndex: 'model',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '设备规格',
+    dataIndex: 'specs',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '使用部门',
+    dataIndex: 'useDeptName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养项目',
+    dataIndex: 'maintenanceItems',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养部位',
+    dataIndex: 'maintenancePosition',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养依据',
+    dataIndex: 'maintenanceBasis',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养内容',
+    dataIndex: 'maintenanceContent',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养要求',
+    dataIndex: 'maintenanceRequirement',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '保养负责人',
+    dataIndex: 'maintUserIdAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+
+  {
     title: '保养周期(月)',
     dataIndex: 'maintenanceCycle',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '小时数',
@@ -344,19 +384,11 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '是否自主维护',
     dataIndex: 'ynSelfMaintenanceName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '计划保养日期',
-    dataIndex: 'planMaintenanceDate',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -415,6 +447,7 @@ const columns = [
     title: '流程当前步骤',
     dataIndex: 'activityalias_',
     width: 120,
+    align: 'center',
     fixed: 'right'
   },
   {
@@ -422,7 +455,7 @@ const columns = [
     dataIndex: 'assigneenames_',
     ellipsis: true,
     width: 130,
-    align: 'left',
+    align: 'center',
     fixed: 'right'
   }
 ];
@@ -445,7 +478,8 @@ const queryParam = reactive({
   sord: null // 排序方式: desc降序 asc升序
 });
 const barForm = ref({
-  endDate: '', startDate: ''
+  endDate: '',
+  startDate: ''
 });
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
@@ -457,6 +491,8 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const approvalLoading = ref(false);
+const creativeLoading = ref(false);
+const cancelLoading = ref(false);
 const totalPage = ref(0);
 const maintenanceStatusList = ref([]); // 保养状态通用代码
 const goodConditionFlagList = ref([]); // 完好标识通用代码
@@ -465,11 +501,16 @@ const lookupParams = [
   { fieldName: 'maintenanceStatus', lookUpType: 'TPM_MAINTEN_STATUS' },
   { fieldName: 'goodConditionFlag', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
+const dateRange = ref<[string, string]>();
 
-onMounted(() => {
+onBeforeMount(() => {
   barForm.value.startDate = dayjs(new Date()).startOf('year').format('YYYY-MM-DD');
   barForm.value.endDate = dayjs(new Date()).endOf('year').format('YYYY-MM-DD');
+  dateRange.value = [barForm.value.startDate, barForm.value.endDate];
   queryForm.value.maintenanceStatus = '0';
+});
+
+onMounted(() => {
   queryParam.searchParams = { ...queryForm.value };
   // 加载表格数据
   getList();
@@ -480,18 +521,18 @@ onMounted(() => {
 });
 
 /** 开始时间禁选 */
-const disabledStartDate = (current) => {
-  if (barForm.value.endDate) {
-    return current && current > barForm.value.endDate;
-  }
-};
+// const disabledStartDate = current => {
+//   if (barForm.value.endDate) {
+//     return current && current > barForm.value.endDate;
+//   }
+// };
 
 /** 结束时间禁选 */
-const disabledEndDate = (current) => {
-  if (barForm.value.startDate) {
-    return current && current < barForm.value.startDate;
-  }
-};
+// const disabledEndDate = current => {
+//   if (barForm.value.startDate) {
+//     return current && current < barForm.value.startDate;
+//   }
+// };
 
 /** 生成 */
 const handleCreative = () => {
@@ -503,34 +544,45 @@ const handleCreative = () => {
     planMaintenanceDateEnd: barForm.value.endDate,
     useDeptId: proxy.$getLoginUser().entityDeptId
   };
+  creativeLoading.value = true;
   //生成逻辑
-  creativeMaintPlan(data).then(res => {
-    if (res.success) {
-      proxy.$message.info('生成成功！');
-      getList();
-    }
-  }).catch((e) => {
-    proxy.$message.error(e.message);
-    getList();
-  });
+  creativeMaintPlan(data)
+      .then(res => {
+        if (res.success) {
+          if (res.data > 0) {
+            proxy.$message.success(`生成成功！共生成${res.data}条数据。`);
+            getList();
+          } else {
+            proxy.$message.info('该时段内没有可生成的数据。');
+          }
+        }
+      })
+      .catch(e => {
+        proxy.$message.error(e.message);
+        getList();
+      })
+      .finally(() => {
+        creativeLoading.value = false;
+      });
 };
 
 /** 查询数据 */
 function getList() {
+  queryParam.searchParams.useDeptId = proxy.$getLoginUser().entityDeptId;
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
   listTpmMaintPlanByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码 */
@@ -638,29 +690,31 @@ function getBpmDefine(row) {
   });
 }
 
-const approval = (bpmDefinedInfo) => {
+const approval = bpmDefinedInfo => {
   console.log(bpmDefinedInfo);
   const param = {
     processDefId: bpmDefinedInfo.dbid,
     formCode: 'TpmMaintPlan'
   };
-  approvalMaintPlan(param).then(res => {
-    if (res.success) {
-      approvalLoading.value = false;
-      if (res.data.formId) {
-        flowUtils.detailByOptions({
-          formId: res.data.formId,
-          bpmOperatorRefresh: getList
-        });
-      }
-      proxy.$message.success('提交成功!');
-      getList();
-    } else {
-      approvalLoading.value = false;
-    }
-  }).catch(() => {
-    approvalLoading.value = false;
-  });
+  approvalMaintPlan(param)
+      .then(res => {
+        if (res.success) {
+          approvalLoading.value = false;
+          if (res.data.formId) {
+            flowUtils.detailByOptions({
+              formId: res.data.formId,
+              bpmOperatorRefresh: getList
+            });
+          }
+          proxy.$message.success('提交成功!');
+          getList();
+        } else {
+          approvalLoading.value = false;
+        }
+      })
+      .catch(() => {
+        approvalLoading.value = false;
+      });
 };
 
 /** 取消计划 */
@@ -682,15 +736,19 @@ const handleCancelPlans = (rows, ids) => {
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
+      cancelLoading.value = true;
       cancelTpmMaintPlan(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('取消成功！');
-            getList();
-          }
-        })
-        .catch(() => {
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('取消成功！');
+              getList();
+            }
+          })
+          .catch((e) => {
+            proxy.$message.error(e.message);
+          }).finally(() => {
+        cancelLoading.value = false;
+      });
     }
   });
 };
@@ -711,15 +769,17 @@ function handleDelete(rows, ids) {
     cancelText: '取消',
     onOk: () => {
       delLoading.value = true;
-      delTpmMaintPlan(ids).then(res => {
-        if (res.success) {
-          proxy.$message.success('删除成功！');
-          getList();
-        }
-        delLoading.value = false;
-      }).catch(() => {
-        delLoading.value = false;
-      });
+      delTpmMaintPlan(ids)
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
@@ -758,3 +818,8 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 </script>
+<style scoped>
+.ant-picker-range {
+  display: flex;
+}
+</style>

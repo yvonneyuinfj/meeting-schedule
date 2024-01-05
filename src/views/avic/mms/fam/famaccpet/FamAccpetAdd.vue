@@ -46,6 +46,53 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="addAccpetNo" label="新增申请单号" has-feedback>
+              <AvicModalSelect
+                v-model:value="form.addAccpetNo"
+                title="选择弹窗"
+                placeholder="请选择弹窗"
+                valueField="applyNo"
+                showField="applyNo"
+                :defaultShowValue="form.addAccpetNo"
+                :selectComponent="FamAddApplySelectComponent"
+                :isMultiSelection="false"
+                :allow-clear="true"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
+                v-model:value="form.assetClass"
+                :auto-focus="true"
+                :disabled="form.accpetType === '1'"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择验收类型"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols2" v-if="!form.addAccpetNo && form.accpetType==='1'">
+            <a-form-item name="addNote" label="不新增申请理由" has-feedback>
+              <a-textarea
+                v-model:value="form.addNote"
+                :rows="2"
+                placeholder="请输入拒绝理由"
+                :maxLength="4000"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="orderName" label="合同名称" has-feedback>
               <a-input
                 v-model:value="form.orderName"
@@ -91,28 +138,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产属性" has-feedback>
-              <a-select
-                v-model:value="form.assetClass"
-                :auto-focus="true"
-                :disabled="form.accpetType === '1'"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择验收类型"
-              >
-                <a-select-option
-                  v-for="item in assetTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="fundSource" label="资金来源" has-feedback>
               <a-select
@@ -222,7 +248,7 @@
                 @click="assetClasstClick"
               >
                 <template #suffix>
-                  <a-tooltip title="Extra information">
+                  <a-tooltip @click="assetClasstClick">
                     <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
                   </a-tooltip>
                 </template>
@@ -386,6 +412,7 @@ import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListE
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
 import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
 import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
+import FamAddApplySelect from '@/views/avic/mms/fam/famaccpet/FamAddApplySelect.vue';
 
 const props = defineProps({
   formId: {
@@ -414,7 +441,7 @@ onMounted(() => {
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
 });
 
-
+const FamAddApplySelectComponent = FamAddApplySelect
 const famOverhaulRequireSelect = ref(null);
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
@@ -503,7 +530,7 @@ function handleSummit() {
             form.value.assetClasstName = res.data.className;
 
             // 设置主管部门默认值
-            if (['7', '3', '2','8'].includes(form.value.assetClasst.charAt(0))) {
+            if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
               form.value.managerDeptId = 'C410';
             }
             assetClasstOpen.value = false;
@@ -585,13 +612,13 @@ watch(
     if (['7', '3', '2'].includes(newV.charAt(0))) {
       filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
         item.lookupName !== '办公自动化设备' && item.lookupName !== '视频监控、硬盘录像设备');
-      form.value.equipmentType = ''
+      form.value.equipmentType = '';
       deptDisabled.value = true;
     } else {
       if (['8'].includes(newV.charAt(0))) {
         filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
           item.lookupName === '办公自动化设备' || item.lookupName === '视频监控、硬盘录像设备');
-        form.value.equipmentType = ''
+        form.value.equipmentType = '';
       } else {
         filterEquipmentTypeList.value = [];
       }

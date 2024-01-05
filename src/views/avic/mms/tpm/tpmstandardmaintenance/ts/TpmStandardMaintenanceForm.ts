@@ -1,62 +1,36 @@
 import type { TpmStandardMaintenanceDto } from '@/api/avic/mms/tpm/TpmStandardMaintenanceApi'; // 引入模块DTO
-import { getTpmStandardMaintenance, saveTpmStandardMaintenance } from '@/api/avic/mms/tpm/TpmStandardMaintenanceApi'; // 引入模块API
+import {
+  getTpmStandardMaintenance,
+  saveTpmStandardMaintenance
+} from '@/api/avic/mms/tpm/TpmStandardMaintenanceApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 
-export function useTpmStandardMaintenanceForm({
-                                                props: props,
-                                                emit: emit
-                                              }) {
+export function useTpmStandardMaintenanceForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<TpmStandardMaintenanceDto>({});
   const formRef = ref(null);
   const rules: Record<string, Rule[]> = {
-    maintenanceItems: [
-      { required: true, message: '保养项目不能为空', trigger: 'change' }
-    ],
-    maintenancePosition: [
-      { required: true, message: '保养部位不能为空', trigger: 'change' }
-    ],
-    maintenanceBasis: [
-      { required: true, message: '保养依据不能为空', trigger: 'change' }
-    ],
-    maintenanceContent: [
-      { required: true, message: '保养内容不能为空', trigger: 'change' }
-    ],
-    maintenanceRequirement: [
-      { required: true, message: '保养要求不能为空', trigger: 'change' }
-    ],
-    techUserId: [
-      { required: true, message: '保养负责人不能为空', trigger: 'change' }
-    ],
-    lastMaintenDate: [
-      { required: true, message: '上次保养日期不能为空', trigger: 'change' }
-    ],
-    maintenanceCycle: [
-      { validator: validateActrualMaintenanceCycle, trigger: 'change' }
-    ],
-    maintenanceHours: [
-      { validator: validateActrualMaintenanceHours, trigger: 'change' }
-    ],
-    ynSelfMaintenance: [
-      { required: true, message: '是否自主维护不能为空', trigger: 'change' }
-    ],
-    secretLevel: [
-      { required: true, message: '密级不能为空', trigger: 'change' }
-    ]
+    maintenanceItems: [{ required: true, message: '保养项目不能为空', trigger: 'change' }],
+    maintenancePosition: [{ required: true, message: '保养部位不能为空', trigger: 'change' }],
+    maintenanceBasis: [{ required: true, message: '保养依据不能为空', trigger: 'change' }],
+    maintenanceContent: [{ required: true, message: '保养内容不能为空', trigger: 'change' }],
+    maintenanceRequirement: [{ required: true, message: '保养要求不能为空', trigger: 'change' }],
+    techUserId: [{ required: true, message: '保养负责人不能为空', trigger: 'change' }],
+    lastMaintenDate: [{ required: true, message: '上次保养日期不能为空', trigger: 'change' }],
+    maintenanceCycle: [{ validator: validateActrualMaintenanceCycle, trigger: 'change' }],
+    maintenanceHours: [{ validator: validateActrualMaintenanceHours, trigger: 'change' }],
+    ynSelfMaintenance: [{ required: true, message: '是否自主维护不能为空', trigger: 'change' }],
+    secretLevel: [{ required: true, message: '密级不能为空', trigger: 'change' }]
   };
   const layout = {
     labelCol: { flex: '0 0 140px' },
     wrapperCol: { flex: '1 1 0' }
   };
-  const colLayout = proxy.$colLayout2;
-  ; // 调用布局公共方法
+  const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const ynSelfMaintenanceList = ref([]); // 是否自主维护通用代码
   const secretLevelList = ref([]); // 密级通用代码
-  const lookupParams = [
-    { fieldName: 'ynSelfMaintenance', lookUpType: 'PLATFORM_YES_NO_FLAG' }
-  ];
-
+  const lookupParams = [{ fieldName: 'ynSelfMaintenance', lookUpType: 'PLATFORM_YES_NO_FLAG' }];
 
   onMounted(() => {
     // 加载查询区所需通用代码
@@ -90,7 +64,7 @@ export function useTpmStandardMaintenanceForm({
   function getFormData(id) {
     loading.value = true;
     getTpmStandardMaintenance(id)
-      .then(async (res) => {
+      .then(async res => {
         if (res.success) {
           form.value = res.data;
           // 处理数据
@@ -145,7 +119,10 @@ export function useTpmStandardMaintenanceForm({
 
   /** 保养周期(月)验证 */
   async function validateActrualMaintenanceCycle(_rule, value) {
-    if (!value && (form.value.maintenanceHours === undefined || form.value.maintenanceHours === null)) {
+    if (
+      !value &&
+      (form.value.maintenanceHours === undefined || form.value.maintenanceHours === null)
+    ) {
       return Promise.reject(new Error('保养周期(月)不能为空'));
     } else {
       return Promise.resolve();
@@ -154,7 +131,10 @@ export function useTpmStandardMaintenanceForm({
 
   /** 小时数验证 */
   async function validateActrualMaintenanceHours(_rule, value) {
-    if (!value && (form.value.maintenanceCycle === undefined || form.value.maintenanceCycle === null)) {
+    if (
+      !value &&
+      (form.value.maintenanceCycle === undefined || form.value.maintenanceCycle === null)
+    ) {
       return Promise.reject(new Error('小时数不能为空'));
     } else {
       return Promise.resolve();
@@ -174,4 +154,3 @@ export function useTpmStandardMaintenanceForm({
     closeModal
   };
 }
-

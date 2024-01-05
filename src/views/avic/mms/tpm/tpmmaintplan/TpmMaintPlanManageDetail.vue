@@ -23,12 +23,16 @@
         <template #toolBarLeft>
           <a-space>
             <a-button
-              title="驳回"
+              title="驳回计划"
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               :loading="backLoading"
-              @click="handleBack(selectedRowKeys, '')"
+              @click="handleBack(selectedRowKeys)"
             >
-              驳回
+            <template #icon>
+              <!-- <avic-icon svg='avic-arrow-go-back-fill' /> -->
+              <RollbackOutlined />
+            </template>
+              驳回计划
             </a-button>
           </a-space>
         </template>
@@ -50,9 +54,7 @@
 </template>
 <script lang="ts" setup>
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
-import TpmMaintPlanManage from '@/views/avic/mms/tpm/tpmmaintplan/TpmMaintPlanManage.vue';
 import {
-  listTpmMaintPlanByPage,
   backTpmMaintPlan,
   listTpmMaintPlanDetailByPage
 } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块API
@@ -86,8 +88,7 @@ const columns = [
     dataIndex: 'id',
     ellipsis: true,
     width: 60,
-    align: 'center',
-    fixed: 'left'
+    align: 'center'
   },
   {
     title: '计划编号',
@@ -96,7 +97,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   // {
   //   title: '完好标识',
@@ -156,7 +157,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '设备名称',
@@ -165,7 +166,24 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
+  },
+  {
+    title: '计划保养日期',
+    dataIndex: 'planMaintenanceDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '上次保养日期',
+    dataIndex: 'oldLastMaintenPlanDate',
+    key: 'oldLastMaintenPlanDate',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '型号',
@@ -174,7 +192,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '设备规格',
@@ -183,7 +201,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '使用部门',
@@ -192,7 +210,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养项目',
@@ -201,7 +219,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养部位',
@@ -210,7 +228,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '保养依据',
@@ -240,21 +258,12 @@ const columns = [
     align: 'left'
   },
   {
-    title: '上次保养日期',
-    dataIndex: 'oldLastMaintenPlanDate',
-    key: 'oldLastMaintenPlanDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
     title: '保养周期(月)',
     dataIndex: 'maintenanceCycle',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '小时数',
@@ -262,7 +271,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '是否自主维护',
@@ -280,14 +289,7 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  {
-    title: '计划保养日期',
-    dataIndex: 'planMaintenanceDate',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
+
   {
     title: '保养状态',
     dataIndex: 'maintenanceStatusName',
@@ -371,20 +373,20 @@ const columns = [
   //   resizable: true,
   //   align: 'left'
   // },
-  {
-    title: '驳回原因',
-    dataIndex: 'backReason',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '驳回原因',
+  //   dataIndex: 'backReason',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
-    minWidth: 120,
+    width: 90,
     resizable: true,
     align: 'center'
   }
@@ -406,11 +408,9 @@ const queryParam = reactive({
   sord: null // 排序方式: desc降序 asc升序
 });
 const list = ref([]); // 表格数据集合
-const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false); // 表格loading状态
-const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const maintenanceStatusList = ref([]); // 保养状态通用代码
 const goodConditionFlagList = ref([]); // 完好标识通用代码

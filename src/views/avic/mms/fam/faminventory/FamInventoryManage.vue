@@ -1836,6 +1836,12 @@ function handleTableChange(pagination, filters, sorter) {
 const selectedRow = (code) => {
   let rows = [];
   let canGo = true;
+// else if (!(['1', '4', '6', '8'].includes(pre)) && !(['1', '4', '6', '8'].includes(cur.assetClass.charAt(0)))) {
+//     rows.push({
+//       ...cur,
+//       operationType_: 'inside'
+//     });
+//   }
   if (props.assetClass !== '2') {
     selectedRows.value.map(item => {
       rows.push({
@@ -1850,12 +1856,7 @@ const selectedRow = (code) => {
           ...cur,
           operationType_: 'inside'
         });
-      } else if (!(['1', '4', '6', '8'].includes(pre)) && !(['1', '4', '6', '8'].includes(cur.assetClass.charAt(0)))) {
-        rows.push({
-          ...cur,
-          operationType_: 'inside'
-        });
-      } else {
+      }  else {
         canGo = false;
       }
       return cur.assetClass.charAt(0);
