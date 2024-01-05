@@ -1,7 +1,6 @@
 import type { TpmMaintPlanDto } from '@/api/avic/mms/tpm/TpmMaintPlanApi'; // 引入模块DTO
 import {
   getTpmMaintPlan,
-  saveTpmMaintPlan,
   saveAddTpmMaintPlan,
   saveFormAndStartProcess,
   saveTpmMaintPlanBad
@@ -32,10 +31,10 @@ export function useTpmMaintPlanForm({ props: props, emit: emit }) {
     planMaintenanceDate: [{ required: true, message: '保养日期不能为空', trigger: 'change' }]
   };
   const layout = {
-    labelCol: { flex: '0 0 140px' },
+    labelCol: { flex: '0 0 120px' },
     wrapperCol: { flex: '1 1 0' }
   };
-  const colLayout = proxy.$colLayout2; // 调用布局公共方法
+  const colLayout = proxy.$colLayout3; // 调用布局公共方法
   const loading = ref(false);
   const maintenanceStatusList = ref([]); // 保养状态通用代码
   const goodConditionFlagList = ref([]); // 完好标识通用代码

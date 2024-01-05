@@ -1,15 +1,14 @@
 <template>
   <div>
-    <a-form
-        ref="formRef"
-        :model="form"
-        v-bind="layout"
-        class="form-excel-style"
-    >
+    <a-form ref="formRef" :model="form" v-bind="layout" class="form-excel-style">
       <a-row></a-row>
     </a-form>
-    <TpmMaintPlanManageDetail ref="tpmMaintPlanManageDetail" :tpmWorkflowId="formId || form.id"
-                              :originalOrderTabName="'TPM_MAINT_PLAN'" style="height:260px"/>
+    <TpmMaintPlanManageDetail
+      ref="tpmMaintPlanManageDetail"
+      :tpmWorkflowId="formId || form.id"
+      :originalOrderTabName="'TPM_MAINT_PLAN'"
+      style="height: 350px"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -37,11 +36,6 @@ const {
   form,
   formRef,
   layout,
-  colLayout,
-  secretLevelList,
-  fieldVisible,
-  fieldDisabled,
-  fieldRequired,
   saveForm,
   saveAndStartProcess,
   beforeClickBpmButtons,

@@ -75,6 +75,12 @@ export interface TpmStandardMaintenanceDto extends BaseBeanModel {
   applyUserCode?: string;
   /** 使用部门 */
   useDeptId?: string;
+  /** 设备编号 */
+  equipmentCode?: string;
+  /** 设备名称 */
+  equipmentName?: string;
+  /** 设备型号 */
+  model?: string;
 }
 
 /** 获取分页数据 */
