@@ -188,6 +188,7 @@ const {
   ynScientificList,
   ynReviewList,
   goodsLevelList,
+  autoCode,
   secretLevelList,
   uploadFile,
   afterUploadEvent,

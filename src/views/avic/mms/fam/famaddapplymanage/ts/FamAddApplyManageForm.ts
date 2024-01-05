@@ -38,6 +38,7 @@ export function useFamAddApplyManageForm({ props: props, emit: emit }) {
   const colLayout = proxy.$colLayout2; // 调用布局公共方法
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
+  const autoCode = ref(null); // 自动编码ref
   const ynScientificList = ref([]); // 是否科研用通用代码
   const ynReviewList = ref([]); // 是否需要评审通用代码
   const goodsLevelList = ref([]); // 物资等级通用代码
@@ -123,6 +124,10 @@ export function useFamAddApplyManageForm({ props: props, emit: emit }) {
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
+        if (autoCode.value) {
+          // 获取编码码段值
+          postData.applyNo = autoCode.value.getSegmentValue();
+        }
         // 发送请求
         saveFamAddApplyManage(postData)
           .then(res => {
@@ -190,6 +195,10 @@ export function useFamAddApplyManageForm({ props: props, emit: emit }) {
           loading.value = true;
           // 处理数据
           const postData = proxy.$lodash.cloneDeep(form.value);
+          if (autoCode.value) {
+            // 获取编码码段值
+            postData.applyNo = autoCode.value.getSegmentValue();
+          }
           const param = {
             processDefId: params.dbid || bpmParams.value.defineId,
             formCode: formCode,
@@ -324,6 +333,7 @@ export function useFamAddApplyManageForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
+    autoCode,
     ynScientificList,
     ynReviewList,
     goodsLevelList,
