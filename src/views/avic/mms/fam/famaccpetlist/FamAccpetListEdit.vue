@@ -893,10 +893,10 @@ function equiphandleSummit() {
         const record = list.value.filter(item => item.id === equiphClassRecord.value.id)[0];
         record.equipClass = res.data.classCode;
         record.equipClassName = res.data.className;
-        getEquipClassCode(record.equipClass).then(r => {
-          if (r.success)
-            record.equipNo = r.data;
-        });
+        // getEquipClassCode(record.equipClass).then(r => {
+        //   if (r.success)
+        //     record.equipNo = r.data;
+        // });
         equipClassOpen.value = false;
         equiphClassRecord.value = null;
       }
