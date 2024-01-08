@@ -367,7 +367,7 @@
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('assetClass')">
           <a-form-item name="assetClass" label="资产类别" :rules="fieldRequired('assetClass')" has-feedback>
             <a-input
-              v-model:value="form.assetClasstName"
+              v-model:value="form.assetClassName"
               :disabled="fieldDisabled('assetClass')"
             />
           </a-form-item>

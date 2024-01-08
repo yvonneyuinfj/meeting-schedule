@@ -666,11 +666,11 @@
             </a-col>
             <a-col v-bind="colLayout.cols">
               <a-form-item
-                name="geographicalArea"
+                name="geographicalAreaName"
                 label="地理区域"
               >
                 <a-input
-                  v-model:value="form.geographicalArea"
+                  v-model:value="form.geographicalAreaName"
                   disabled
                 />
               </a-form-item>

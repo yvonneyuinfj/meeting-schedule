@@ -72,7 +72,7 @@
               <avic-auto-code
                 v-model:value="form.changeApplyNo"
                 ref="autoCode"
-                code-type="FAM_BILL_NO"
+                code-type="FAM_CHANGE_NO"
                 code-param="FAM_INVENTORY_CHANGE"
                 :allow-clear="true"
                 :disabled="false"
@@ -410,6 +410,16 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
+            <a-form-item name="factoryOwner" label="生产商">
+              <a-input
+                v-model:value="form.factoryOwner"
+                :maxLength="64"
+                placeholder="生产商"
+                :disabled="formDisable.get('factoryOwner')"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols2">
             <a-form-item name="procureOrderNo" label="采购合同号">
               <a-input
                 v-model:value="form.procureOrderNo"
@@ -474,7 +484,7 @@
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetClass" label="资产类别">
               <a-input
-                v-model:value="form.assetClasstName"
+                v-model:value="form.assetClassName"
                 placeholder="请输入资产类别"
                 @click="assetClasstClick"
                 :disabled="formDisable.get('assetClass')"
@@ -804,10 +814,10 @@ function handleSummit() {
         if (res.success) {
           if (res.data.treeLeaf === 'Y') {
             assetClasstObj.value = res.data;
-            form.value.assetClasst = res.data.classCode;
-            form.value.assetClasstName = res.data.className;
+            form.value.assetClass = res.data.classCode;
+            form.value.assetClassName = res.data.className;
             // 设置主管部门默认值
-            if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
+            if (['7', '3', '2', '8'].includes(form.value.assetClass.charAt(0))) {
               form.value.managerDeptId = 'C410';
             }
             assetClasstOpen.value = false;
