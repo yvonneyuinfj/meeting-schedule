@@ -66,6 +66,7 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
+
         <AvicRowEdit
           v-if="['assetOriginalValue','assetModel','assetName','equipNo','assetClass','assetSpec'].includes(
                column.dataIndex
@@ -85,7 +86,12 @@
             </a-input>
           </template>
         </AvicRowEdit>
-
+        <AvicRowEdit v-else-if="column.dataIndex === 'history'" :record="record"
+                     :column="column.dataIndex">
+          <div @click="showAssetNo(record)" class="assetNoLink">
+            查看
+          </div>
+        </AvicRowEdit>
         <AvicRowEdit v-else-if="column.dataIndex === 'assetNo'" :record="record"
                      :column="column.dataIndex">
           <template #edit>
@@ -101,10 +107,7 @@
             </a-input>
           </template>
           <template #default>
-            <div @click="showAssetNo(record)"
-                 :class=" !props.bpmInstanceObject.hasOwnProperty('bpmModel') ? '' : 'assetNoLink'">
-              {{ record.assetNo }}
-            </div>
+            {{ record.assetNo }}
           </template>
         </AvicRowEdit>
 
@@ -212,7 +215,6 @@ const props = defineProps({
 const task = props.bpmInstanceObject.hasOwnProperty('bpmModel') ? props.bpmInstanceObject.bpmModel : '';
 
 const columns = [
-
   {
     title: '资产编号',
     dataIndex: 'assetNo',
@@ -384,33 +386,19 @@ const assetNoOpen = ref(false);
 const lookupParams = [
   { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
 ];
-const validateRules = {
-  assetClass: [
-    { required: true, message: '资产类别列不能为空' }
-  ],
-  assetNo: [
-    { required: true, message: '资产编号列不能为空' }
-  ],
-  equipNo: [
-    { required: true, message: '设备编号列不能为空' }
-  ],
-  assetName: [
-    { required: true, message: '资产名称列不能为空' }
-  ],
-  assetSpec: [
-    { required: true, message: '资产规格列不能为空' }
-  ],
-  assetModel: [
-    { required: true, message: '资产型号列不能为空' }
-  ],
-  assetOriginalValue: [
-    { required: true, message: '资产原值列不能为空' }
-  ],
-  importedOrNot: [
-    { required: true, message: '是否为进口设备列不能为空' }
-  ]
-}; // 必填列,便于保存和新增数据时校验
+const validateRules = {}; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
+
+
+if (props.bpmInstanceObject.hasOwnProperty('bpmModel')) {
+  columns.unshift({
+    title: '历史记录',
+    dataIndex: 'history',
+    key: 'history',
+    width: 120,
+    align: 'center'
+  });
+}
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
@@ -497,16 +485,16 @@ const handleOk = () => {
   const selectRow = famInventoryManage.value.selectedRow(code);
   let selectRowList = [];
   selectRow.map(item => {
-    item['assetNo'] = item.assetsName;
+    item['assetNo'] = item.assetsCode;
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
-    if(!item.warrantyPeriod){
-      selectRowList.push(item)
+    if (!item.warrantyPeriod) {
+      selectRowList.push(item);
     }
-    if(item.warrantyPeriod && dayjs().isAfter(dayjs(item.warrantyPeriod))){
-      selectRowList.push(item)
-    }else{
-     proxy.$message.warning('该资产在质保期内，不需提维修申请。')
+    if (item.warrantyPeriod && dayjs().isAfter(dayjs(item.warrantyPeriod))) {
+      selectRowList.push(item);
+    } else {
+      proxy.$message.warning('该资产在质保期内，不需提维修申请。');
     }
   });
   list.value = [...list.value, ...selectRowList];

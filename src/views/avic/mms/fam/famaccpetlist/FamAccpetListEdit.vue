@@ -1082,7 +1082,7 @@ function handleDelete(ids, e) {
     e.stopPropagation(); // 阻止冒泡
   }
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
+    // proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   let newData = [...list.value];

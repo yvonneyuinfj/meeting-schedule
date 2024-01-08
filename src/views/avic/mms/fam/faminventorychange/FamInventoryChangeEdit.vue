@@ -69,20 +69,14 @@
                    </a-col> -->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="changeApplyNo" label="申请单编号" has-feedback>
-<!--              <avic-auto-code-->
-<!--                v-model:value="form.changeApplyNo"-->
-<!--                ref="autoCode"-->
-<!--                code-type="FAM_BILL_NO"-->
-<!--                code-param="FAM_INVENTORY_CHANGE"-->
-<!--                :allow-clear="true"-->
-<!--                :disabled="false"-->
-<!--                placeholder="请输入申请单编号"-->
-<!--              />-->
-              <a-input
-                  v-model:value="form.changeApplyNo"
-                  :maxLength="64"
-                  placeholder="请输入申请单编号"
-                  :disabled="true"
+              <avic-auto-code
+                v-model:value="form.changeApplyNo"
+                ref="autoCode"
+                code-type="FAM_BILL_NO"
+                code-param="FAM_INVENTORY_CHANGE"
+                :allow-clear="true"
+                :disabled="false"
+                placeholder="请输入申请单编号"
               />
             </a-form-item>
           </a-col>
@@ -117,17 +111,17 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="entryDate" label="入账日期" has-feedback>
-              <a-date-picker
-                v-model:value="form.entryDate"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择入账日期"
-                :disabled="formDisable.get('entryDate')"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="entryDate" label="入账日期" has-feedback>-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="form.entryDate"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择入账日期"-->
+          <!--                :disabled="formDisable.get('entryDate')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetOriginalValue" label="资产原值" has-feedback>
               <a-input-number
@@ -202,20 +196,20 @@
               ></a-input-number>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="monDepreciation" label="月折旧额" has-feedback>
-              <a-input-number
-                v-model:value="form.monDepreciation"
-                :max="999999999999"
-                :min="-999999999999"
-                :precision="2"
-                :step="0.01"
-                placeholder="请输入月折旧额"
-                style="width: 100%"
-                :disabled="formDisable.get('monDepreciation')"
-              ></a-input-number>
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="monDepreciation" label="月折旧额" has-feedback>-->
+          <!--              <a-input-number-->
+          <!--                v-model:value="form.monDepreciation"-->
+          <!--                :max="999999999999"-->
+          <!--                :min="-999999999999"-->
+          <!--                :precision="2"-->
+          <!--                :step="0.01"-->
+          <!--                placeholder="请输入月折旧额"-->
+          <!--                style="width: 100%"-->
+          <!--                :disabled="formDisable.get('monDepreciation')"-->
+          <!--              ></a-input-number>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="storageLocation" label="存放地点" has-feedback>
               <a-input
@@ -226,26 +220,26 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="deptName" label="部门名称" has-feedback>
-              <a-input
-                v-model:value="form.deptName"
-                :maxLength="64"
-                placeholder="请输入部门名称"
-                :disabled="formDisable.get('deptName')"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="managerDeptId" label="主管部门">
-              <AvicCommonSelect
-                v-model:value="form.managerDeptId"
-                type="deptSelect"
-                placeholder="请选择主管部门"
-                :disabled="formDisable.get('managerDeptId')"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="deptName" label="部门名称" has-feedback>-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.deptName"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入部门名称"-->
+          <!--                :disabled="formDisable.get('deptName')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="managerDeptId" label="主管部门">-->
+          <!--              <AvicCommonSelect-->
+          <!--                v-model:value="form.managerDeptId"-->
+          <!--                type="deptSelect"-->
+          <!--                placeholder="请选择主管部门"-->
+          <!--                :disabled="formDisable.get('managerDeptId')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="responseUserId" label="责任人">
               <AvicCommonSelect
@@ -256,20 +250,20 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="firstDepreciationValue" label="入账时累计折旧">
-              <a-input-number
-                v-model:value="form.firstDepreciationValue"
-                :max="999999999999"
-                :min="-999999999999"
-                :precision="2"
-                :step="0.01"
-                placeholder="请输入入账时累计折旧"
-                style="width: 100%"
-                :disabled="formDisable.get('firstDepreciationValue')"
-              ></a-input-number>
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="firstDepreciationValue" label="入账时累计折旧">-->
+          <!--              <a-input-number-->
+          <!--                v-model:value="form.firstDepreciationValue"-->
+          <!--                :max="999999999999"-->
+          <!--                :min="-999999999999"-->
+          <!--                :precision="2"-->
+          <!--                :step="0.01"-->
+          <!--                placeholder="请输入入账时累计折旧"-->
+          <!--                style="width: 100%"-->
+          <!--                :disabled="formDisable.get('firstDepreciationValue')"-->
+          <!--              ></a-input-number>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="monthProposed" label="已提月份">
               <a-date-picker
@@ -281,71 +275,71 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="brandModel" label="品牌型号">
-              <a-input
-                v-model:value="form.brandModel"
-                :maxLength="50"
-                placeholder="请输入品牌型号"
-                :disabled="formDisable.get('brandModel')"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="purchaseDate" label="购置日期">
-              <a-date-picker
-                v-model:value="form.purchaseDate"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择购置日期"
-                :disabled="formDisable.get('purchaseDate')"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="currentYearDepreciation" label="入账前当年折旧">
-              <a-input-number
-                v-model:value="form.currentYearDepreciation"
-                :max="999999999999"
-                :min="-999999999999"
-                :precision="2"
-                :step="0.01"
-                placeholder="请输入入账前当年折旧"
-                style="width: 100%"
-                :disabled="formDisable.get('currentYearDepreciation')"
-              ></a-input-number>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="newaCurrentmProvision" label="新增当月计提">
-              <a-input
-                v-model:value="form.newaCurrentmProvision"
-                :maxLength="64"
-                placeholder="请输入新增当月计提"
-                :disabled="formDisable.get('newaCurrentmProvision')"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="other" label="其他">
-              <a-input
-                v-model:value="form.other"
-                :maxLength="64"
-                placeholder="请输入其他"
-                :disabled="formDisable.get('other')"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="resetVoucherNo" label="重置凭证号">
-              <a-input
-                v-model:value="form.resetVoucherNo"
-                :maxLength="64"
-                placeholder="请输入重置凭证号"
-                :disabled="formDisable.get('resetVoucherNo')"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="brandModel" label="品牌型号">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.brandModel"-->
+          <!--                :maxLength="50"-->
+          <!--                placeholder="请输入品牌型号"-->
+          <!--                :disabled="formDisable.get('brandModel')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="purchaseDate" label="购置日期">-->
+          <!--              <a-date-picker-->
+          <!--                v-model:value="form.purchaseDate"-->
+          <!--                format="YYYY-MM-DD"-->
+          <!--                value-format="YYYY-MM-DD"-->
+          <!--                placeholder="请选择购置日期"-->
+          <!--                :disabled="formDisable.get('purchaseDate')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="currentYearDepreciation" label="入账前当年折旧">-->
+          <!--              <a-input-number-->
+          <!--                v-model:value="form.currentYearDepreciation"-->
+          <!--                :max="999999999999"-->
+          <!--                :min="-999999999999"-->
+          <!--                :precision="2"-->
+          <!--                :step="0.01"-->
+          <!--                placeholder="请输入入账前当年折旧"-->
+          <!--                style="width: 100%"-->
+          <!--                :disabled="formDisable.get('currentYearDepreciation')"-->
+          <!--              ></a-input-number>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="newaCurrentmProvision" label="新增当月计提">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.newaCurrentmProvision"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入新增当月计提"-->
+          <!--                :disabled="formDisable.get('newaCurrentmProvision')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="other" label="其他">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.other"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入其他"-->
+          <!--                :disabled="formDisable.get('other')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="resetVoucherNo" label="重置凭证号">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.resetVoucherNo"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入重置凭证号"-->
+          <!--                :disabled="formDisable.get('resetVoucherNo')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <!--          <a-col v-bind="colLayout.cols2">
                       <a-form-item name="equipNo" label="设备编号">
                         <a-input
@@ -375,26 +369,26 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="factoryOwner" label="厂商">
-              <a-input
-                v-model:value="form.factoryOwner"
-                :maxLength="64"
-                placeholder="请输入厂商"
-                :disabled="formDisable.get('factoryOwner')"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="buildProject" label="建设项目">
-              <a-input
-                v-model:value="form.buildProject"
-                :maxLength="64"
-                placeholder="请输入建设项目"
-                :disabled="formDisable.get('buildProject')"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols2">-->
+<!--            <a-form-item name="producer" label="生产商">-->
+<!--              <a-input-->
+<!--                v-model:value="form.producer"-->
+<!--                :maxLength="64"-->
+<!--                placeholder="请输入厂商"-->
+<!--                :disabled="formDisable.get('producer')"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="buildProject" label="建设项目">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.buildProject"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入建设项目"-->
+          <!--                :disabled="formDisable.get('buildProject')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="brand" label="品牌">
               <a-input
@@ -456,16 +450,16 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="receiveDeptId" label="接收部门">
-              <AvicCommonSelect
-                v-model:value="form.receiveDeptId"
-                type="deptSelect"
-                placeholder="请选择接收部门"
-                :disabled="formDisable.get('receiveDeptId')"
-              />
-            </a-form-item>
-          </a-col>
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="receiveDeptId" label="接收部门">-->
+          <!--              <AvicCommonSelect-->
+          <!--                v-model:value="form.receiveDeptId"-->
+          <!--                type="deptSelect"-->
+          <!--                placeholder="请选择接收部门"-->
+          <!--                :disabled="formDisable.get('receiveDeptId')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetClass" label="资产类别">
               <a-input
@@ -635,10 +629,10 @@
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="installLocation" label="安装地点" has-feedback>
               <a-input
-                  v-model:value="form.installLocation"
-                  :maxLength="64"
-                  placeholder="请输入安装地点"
-                  :disabled="formDisable.get('installLocation')"
+                v-model:value="form.installLocation"
+                :maxLength="64"
+                placeholder="请输入安装地点"
+                :disabled="formDisable.get('installLocation')"
               />
             </a-form-item>
           </a-col>

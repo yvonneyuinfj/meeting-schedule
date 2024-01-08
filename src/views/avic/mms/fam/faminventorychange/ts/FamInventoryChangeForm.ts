@@ -63,6 +63,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   }
 
   onMounted(() => {
+    console.log(proxy.$getLoginUser().entityDeptCode)
     switch (proxy.$getLoginUser().entityDeptCode) {
       case 'C150':
       case 'C410':

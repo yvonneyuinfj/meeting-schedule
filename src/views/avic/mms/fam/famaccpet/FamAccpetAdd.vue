@@ -257,7 +257,7 @@
           </a-col>
 
           <a-col v-bind="colLayout.cols"
-                 v-if="form.assetClasst  && filterEquipmentTypeList.length > 0 ">
+                 v-if="showEquipmentType  ">
             <a-form-item name="equipmentType" label="设备类型" has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -441,7 +441,7 @@ onMounted(() => {
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
 });
 
-const FamAddApplySelectComponent = FamAddApplySelect
+const FamAddApplySelectComponent = FamAddApplySelect;
 const famOverhaulRequireSelect = ref(null);
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
@@ -510,6 +510,19 @@ function handleCancel() {
   assetClasstOpen.value = false;
 }
 
+const showEquipmentType = computed(() => {
+  if (form.value.assetClasst && filterEquipmentTypeList.value.length > 0) {
+    console.log(form.value.assetClasst.charAt(0));
+    if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+      return true;
+    }
+    if (['8'].includes(form.value.assetClasst.charAt(0)) && form.value.managerDeptId === 'C410') {
+      return true;
+    }
+    return false;
+  }
+});
+
 /** 点击维修计划 */
 const overhaulRequireCodeClick = () => {
   maintPlanModal.value = true;
@@ -528,7 +541,6 @@ function handleSummit() {
             assetClasstObj.value = res.data;
             form.value.assetClasst = res.data.classCode;
             form.value.assetClasstName = res.data.className;
-
             // 设置主管部门默认值
             if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
               form.value.managerDeptId = 'C410';

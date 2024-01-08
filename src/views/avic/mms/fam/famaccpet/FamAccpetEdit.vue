@@ -254,6 +254,38 @@
               />
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
+            <a-form-item name="assetClasst" label="资产类别" has-feedback>
+              <a-input v-model:value="form.assetClasstName" @click="assetClasstClick">
+                <template #suffix>
+                  <a-tooltip @click="assetClasstClick">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                  </a-tooltip>
+                </template>
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols"
+                 v-if="showEquipmentType">
+            <a-form-item name="equipmentType" label="设备类型" has-feedback>
+              <a-select
+                v-model:value="form.equipmentType"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+              >
+                <a-select-option
+                  v-for="item in filterEquipmentTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="ynArchived" label="是否归档案">
               <a-select
@@ -286,38 +318,6 @@
               >
                 <a-select-option
                   v-for="item in ynDemolishedList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-if="form.accpetType === '1'">
-            <a-form-item name="assetClasst" label="资产类别" has-feedback>
-              <a-input v-model:value="form.assetClasstName" @click="assetClasstClick">
-                <template #suffix>
-                  <a-tooltip @click="assetClasstClick">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
-                  </a-tooltip>
-                </template>
-              </a-input>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols"
-                 v-if="form.assetClasst && filterEquipmentTypeList.length > 0 ">
-            <a-form-item name="equipmentType" label="设备类型" has-feedback>
-              <a-select
-                v-model:value="form.equipmentType"
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-              >
-                <a-select-option
-                  v-for="item in filterEquipmentTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -443,7 +443,7 @@ onMounted(() => {
   getTreeList();
 });
 
-const FamAddApplySelectComponent = FamAddApplySelect
+const FamAddApplySelectComponent = FamAddApplySelect;
 const { proxy } = getCurrentInstance();
 const accpetType = ref();
 const assetClass = ref();
@@ -492,6 +492,20 @@ async function onLoadData(treeNode) {
 function handleSelect(keys: string[], node) {
   treeNodeId.value = node.node.id;
 }
+
+const showEquipmentType = computed(() => {
+  if (form.value.assetClasst && filterEquipmentTypeList.value.length > 0) {
+    console.log(form.value.assetClasst.charAt(0));
+    if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+      return true;
+    }
+    if (['8'].includes(form.value.assetClasst.charAt(0)) && form.value.managerDeptId === 'C410') {
+      return true;
+    }
+    return false;
+  }
+});
+
 
 /** 点击维修计划 */
 const overhaulRequireCodeClick = () => {

@@ -44,16 +44,16 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('entryDate')">
-          <a-form-item name="entryDate" label="入账日期" :rules="fieldRequired('entryDate')" has-feedback>
-            <a-date-picker
-              v-model:value="form.entryDate"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-              :disabled="fieldDisabled('entryDate')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('entryDate')">-->
+<!--          <a-form-item name="entryDate" label="入账日期" :rules="fieldRequired('entryDate')" has-feedback>-->
+<!--            <a-date-picker-->
+<!--              v-model:value="form.entryDate"-->
+<!--              format="YYYY-MM-DD"-->
+<!--              value-format="YYYY-MM-DD"-->
+<!--              :disabled="fieldDisabled('entryDate')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('assetOriginalValue')">
           <a-form-item name="assetOriginalValue" label="资产原值" :rules="fieldRequired('assetOriginalValue')" has-feedback>
             <a-input-number
@@ -80,14 +80,14 @@
             ></a-input-number>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('depreciationWay')">
-          <a-form-item name="depreciationWay" label="折旧方法" :rules="fieldRequired('depreciationWay')" has-feedback>
-            <a-input
-              v-model:value="form.depreciationWay"
-              :disabled="fieldDisabled('depreciationWay')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('depreciationWay')">-->
+<!--          <a-form-item name="depreciationWay" label="折旧方法" :rules="fieldRequired('depreciationWay')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.depreciationWay"-->
+<!--              :disabled="fieldDisabled('depreciationWay')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('assetNum')">
           <a-form-item name="assetNum" label="资产数量" :rules="fieldRequired('assetNum')" has-feedback>
             <a-input-number
@@ -120,19 +120,19 @@
             ></a-input-number>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('monDepreciation')">
-          <a-form-item name="monDepreciation" label="月折旧额" :rules="fieldRequired('monDepreciation')" has-feedback>
-            <a-input-number
-              v-model:value="form.monDepreciation"
-              :max="999999999999"
-              :min="-999999999999"
-              :precision="2"
-              :step="0.01"
-              :disabled="fieldDisabled('monDepreciation')"
-              style="width: 100%"
-            ></a-input-number>
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('monDepreciation')">-->
+<!--          <a-form-item name="monDepreciation" label="月折旧额" :rules="fieldRequired('monDepreciation')" has-feedback>-->
+<!--            <a-input-number-->
+<!--              v-model:value="form.monDepreciation"-->
+<!--              :max="999999999999"-->
+<!--              :min="-999999999999"-->
+<!--              :precision="2"-->
+<!--              :step="0.01"-->
+<!--              :disabled="fieldDisabled('monDepreciation')"-->
+<!--              style="width: 100%"-->
+<!--            ></a-input-number>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('storageLocation')">
           <a-form-item name="storageLocation" label="存放地点" :rules="fieldRequired('storageLocation')" has-feedback>
             <a-input
@@ -141,24 +141,24 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('deptName')">
-          <a-form-item name="deptName" label="部门名称" :rules="fieldRequired('deptName')" has-feedback>
-            <a-input
-              v-model:value="form.deptName"
-              :disabled="fieldDisabled('deptName')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('managerDeptId')">
-          <a-form-item name="managerDeptId" label="主管部门" :rules="fieldRequired('managerDeptId')" has-feedback>
-            <AvicCommonSelect
-              v-model:value="form.managerDeptId"
-              type="deptSelect"
-              :defaultShowValue="form.managerDeptIdAlias"
-              :disabled="fieldDisabled('managerDeptId')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('deptName')">-->
+<!--          <a-form-item name="deptName" label="部门名称" :rules="fieldRequired('deptName')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.deptName"-->
+<!--              :disabled="fieldDisabled('deptName')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('managerDeptId')">-->
+<!--          <a-form-item name="managerDeptId" label="主管部门" :rules="fieldRequired('managerDeptId')" has-feedback>-->
+<!--            <AvicCommonSelect-->
+<!--              v-model:value="form.managerDeptId"-->
+<!--              type="deptSelect"-->
+<!--              :defaultShowValue="form.managerDeptIdAlias"-->
+<!--              :disabled="fieldDisabled('managerDeptId')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('responseUserId')">
           <a-form-item name="responseUserId" label="责任人" :rules="fieldRequired('responseUserId')" has-feedback>
             <AvicCommonSelect
@@ -169,19 +169,19 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('firstDepreciationValue')">
-          <a-form-item name="firstDepreciationValue" label="入账时累计折旧" :rules="fieldRequired('firstDepreciationValue')" has-feedback>
-            <a-input-number
-              v-model:value="form.firstDepreciationValue"
-              :max="999999999999"
-              :min="-999999999999"
-              :precision="2"
-              :step="0.01"
-              :disabled="fieldDisabled('firstDepreciationValue')"
-              style="width: 100%"
-            ></a-input-number>
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('firstDepreciationValue')">-->
+<!--          <a-form-item name="firstDepreciationValue" label="入账时累计折旧" :rules="fieldRequired('firstDepreciationValue')" has-feedback>-->
+<!--            <a-input-number-->
+<!--              v-model:value="form.firstDepreciationValue"-->
+<!--              :max="999999999999"-->
+<!--              :min="-999999999999"-->
+<!--              :precision="2"-->
+<!--              :step="0.01"-->
+<!--              :disabled="fieldDisabled('firstDepreciationValue')"-->
+<!--              style="width: 100%"-->
+<!--            ></a-input-number>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('monthProposed')">
           <a-form-item name="monthProposed" label="已提月份" :rules="fieldRequired('monthProposed')" has-feedback>
             <a-date-picker
@@ -192,61 +192,61 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('brandModel')">
-          <a-form-item name="brandModel" label="品牌型号" :rules="fieldRequired('brandModel')" has-feedback>
-            <a-input
-              v-model:value="form.brandModel"
-              :disabled="fieldDisabled('brandModel')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('purchaseDate')">
-          <a-form-item name="purchaseDate" label="购置日期" :rules="fieldRequired('purchaseDate')" has-feedback>
-            <a-date-picker
-              v-model:value="form.purchaseDate"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-              :disabled="fieldDisabled('purchaseDate')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('currentYearDepreciation')">
-          <a-form-item name="currentYearDepreciation" label="入账前当年折旧" :rules="fieldRequired('currentYearDepreciation')" has-feedback>
-            <a-input-number
-              v-model:value="form.currentYearDepreciation"
-              :max="999999999999"
-              :min="-999999999999"
-              :precision="2"
-              :step="0.01"
-              :disabled="fieldDisabled('currentYearDepreciation')"
-              style="width: 100%"
-            ></a-input-number>
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('newaCurrentmProvision')">
-          <a-form-item name="newaCurrentmProvision" label="新增当月计提" :rules="fieldRequired('newaCurrentmProvision')" has-feedback>
-            <a-input
-              v-model:value="form.newaCurrentmProvision"
-              :disabled="fieldDisabled('newaCurrentmProvision')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('other')">
-          <a-form-item name="other" label="其他" :rules="fieldRequired('other')" has-feedback>
-            <a-input
-              v-model:value="form.other"
-              :disabled="fieldDisabled('other')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('resetVoucherNo')">
-          <a-form-item name="resetVoucherNo" label="重置凭证号" :rules="fieldRequired('resetVoucherNo')" has-feedback>
-            <a-input
-              v-model:value="form.resetVoucherNo"
-              :disabled="fieldDisabled('resetVoucherNo')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('brandModel')">-->
+<!--          <a-form-item name="brandModel" label="品牌型号" :rules="fieldRequired('brandModel')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.brandModel"-->
+<!--              :disabled="fieldDisabled('brandModel')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('purchaseDate')">-->
+<!--          <a-form-item name="purchaseDate" label="购置日期" :rules="fieldRequired('purchaseDate')" has-feedback>-->
+<!--            <a-date-picker-->
+<!--              v-model:value="form.purchaseDate"-->
+<!--              format="YYYY-MM-DD"-->
+<!--              value-format="YYYY-MM-DD"-->
+<!--              :disabled="fieldDisabled('purchaseDate')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('currentYearDepreciation')">-->
+<!--          <a-form-item name="currentYearDepreciation" label="入账前当年折旧" :rules="fieldRequired('currentYearDepreciation')" has-feedback>-->
+<!--            <a-input-number-->
+<!--              v-model:value="form.currentYearDepreciation"-->
+<!--              :max="999999999999"-->
+<!--              :min="-999999999999"-->
+<!--              :precision="2"-->
+<!--              :step="0.01"-->
+<!--              :disabled="fieldDisabled('currentYearDepreciation')"-->
+<!--              style="width: 100%"-->
+<!--            ></a-input-number>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('newaCurrentmProvision')">-->
+<!--          <a-form-item name="newaCurrentmProvision" label="新增当月计提" :rules="fieldRequired('newaCurrentmProvision')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.newaCurrentmProvision"-->
+<!--              :disabled="fieldDisabled('newaCurrentmProvision')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('other')">-->
+<!--          <a-form-item name="other" label="其他" :rules="fieldRequired('other')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.other"-->
+<!--              :disabled="fieldDisabled('other')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('resetVoucherNo')">-->
+<!--          <a-form-item name="resetVoucherNo" label="重置凭证号" :rules="fieldRequired('resetVoucherNo')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.resetVoucherNo"-->
+<!--              :disabled="fieldDisabled('resetVoucherNo')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
 <!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('equipNo')">-->
 <!--          <a-form-item name="equipNo" label="设备编号" :rules="fieldRequired('equipNo')" has-feedback>-->
 <!--            <a-input-->
@@ -271,22 +271,22 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('factoryOwner')">
-          <a-form-item name="factoryOwner" label="厂商" :rules="fieldRequired('factoryOwner')" has-feedback>
-            <a-input
-              v-model:value="form.factoryOwner"
-              :disabled="fieldDisabled('factoryOwner')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('buildProject')">
-          <a-form-item name="buildProject" label="建设项目" :rules="fieldRequired('buildProject')" has-feedback>
-            <a-input
-              v-model:value="form.buildProject"
-              :disabled="fieldDisabled('buildProject')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('factoryOwner')">-->
+<!--          <a-form-item name="factoryOwner" label="厂商" :rules="fieldRequired('factoryOwner')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.factoryOwner"-->
+<!--              :disabled="fieldDisabled('factoryOwner')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('buildProject')">-->
+<!--          <a-form-item name="buildProject" label="建设项目" :rules="fieldRequired('buildProject')" has-feedback>-->
+<!--            <a-input-->
+<!--              v-model:value="form.buildProject"-->
+<!--              :disabled="fieldDisabled('buildProject')"-->
+<!--            />-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('brand')">
           <a-form-item name="brand" label="品牌" :rules="fieldRequired('brand')" has-feedback>
             <a-input
@@ -339,16 +339,16 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('receiveDeptId')">
-          <a-form-item name="receiveDeptId" label="接收部门" :rules="fieldRequired('receiveDeptId')" has-feedback>
-            <AvicCommonSelect
-              v-model:value="form.receiveDeptId"
-              type="deptSelect"
-              :defaultShowValue="form.receiveDeptIdAlias"
-              :disabled="fieldDisabled('receiveDeptId')"
-            />
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('receiveDeptId')">-->
+        <!--          <a-form-item name="receiveDeptId" label="接收部门" :rules="fieldRequired('receiveDeptId')" has-feedback>-->
+        <!--            <AvicCommonSelect-->
+        <!--              v-model:value="form.receiveDeptId"-->
+        <!--              type="deptSelect"-->
+        <!--              :defaultShowValue="form.receiveDeptIdAlias"-->
+        <!--              :disabled="fieldDisabled('receiveDeptId')"-->
+        <!--            />-->
+        <!--          </a-form-item>-->
+        <!--        </a-col>-->
         <a-col v-bind="colLayout.cols2" v-if="fieldVisible('assetClass')">
           <a-form-item name="assetClass" label="资产类别" :rules="fieldRequired('assetClass')" has-feedback>
             <a-input
