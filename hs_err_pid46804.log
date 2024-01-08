@@ -1,0 +1,43 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 32744 bytes for ChunkPool::allocate
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (./src/hotspot/share/memory/arena.cpp:81), pid=46804, tid=56068
+#
+# JRE version: OpenJDK Runtime Environment JBR-11.0.9.1.11-1145.63-jcef (11.0.9.1+11) (build 11.0.9.1+11-b1145.63)
+# Java VM: OpenJDK 64-Bit Server VM JBR-11.0.9.1.11-1145.63-jcef (11.0.9.1+11-b1145.63, mixed mode, tiered, compressed oops, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: org.jetbrains.git4idea.http.GitAskPassApp Username for 'http://192.168.1.222:10101': 
+
+Host: Intel(R) Core(TM) i5-6200U CPU @ 2.30GHz, 4 cores, 15G,  Windows 10 , 64 bit Build 19041 (10.0.19041.928)
+Time: Fri Jan  5 17:49:11 2024 中国标准时间 elapsed time: 0.385531 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000023920854800):  JavaThread "C1 CompilerThread0" daemon [_thread_in_native, id=56068, stack(0x00000085ff600000,0x00000085ff700000)]
+
+
+Current CompileTask:
+C1:    385  188       3       jdk.internal.org.objectweb.asm.Frame::execute (2264 bytes)
+
+Stack: [0x00000085ff600000,0x00000085ff700000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x5edd9a]
+V  [jvm.dll+0x7229c5]
+V  [jvm.dll+0x723f1d]
+V  [jvm.dll+0x7245d3]
