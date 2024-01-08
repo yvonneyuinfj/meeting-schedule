@@ -653,7 +653,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
+      <!--    <a-col v-bind="colLayout.cols2">
             <a-form-item name="installLocation" label="安装地点" has-feedback>
               <a-input
                 v-model:value="form.installLocation"
@@ -662,7 +662,7 @@
                 :disabled="formDisable.get('installLocation')"
               />
             </a-form-item>
-          </a-col>
+          </a-col> -->
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols4">

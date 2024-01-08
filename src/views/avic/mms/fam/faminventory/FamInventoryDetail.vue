@@ -230,11 +230,11 @@
             </a-col>
             <a-col v-bind="colLayout.cols">
               <a-form-item
-                name="responseUserName"
+                name="responseUserNameAlias"
                 label="责任人"
               >
                 <AvicCommonSelect
-                  v-model:value="form.responseUserName"
+                  v-model:value="form.responseUserNameAlias"
                   type="userSelect"
                   :defaultShowValue="form.responseUserNameAlias"
                   disabled

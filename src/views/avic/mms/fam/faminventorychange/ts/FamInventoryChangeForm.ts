@@ -84,7 +84,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
         break;
       default :
         formList.forEach((value) => {
-          if (value === 'responseUserId' || value === 'installLocation') {
+          if (value === 'responseUserId' || value === 'storageLocation') {
             formDisable.set(value, false);
           } else {
             formDisable.set(value, true);
