@@ -421,12 +421,23 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetSecretLevel" label="资产密级">
-              <a-input
+              <a-select
                 v-model:value="form.assetSecretLevel"
-                :maxLength="64"
-                placeholder="请输入资产密级"
+                style="width: 100%"
+                placeholder="请选择"
                 :disabled="formDisable.get('assetSecretLevel')"
-              />
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+              >
+                <a-select-option
+                  v-for="select in assetSecretLevelList"
+                  :key="select.sysLookupTlId"
+                  :value="select.lookupCode"
+                  :title="select.lookupName"
+                  :disabled="select.disabled === true"
+                >
+                  {{ select.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -463,23 +474,29 @@
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="assetClass" label="资产类别">
               <a-input
-                v-model:value="form.assetClass"
-                :maxLength="64"
+                v-model:value="form.assetClasstName"
                 placeholder="请输入资产类别"
+                @click="assetClasstClick"
                 :disabled="formDisable.get('assetClass')"
-              />
+              >
+                <template #suffix>
+                  <a-tooltip @click="assetClasstClick">
+                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                  </a-tooltip>
+                </template>
+              </a-input>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols2">
-            <a-form-item name="fundSource" label="资金来源">
-              <a-input
-                v-model:value="form.fundSource"
-                :maxLength="64"
-                placeholder="请输入资金来源"
-                :disabled="formDisable.get('fundSource')"
-              />
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols2">-->
+<!--            <a-form-item name="fundSource" label="资金来源">-->
+<!--              <a-input-->
+<!--                v-model:value="form.fundSource"-->
+<!--                :maxLength="64"-->
+<!--                placeholder="请输入资金来源"-->
+<!--                :disabled="formDisable.get('fundSource')"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="projectName" label="项目名称">
               <a-input
@@ -661,10 +678,40 @@
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
+  <!-- 树节点 -->
+  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
+    <div style="height: 100%;overflow: scroll">
+      <a-spin :spinning="treeLoading">
+        <a-tree
+          v-if="treeData && treeData.length > 0"
+          v-model:expanded-keys="expandedKeys"
+          :tree-data="treeData"
+          :load-data="onLoadData"
+          :show-icon="true"
+          :show-line="true && { showLeafIcon: false }"
+          :default-expand-all="true"
+          @expand="handleExpand"
+          @select="handleSelect"
+        >
+          <template #icon="{ expanded, dataRef }">
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+            <AvicIcon v-if="!expanded && !dataRef.isLeaf" svg="avic-folder-3-fill" color="#ffb800"/>
+            <AvicIcon
+              v-if="expanded && !dataRef.isLeaf"
+              svg="avic-folder-open-fill"
+              color="#ffb800"
+            />
+          </template>
+        </a-tree>
+      </a-spin>
+    </div>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import { useFamInventoryChangeForm, emits } from './ts/FamInventoryChangeForm'; // 引入表单ts
-import FamInventoryChangeListEdit from '@/views/avic/mms/fam/faminventorychangelist/FamInventoryChangeListEdit.vue'; // 引入子表组件
+import FamInventoryChangeListEdit from '@/views/avic/mms/fam/faminventorychangelist/FamInventoryChangeListEdit.vue';
+import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
+import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -685,18 +732,108 @@ const props = defineProps({
     type: Function
   }
 });
+onMounted(() => {
+  getTreeList();
+});
+const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
+const treeNodeId = ref();
+const assetClasstObj = ref({});
+const assetClasstOpen = ref<boolean>(false);
+const treeLoading = ref(false);
+const defaultRootParentId = ref('-1');
+const expandedKeys = ref([]); //树节点validateRules
+const treeData = ref(null);
+/** 资产类别弹窗 */
+const assetClasstClick = () => {
+  assetClasstOpen.value = true;
+};
+
+/** 关闭类别树弹窗 */
+function handleCancel() {
+  assetClasstOpen.value = false;
+}
+
+/** 异步加载树节点 */
+async function onLoadData(treeNode) {
+  return new Promise<void>(resolve => {
+    if (treeNode.dataRef.children) {
+      resolve();
+      return;
+    }
+    getTreeData(1, treeNode.dataRef.id).then(response => {
+      setNodeSlots(response.data);
+      treeNode.dataRef.children = response.data;
+      treeData.value = [...treeData.value];
+      resolve();
+    });
+  });
+}
+
+/** 树节点展开事件 */
+function handleExpand(keys) {
+  expandedKeys.value = keys;
+}
+
+/** 树选中事件 */
+function handleSelect(keys: string[], node) {
+  treeNodeId.value = node.node.id;
+}
+
+/** 查询数据 */
+function getTreeList() {
+  treeLoading.value = true;
+  const expandLevel = 2;
+  treeData.value = [];
+  expandedKeys.value = [];
+  getTreeData(expandLevel, defaultRootParentId.value).then(response => {
+    setNodeSlots(response.data);
+    getExpandedKeys(response.data, expandLevel, expandedKeys.value);
+    treeData.value = response.data;
+    treeLoading.value = false;
+  });
+}
+
+
+/** 提交类别 */
+function handleSummit() {
+  getFamAssetClass(treeNodeId.value)
+    .then(async res => {
+        if (res.success) {
+          if (res.data.treeLeaf === 'Y') {
+            assetClasstObj.value = res.data;
+            form.value.assetClasst = res.data.classCode;
+            form.value.assetClasstName = res.data.className;
+            // 设置主管部门默认值
+            if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
+              form.value.managerDeptId = 'C410';
+            }
+            assetClasstOpen.value = false;
+          } else {
+            proxy.$message.warning('该数据不属于末级节点请重新选择！');
+          }
+        }
+      }
+    )
+    .catch(error => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
+}
+
 const {
   form,
   formRef,
   rules,
   layout,
   colLayout,
+  assetSecretLevelList,
   loading,
   formDisable,
   secretLevelList,
   assetsStatusList,
   ynMilitaryKeyEquipList,
+  bodyStyle,
   importedOrNotList,
   assetTypeList,
   saveForm,

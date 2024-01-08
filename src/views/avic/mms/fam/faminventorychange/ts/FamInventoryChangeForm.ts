@@ -39,14 +39,21 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   const importedOrNotList = ref([]); // 是否为进口设备通用代码
   const assetTypeList = ref([]); // 资产分类通用代码
   const autoCode = ref(null); // 自动编码ref
+  const assetSecretLevelList = ref([])
   const lookupParams = [
     { fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS' },
     { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-    { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' }
+    { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
+    { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' },
   ];
   const authJson = ref(null);
   const formDisable: Map<string, boolean> = new Map();
+  const bodyStyle = {
+    height: '400px',
+    overflow: 'hidden',
+    overflowY: 'scroll'
+  };
   const formList = ['assetsStatus', 'assetsUse', 'entryDate', 'assetOriginalValue', 'depreciationValue', 'depreciationWay', 'assetNum', 'useTime', 'assetNetValue', 'monDepreciation', 'storageLocation', 'deptName', 'managerDeptId', 'responseUserId', 'firstDepreciationValue', 'monthProposed', 'brandModel', 'purchaseDate', 'currentYearDepreciation', 'newaCurrentmProvision', 'other', 'resetVoucherNo', 'productionNo', 'voucherNo', 'factoryOwner', 'buildProject', 'brand', 'ownershipCertNo', 'procureOrderNo', 'assetSecretLevel', 'ynMilitaryKeyEquip', 'receiveDeptId', 'assetClass', 'fundSource', 'projectName', 'handlePersonId', 'assetSpec', 'assetModel', 'assetUnit', 'invoiceNo', 'productionDate', 'importedOrNot', 'assetType', 'warrantyPeriod', 'changeReason', 'installLocation'];
 
   if (props.params) {
@@ -63,7 +70,6 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   }
 
   onMounted(() => {
-    console.log(proxy.$getLoginUser().entityDeptCode)
     switch (proxy.$getLoginUser().entityDeptCode) {
       case 'C150':
       case 'C410':
@@ -107,6 +113,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       ynMilitaryKeyEquipList.value = result.ynMilitaryKeyEquip;
       importedOrNotList.value = result.importedOrNot;
       assetTypeList.value = result.assetType;
+      assetSecretLevelList.value = result.assetSecretLevel;
     });
   }
 
@@ -361,11 +368,13 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     ynMilitaryKeyEquipList,
     importedOrNotList,
     assetTypeList,
+    bodyStyle,
     formDisable,
     saveForm,
     saveAndStartProcess,
     closeModal,
     fieldVisible,
+    assetSecretLevelList,
     fieldDisabled,
     fieldRequired,
     beforeClickBpmButtons,
