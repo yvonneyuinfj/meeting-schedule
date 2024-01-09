@@ -1076,6 +1076,22 @@ const columns = [
     align: 'left'
   },
   {
+    title: '使用部门名称',
+    dataIndex: 'receiveDeptNameAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
+    title: '主管部门名称',
+    dataIndex: 'managerDeptNameAlias',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '资产规格',
     dataIndex: 'assetSpec',
     ellipsis: true,
@@ -1690,14 +1706,6 @@ const columns = [
     align: 'left'
   },
   {
-    title: '接收部门名称',
-    dataIndex: 'receiveDeptNameAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
     title: '项目名称',
     dataIndex: 'projectName',
     ellipsis: true,
@@ -1815,6 +1823,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
+  debugger
   switch (proxy.$getLoginUser().entityDeptCode) {
     case 'C150':
       break;
@@ -1977,7 +1986,6 @@ function handleDelete(ids, type) {
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
-
   $emit('select', selectedRows.value);
 }
 

@@ -89,6 +89,21 @@
             </a-input>
           </template>
         </AvicRowEdit>
+        
+        <AvicRowEdit v-else-if="column.dataIndex === 'history'" :record="record"
+                     :column="column.dataIndex">
+    <!--      <div @click="handleDetail(record)" class="assetNoLink">
+             
+          </div> -->
+          <a-button
+            class="assetNoLink"
+            type="link"
+           @click="handleDetail(record)"
+          >
+            查看
+          </a-button>
+        </AvicRowEdit>
+        
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
             class="inner-btn"
@@ -120,11 +135,19 @@
       </div>
     </a-modal>
   </div>
+  
+  <FamInventoryDetail
+      v-if="showDetailModal"
+      ref="detailModal"
+      :form-id="formId"
+      @close="showDetailModal = false"
+  />
 </template>
 <script lang="ts" setup>
 import type { FamInventoryChangeListDto } from '@/api/avic/mms/fam/FamInventoryChangeListApi'; // 引入模块DTO
 import { listFamInventoryChangeListByPage } from '@/api/avic/mms/fam/FamInventoryChangeListApi'; // 引入模块API
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
+import FamInventoryDetail from '@/views/avic/mms/fam/faminventory/FamInventoryDetail.vue';
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -140,6 +163,15 @@ const props = defineProps({
   }
 });
 const columns = [
+  {
+    title: '资产详情',
+    dataIndex: 'history',
+    key: 'history',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
   {
     title: '资产编码',
     dataIndex: 'assetsCode',
@@ -198,6 +230,8 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
+const showDetailModal = ref(false); // 是否展示详情弹窗
+const formId = ref(''); // 当前行数据id
 const famInventoryChangeList = ref(null);
 const list = ref([]); //表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
@@ -212,6 +246,13 @@ const validateRules = {
   inventoryId: [{ required: true, message: '资产表ID列不能为空' }]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
+
+/** 详细 */
+function handleDetail(record) {
+  formId.value = record.inventoryId;
+  showDetailModal.value = true;
+}
+
 
 // 非只读状态添加操作列
 if (!props.readOnly) {
@@ -269,11 +310,24 @@ const handleOk = () => {
   open.value = false;
   console.log(famInventoryManage.value.selectedRow());
   const selectRow = famInventoryManage.value.selectedRow();
+  const userDeptCode =  proxy.$getLoginUser().entityDeptCode;
+  if(userDeptCode!=='C150'&&selectRow.length+list.value.length>1){
+    proxy.$message.warning('非财务部只能选择一条数据');
+    return;
+  };
   selectRow.map(item => {
     item['assetName'] = item.assetsName;
     item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow]; 
+  debugger
+  //如果登录人是6大主管部门
+  if (userDeptCode === 'C410' || userDeptCode === 'A220' || userDeptCode === 'A140' || userDeptCode === 'C450'|| userDeptCode === 'C310'|| userDeptCode === 'C350') {
+    //如果登录人部门和选择台账主管部门不一致 则为使用部门数据
+    if(userDeptCode!==list.value[0].managerDeptId){
+
+    }
+  }
 };
 
 /** 添加 */
@@ -398,6 +452,9 @@ defineExpose({
   getChangedData
 });
 </script>
-
-
-
+<style lang="less" scoped>
+.assetNoLink {
+  color: #1f76cb;
+  cursor: pointer
+}
+</style>

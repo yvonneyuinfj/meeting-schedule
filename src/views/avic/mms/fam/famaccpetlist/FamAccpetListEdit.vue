@@ -671,6 +671,10 @@ const props = defineProps({
   equipmentType: {
     type: String,
     default: ''
+  },
+  managerDeptId: {
+    type: String,
+    default: ''
   }
 });
 let columns = ref([]);
@@ -1247,7 +1251,9 @@ function allocationColumn(code) {
         columns.value = [...ListColumns.BaseColumns, ...ListColumns.OfficialColumns];
         validateRules = { ...Rules.BaseValidateRules, ...Rules.OfficialValidateRules };
         if (props.readOnly) {
+          debugger
           if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
+          if (props.managerDeptId !== "C410") return;
           const list = [
             {
               title: '设备大类',
