@@ -5,7 +5,7 @@
         <a-row :gutter="0">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="billNo" label="单据号" has-feedback>
-              <avic-auto-code v-model:value="form.billNo" ref="autoCode" code-type="FAM_ADD_APPLY_NO"
+                <avic-auto-code v-model:value="form.billNo" ref="autoCode" code-type="FAM_INVISIBLE_ACCEPT_APPLY_NO"
                 code-param="FAM_INVISIBLE_ACCEPT" :allow-clear="true" :disabled="false" placeholder="请输入单据号" />
             </a-form-item>
           </a-col>

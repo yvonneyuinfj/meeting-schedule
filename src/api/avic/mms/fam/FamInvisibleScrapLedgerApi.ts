@@ -67,3 +67,7 @@ export function exportExcel (param: any) {
   } as downloadParam;
   return downloadSysFile(download);
 }
+/** 保存批量录入批复文号 */
+export function saveEnterFamInvisibleScrapLedger(form: FamInvisibleScrapLedgerDto): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/update-sensitiveList/v1', form);
+}

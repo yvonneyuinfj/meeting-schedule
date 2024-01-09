@@ -121,7 +121,7 @@ export function useFamInvisibleHandleForm({ props: props, emit: emit }) {
               proxy.$message.warning('请添加子表数据');
               return;
             }
-            if (autoCode.value) {
+            if (!form.value.id && autoCode.value) {
               // 获取编码码段值
               postData.billNo = autoCode.value.getSegmentValue();
             }

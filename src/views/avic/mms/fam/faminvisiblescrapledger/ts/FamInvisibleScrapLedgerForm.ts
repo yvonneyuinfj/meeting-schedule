@@ -1,5 +1,5 @@
 import type { FamInvisibleScrapLedgerDto } from '@/api/avic/mms/fam/FamInvisibleScrapLedgerApi'; // 引入模块DTO
-import { getFamInvisibleScrapLedger, saveFamInvisibleScrapLedger } from '@/api/avic/mms/fam/FamInvisibleScrapLedgerApi'; // 引入模块API
+import { getFamInvisibleScrapLedger, saveFamInvisibleScrapLedger, saveEnterFamInvisibleScrapLedger } from '@/api/avic/mms/fam/FamInvisibleScrapLedgerApi'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 export function useFamInvisibleScrapLedgerForm({
   props: props,
@@ -98,6 +98,33 @@ export function useFamInvisibleScrapLedgerForm({
   function closeModal () {
     emit('close');
   }
+  /** 保存批量录入批复文号 */
+  function saveEnter() {
+    formRef.value
+      .validate()
+      .then(() => {
+        loading.value = true;
+        // 处理数据
+        const postData = proxy.$lodash.cloneDeep(form.value);
+        postData['note'] = props.selectIds
+        // 发送请求
+        saveEnterFamInvisibleScrapLedger(postData)
+          .then((res) => {
+            if (res.success) {
+              successCallback();
+            } else {
+              loading.value = false;
+            }
+          })
+          .catch(() => {
+            loading.value = false;
+          });
+      })
+      .catch(error => {
+        // 定位校验失败元素
+        proxy.$scrollToFirstErrorField(formRef, error);
+      });
+  }
   return {
     form,
     formRef,
@@ -108,6 +135,7 @@ export function useFamInvisibleScrapLedgerForm({
     ynReportGroupList,
     secretLevelList,
     saveForm,
+    saveEnter,
     closeModal
   };
 }

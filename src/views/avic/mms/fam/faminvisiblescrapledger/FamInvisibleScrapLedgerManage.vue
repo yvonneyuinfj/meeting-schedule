@@ -24,7 +24,7 @@
               />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+                    <!-- <a-col v-bind="colLayout.cols">
             <a-form-item label="原值">
               <a-input
                 v-model:value="queryForm.factoryPrice"
@@ -43,72 +43,72 @@
                 @pressEnter="handleQuery"
               />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="购置时间(起)">
-              <a-date-picker
-                v-model:value="queryForm.purchaseTimeBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择购置时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.purchaseTimeEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="购置时间(止)">
-              <a-date-picker
-                v-model:value="queryForm.purchaseTimeEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择购置时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.purchaseTimeBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="是否已经上报集团">
-              <a-select
-                v-model:value="queryForm.ynReportGroup"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择是否已经上报集团"
-              >
-                <a-select-option
-                  v-for="item in ynReportGroupList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="上报集团日期(起)">
-              <a-date-picker
-                v-model:value="queryForm.reportGroupDateBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择上报集团日期(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportGroupDateEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="上报集团日期(止)">
-              <a-date-picker
-                v-model:value="queryForm.reportGroupDateEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择上报集团日期(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportGroupDateBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          </a-col> -->
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="购置时间(起)">
+                        <a-date-picker
+                          v-model:value="queryForm.purchaseTimeBegin"
+                          format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD"
+                          placeholder="请选择购置时间(起)"
+                          :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.purchaseTimeEnd)"
+                        />
+                      </a-form-item>
+                    </a-col>
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="购置时间(止)">
+                        <a-date-picker
+                          v-model:value="queryForm.purchaseTimeEnd"
+                          format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD"
+                          placeholder="请选择购置时间(止)"
+                          :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.purchaseTimeBegin)"
+                        />
+                      </a-form-item>
+                    </a-col>
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="是否已经上报集团">
+                        <a-select
+                          v-model:value="queryForm.ynReportGroup"
+                          :get-popup-container="triggerNode => triggerNode.parentNode"
+                          option-filter-prop="children"
+                          :show-search="true"
+                          :allow-clear="true"
+                          placeholder="请选择是否已经上报集团"
+                        >
+                          <a-select-option
+                            v-for="item in ynReportGroupList"
+                            :key="item.sysLookupTlId"
+                            :value="item.lookupCode"
+                          >
+                            {{ item.lookupName }}
+                          </a-select-option>
+                        </a-select>
+                      </a-form-item>
+                    </a-col>
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="上报集团日期(起)">
+                        <a-date-picker
+                          v-model:value="queryForm.reportGroupDateBegin"
+                          format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD"
+                          placeholder="请选择上报集团日期(起)"
+                          :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.reportGroupDateEnd)"
+                        />
+                      </a-form-item>
+                    </a-col>
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="上报集团日期(止)">
+                        <a-date-picker
+                          v-model:value="queryForm.reportGroupDateEnd"
+                          format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD"
+                          placeholder="请选择上报集团日期(止)"
+                          :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.reportGroupDateBegin)"
+                        />
+                      </a-form-item>
+                    </a-col>
+                    <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="集团批复文件">
               <a-input
                 v-model:value="queryForm.groupApprovalDoc"
@@ -117,30 +117,30 @@
                 @pressEnter="handleQuery"
               />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="集团批复时间(起)">
-              <a-date-picker
-                v-model:value="queryForm.approvalTimeBegin"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择集团批复时间(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.approvalTimeEnd)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="集团批复时间(止)">
-              <a-date-picker
-                v-model:value="queryForm.approvalTimeEnd"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                placeholder="请选择集团批复时间(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.approvalTimeBegin)"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          </a-col> -->
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="集团批复时间(起)">
+                        <a-date-picker
+                          v-model:value="queryForm.approvalTimeBegin"
+                          format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD"
+                          placeholder="请选择集团批复时间(起)"
+                          :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.approvalTimeEnd)"
+                        />
+                      </a-form-item>
+                    </a-col>
+                    <a-col v-bind="colLayout.cols" v-show="advanced">
+                      <a-form-item label="集团批复时间(止)">
+                        <a-date-picker
+                          v-model:value="queryForm.approvalTimeEnd"
+                          format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD"
+                          placeholder="请选择集团批复时间(止)"
+                          :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.approvalTimeBegin)"
+                        />
+                      </a-form-item>
+                    </a-col>
+                    <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="数据密级">
               <a-select
                 v-model:value="queryForm.secretLevel"
@@ -159,66 +159,66 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
-          <a-col
-            v-bind="colLayout.cols"
-            style="margin-left: auto"
-          >
-            <div class="table-page-search-submitButtons">
-              <a-space>
-                <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
-                  查询
-                </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
-                  重置
-                </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
-                  {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
-                </a-button>
-              </a-space>
+          </a-col> -->
+                  <a-col
+                    v-bind="colLayout.cols"
+                    style="margin-left: auto"
+                  >
+                    <div class="table-page-search-submitButtons">
+                      <a-space>
+                        <a-button type="primary" @click="handleQuery">
+                          <search-outlined />
+                          查询
+                        </a-button>
+                        <a-button type="primary" @click="resetQuery" ghost>
+                          <redo-outlined />
+                          重置
+                        </a-button>
+                        <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                          {{ advanced ? '收起' : '展开' }}
+                          <up-outlined v-if="advanced" />
+                          <down-outlined v-else />
+                        </a-button>
+                      </a-space>
+                    </div>
+                  </a-col>
+                </a-row>
+              </a-form>
             </div>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 表格组件 -->
-    <div class="table-wrapper">
-      <AvicTable
-        ref="famInvisibleScrapLedger"
-        table-key="famInvisibleScrapLedger"
-        :columns="columns"
-        :row-key="record => record.id"
-        :data-source="list"
-        :loading="loading"
-        :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }"
-        :pageParameter="queryParam.pageParameter"
-        :total="totalPage"
-        @change="handleTableChange"
-        @refresh="getList"
-      >
-        <template #toolBarLeft>
-          <a-space>
-            <a-button
-              v-hasPermi="['famInvisibleScrapLedger:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
+            <!-- 表格组件 -->
+            <div class="table-wrapper">
+              <AvicTable
+                ref="famInvisibleScrapLedger"
+                table-key="famInvisibleScrapLedger"
+                :columns="columns"
+                :row-key="record => record.id"
+                :data-source="list"
+                :loading="loading"
+                :row-selection="{
+                  selectedRowKeys: selectedRowKeys,
+                  onChange: onSelectChange,
+                  columnWidth: 40,
+                  fixed: true
+                }"
+                :pageParameter="queryParam.pageParameter"
+                :total="totalPage"
+                @change="handleTableChange"
+                @refresh="getList"
+              >
+                <template #toolBarLeft>
+                  <a-space>
+                    <a-button
+                      v-hasPermi="['famInvisibleScrapLedger:add']"
+                      title="批量录入批复文号"
+                      type="primary"
+                      @click="handleAdd(selectedRowKeys, '')"
+                    >
+                      <template #icon>
+                        <plus-outlined />
+                      </template>
+                      批量录入批复文号
+                    </a-button>
+                    <!-- <a-button
               v-hasPermi="['famInvisibleScrapLedger:del']"
               title="删除"
               danger
@@ -230,8 +230,8 @@
                 <delete-outlined />
               </template>
               删除
-            </a-button>
-            <a-button
+            </a-button> -->
+                    <!-- <a-button
               v-hasPermi="['famInvisibleScrapLedger:import']"
               title="导入"
               type="primary"
@@ -241,7 +241,7 @@
                  <import-outlined />
               </template>
               导入
-            </a-button>
+            </a-button> -->
             <a-button
               v-hasPermi="['famInvisibleScrapLedger:export']"
               title="导出"
@@ -295,6 +295,7 @@
     <fam-invisible-scrap-ledger-add
       v-if="showAddModal"
       ref="addModal"
+      :select-ids="selectIds"
       @reloadData="getList"
       @close="showAddModal = false"
     />
@@ -468,6 +469,7 @@ const excelParams = ref({ tableName: 'famInvisibleScrapLedger' }); // 导入Exce
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
+const selectIds = ref<String>('')
 const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
@@ -542,7 +544,12 @@ function handleKeyWordQuery (value) {
   getList();
 }
 /** 添加 */
-function handleAdd () {
+function handleAdd (ids) {
+  if (ids.length == 0) {
+    proxy.$message.warning('请选择要批量录入批复文号的数据！');
+    return;
+  }
+  selectIds.value = ids.join(',')
   showAddModal.value = true;
 }
 /** 编辑 */
@@ -605,6 +612,16 @@ function handleDelete (ids, type) {
 function onSelectChange (rowKeys) {
   selectedRowKeys.value = rowKeys;
 }
+const selectedRow = () => {
+  let rows = [];
+  selectedRowKeys.value.map(item => {
+    rows.push({
+      ...list.value.filter(i => item === i.id)[0],
+      operationType_: 'inside'
+    });
+  });
+  return rows;
+};
 /** 表格排序 */
 function handleTableChange (pagination, filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -615,6 +632,8 @@ function handleTableChange (pagination, filters, sorter) {
   }
   getList();
 }
-
+defineExpose({
+  selectedRow
+});
 </script>
 

@@ -66,8 +66,8 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <FamInvisibleHandleLEdit ref="famInvisibleHandleLEdit" :mainId="formId || form.id" />
-      </a-form>
+          </a-form>
+          <FamInvisibleHandleLEdit ref="famInvisibleHandleLEdit" :mainId="formId || form.id" />
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>

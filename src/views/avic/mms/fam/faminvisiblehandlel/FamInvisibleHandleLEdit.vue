@@ -18,52 +18,64 @@
               </template>
               添加
             </a-button>
-            <a-button v-hasPermi="['famInvisibleHandleL:del']" title="删除" danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="
-                event => {
-                  handleDelete(selectedRowKeys, event);
-                }
-              ">
-              <template #icon>
-                <delete-outlined />
+                  <a-button v-hasPermi="['famInvisibleHandleL:add']" title="添加" type="primary" @click="handleMostAdd">
+                    <template #icon>
+                      <plus-outlined />
+                    </template>
+                    批量添加
+                  </a-button>
+                  <a-button v-hasPermi="['famInvisibleHandleL:del']" title="删除" danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" :loading="delLoading" @click="
+                      event => {
+                        handleDelete(selectedRowKeys, event);
+                      }
+                    ">
+                    <template #icon>
+                      <delete-outlined />
+                    </template>
+                    删除
+                  </a-button>
+                </a-space>
+              </a-space>
+            </template>
+            <template #bodyCell="{ column, text, record }">
+              <AvicRowEdit v-if="['note', 'assetNetValue', 'factoryPrice', 'assetName', 'assetNo'].includes(
+                column.dataIndex
+              )" :record="record" :column="column.dataIndex">
+                <template #edit>
+                  <a-input v-model:value="record[column.dataIndex]" :maxLength="2000" @input="$forceUpdate()"
+                    style="width: 100%" placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)">
+                  </a-input>
+                </template>
+              </AvicRowEdit>
+              <AvicRowEdit v-else-if="column.dataIndex === 'purchaseTime'" :record="record" :column="column.dataIndex">
+                <template #edit>
+                  <a-date-picker v-model:value="record.purchaseTime" value-format="YYYY-MM-DD" placeholder="请选择购置时间">
+                  </a-date-picker>
+                </template>
+              </AvicRowEdit>
+              <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
+                <a-button class="inner-btn" type="link" @click="
+                  event => {
+                    handleDelete([record.id], event);
+                  }
+                ">
+                  删除
+                </a-button>
               </template>
-              删除
-            </a-button>
-          </a-space>
-        </a-space>
-      </template>
-      <template #bodyCell="{ column, text, record }">
-        <AvicRowEdit v-if="['note', 'assetNetValue', 'factoryPrice', 'assetName', 'assetNo'].includes(
-          column.dataIndex
-        )" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-input v-model:value="record[column.dataIndex]" :maxLength="2000" @input="$forceUpdate()"
-              style="width: 100%" placeholder="请输入" @blur="blurInput($event, record, column.dataIndex)">
-            </a-input>
-          </template>
-        </AvicRowEdit>
-        <AvicRowEdit v-else-if="column.dataIndex === 'purchaseTime'" :record="record" :column="column.dataIndex">
-          <template #edit>
-            <a-date-picker v-model:value="record.purchaseTime" value-format="YYYY-MM-DD" placeholder="请选择购置时间">
-            </a-date-picker>
-          </template>
-        </AvicRowEdit>
-        <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
-          <a-button class="inner-btn" type="link" @click="
-            event => {
-              handleDelete([record.id], event);
-            }
-          ">
-            删除
-          </a-button>
-        </template>
-      </template>
-    </AvicTable>
+            </template>
+          </AvicTable>
+          <a-modal :visible="open" title="批量新增" @ok="handleOk" @cancel="open = false" width="80%" style="top: 20px">
+            <div style="height: 600px;overflow: auto">
+              <FamInvisibleInventoryManage :isAdd="'true'" ref="famInventoryManage"></FamInvisibleInventoryManage>
+            </div>
+          </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamInvisibleHandleLDto } from '@/api/avic/mms/fam/FamInvisibleHandleLApi'; // 引入模块DTO
 import { listFamInvisibleHandleLByPage } from '@/api/avic/mms/fam/FamInvisibleHandleLApi'; // 引入模块API
+import FamInvisibleInventoryManage from '@/views/avic/mms/fam/faminvisibleinventory/FamInvisibleInventoryManage.vue'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -143,15 +155,15 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '数据密级',
-    dataIndex: 'secretLevel',
-    key: 'secretLevel',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  }
+  // {
+  //   title: '数据密级',
+  //   dataIndex: 'secretLevel',
+  //   key: 'secretLevel',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // }
 ] as any[];
 const queryForm = ref<FamInvisibleHandleLDto>({});
 const queryParam = reactive({
@@ -173,7 +185,9 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
+const open = ref<boolean>(false);
 const secretLevelList = ref([]); // 数据密级通用代码
+const famInventoryManage = ref(null);
 const validateRules = {
   assetNo: [
     { required: true, message: '资产编号列不能为空' }
@@ -356,6 +370,22 @@ function validate(callback) {
     }
   }
 }
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  console.log(famInventoryManage.value.selectedRow());
+  const selectRow = famInventoryManage.value.selectedRow();
+  selectRow.map(item => {
+    item['assetNo'] = item.assetNo;
+    item['assetName'] = item.assetName;
+    item['purchaseTime'] = item.purchaseTime;
+  });
+  list.value = [...list.value, ...selectRow];
+};
 defineExpose({
   validate,
   getChangedData,

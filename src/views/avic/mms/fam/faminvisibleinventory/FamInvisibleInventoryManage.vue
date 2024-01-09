@@ -16,7 +16,7 @@
                 @pressEnter="handleQuery" />
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+                  <!-- <a-col v-bind="colLayout.cols">
             <a-form-item label="使用权">
               <a-input v-model:value="queryForm.usufruct" placeholder="请输入使用权" :allow-clear="true"
                 @pressEnter="handleQuery" />
@@ -27,25 +27,25 @@
               <a-input v-model:value="queryForm.ownerShip" placeholder="请输入所有权" :allow-clear="true"
                 @pressEnter="handleQuery" />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="软件商名称">
-              <a-input v-model:value="queryForm.softwareVendors" placeholder="请输入软件商名称" :allow-clear="true"
-                @pressEnter="handleQuery" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="是否授权">
-              <a-select v-model:value="queryForm.ynAuthorization"
-                :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
-                :show-search="true" :allow-clear="true" placeholder="请选择是否授权">
-                <a-select-option v-for="item in ynAuthorizationList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          </a-col> -->
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="软件商名称">
+                      <a-input v-model:value="queryForm.softwareVendors" placeholder="请输入软件商名称" :allow-clear="true"
+                        @pressEnter="handleQuery" />
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="是否授权">
+                      <a-select v-model:value="queryForm.ynAuthorization"
+                        :get-popup-container="triggerNode => triggerNode.parentNode" option-filter-prop="children"
+                        :show-search="true" :allow-clear="true" placeholder="请选择是否授权">
+                        <a-select-option v-for="item in ynAuthorizationList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="实体">
               <a-input v-model:value="queryForm.entity" placeholder="请输入实体" :allow-clear="true"
                 @pressEnter="handleQuery" />
@@ -74,74 +74,74 @@
               <a-input v-model:value="queryForm.orderValue" placeholder="请输入合同金额" :allow-clear="true"
                 @pressEnter="handleQuery" />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="责任人">
-              <AvicCommonSelect v-model:value="queryForm.liablePersion" type="userSelect" placeholder="请选择责任人"
-                :defaultShowValue="queryForm.liablePersionAlias" @callback="
-                  result => {
-                    queryForm.liablePersionAlias = result.names;
-                  }
-                " />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="主管部门id">
-              <AvicCommonSelect v-model:value="queryForm.managerDeptId" type="deptSelect" placeholder="请选择主管部门id"
-                :defaultShowValue="queryForm.managerDeptIdAlias" @callback="
-                  result => {
-                    queryForm.managerDeptIdAlias = result.names;
-                  }
-                " />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          </a-col> -->
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="责任人">
+                      <AvicCommonSelect v-model:value="queryForm.liablePersion" type="userSelect" placeholder="请选择责任人"
+                        :defaultShowValue="queryForm.liablePersionAlias" @callback="
+                          result => {
+                            queryForm.liablePersionAlias = result.names;
+                          }
+                        " />
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="主管部门">
+                      <AvicCommonSelect v-model:value="queryForm.managerDeptId" type="deptSelect" placeholder="请选择主管部门id"
+                        :defaultShowValue="queryForm.managerDeptIdAlias" @callback="
+                          result => {
+                            queryForm.managerDeptIdAlias = result.names;
+                          }
+                        " />
+                    </a-form-item>
+                  </a-col>
+                  <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="主管部门名称">
               <a-input v-model:value="queryForm.managerDeptName" placeholder="请输入主管部门名称" :allow-clear="true"
                 @pressEnter="handleQuery" />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="使用部门id">
-              <AvicCommonSelect v-model:value="queryForm.useDeptId" type="deptSelect" placeholder="请选择使用部门id"
-                :defaultShowValue="queryForm.useDeptIdAlias" @callback="
-                  result => {
-                    queryForm.useDeptIdAlias = result.names;
-                  }
-                " />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          </a-col> -->
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="使用部门">
+                      <AvicCommonSelect v-model:value="queryForm.useDeptId" type="deptSelect" placeholder="请选择使用部门id"
+                        :defaultShowValue="queryForm.useDeptIdAlias" @callback="
+                          result => {
+                            queryForm.useDeptIdAlias = result.names;
+                          }
+                        " />
+                    </a-form-item>
+                  </a-col>
+                  <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="使用部门名称">
               <a-input v-model:value="queryForm.useDeptName" placeholder="请输入使用部门名称" :allow-clear="true"
                 @pressEnter="handleQuery" />
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="资产状态（在用，处置）">
-              <a-select v-model:value="queryForm.assetStatus" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择资产状态（在用，处置）">
-                <a-select-option v-for="item in assetStatusList" :key="item.sysLookupTlId" :value="item.lookupCode">
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="购置时间（验收审批完成时间）(起)">
-              <a-date-picker v-model:value="queryForm.purchaseTimeBegin" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
-                placeholder="请选择购置时间（验收审批完成时间）(起)"
-                :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.purchaseTimeEnd)" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
-            <a-form-item label="购置时间（验收审批完成时间）(止)">
-              <a-date-picker v-model:value="queryForm.purchaseTimeEnd" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
-                placeholder="请选择购置时间（验收审批完成时间）(止)"
-                :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.purchaseTimeBegin)" />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" v-show="advanced">
+          </a-col> -->
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="资产状态（在用，处置）">
+                      <a-select v-model:value="queryForm.assetStatus" :get-popup-container="triggerNode => triggerNode.parentNode"
+                        option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择资产状态（在用，处置）">
+                        <a-select-option v-for="item in assetStatusList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                          {{ item.lookupName }}
+                        </a-select-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="购置时间（验收审批完成时间）(起)">
+                      <a-date-picker v-model:value="queryForm.purchaseTimeBegin" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+                        placeholder="请选择购置时间（验收审批完成时间）(起)"
+                        :disabled-date="startValue => proxy.$disabledStartDate(startValue, queryForm.purchaseTimeEnd)" />
+                    </a-form-item>
+                  </a-col>
+                  <a-col v-bind="colLayout.cols" v-show="advanced">
+                    <a-form-item label="购置时间（验收审批完成时间）(止)">
+                      <a-date-picker v-model:value="queryForm.purchaseTimeEnd" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+                        placeholder="请选择购置时间（验收审批完成时间）(止)"
+                        :disabled-date="endValue => proxy.$disabledEndDate(endValue, queryForm.purchaseTimeBegin)" />
+                    </a-form-item>
+                  </a-col>
+                  <!-- <a-col v-bind="colLayout.cols" v-show="advanced">
             <a-form-item label="数据密级">
               <a-select v-model:value="queryForm.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择数据密级">
@@ -150,41 +150,41 @@
                 </a-select-option>
               </a-select>
             </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols" style="margin-left: auto">
-            <div class="table-page-search-submitButtons">
-              <a-space>
-                <a-button type="primary" @click="handleQuery">
-                  <search-outlined />
-                  查询
-                </a-button>
-                <a-button type="primary" @click="resetQuery" ghost>
-                  <redo-outlined />
-                  重置
-                </a-button>
-                <a-button type="link" @click="toggleAdvanced" style="margin: 0">
-                  {{ advanced ? '收起' : '展开' }}
-                  <up-outlined v-if="advanced" />
-                  <down-outlined v-else />
-                </a-button>
-              </a-space>
+          </a-col> -->
+                  <a-col v-bind="colLayout.cols" style="margin-left: auto">
+                    <div class="table-page-search-submitButtons">
+                      <a-space>
+                        <a-button type="primary" @click="handleQuery">
+                          <search-outlined />
+                          查询
+                        </a-button>
+                        <a-button type="primary" @click="resetQuery" ghost>
+                          <redo-outlined />
+                          重置
+                        </a-button>
+                        <a-button type="link" @click="toggleAdvanced" style="margin: 0">
+                          {{ advanced ? '收起' : '展开' }}
+                          <up-outlined v-if="advanced" />
+                          <down-outlined v-else />
+                        </a-button>
+                      </a-space>
+                    </div>
+                  </a-col>
+                </a-row>
+              </a-form>
             </div>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- 表格组件 -->
-    <div class="table-wrapper">
-      <AvicTable ref="famInvisibleInventory" table-key="famInvisibleInventory" :columns="columns"
-        :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }" :pageParameter="queryParam.pageParameter" :total="totalPage" @change="handleTableChange" @refresh="getList">
-        <template #toolBarLeft>
-          <a-space>
-            <!-- <a-button
+            <!-- 表格组件 -->
+            <div class="table-wrapper">
+              <AvicTable ref="famInvisibleInventory" table-key="famInvisibleInventory" :columns="columns"
+                :row-key="record => record.id" :data-source="list" :loading="loading" :row-selection="{
+                  selectedRowKeys: selectedRowKeys,
+                  onChange: onSelectChange,
+                  columnWidth: 40,
+                  fixed: true
+                }" :pageParameter="queryParam.pageParameter" :total="totalPage" @change="handleTableChange" @refresh="getList">
+                <template #toolBarLeft  v-if="!isAdd">
+                  <a-space>
+                    <!-- <a-button
               v-hasPermi="['famInvisibleInventory:add']"
               title="添加"
               type="primary"
@@ -208,18 +208,27 @@
               </template>
               删除
             </a-button> -->
-            <a-button v-hasPermi="['famInvisibleInventory:import']" title="导入" type="primary" ghost @click="handleImport">
-              <template #icon>
-                <import-outlined />
-              </template>
-              导入
-            </a-button>
-            <a-button v-hasPermi="['famInvisibleInventory:export']" title="导出" type="primary" ghost @click="handleExport">
-              <template #icon>
-                <export-outlined />
-              </template>
-              导出
-            </a-button>
+                    <a-button v-hasPermi="['famInvisibleInventory:import']" title="导入" type="primary" ghost @click="handleImport">
+                      <template #icon>
+                        <import-outlined />
+                      </template>
+                      导入
+                    </a-button>
+                    <a-button v-hasPermi="['famInvisibleInventory:export']" title="导出" type="primary" ghost @click="handleExport">
+                      <template #icon>
+                        <export-outlined />
+                      </template>
+                      导出
+                    </a-button>
+                        <a-button
+                              title="同步浪潮折旧信息"
+                              type="primary"
+                          >
+                            <template #icon>
+                              <import-outlined/>
+                            </template>
+                            同步浪潮折旧信息
+                      </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -272,6 +281,16 @@ const layout = {
   labelCol: { flex: '0 0 120px' },
   wrapperCol: { flex: '1 1 0' }
 };
+const props = defineProps({
+  isAdd: {
+    type: Boolean,
+    default: false
+  },
+  assetClass: {
+    type: String,
+    default: false
+  }
+});
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
   {
@@ -405,39 +424,39 @@ const columns = [
     align: 'left'
   },
   {
-    title: '主管部门id',
+    title: '主管部门',
     dataIndex: 'managerDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
+  // {
+  //   title: '主管部门名称',
+  //   dataIndex: 'managerDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '主管部门名称',
-    dataIndex: 'managerDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '使用部门id',
+    title: '使用部门',
     dataIndex: 'useDeptIdAlias',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
-  {
-    title: '使用部门名称',
-    dataIndex: 'useDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '使用部门名称',
+  //   dataIndex: 'useDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '资产状态（在用，处置）',
     dataIndex: 'assetStatusName',
@@ -493,6 +512,7 @@ const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
+const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
@@ -516,6 +536,7 @@ onMounted(() => {
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
+  selectedRows.value = []; // 清空选中
   loading.value = true;
   listFamInvisibleInventoryByPage(queryParam)
     .then(response => {
@@ -629,8 +650,9 @@ function handleDelete(ids, type) {
   });
 }
 /** 勾选复选框时触发 */
-function onSelectChange(rowKeys) {
+function onSelectChange(rowKeys,rows) {
   selectedRowKeys.value = rowKeys;
+  selectedRows.value = rows;
 }
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {
@@ -642,6 +664,22 @@ function handleTableChange(pagination, filters, sorter) {
   }
   getList();
 }
+/**
+ *  批量添加返回勾选数据
+ */
 
+ const selectedRow = (code) => {
+  let rows = [];
+  selectedRows.value.map(item => {
+    rows.push({
+      ...item,
+      operationType_: 'inside'
+    });
+  });
+  return rows;
+};
+defineExpose({
+  selectedRow
+});
 </script>
 

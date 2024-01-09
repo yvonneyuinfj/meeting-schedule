@@ -4,7 +4,7 @@
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('billNo')">
           <a-form-item name="billNo" label="单据号" :rules="fieldRequired('billNo')" has-feedback>
-            <AvicAutoCode v-model:value="form.billNo" ref="autoCode" code-type="FAM_ADD_APPLY_NO"
+            <AvicAutoCode v-model:value="form.billNo" ref="autoCode" code-type="FAM_INVISIBLE_ACCEPT_APPLY_NO"
               code-param="FAM_INVISIBLE_ACCEPT" :allow-clear="true" :disabled="fieldDisabled('billNo')"
               placeholder="请输入单据号" />
           </a-form-item>
