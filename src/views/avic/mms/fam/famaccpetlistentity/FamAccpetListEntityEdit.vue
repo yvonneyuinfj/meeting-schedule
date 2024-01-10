@@ -1404,9 +1404,9 @@ function allocationColumn(code) {
      *  改造 固定资产
      */
     columns.value = [...ListColumns.BaseColumns];
-    validateRules = {
-      assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
-    };
+    // validateRules = {
+    //   assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
+    // };
   }
 
   setTimeout(() => {
