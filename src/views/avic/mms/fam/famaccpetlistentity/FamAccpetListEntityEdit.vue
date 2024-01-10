@@ -1254,7 +1254,7 @@ function allocationColumn(code) {
         if (props.readOnly) {
           debugger
           if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
-          if (props.managerDeptId !== "C410") return;
+          if (props.managerDeptId !== 'C410') return;
           const list = [
             {
               title: '设备大类',
@@ -1454,6 +1454,7 @@ watch(
 watch(
   () => props.assetClasst, (newV, oldV) => {
     code.value = props.assetClasst.charAt(0);
+    console.log(code.value);
     allocationColumn(code.value);
     if (oldV) {
       let ids = [];

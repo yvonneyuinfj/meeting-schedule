@@ -385,6 +385,7 @@
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"
       read-only="true"
+      :assetClasst="form.assetClasst"
       :accpetType="form.accpetType"
       :equipmentType="form.equipmentType"
       :managerDeptId="form.managerDeptId"
