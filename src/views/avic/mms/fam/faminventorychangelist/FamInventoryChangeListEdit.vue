@@ -90,19 +90,23 @@
           </template>
         </AvicRowEdit>
         
-        <AvicRowEdit v-else-if="column.dataIndex === 'history'" :record="record"
-                     :column="column.dataIndex">
+        <!-- <AvicRowEdit v-else-if="column.dataIndex === 'history'" :record="record" -->
+                     <!-- :column="column.dataIndex"> -->
     <!--      <div @click="handleDetail(record)" class="assetNoLink">
              
           </div> -->
-          <a-button
-            class="assetNoLink"
-            type="link"
-           @click="handleDetail(record)"
-          >
-            查看
-          </a-button>
-        </AvicRowEdit>
+         
+          <template  v-else-if="column.dataIndex === 'history'">
+           <a-button
+             class="assetNoLink"
+             type="link"
+            @click="handleDetail(record)"
+           >
+             查看
+           </a-button>
+          </template>
+          
+        <!-- </AvicRowEdit> -->
         
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
@@ -304,7 +308,7 @@ function getChangedData() {
 function handleMostAdd() {
   open.value = true;
 }
-
+const emits = defineEmits(['changeDisabled']);
 /** 批量新增确认  */
 const handleOk = () => {
   open.value = false;
@@ -320,12 +324,13 @@ const handleOk = () => {
     item['inventoryId'] = item.id;
   });
   list.value = [...list.value, ...selectRow]; 
-  debugger
   //如果登录人是6大主管部门
   if (userDeptCode === 'C410' || userDeptCode === 'A220' || userDeptCode === 'A140' || userDeptCode === 'C450'|| userDeptCode === 'C310'|| userDeptCode === 'C350') {
     //如果登录人部门和选择台账主管部门不一致 则为使用部门数据
     if(userDeptCode!==list.value[0].managerDeptId){
-
+      emits('changeDisabled', 1);
+    } else {
+      emits('changeDisabled', 2);
     }
   }
 };

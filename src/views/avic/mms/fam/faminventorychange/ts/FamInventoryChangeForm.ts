@@ -48,7 +48,8 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' },
   ];
   const authJson = ref(null);
-  const formDisable: Map<string, boolean> = new Map();
+  // const formDisable: Map<string, boolean> = new Map();
+  const formDisable = reactive({});
   const bodyStyle = {
     height: '400px',
     overflow: 'hidden',
@@ -79,15 +80,18 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
       case 'C310':
       case 'C350':
         formList.forEach((value) => {
-          formDisable.set(value, false);
+          // formDisable.set(value, false);
+          formDisable[value] = false;
         });
         break;
       default :
         formList.forEach((value) => {
           if (value === 'responseUserId' || value === 'storageLocation') {
-            formDisable.set(value, false);
+            // formDisable.set(value, false);
+            formDisable[value] = false;
           } else {
-            formDisable.set(value, true);
+            // formDisable.set(value, true);
+            formDisable[value] = true;
           }
         });
         break;
@@ -379,6 +383,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     fieldRequired,
     beforeClickBpmButtons,
     afterClickBpmButtons,
-    famInventoryChangeListEdit
+    famInventoryChangeListEdit,
+    formList
   };
 }
