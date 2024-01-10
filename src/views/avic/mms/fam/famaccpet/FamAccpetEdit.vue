@@ -633,17 +633,17 @@ watch(
 
 watch(
   () => form.value.assetClasst,
-  newV => {
+  (newV, oldV) => {
     if (['7', '3', '2'].includes(newV.charAt(0))) {
       filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
         item.lookupName !== '办公自动化设备' && item.lookupName !== '视频监控、硬盘录像设备');
-      form.value.equipmentType = '';
+      if (oldV) form.value.equipmentType = '';
       deptDisabled.value = true;
     } else {
       if (['8'].includes(newV.charAt(0))) {
         filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
           item.lookupName === '办公自动化设备' || item.lookupName === '视频监控、硬盘录像设备');
-        form.value.equipmentType = '';
+        if (oldV)form.value.equipmentType = '';
       } else {
         filterEquipmentTypeList.value = [];
       }

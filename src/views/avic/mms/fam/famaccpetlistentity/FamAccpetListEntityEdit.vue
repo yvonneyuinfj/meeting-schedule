@@ -2,12 +2,13 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px; padding-top: 10px">
     <AvicTable
-      v-if="showTabel"
+      v-if="showTable"
       ref="famAccpetList"
       table-key="famAccpetList"
       :height="300"
       :columns="columns"
       :row-key="record => record.id"
+      :pagination="false"
       :data-source="list"
       :loading="loading"
       :row-selection="{
@@ -17,16 +18,14 @@
         fixed: true
       }"
       :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
-      :total="totalPage"
       :customRow="customRow"
-      @change="handleTableChange"
+      :total="totalPage"
     >
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button
-              v-if="props.accpetType === '1'"
+              v-if="props.accpetType === '1' && props.assetClasst"
               v-hasPermi="['famAccpetList:add']"
               title="添加"
               type="primary"
@@ -37,6 +36,29 @@
               </template>
               添加
             </a-button>
+            <a-button
+              v-if="props.accpetType === '2' && props.assetClass"
+              v-hasPermi="['famAccpetList:add']"
+              title="添加"
+              type="primary"
+              @click="handleMostAdd"
+            >
+              <template #icon>
+                <plus-outlined/>
+              </template>
+              批量添加
+            </a-button>
+            <!--            复制数量-->
+            <a-input-number
+              v-if="props.accpetType === '1'"
+              style="width: 150px"
+              v-model:value="copyNumber"
+              :min="0"
+              :max="100"
+              :precision="0"
+              :step="1"
+              placeholder="请输入复制数量"
+            />
             <a-button
               v-if="props.accpetType === '1'"
               v-hasPermi="['famAccpetList:add']"
@@ -49,6 +71,7 @@
               </template>
               复制
             </a-button>
+
             <a-button
               v-hasPermi="['famAccpetList:del']"
               title="删除"
@@ -107,6 +130,8 @@
               'storageLocation',
               'registrationCode',
               'militaryKeyEquipCode',
+              'countryOfOrigin',
+              'equipmentNumber', 'storageType' ,'storageNumber' ,'storageCode' ,'storageName' ,'ipAddress' ,'storageLevel', 'storageState','geographicLocation','certificateNumber'
             ].includes(column.dataIndex)
             && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
           "
@@ -158,7 +183,7 @@
               :defaultShowValue="record.liablePersonIdAlias"
               @callback="
                 (value, _selectRows) => {
-                  changeCommonSelect(value, record, 'liablePerson');
+                  changeCommonSelect(value, record, 'liablePersonId');
                 }
               "
             />
@@ -228,6 +253,7 @@
               'purchaseDate',
               'recordDate',
               'commissionDate',
+              'acceptanceTime',
             ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
@@ -319,26 +345,49 @@
             {{ record.parentAssetNo }}
           </template>
         </AvicRowEdit>
-
-
-        <!--  设备类别-->
+        <!--  资产类别-->
         <AvicRowEdit
-          v-else-if="column.dataIndex === 'equipClassName'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
+          v-else-if="column.dataIndex === 'assetClass'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
         >
           <template #edit>
-            <TreeModal
-              v-model:value="record.equipCode"
-              :parentId="record.equipCode"
-              :parentTitle="record.equipClassName"
-              ref="treeSelectRef"
-              baseUrl="/mms/tpm/tpmassetclasss"
-              @getTile="getTreeNodeTitle($event, record ,'equipClassName')"
-              @change="getTreeNodeCode($event, record ,'equipClass')"
-              :allowSelectNonIsLeaf="false"
-              placeholder="请选择"
-            />
+            <a-input
+              v-if="props.accpetType === '1'"
+              v-model:value="record.assetClass"
+              @click="assetClassClick(record)"
+              placeholder="请选择资产类别"
+            >
+              <template #suffix>
+                <a-tooltip title="Extra information">
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                </a-tooltip>
+              </template>
+            </a-input>
+            <div v-else>
+              {{ record.assetClass }}
+            </div>
+          </template>
+        </AvicRowEdit>
+
+        <!--  设备类别-->
+        <AvicRowEdit
+          v-else-if="column.dataIndex === 'equipClass'&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
+          :record="record"
+          :column="column.dataIndex"
+        >
+          <template #edit>
+            <a-input
+              v-model:value="record.equipClassName"
+              @click="equipClassClick(record)"
+              placeholder="请选择设备类别"
+            >
+              <template #suffix>
+                <a-tooltip title="Extra information">
+                  <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
+                </a-tooltip>
+              </template>
+            </a-input>
           </template>
           <template #default>
             {{ record.equipClassName }}
@@ -395,10 +444,10 @@
           </template>
         </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'assetNo'">
-          提交后自动生成
+          {{ record.assetNo || '提交后自动生成' }}
         </template>
         <template v-else-if="column.dataIndex === 'equipNo'">
-          提交后自动生成
+          {{ record.equipNo || '提交后自动生成' }}
         </template>
 
         <!-- 选择框-->
@@ -411,7 +460,7 @@
               'fundSource',
               'equipType',
               'assetSecretLevel',
-              'assetsUse',
+              'assetsUse','housingType'
             ].includes(column.dataIndex)&& (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))"
           :record="record"
           :column="column.dataIndex"
@@ -479,18 +528,112 @@
         </template>
       </template>
     </AvicTable>
+    <div style="padding-left: 10px;">
+      已选择{{ selectedRows.length }}条
+    </div>
+    <a-modal :visible="assetClassOpen" :body-style="bodyStyle" @cancel="handleCancel" @ok="handleSummit">
+      <a-spin :spinning="treeLoading">
+        <a-tree
+          v-if="treeData && treeData.length > 0"
+          v-model:expanded-keys="expandedKeys"
+          v-model:selectedKeys="selectedKeys"
+          :tree-data="treeData"
+          :load-data="onLoadData"
+          :show-icon="true"
+          :show-line="true && { showLeafIcon: false }"
+          :default-expand-all="true"
+          @expand="handleExpand"
+          @select="handleSelect"
+        >
+          <template #icon="{ expanded, dataRef }">
+            <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+            <AvicIcon
+              v-if="!expanded && !dataRef.isLeaf"
+              svg="avic-folder-3-fill"
+              color="#ffb800"
+            />
+            <AvicIcon
+              v-if="expanded && !dataRef.isLeaf"
+              svg="avic-folder-open-fill"
+              color="#ffb800"
+            />
+          </template>
+        </a-tree>
+      </a-spin>
+    </a-modal>
 
+    <a-modal :visible="equipClassOpen" :body-style="bodyStyle" @cancel="equiphandleCancel" @ok="equiphandleSummit">
+      <div style="height: 100%;overflow: scroll">
+        <a-spin :spinning="treeLoading">
+          <a-tree
+            v-if="equipsetreeData && equipsetreeData.length > 0"
+            v-model:expanded-keys="equipselexpandedKeys"
+            v-model:selectedKeys="equipselectedKeys"
+            :tree-data="equipsetreeData"
+            :load-data="equipseonLoadData"
+            :show-icon="true"
+            :show-line="true && { showLeafIcon: false }"
+            :default-expand-all="true"
+            @expand="handleExpand"
+            @select="handleSelect"
+          >
+            <template #icon="{ expanded, dataRef }">
+              <AvicIcon v-if="dataRef.isLeaf" svg="avic-file-fill" color="#3370ff"/>
+              <AvicIcon
+                v-if="!expanded && !dataRef.isLeaf"
+                svg="avic-folder-3-fill"
+                color="#ffb800"
+              />
+              <AvicIcon
+                v-if="expanded && !dataRef.isLeaf"
+                svg="avic-folder-open-fill"
+                color="#ffb800"
+              />
+            </template>
+          </a-tree>
+        </a-spin>
+      </div>
+    </a-modal>
+
+    <a-modal
+      :visible="open"
+      title="批量新增"
+      @ok="handleOk"
+      @cancel="handleOk"
+      width="80%"
+      style="top: 20px"
+    >
+      <div style="height: 600px; overflow: auto">
+        <fam-inventory-manage
+          :isAdd="true"
+          :assetClass="props.assetClass"
+          ref="famInventoryManage"
+        ></fam-inventory-manage>
+      </div>
+    </a-modal>
   </div>
 </template>
 <script lang="ts" setup>
 import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块DTO
 import { listFamAccpetListByPage } from '@/api/avic/mms/fam/FamAccpetListEntityApi'; // 引入模块API
+import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi'; // 引入模块API
+import { getTpmAssetClass, getTreeData as getTpmTreeData } from '@/api/avic/mms/tpm/TpmAssetClassApi'; // 引入模块API
+import { setNodeSlots, getExpandedKeys } from '@/utils/tree-util'; // 引入树公共方法
 import FamInventoryManage from '@/views/avic/mms/fam/faminventory/FamInventoryManage.vue';
-import { AllColumns } from '@/views/avic/mms/fam/famaccpetlist/ListColumns';
 import TreeModal from '@/components/tree-modal/TreeModal.vue';
-import { getTpmAssetClass } from '@/api/avic/mms/tpm/TpmAssetClassApi';
+import { ListColumns, backColumnsObj } from './ListColumns';
+import { validateRules as Rules } from './ValidateRules';
+
 
 const { proxy } = getCurrentInstance();
+const assetClassOpen = ref<boolean>(false);
+const equipClassOpen = ref<boolean>(false);
+const bodyStyle = {
+  overflow: 'hidden',
+  overflowY: 'scroll',
+  height: '400px'
+};
+const FamInventoryManageComponent = FamInventoryManage;
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
@@ -499,11 +642,11 @@ const props = defineProps({
   },
   accpetType: {
     type: String,
-    defalut: ''
+    default: ''
   },
   assetClass: {
     type: String,
-    defalut: ''
+    default: ''
   },
   // 只读
   readOnly: {
@@ -512,35 +655,48 @@ const props = defineProps({
   },
   assetClasstObj: {
     type: Object,
-    defalut: {}
+    default: {}
+  },
+  assetClasst: {
+    type: String,
+    default: ''
+  },
+  bpmParams: {
+    type: Object,
+    default: {}
+  },
+  bpmInstanceObject: {
+    type: Object,
+    default: {}
+  },
+  equipmentType: {
+    type: String,
+    default: ''
+  },
+  managerDeptId: {
+    type: String,
+    default: ''
   }
 });
-const columns = [
-  ...AllColumns
-];
+let columns = ref([]);
 
-const showTabel = ref(false);
+const { getHouseObj, getCarsObj, getOfficialObject, getITObj, getDeviceObj } = backColumnsObj();
+
 const queryForm = ref<FamAccpetDto>({});
+
 const queryParam = reactive({
   // 请求表格数据参数
-  pageParameter: {
-    page: 1, // 页数
-    rows: 20 // 每页条数
-  },
+  // pageParameter: {
+  //   page: 1, // 页数
+  //   rows: 20 // 每页条数
+  // },
   searchParams: {},
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-
-const bodyStyle = {
-  overflow: 'hidden',
-  overflowY: 'scroll',
-  height: '600px'
-};
-const FamInventoryManageComponent = FamInventoryManage;
 const famAccpetList = ref(null);
-// const open = ref<boolean>(false);
+const open = ref<boolean>(false);
 const famInventoryManage = ref(null);
 const list = ref([]); //表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
@@ -548,23 +704,32 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
+const totalPage = ref(0);
+const expandedKeys = ref([]); //树节点validateRules
+const equipselexpandedKeys = ref([]);
+const treeData = ref(null);
+const equipsetreeData = ref(null);
+const selectedKeys = ref([]);
+const equipselectedKeys = ref([]);
 const secretLevelList = ref([]); // 数据密级通用代码
 const defaultRootParentId = ref('-1');
+const treeLoading = ref(false);
 const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
-const totalPage = ref(0);
-
-/** 通用代码数组 */
+const assetClassRecord = ref();
+const equiphClassRecord = ref();
 const ynMilitaryKeyEquipList = ref([]);
 const assetsUseList = ref([]);
 const geographicalAreaList = ref([]);
-const vehicleUsageList = ref([]);
-const abcdTypeList = ref([]);
-const fundSourceList = ref([]);
-const energyefficiencyNameList = ref([]);
 const equipTypeList = ref([]);
-const assetSecretLevelList = ref([]);
+const vehicleUsageList = ref([]);
 const isFactoryBuildingList = ref([]);
+const assetSecretLevelList = ref([]);
+const abcdTypeList = ref([]);
+const energyefficiencyNameList = ref([]);
+const fundSourceList = ref([]);
+const housingTypeList = ref([]);
+const copyNumber = ref();
 
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
@@ -577,51 +742,37 @@ const lookupParams = [
   { fieldName: 'vehicleUsage', lookUpType: 'FAM_VEHICLE_USAGE' },
   { fieldName: 'abcdType', lookUpType: 'TPM_ABCD_TYPE' },
   { fieldName: 'energyefficiencyName', lookUpType: 'TPM_ENERGY_EFFICIENCY' },
-  { fieldName: 'fundSource', lookUpType: 'TPM_CAPITAL_SOURCE' }
+  { fieldName: 'fundSource', lookUpType: 'TPM_CAPITAL_SOURCE' },
+  { fieldName: 'housingType', lookUpType: 'FAM_HOUSE_TYPE' }
 ];
-
-const validateRules = {
-  assetClass: [{ required: true, message: '资产类别列不能为空' }],
-  equipClassName: [{ required: true, message: '设备大类列不能为空' }],
-  assetName: [{ required: true, message: '资产名称不能为空' }]
-}; // 必填列,便于保存和新增数据时校验
-
+let validateRules = {};
+const addObj = ref();
 const deletedData = ref([]); // 前台删除数据的记录
+const treeNodeId = ref();
+const showTable = ref(true);
+const code = ref('1');
 
 // 非只读状态添加操作列
-// if (!props.readOnly) {
-//   columns.push({
-//     title: '操作',
-//     dataIndex: 'action',
-//     key: 'action',
-//     width: '120',
-//     fixed: 'right',
-//     align: 'center'
-//   });
-// }
+if (!props.readOnly) {
+  columns.value.push({
+    title: '操作',
+    dataIndex: 'action',
+    key: 'action',
+    width: 120,
+    fixed: 'right',
+    align: 'center'
+  });
+}
 
 onMounted(() => {
-  setTimeout(() => {
-    showTabel.value = true;
-  }, 500);
-  setUpRequired();
+  allocationColumn('1');
   // 加载表格数据
   getList();
   // 加载查询区所需通用代码
   getLookupList();
+  //获取树
+  getTreeList();
 });
-
-function setUpRequired() {
-  columns.map(item => {
-    if (item.title === '资产名称' || item.title === '设备大类' || item.title === '资产类别') {
-      item['customHeaderCell'] = () => {
-        return {
-          ['class']: 'required-table-title'
-        };
-      };
-    }
-  });
-}
 
 function tableSelectList(columns) {
   if (columns === 'vehicleUsage') return vehicleUsageList.value;
@@ -632,14 +783,145 @@ function tableSelectList(columns) {
   if (columns === 'assetSecretLevel') return assetSecretLevelList.value;
   if (columns === 'geographicalArea') return geographicalAreaList.value;
   if (columns === 'assetsUse') return assetsUseList.value;
+  if (columns === 'housingType') return housingTypeList.value;
 }
 
+/** 树节点展开事件 */
+function handleExpand(keys) {
+  expandedKeys.value = keys;
+}
+
+function equiphandleExpand(keys) {
+  equipselexpandedKeys.value = keys;
+}
+
+
+/** 关闭类别树弹窗 */
+function handleCancel() {
+  assetClassOpen.value = false;
+}
+
+/** 关闭类别树弹窗 */
+function equiphandleCancel() {
+  equipClassOpen.value = false;
+}
+
+
+/** 树选中事件 */
+function handleSelect(keys: string[], node) {
+  treeNodeId.value = node.node.id;
+}
+
+/** 查询数据 */
+function getTreeList() {
+  treeLoading.value = true;
+  const expandLevel = 2;
+  treeData.value = [];
+  equipsetreeData.value = [];
+  expandedKeys.value = [];
+  getTreeData(expandLevel, defaultRootParentId.value).then(response => {
+    setNodeSlots(response.data);
+    getExpandedKeys(response.data, expandLevel, expandedKeys.value);
+    treeData.value = response.data;
+    treeLoading.value = false;
+  });
+
+  getTpmTreeData(expandLevel, defaultRootParentId.value).then(response => {
+    setNodeSlots(response.data);
+    getExpandedKeys(response.data, expandLevel, expandedKeys.value);
+    equipsetreeData.value = response.data;
+    treeLoading.value = false;
+  });
+
+}
+
+/** 异步加载树节点 */
+async function onLoadData(treeNode) {
+  return new Promise<void>(resolve => {
+    if (treeNode.dataRef.children) {
+      resolve();
+      return;
+    }
+    getTreeData(1, treeNode.dataRef.id).then(response => {
+      setNodeSlots(response.data);
+      treeNode.dataRef.children = response.data;
+      treeData.value = [...treeData.value];
+      resolve();
+    });
+  });
+}
+
+async function equipseonLoadData(treeNode) {
+  return new Promise<void>(resolve => {
+    if (treeNode.dataRef.children) {
+      resolve();
+      return;
+    }
+    getTpmTreeData(1, treeNode.dataRef.id).then(response => {
+      setNodeSlots(response.data);
+      treeNode.dataRef.children = response.data;
+      equipsetreeData.value = [...equipsetreeData.value];
+      resolve();
+    });
+  });
+
+}
 
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
 function changeCommonSelect(value, record, column) {
   record[column + 'Alias'] = value.names;
 }
 
+/** 提交类别 */
+function handleSummit() {
+  getFamAssetClass(treeNodeId.value)
+    .then(async res => {
+      if (res.success) {
+        const record = list.value.filter(item => item.id === assetClassRecord.value.id)[0];
+        record.assetClass = res.data.classCode;
+        record.assetClassName = res.data.className;
+        record.useTime = res.data.useTime;
+        assetClassOpen.value = false;
+        assetClassRecord.value = null;
+      }
+    })
+    .catch(() => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
+}
+
+function equiphandleSummit() {
+  getTpmAssetClass(treeNodeId.value)
+    .then(async res => {
+      if (res.success) {
+        const record = list.value.filter(item => item.id === equiphClassRecord.value.id)[0];
+        record.equipClass = res.data.classCode;
+        record.equipClassName = res.data.className;
+        // getEquipClassCode(record.equipClass).then(r => {
+        //   if (r.success)
+        //     record.equipNo = r.data;
+        // });
+        equipClassOpen.value = false;
+        equiphClassRecord.value = null;
+      }
+    })
+    .catch(() => {
+      proxy.$message.warning('获取表单数据失败！');
+      loading.value = false;
+    });
+}
+
+/** 类别树弹窗 */
+function assetClassClick(column) {
+  assetClassOpen.value = true;
+  assetClassRecord.value = column;
+}
+
+function equipClassClick(column) {
+  equipClassOpen.value = true;
+  equiphClassRecord.value = column;
+}
 
 /** 查询数据  */
 function getList() {
@@ -678,6 +960,7 @@ function getLookupList() {
     abcdTypeList.value = result.abcdType;
     energyefficiencyNameList.value = result.energyefficiencyName;
     fundSourceList.value = result.fundSource;
+    housingTypeList.value = result.housingType;
   });
 }
 
@@ -687,25 +970,54 @@ function getChangedData() {
     item['operationType_'] = 'delete';
   });
   const changedData = proxy.$getChangeRecords(list, initialList);
+  // if (deletedData.value.length === 0 && changedData.length === 0) {
+  //   return list.value;
+  // }
   return deletedData.value.concat(changedData);
-  // return changedData;
+
 }
 
+/** 批量添加 */
+function handleMostAdd() {
+  open.value = true;
+}
+
+/** 批量新增确认  */
+const handleOk = () => {
+  open.value = false;
+  let code = '';
+  if (props.assetClass === '2' && list.value.length > 0) {
+    code = list.value[0].assetClass.charAt(0);
+  }
+  const selectRow = famInventoryManage.value.selectedRow(code);
+  selectRow.map(item => {
+    item['assetNo'] = item.assetsName;
+    item['assetName'] = item.assetsName;
+    item['assetCode'] = item.assetsCode;
+    item['managerDeptId'] = item.managerDeptName;
+    item['liablePerson'] = item.responseUserId;
+    item['factoryNo'] = item.productionNo;
+    item['procureOrder'] = item.procureOrderNo;
+    item['equipType'] = item.equipClass;
+    item['inventoryId'] = item.id;
+    item['installLocation'] = item.storageLocation;
+    item['producer'] = item.factoryOwner;
+    item['liablePerson'] = item.responseUserName;
+  });
+  if (selectRow.length > 0 && props.assetClass === '2') allocationColumn(selectRow[0].assetClass.charAt(0));
+  list.value = [...list.value, ...selectRow];
+  // 批量新增数组合并去重
+  let array = JSON.parse(JSON.stringify([...list.value, ...selectRow]));
+  let obj = {};
+  array = array.reduce((cur, next) => {
+    obj[next.id] ? '' : (obj[next.id] = true && cur.push(next));
+    return cur;
+  }, []);
+  list.value = array;
+};
 
 /** 添加 */
 function handleAdd() {
-  let item = {
-    id: 'newLine' + proxy.$uuid(),
-    operationType_: 'insert',
-    isNewAsset: undefined,
-    assetClass: props.assetClasstObj ? props.assetClasstObj.classCode : '',
-    assetClassName: props.assetClasstObj ? props.assetClasstObj.className : '',
-    useTime: props.assetClasstObj ? props.assetClasstObj.useTime : '',
-    equipClass: '',
-    assetName: '',
-    assetNum: '1',
-    editable: true // true为编辑中, false为未编辑
-  };
   const newData = [...list.value];
   // 数据校验
   if (!validateRecordData(newData)) {
@@ -715,7 +1027,9 @@ function handleAdd() {
   newData.forEach(item => {
     item.editable = false;
   });
-  newData.unshift(item);
+  const uuid = proxy.$uuid();
+  getAddObj(code.value, uuid);
+  newData.unshift(addObj.value);
   list.value = newData;
 }
 
@@ -735,21 +1049,27 @@ function handleCopy(ids, e) {
     return;
   }
   let itemList = [];
-  selectedRows.value.map(rows => {
-    let item = {
-      ...rows,
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      editable: false // true为编辑中, false为未编辑
-    };
-    itemList.unshift(item);
-  });
+
+  for (let i = 0; i < (copyNumber.value || 1); i++) {
+    selectedRows.value.map(rows => {
+      let item = {
+        ...rows,
+        id: 'newLine' + proxy.$uuid(),
+        operationType_: 'insert',
+        editable: false // true为编辑中, false为未编辑
+      };
+      itemList.unshift(item);
+    });
+  }
   newData = [...itemList, ...newData];
   list.value = newData;
 }
 
 /** 编辑 */
 function handleEdit(record) {
+  if (props.readOnly)
+    if (!['task2', 'task3', 'task4', 'task6'].includes(props.bpmInstanceObject.bpmModel.activityname))
+      return;
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
   const newData = [...list.value];
@@ -767,7 +1087,7 @@ function handleDelete(ids, e) {
     e.stopPropagation(); // 阻止冒泡
   }
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
+    // proxy.$message.warning('请选择要删除的数据！');
     return;
   }
   let newData = [...list.value];
@@ -803,28 +1123,20 @@ function onSelectChange(rowKeys, rows) {
 }
 
 /** 表头排序 */
-function handleTableChange(pagination, _filters, sorter) {
-  queryParam.pageParameter.page = pagination.current;
-  queryParam.pageParameter.rows = pagination.pageSize;
-  if (proxy.$objIsNotBlank(sorter.field)) {
-    queryParam.sidx = sorter.field;
-    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
-  }
-  getList();
-}
+// function handleTableChange(pagination, _filters, sorter) {
+//   // queryParam.pageParameter.page = pagination.current;
+//   // queryParam.pageParameter.rows = pagination.pageSize;
+//   if (proxy.$objIsNotBlank(sorter.field)) {
+//     queryParam.sidx = sorter.field;
+//     queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
+//   }
+//   getList();
+// }
 
 function getTreeNodeTitle(nodeTitle, record, name) {
   record[name] = nodeTitle;
 };
 
-function getTreeNodeCode(nodeId, record, name){
-  getTpmAssetClass(nodeId)
-    .then(async res => {
-      if (res.success) {
-        record[name] = res.data.classCode;
-      }
-    })
-}
 
 /**控件变更事件 */
 function changeControlValue(values, record, column, isTF: false) {
@@ -854,6 +1166,7 @@ function changeControlValue(values, record, column, isTF: false) {
 
 /** 输入框的值失去焦点 */
 function blurInput(e, record, column) {
+  if (code.value && !(['1', '4', '6', '8'].includes(code.value)) && column === 'assetOriginalValue') record.assetNetValue = record.assetOriginalValue;
   proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
 }
 
@@ -871,8 +1184,8 @@ function validateRecordData(records) {
 
 /** 校验并执行回调函数*/
 function validate(callback) {
-  const changedData = proxy.$getChangeRecords(list, initialList);
-  if (changedData && validateRecordData(changedData)) {
+  // const changedData = proxy.$getChangeRecords(list, initialList);
+  if (validateRecordData(list.value)) {
     // 校验通过
     if (callback) {
       callback(true);
@@ -885,27 +1198,279 @@ function validate(callback) {
   }
 }
 
+/** 分配对象 */
+function getAddObj(code, uuid) {
+
+  switch (code) {
+    case'1':
+      addObj.value = getHouseObj(props.assetClasstObj, uuid);
+      break;
+    case'4':
+      addObj.value = getCarsObj(props.assetClasstObj, uuid);
+      break;
+    case '6':
+    case '9' :
+    case'5':
+      addObj.value = getITObj(props.assetClasstObj, uuid);
+      break;
+    case'8':
+      addObj.value = getOfficialObject(props.assetClasstObj, uuid);
+      break;
+    default:
+      addObj.value = getDeviceObj(props.assetClasstObj, uuid);
+      break;
+  }
+}
+
+/** 分配列 */
+function allocationColumn(code) {
+  showTable.value = false;
+  if (code) {
+    /**
+     * 新增
+     */
+    switch (code) {
+      //房屋
+      case'1':
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.HouseColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.HouseValidateRules };
+        break;
+      // 车辆
+      case'4':
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.CarColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.CarValidateRules };
+        break;
+      //9 6 5
+      case '6':
+      case '9' :
+      case'5':
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.ITColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.ITValidateRules };
+        break;
+      //办公自动化
+      case'8':
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.OfficialColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.OfficialValidateRules };
+        if (props.readOnly) {
+          debugger
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
+          if (props.managerDeptId !== "C410") return;
+          const list = [
+            {
+              title: '设备大类',
+              dataIndex: 'equipClass',
+              key: 'equipClass',
+              width: 120,
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left',
+              hidden: true
+            },
+            {
+              title: '设备编号',
+              dataIndex: 'equipNo',
+              key: 'equipNo',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            }
+          ];
+          validateRules['equipClass'] = [
+            { required: true, message: '设备大类不能为空' }
+          ];
+          columns.value = [...columns.value, ...list];
+        }
+        break;
+      //设备
+      default:
+        columns.value = [...ListColumns.BaseColumns, ...ListColumns.DeviceColumns];
+        validateRules = { ...Rules.BaseValidateRules, ...Rules.DeviceValidateRules };
+        // 提交流程
+        if (props.readOnly) {
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
+          const list = [
+            {
+              title: '设备大类',
+              dataIndex: 'equipClass',
+              key: 'equipClass',
+              width: 120,
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left',
+              hidden: true
+            },
+            {
+              title: '设备编号',
+              dataIndex: 'equipNo',
+              key: 'equipNo',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            },
+            {
+              title: '是否瓶颈设备',
+              dataIndex: 'ynBottleneckEquipmentName',
+              key: 'ynBottleneckEquipmentName',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            },
+            {
+              title: '军工关键设备专用代码',
+              dataIndex: 'militaryKeyEquipCode',
+              key: 'militaryKeyEquipCode',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            },
+            {
+              title: '是否重大军工设备',
+              dataIndex: 'ynMajorAssets',
+              key: 'ynMajorAssets',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              align: 'left'
+            }
+          ];
+          validateRules['militaryKeyEquipCode'] = [{
+            validator: validatorMilitaryKeyEquipCode,
+            trigger: 'blur'
+          }];
+          validateRules['equipClass'] = [
+            { required: true, message: '设备大类不能为空' }
+          ];
+          // 特种设备
+          const list1 = [
+            {
+              title: '是否年检',
+              dataIndex: 'ynAnnualInspection',
+              key: 'ynAnnualInspection',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left'
+            },
+            {
+              title: '特种设备注册码',
+              dataIndex: 'registrationCode',
+              key: 'registrationCode',
+              ellipsis: true,
+              minWidth: 120,
+              resizable: true,
+              customHeaderCell() {
+                return {
+                  ['class']: 'required-table-title'
+                };
+              },
+              align: 'left'
+            }
+          ];
+          columns.value = [...columns.value, ...list];
+          if (props.equipmentType === '1') {
+            columns.value = [...columns.value, ...list1];
+            validateRules['ynAnnualInspection'] = [{ required: true, message: '是否年检不能为空' }];
+            validateRules['registrationCode'] = [{ required: true, message: '特种设备注册码不能为空' }];
+          }
+        }
+        break;
+    }
+    if (props.accpetType === '2' && props.assetClass === '2')
+      validateRules['parentAssetNo'] = [{ required: true, message: '父资产编号不能为空' }];
+    getAddObj(code, proxy.$uuid());
+  } else {
+    /**
+     *  改造 固定资产
+     */
+    columns.value = [...ListColumns.BaseColumns];
+    validateRules = {
+      assetOriginalValue: [{ required: true, message: '资产原值不能为空' }]
+    };
+  }
+
+  setTimeout(() => {
+    showTable.value = true;
+  }, 1000);
+}
+
+/** 军工关键设备 校验 */
+function validatorMilitaryKeyEquipCode(value, record) {
+  if (record.ynMilitaryKeyEquip === '1' && !value) {
+    return {
+      flag: false,
+      message: '军工关键设备专用代码必填！'
+    };
+  } else {
+    return {
+      flag: true
+    };
+  }
+}
+
+/**
+ * 验收类型监控
+ */
 watch(
   () => props.accpetType,
-  (_newV, oldV) => {
-    if (oldV) {
-      list.value = [];
+  (newV, oldV) => {
+    if (newV === '2') {
+      allocationColumn('');
+      if (oldV) {
+        list.value = [];
+      }
+    } else {
+      allocationColumn(props.assetClasst.charAt(0));
+      if (oldV) {
+        list.value = [];
+      }
     }
   }
 );
 
+/**
+ * 资产类别监控
+ */
 watch(
-  () => props.assetClasstObj,
-  newV => {
-    console.log(props.assetClasstObj);
-    list.value.map(item => {
-      item.assetClass = newV.classCode;
-      item.assetClassName = newV.className;
-      item.useTime = newV.useTime;
-    });
+  () => props.assetClasst, (newV, oldV) => {
+    code.value = props.assetClasst.charAt(0);
+    allocationColumn(code.value);
+    if (oldV) {
+      let ids = [];
+      list.value.map(item => ids.push(item.id));
+      handleDelete(ids);
+    }
   }
 );
 
+/**
+ * 资产属性监控
+ */
+watch(() => props.assetClass, (newV, oldV) => {
+  if (props.accpetType === '2' && newV && oldV) {
+    list.value = [];
+  }
+});
 
 defineExpose({
   validate,

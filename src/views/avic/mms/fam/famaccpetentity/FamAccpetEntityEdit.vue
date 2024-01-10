@@ -45,6 +45,27 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
+                v-model:value="form.assetClass"
+                disabled
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="orderName" label="合同名称" has-feedback>
               <a-input
                 v-model:value="form.orderName"
@@ -89,27 +110,6 @@
                 value-format="YYYY-MM-DD"
                 placeholder="请选择验收日期"
               />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产属性" has-feedback>
-              <a-select
-                v-model:value="form.assetClass"
-                disabled
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-              >
-                <a-select-option
-                  v-for="item in assetTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
             </a-form-item>
           </a-col>
           <!-- <a-col v-bind="colLayout.cols">
@@ -198,6 +198,38 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
+              <a-select
+                v-model:value="form.managerDeptId"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :disabled="deptDisabled"
+                :allow-clear="true"
+                placeholder="请选择主管部门"
+              >
+                <a-select-option
+                  v-for="item in managerDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
+              <AvicCommonSelect
+                v-model:value="form.receiveDeptId"
+                type="deptSelect"
+                placeholder="请选择使用部门名称"
+                :defaultShowValue="form.receiveDeptIdAlias"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input v-model:value="form.assetClasstName" @click="assetClasstClick">
                 <template #suffix>
@@ -208,9 +240,8 @@
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols" v-if="showEquipmentType ">
             <a-form-item name="equipmentType" label="设备类型"
-                         v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) "
                          has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -221,7 +252,7 @@
                 :allow-clear="true"
               >
                 <a-select-option
-                  v-for="item in equipmentTypeList"
+                  v-for="item in filterEquipmentTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -231,22 +262,43 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item v-if="form.accpetType === '2' "
-                         name="overhaulRequireCode"
-                         label="维修改造单号"
-                         has-feedback
-            >
-              <a-input
-                v-model:value="form.overhaulRequireCode"
-                @click="overhaulRequireCodeClick"
-                placeholder="请选择维修改造"
+            <a-form-item name="ynArchived" label="是否归档案">
+              <a-select
+                v-model:value="form.ynArchived"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否归档案"
               >
-                <template #suffix>
-                  <a-tooltip title="Extra information">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
-                  </a-tooltip>
-                </template>
-              </a-input>
+                <a-select-option
+                  v-for="item in ynArchivedList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="ynDemolished" label="是否已拆除无线模块">
+              <a-select
+                v-model:value="form.ynDemolished"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否已拆除无线模块"
+              >
+                <a-select-option
+                  v-for="item in ynDemolishedList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols2">
@@ -274,6 +326,8 @@
           :accpetType="accpetType"
           :asset-class="assetClass"
           :mainId="formId || form.id"
+          :assetClasst="form.assetClasst"
+          :equipmentType="form.equipmentType"
         />
       </a-form>
     </a-spin>
@@ -342,9 +396,6 @@ const props = defineProps({
 
 onMounted(() => {
   getTreeList();
-  setTimeout(() => {
-    getParent();
-  }, 300);
 });
 
 const { proxy } = getCurrentInstance();
@@ -356,8 +407,9 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
-
+const deptDisabled = ref(false);
 const assetClasstObj = ref();
+const filterEquipmentTypeList = ref([]);
 const maintPlanModal = ref<boolean>(false);
 const emit = defineEmits(emits);
 
@@ -409,6 +461,19 @@ function handleSelect(keys: string[], node) {
   treeNodeId.value = node.node.id;
 }
 
+const showEquipmentType = computed(() => {
+  if (form.value.assetClasst && filterEquipmentTypeList.value.length > 0) {
+    console.log(form.value.assetClasst.charAt(0));
+    if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+      return true;
+    }
+    if (['8'].includes(form.value.assetClasst.charAt(0)) && form.value.managerDeptId === 'C410') {
+      return true;
+    }
+    return false;
+  }
+});
+
 /** 查询数据 */
 function getTreeList() {
   treeLoading.value = true;
@@ -428,17 +493,6 @@ function handleExpand(keys) {
   expandedKeys.value = keys;
 }
 
-/** 获取土地及房屋的id */
-function getParentId() {
-  let id = '';
-  treeData.value[0].children.map(item => {
-    if (item.title === '土地及房屋') {
-      id = item.id;
-    }
-  });
-  return id;
-}
-
 /** 提交类别 */
 function handleSummit() {
   getFamAssetClass(treeNodeId.value)
@@ -447,6 +501,9 @@ function handleSummit() {
         assetClasstObj.value = res.data;
         form.value.assetClasst = res.data.classCode;
         form.value.assetClasstName = res.data.className;
+        if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
+          form.value.managerDeptId = 'C410';
+        }
         assetClasstOpen.value = false;
       }
     })
@@ -456,11 +513,6 @@ function handleSummit() {
     });
 }
 
-function getParent() {
-  getTreeParent(form.value.assetClasst).then(res => {
-    isLand.value = Boolean(res.data);
-  });
-}
 
 const {
   form,
@@ -474,6 +526,9 @@ const {
   bodyStyle,
   secretLevelList,
   accpetTypeList,
+  ynArchivedList,
+  ynDemolishedList,
+  managerDeptIdList,
   purchWayList,
   fundSourceList,
   uploadFile,
@@ -503,6 +558,27 @@ watch(
   () => form.value.assetClass,
   newV => {
     assetClass.value = newV;
+  }
+);
+
+watch(
+  () => form.value.assetClasst,
+  (newV, oldV) => {
+    if (['7', '3', '2'].includes(newV.charAt(0))) {
+      filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+        item.lookupName !== '办公自动化设备' && item.lookupName !== '视频监控、硬盘录像设备');
+      if (oldV) form.value.equipmentType = '';
+      deptDisabled.value = true;
+    } else {
+      if (['8'].includes(newV.charAt(0))) {
+        filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+          item.lookupName === '办公自动化设备' || item.lookupName === '视频监控、硬盘录像设备');
+        if (oldV) form.value.equipmentType = '';
+      } else {
+        filterEquipmentTypeList.value = [];
+      }
+      deptDisabled.value = false;
+    }
   }
 );
 </script>

@@ -2,7 +2,7 @@ import type { FamAccpetDto } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // �
 import {
   getFamAccpet,
   saveFamAccpet,
-  saveFormAndStartProcess,
+  saveFormAndStartProcess
 } from '@/api/avic/mms/fam/FamAccpetEntityApi'; // 引入模块API
 
 import {
@@ -32,20 +32,13 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const rules: Record<string, Rule[]> = {
     accpetApplyNo: [{ required: true, message: '验收申请单号不能为空', trigger: 'change' }],
     accpetType: [{ required: true, message: '验收类型不能为空', trigger: 'change' }],
-    // orderName: [{ required: true, message: '合同名称不能为空', trigger: 'change' }],
-    // orderNo: [{ required: true, message: '合同编号不能为空', trigger: 'change' }],
-    // orderValue: [{ required: true, message: '合同金额不能为空', trigger: 'change' }],
-    // procureDeptName: [{ required: true, message: '采购部门名称不能为空', trigger: 'change' }],
     accpetDate: [{ required: true, message: '验收日期不能为空', trigger: 'change' }],
-    managerDeptName: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],
-    receiveDeptName: [{ required: true, message: '接收部门名称不能为空', trigger: 'change' }],
+    managerDeptId: [{ required: true, message: '主管部门不能为空', trigger: 'change' }],
+    receiveDeptId: [{ required: true, message: '使用部门不能为空', trigger: 'change' }],
     assetClass: [{ required: true, message: '资产属性不能为空', trigger: 'change' }],
-    fundSource: [{ required: true, message: '资金来源不能为空', trigger: 'change' }],
-    otherMatter: [{ required: true, message: '其他事项不能为空', trigger: 'change' }],
-    purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
-    projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
     assetClasst: [{ required: true, message: '资产类别不能为空', trigger: 'change' }],
+    ynArchived:[{ required: true, message: '是否归档案不能为空', trigger: 'change' }],
     equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }]
   };
   const famAccpetListEntityEdit = ref();
@@ -64,12 +57,16 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const purchWayList = ref([]); //购置方式通用代码
   const fundSourceList = ref([]); // 资产来源通用代码
   const managerDeptIdList = ref([]);
+  const ynArchivedList = ref([]); // 是否归档案通用代码
+  const ynDemolishedList = ref([]); // 是否已拆除无线模块通用代码
   const lookupParams = [
     { fieldName: 'accpetType', lookUpType: 'FAM_ACCPET_TYPE' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
     { fieldName: 'purchWay', lookUpType: 'FAM_PURCH_WAY' },
     { fieldName: 'fundSource', lookUpType: 'FAM_ASSET_SOURCE' },
     { fieldName: 'equipmentType', lookUpType: 'TPM_EQUIPMENT_TYPE' },
+    { fieldName: 'ynArchived', lookUpType: 'PLATFORM_YES_NO_FLAG' },
+    { fieldName: 'ynDemolished', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'managerDept', lookUpType: 'FAM_MANAGER_DEPT' }
   ];
   const authJson = ref(null);
@@ -106,7 +103,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   });
 
   async function validatorEquipmentType(_rule, value, _record) {
-    const codeList = ['1', '4', '6', '8'];
+    const codeList = ['1', '4', '6'];
     if (form.value.assetClasst) {
       if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
         return Promise.reject(new Error('设备类型必填！'));
@@ -126,7 +123,10 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       equipmentTypeList.value = result.equipmentType;
       purchWayList.value = result.purchWay;
       fundSourceList.value = result.fundSource;
+      ynArchivedList.value = result.ynArchived;
+      ynDemolishedList.value = result.ynDemolished;
       managerDeptIdList.value = result.managerDept;
+
     });
   }
 
@@ -502,6 +502,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     managerDeptIdList,
     purchWayList,
     fundSourceList,
+    ynDemolishedList, ynArchivedList,
     equipmentTypeList,
     uploadFile,
     afterUploadEvent,

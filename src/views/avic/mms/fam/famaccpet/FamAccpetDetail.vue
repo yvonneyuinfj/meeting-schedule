@@ -333,7 +333,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols"
-               v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) && fieldVisible('equipmentType')"
+               v-if="form.assetClasst &&  !(['1', '4', '6'].includes(form.assetClasst.charAt(0))) && fieldVisible('equipmentType')"
         >
           <a-form-item
             name="equipmentType"

@@ -120,7 +120,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   }
 
   async function validatorEquipmentType(_rule, value, _record) {
-    const codeList = ['1', '4', '6', '8'];
+    const codeList = ['1', '4', '6',];
     if (form.value.assetClasst) {
       if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
         return Promise.reject(new Error('设备类型必填！'));

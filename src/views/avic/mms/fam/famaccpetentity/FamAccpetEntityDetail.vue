@@ -250,6 +250,38 @@
             />
           </a-form-item>
         </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('managerDeptId')">
+          <a-form-item name="managerDeptId" label="主管部门名称" :rules="fieldRequired('managerDeptId')" has-feedback>
+            <a-select
+              v-model:value="form.managerDeptId"
+              :auto-focus="true"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              placeholder="请选择主管部门名称"
+              :disabled="fieldDisabled('managerDeptId')"
+            >
+              <a-select-option
+                v-for="item in managerDeptIdList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
+          </a-form-item>
+        </a-col>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('receiveDeptId')">
+          <a-form-item name="receiveDeptId" label="使用部门名称" :rules="fieldRequired('receiveDeptId')" has-feedback>
+            <AvicCommonSelect
+              v-model:value="form.receiveDeptId"
+              type="deptSelect"
+              :defaultShowValue="form.receiveDeptIdAlias"
+              :disabled="fieldDisabled('receiveDeptId')"
+            />
+          </a-form-item>
+        </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetClasst')">
           <a-form-item
             name="assetClasst"
@@ -261,7 +293,7 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols"
-               v-if=" fieldVisible('equipmentType') && form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) "
+               v-if=" fieldVisible('equipmentType') && form.assetClasst &&  !(['1', '4', '6',].includes(form.assetClasst.charAt(0))) "
         >
           <a-form-item
             name="equipmentType"
@@ -289,24 +321,44 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('overhaulRequireCode') && annual === '2'">
-          <a-form-item
-            name="overhaulRequireCode"
-            label="维修改造单号"
-            :rules="fieldRequired('overhaulRequireCode')"
-            has-feedback
-          >
-            <a-input v-model:value="form.overhaulRequireCode" :disabled="fieldDisabled('overhaulRequireCode')"/>
+        <a-col v-bind="colLayout.cols">
+          <a-form-item name="ynArchived" label="是否归档案">
+            <a-select
+              v-model:value="form.ynArchived"
+              :get-popup-container="(triggerNode) => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              disabled
+            >
+              <a-select-option
+                v-for="item in ynArchivedList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('overhaulRequireCode') && form.accpetType == '2'">
-          <a-form-item
-            name="overhaulRequireCode"
-            label="维修改造单号"
-            :rules="fieldRequired('overhaulRequireCode')"
-            has-feedback
-          >
-            <a-input v-model:value="form.overhaulRequireCode" :disabled="fieldDisabled('overhaulRequireCode')"/>
+        <a-col v-bind="colLayout.cols">
+          <a-form-item name="ynDemolished" label="是否已拆除无线模块">
+            <a-select
+              v-model:value="form.ynDemolished"
+              :get-popup-container="(triggerNode) => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
+              disabled
+            >
+              <a-select-option
+                v-for="item in ynDemolishedList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols2">
@@ -332,6 +384,10 @@
       :mainId="formId || form.id"
       :bpmInstanceObject="bpmInstanceObject"
       :bpmParams="bpmParams"
+      read-only="true"
+      :accpetType="form.accpetType"
+      :equipmentType="form.equipmentType"
+      :managerDeptId="form.managerDeptId"
     />
     <!--子表按钮的流程解析，用于权限控制-->
     <a-button
@@ -356,7 +412,8 @@
 </template>
 <script lang="ts" setup>
 import { useFamAccpetForm, emits } from './ts/FamAccpetEntityForm'; // 引入表单ts
-import FamAccpetListEntityEdit from '@/views/avic/mms/fam/famaccpetlistentity/FamAccpetListEntityEdit.vue'; // 引入子表组件
+import FamAccpetListEntityEdit from '@/views/avic/mms/fam/famaccpetlistentity/FamAccpetListEntityEdit.vue';
+import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -393,8 +450,11 @@ const {
   autoCode,
   purchWayList,
   fundSourceList,
+  ynArchivedList,
+  ynDemolishedList,
   equipmentTypeList,
   famAccpetListEntityEdit,
+  managerDeptIdList,
   fieldVisible,
   fieldDisabled,
   fieldRequired,

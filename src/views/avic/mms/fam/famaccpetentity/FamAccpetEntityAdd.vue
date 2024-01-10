@@ -47,6 +47,28 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="assetClass" label="资产属性" has-feedback>
+              <a-select
+                v-model:value="form.assetClass"
+                disabled
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择验收类型"
+              >
+                <a-select-option
+                  v-for="item in assetTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="orderName" label="合同名称" has-feedback>
               <a-input
                 v-model:value="form.orderName"
@@ -102,28 +124,7 @@
               <AvicCommonSelect v-model:value="form.receiveDeptName" type="deptSelect" placeholder="请选择接收部门名称" />
             </a-form-item>
           </a-col> -->
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="assetClass" label="资产属性" has-feedback>
-              <a-select
-                v-model:value="form.assetClass"
-                disabled
-                :auto-focus="true"
-                :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children"
-                :show-search="true"
-                :allow-clear="true"
-                placeholder="请选择验收类型"
-              >
-                <a-select-option
-                  v-for="item in assetTypeList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+
           <a-col v-bind="colLayout.cols">
             <a-form-item name="fundSource" label="资金来源" has-feedback>
               <a-select
@@ -195,6 +196,37 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
+            <a-form-item name="managerDeptId" label="主管部门名称" has-feedback>
+              <a-select
+                v-model:value="form.managerDeptId"
+                :auto-focus="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :disabled="deptDisabled"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择主管部门"
+              >
+                <a-select-option
+                  v-for="item in managerDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="receiveDeptId" label="使用部门名称" has-feedback>
+              <AvicCommonSelect
+                v-model:value="form.receiveDeptId"
+                type="deptSelect"
+                placeholder="请选择使用部门名称"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col v-bind="colLayout.cols">
             <a-form-item name="assetClasst" label="资产类别" has-feedback>
               <a-input
                 v-model:value="form.assetClasstName"
@@ -209,9 +241,9 @@
               </a-input>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
+          <a-col v-bind="colLayout.cols"  v-if="showEquipmentType ">
             <a-form-item name="equipmentType" label="设备类型"
-                         v-if="form.assetClasst &&  !(['1', '4', '6', '8'].includes(form.assetClasst.charAt(0))) "
+
                          has-feedback>
               <a-select
                 v-model:value="form.equipmentType"
@@ -223,7 +255,7 @@
                 placeholder="请选择设备类型"
               >
                 <a-select-option
-                  v-for="item in equipmentTypeList"
+                  v-for="item in filterEquipmentTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -233,30 +265,45 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item v-if="annual === '2' "
-                         name="overhaulRequireCode"
-                         label="维修改造单号"
-                         has-feedback
-            >
-              <!--         <a-input v-if="annual === '2'"
-                                v-model:value="form.overhaulRequireCode"
-                                :maxLength="32"
-                                placeholder="请输入选择维修改造"
-                       /> -->
-              <a-input
-                v-model:value="form.overhaulRequireCode"
-                @click="overhaulRequireCodeClick"
-                placeholder="请选择维修改造"
+            <a-form-item name="ynArchived" label="是否归档案">
+              <a-select
+                v-model:value="form.ynArchived"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否归档案"
               >
-                <template #suffix>
-                  <a-tooltip title="Extra information">
-                    <ApartmentOutlined style="color: rgba(0, 0, 0, 0.45)"/>
-                  </a-tooltip>
-                </template>
-              </a-input>
+                <a-select-option
+                  v-for="item in ynArchivedList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
-
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="ynDemolished" label="是否已拆除无线模块">
+              <a-select
+                v-model:value="form.ynDemolished"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
+                placeholder="请选择是否已拆除无线模块"
+              >
+                <a-select-option
+                  v-for="item in ynDemolishedList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
 
           <a-col v-bind="colLayout.cols2">
             <a-form-item label="附件">
@@ -282,6 +329,8 @@
           :accpetType="accpetType"
           :asset-class="assetClass"
           :mainId="formId || form.id"
+          :assetClasst="form.assetClasst"
+          :equipmentType="form.equipmentType"
         />
       </a-form>
       <FamOverhaulRequireSelect v-if="maintPlanModal" ref="famOverhaulRequireSelect" :visible="maintPlanModal"
@@ -296,7 +345,7 @@
     </template>
   </AvicModal>
   <!-- 树节点 -->
-  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle"  @ok="handleSummit">
+  <a-modal :visible="assetClasstOpen" @cancel="handleCancel" :body-style="bodyStyle" @ok="handleSummit">
     <a-spin :spinning="treeLoading">
       <a-tree
         v-if="treeData && treeData.length > 0"
@@ -327,7 +376,8 @@ import { useFamAccpetForm, emits } from './ts/FamAccpetEntityForm'; // 引入表
 import FamAccpetListEntityEdit from '@/views/avic/mms/fam/famaccpetlistentity/FamAccpetListEntityEdit.vue';
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
 import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
-import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue'; // 引入弹窗选择页
+import FamOverhaulRequireSelect from '@/views/avic/mms/fam/famoverhaulrequire/FamOverhaulRequireSelect.vue';
+import FamAccpetListEdit from '@/views/avic/mms/fam/famaccpetlist/FamAccpetListEdit.vue'; // 引入弹窗选择页
 
 const props = defineProps({
   formId: {
@@ -368,6 +418,8 @@ const treeData = ref(null);
 const expandedKeys = ref([]); //树节点validateRules
 const defaultRootParentId = ref('-1');
 const treeNodeId = ref();
+const deptDisabled = ref(false);
+const filterEquipmentTypeList = ref([]);
 
 const assetClasstObj = ref();
 const emit = defineEmits(emits);
@@ -380,8 +432,10 @@ const {
   loading,
   bodyStyle,
   secretLevelList,
+  managerDeptIdList,
   saveAndStartProcess,
   assetTypeList,
+  ynDemolishedList, ynArchivedList,
   accpetTypeList,
   purchWayList,
   fundSourceList,
@@ -396,6 +450,20 @@ const {
   props: props,
   emit: emit
 });
+
+const showEquipmentType = computed(() => {
+  if (form.value.assetClasst && filterEquipmentTypeList.value.length > 0) {
+    console.log(form.value.assetClasst.charAt(0));
+    if (['7', '3', '2'].includes(form.value.assetClasst.charAt(0))) {
+      return true;
+    }
+    if (['8'].includes(form.value.assetClasst.charAt(0)) && form.value.managerDeptId === 'C410') {
+      return true;
+    }
+    return false;
+  }
+});
+
 
 /** 异步加载树节点 */
 async function onLoadData(treeNode) {
@@ -436,6 +504,10 @@ function handleSummit() {
           assetClasstObj.value = res.data;
           form.value.assetClasst = res.data.classCode;
           form.value.assetClasstName = res.data.className;
+          // 设置主管部门默认值
+          if (['7', '3', '2', '8'].includes(form.value.assetClasst.charAt(0))) {
+            form.value.managerDeptId = 'C410';
+          }
           assetClasstOpen.value = false;
         } else {
           proxy.$message.warning('该数据不属于末级节点请重新选择！');
@@ -514,6 +586,27 @@ watch(
   () => form.value.assetClass,
   newV => {
     assetClass.value = newV;
+  }
+);
+
+watch(
+  () => form.value.assetClasst,
+  newV => {
+    if (['7', '3', '2'].includes(newV.charAt(0))) {
+      filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+        item.lookupName !== '办公自动化设备' && item.lookupName !== '视频监控、硬盘录像设备');
+      form.value.equipmentType = '';
+      deptDisabled.value = true;
+    } else {
+      if (['8'].includes(newV.charAt(0))) {
+        filterEquipmentTypeList.value = equipmentTypeList.value.filter(item =>
+          item.lookupName === '办公自动化设备' || item.lookupName === '视频监控、硬盘录像设备');
+        form.value.equipmentType = '';
+      } else {
+        filterEquipmentTypeList.value = [];
+      }
+      deptDisabled.value = false;
+    }
   }
 );
 </script>
