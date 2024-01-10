@@ -22,7 +22,12 @@ export const BaseColumns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'left',
+    customHeaderCell() {
+      return {
+        ['class']: 'required-table-title'
+      };
+    }
   },
   {
     title: '资产类别',
