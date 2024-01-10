@@ -46,6 +46,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
     purchWay: [{ required: true, message: '购置方式不能为空', trigger: 'change' }],
     projectName: [{ required: true, message: '项目名称不能为空', trigger: 'change' }],
     handlePersonName: [{ required: true, message: '经办人名称不能为空', trigger: 'change' }],
+    ynArchived: [{ required: true, message: '是否归档案不能为空', trigger: 'change' }],
     assetClasst: [{ required: true, validator: validatorAssetClasst, trigger: 'change' }],
     equipmentType: [{ required: true, validator: validatorEquipmentType, trigger: 'change' }],
     addNote: [{ required: true, validator: validatorRefusalReason, trigger: 'blur' }]

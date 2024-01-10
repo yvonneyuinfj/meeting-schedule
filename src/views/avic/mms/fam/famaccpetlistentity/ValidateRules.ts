@@ -6,7 +6,7 @@ import { OfficialValidateRules } from './columns/OfficialColumns';
 
 /** 基础字段校验 */
 const BaseValidateRules = {
-  // assetName: [{ required: true, message: '资产名称不能为空' }],
+  assetName: [{ required: true, message: '资产名称不能为空' }]
   // assetClass: [{ required: true, message: '资产类别不能为空' }],
   // assetModel: [{ required: true, message: '资产型号不能为空' }],
   // assetUnit: [{ required: true, message: '资产单价不能为空' }],
