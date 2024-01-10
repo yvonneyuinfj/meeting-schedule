@@ -65,15 +65,12 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="ynReportGroup" label="是否已经上报集团">
-              <a-radio-group v-model:value="form.ynReportGroup">
-                <a-radio
-                  v-for="item in ynReportGroupList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
-                >
-                  {{ item.lookupName }}
-                </a-radio>
-              </a-radio-group>
+                  <a-select v-model:value="form.ynReportGroup" :get-popup-container="triggerNode => triggerNode.parentNode"
+                    option-filter-prop="children" show-search :allow-clear="true" placeholder="请选择是否已经上报集团">
+                    <a-select-option v-for="item in ynReportGroupList" :key="item.sysLookupTlId" :value="item.lookupCode">
+                      {{ item.lookupName }}
+                    </a-select-option>
+                  </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">

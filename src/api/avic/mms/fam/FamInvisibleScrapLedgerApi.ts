@@ -34,6 +34,9 @@ export interface FamInvisibleScrapLedgerDto extends BaseBeanModel {
   note?: string;
   /** 数据密级 */
   secretLevel?: any;
+
+  /*批量录入批复文号属性**/
+  ids?: string;
 }
 
 /** 获取分页数据 */

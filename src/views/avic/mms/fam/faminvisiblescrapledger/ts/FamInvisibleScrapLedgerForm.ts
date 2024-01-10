@@ -106,7 +106,7 @@ export function useFamInvisibleScrapLedgerForm({
         loading.value = true;
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
-        postData['note'] = props.selectIds
+        postData['ids'] = props.selectIds
         // 发送请求
         saveEnterFamInvisibleScrapLedger(postData)
           .then((res) => {
