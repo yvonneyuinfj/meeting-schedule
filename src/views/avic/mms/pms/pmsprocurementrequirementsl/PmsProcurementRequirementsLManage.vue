@@ -5,26 +5,18 @@
       <AvicTable
           ref="pmsProcurementRequirementsL"
           :columns="columns"
-          :customRow="
-          record => {
-            return {
-              onClick: () => {
-                handleRowSelection(record);
-              }
-            };
-          }
-        "
           :data-source="list"
           :loading="loading"
           :pageParameter="queryParam.pageParameter"
           :row-key="record => record.id"
           :row-selection="{
-          selectedRowKeys: selectedRowKeys,
-          onChange: onSelectChange,
-          columnWidth: 40,
-          fixed: true
-        }"
+              selectedRowKeys: selectedRowKeys,
+              onChange: onSelectChange,
+              columnWidth: 40,
+              fixed: true
+            }"
           :total="totalPage"
+          rowClickSelectionType="radio"
           table-key="pmsProcurementRequirementsL"
           @change="handleTableChange"
           @refresh="getList"

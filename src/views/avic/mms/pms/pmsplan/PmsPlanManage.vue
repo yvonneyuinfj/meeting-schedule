@@ -477,12 +477,19 @@
         @close="showDetailModal = false"
     />
     <!--科研需求选择弹窗-->
-    <a-modal :visible="open" style="top: 20px" title="科研需求选择" width="80%" @cancel="handleCancel" @ok="handleOk">
-      <div style="height: 400px;overflow: auto">
-        <Pms-require-receive-select ref="pmsRequireReceiveSelect">
-        </Pms-require-receive-select>
-      </div>
-    </a-modal>
+
+    <AvicModal
+        :centered="true"
+        :visible="open"
+        height="520px"
+        title="科研需求选择"
+        width="960px"
+        @ok="handleOk"
+        @cancel="handleCancel"
+    >
+      <Pms-require-receive-select ref="pmsRequireReceiveSelect">
+      </Pms-require-receive-select>
+    </AvicModal>
     <!--    <AvicExcelImport-->
     <!--      v-if="showImportModal"-->
     <!--      :formData="excelParams"-->

@@ -601,6 +601,7 @@
                   :show-search="true"
                   option-filter-prop="children"
                   placeholder="请选择计划状态"
+                  :disabled="true"
               >
                 <a-select-option
                     v-for="item in planStatusList"
