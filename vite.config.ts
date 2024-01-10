@@ -36,6 +36,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '@': path.join(__dirname, './src'),
         '~': path.join(__dirname, './src/assets'),
         vue: 'vue/dist/vue.esm-bundler.js',
+        'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
         dayjs: resolve(__dirname, 'node_modules', 'dayjs')
       }
     },
@@ -74,39 +75,39 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ? undefined
       : */
 
-      {
-        '/api/mms/mds/': {
-          target: 'http://127.0.0.1:10008',
-          ws: false,
-          changeOrigin: true
-        },
-        '/api/mms/tpm': {
-          target: 'http://127.0.0.1:10009',
-          ws: false,
-          changeOrigin: true
-        },
-        '/api/mms/fam': {
-          target: 'http://127.0.0.1:10010',
-          ws: false,
-          changeOrigin: true
-        },
-        '/api/mms/pms': {
-          target: 'http://127.0.0.1:10012',
-          ws: false,
-          changeOrigin: true
-        },
-	'/api/mms/wms': {
-          target: 'http://127.0.0.1:10013',
-          ws: false,
-          changeOrigin: true
-        },
-        '/api': {
-          target: 'http://127.0.0.1:10001',
-          ws: false,
-          changeOrigin: true
-          // rewrite: (p) => p.replace(/^\/api/, '')
+        {
+          '/api/mms/mds/': {
+            target: 'http://127.0.0.1:10008',
+            ws: false,
+            changeOrigin: true
+          },
+          '/api/mms/tpm': {
+            target: 'http://127.0.0.1:10009',
+            ws: false,
+            changeOrigin: true
+          },
+          '/api/mms/fam': {
+            target: 'http://127.0.0.1:10010',
+            ws: false,
+            changeOrigin: true
+          },
+          '/api/mms/pms': {
+            target: 'http://127.0.0.1:10012',
+            ws: false,
+            changeOrigin: true
+          },
+          '/api/mms/wms': {
+            target: 'http://127.0.0.1:10013',
+            ws: false,
+            changeOrigin: true
+          },
+          '/api': {
+            target: 'http://127.0.0.1:10001',
+            ws: false,
+            changeOrigin: true
+            // rewrite: (p) => p.replace(/^\/api/, '')
+          }
         }
-      }
     }
   };
 };
