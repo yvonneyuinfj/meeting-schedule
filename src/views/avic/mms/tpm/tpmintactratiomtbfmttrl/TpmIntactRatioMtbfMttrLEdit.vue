@@ -52,7 +52,7 @@
               </template>
               删除
             </a-button>
-            <a-button
+              <!-- <a-button
                 v-if="props.mainId ? true : false"
                 v-hasPermi="['tpmIntactRatioMtbfMttrL:import']"
                 title="导入"
@@ -63,7 +63,7 @@
                 <import-outlined/>
               </template>
               导入
-            </a-button>
+            </a-button> -->
           </a-space>
         </a-space>
       </template>

@@ -25,13 +25,13 @@
                   </template>
                   添加
                 </a-button> -->
-                <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除" :loading="delLoading"
+                      <!-- <a-button danger :type="selectedRowKeys.length == 0 ? 'default' : 'primary'" title="删除" :loading="delLoading"
                   @click="handleDelete(selectedRowKeys, '')">
                   <template #icon>
                     <delete-outlined />
                   </template>
                   删除
-                </a-button>
+                </a-button> -->
                 <a-button title="导入" type="primary" ghost @click="handleImport">
                   <template #icon>
                     <import-outlined />
@@ -119,6 +119,10 @@ function handleImport() {
     proxy.$message.warning('请选择一条主数据');
     return;
   }
+  if (props.selectedParentRows[0].businessstate_ != '' && props.selectedParentRows[0].businessstate_ != '拟稿中') {
+    proxy.$message.warning('流程已提交，不允许导入');
+    return;
+  }
   excelParams.value.tpmIntactRatioMtbfMttrId = props.mainId;
   showImportModal.value = true;
 }
@@ -128,7 +132,7 @@ function handleDelete(ids, type) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
-  if (props.selectedParentRows[0].businessstate_ != '' || props.selectedParentRows[0].businessstate_ != '拟稿中') {
+  if (props.selectedParentRows[0].businessstate_ != '' && props.selectedParentRows[0].businessstate_ != '拟稿中') {
     proxy.$message.warning('流程已提交，不允许删除');
     return;
   }
