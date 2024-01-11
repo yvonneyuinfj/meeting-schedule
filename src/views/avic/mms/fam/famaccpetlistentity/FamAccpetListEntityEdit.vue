@@ -1253,7 +1253,7 @@ function allocationColumn(code) {
         validateRules = { ...Rules.BaseValidateRules, ...Rules.OfficialValidateRules };
         if (props.readOnly) {
           debugger
-          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task8') return;
           if (props.managerDeptId !== 'C410') return;
           const list = [
             {
@@ -1294,7 +1294,7 @@ function allocationColumn(code) {
         validateRules = { ...Rules.BaseValidateRules, ...Rules.DeviceValidateRules };
         // 提交流程
         if (props.readOnly) {
-          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task6') return;
+          if (props.bpmInstanceObject.bpmModel.activityname && props.bpmInstanceObject.bpmModel.activityname !== 'task8') return;
           const list = [
             {
               title: '设备大类',
