@@ -1067,7 +1067,7 @@ function handleCopy(ids, e) {
 /** 编辑 */
 function handleEdit(record) {
   if (props.readOnly)
-    if (!['task2', 'task3', 'task4', 'task6'].includes(props.bpmInstanceObject.bpmModel.activityname))
+    if (!['task2', 'task3', 'task4', 'task8'].includes(props.bpmInstanceObject.bpmModel.activityname))
       return;
   record.editable = true;
   record.operationType_ = record.operationType_ || 'update';
