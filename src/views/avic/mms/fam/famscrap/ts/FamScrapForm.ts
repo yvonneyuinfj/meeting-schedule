@@ -24,6 +24,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const handleWayList = ref([]); // 处置方式 通用代码
+  const handleDeptIdList = ref([]);
   const uploadFile = ref(null); // 附件ref
   const rules: Record<string, Rule[]> = {
     applyNo: [
@@ -58,7 +59,8 @@ export function useFamScrapForm({ props: props, emit: emit }) {
   const autoCode = ref(null); // 自动编码ref
   const authJson = ref(null);
   const lookupParams = [
-    { fieldName: 'handleWay', lookUpType: 'FAM_HANDLE_WAY' }
+    { fieldName: 'handleWay', lookUpType: 'FAM_HANDLE_WAY' },
+    { fieldName: 'handleDeptId', lookUpType: 'FAM_MANAGER_DEPT' }
   ];
 
   if (props.params) {
@@ -90,6 +92,8 @@ export function useFamScrapForm({ props: props, emit: emit }) {
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
       handleWayList.value = result.handleWay;
+      handleDeptIdList.value = result.handleDeptId.filter(item =>
+        item.lookupName === '科研保障部' || item.lookupName === '采购与供应链管理部');
     });
   }
 
@@ -434,6 +438,7 @@ export function useFamScrapForm({ props: props, emit: emit }) {
     saveForm,
     addForm,
     handleWayList,
+    handleDeptIdList,
     attachmentRequired,
     afterUploadEvent,
     saveAndStartProcess,

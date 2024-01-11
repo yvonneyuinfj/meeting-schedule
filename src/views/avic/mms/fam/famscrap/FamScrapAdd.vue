@@ -23,16 +23,16 @@
               />
             </a-form-item>
           </a-col>
-<!--          <a-col v-bind="colLayout.cols">-->
-<!--            <a-form-item name="isUsedScientificrs" label="是否科研用" has-feedback>-->
-<!--              <a-input-->
-<!--                v-model:value="form.isUsedScientificrs"-->
-<!--                :maxLength="10"-->
-<!--                :auto-focus="true"-->
-<!--                placeholder="请输入是否科研用"-->
-<!--              />-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols">-->
+          <!--            <a-form-item name="isUsedScientificrs" label="是否科研用" has-feedback>-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.isUsedScientificrs"-->
+          <!--                :maxLength="10"-->
+          <!--                :auto-focus="true"-->
+          <!--                placeholder="请输入是否科研用"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect
@@ -44,11 +44,22 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handleDeptId" label="处置部门">
-              <AvicCommonSelect
+              <a-select
                 v-model:value="form.handleDeptId"
-                type="deptSelect"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                option-filter-prop="children"
+                :show-search="true"
+                :allow-clear="true"
                 placeholder="请选择处置部门"
-              />
+              >
+                <a-select-option
+                  v-for="item in handleDeptIdList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
+                >
+                  {{ item.lookupName }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -201,6 +212,7 @@ const {
   loading,
   autoCode,
   uploadFile,
+  handleDeptIdList,
   addForm,
   closeModal,
   afterUploadEvent,

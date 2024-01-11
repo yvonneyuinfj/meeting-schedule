@@ -42,12 +42,22 @@
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handleDeptId')">
           <a-form-item name="handleDeptId" label="处置部门" :rules="fieldRequired('handleDeptId')" has-feedback>
-            <AvicCommonSelect
+            <a-select
               v-model:value="form.handleDeptId"
-              type="deptSelect"
-              :defaultShowValue="form.handleDeptIdAlias"
+              :get-popup-container="triggerNode => triggerNode.parentNode"
+              option-filter-prop="children"
+              :show-search="true"
+              :allow-clear="true"
               :disabled="fieldDisabled('handleDeptId')"
-            />
+            >
+              <a-select-option
+                v-for="item in handleDeptIdList"
+                :key="item.sysLookupTlId"
+                :value="item.lookupCode"
+              >
+                {{ item.lookupName }}
+              </a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handleWay')">
@@ -198,6 +208,7 @@ const {
   colLayout,
   autoCode,
   famScrapListEdit,
+  handleDeptIdList,
   fieldVisible,
   fieldDisabled,
   attachmentRequired,
