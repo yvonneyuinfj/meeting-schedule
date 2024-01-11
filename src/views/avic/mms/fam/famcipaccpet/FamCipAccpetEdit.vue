@@ -44,33 +44,33 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="orderName" label="合同名称" has-feedback>
-              <a-input
-                v-model:value="form.orderName"
-                :maxLength="64"
-                placeholder="请输入合同名称"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="orderNo" label="合同编号" has-feedback>
-              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号"/>
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="orderValue" label="合同金额" has-feedback>
-              <a-input-number
-                v-model:value="form.orderValue"
-                :max="999999999999"
-                :min="-999999999999"
-                :precision="2"
-                :step="0.01"
-                placeholder="请输入合同金额"
-                style="width: 100%"
-              ></a-input-number>
-            </a-form-item>
-          </a-col>
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="orderName" label="合同名称" has-feedback>-->
+<!--              <a-input-->
+<!--                v-model:value="form.orderName"-->
+<!--                :maxLength="64"-->
+<!--                placeholder="请输入合同名称"-->
+<!--              />-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="orderNo" label="合同编号" has-feedback>-->
+<!--              <a-input v-model:value="form.orderNo" :maxLength="64" placeholder="请输入合同编号"/>-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
+<!--          <a-col v-bind="colLayout.cols">-->
+<!--            <a-form-item name="orderValue" label="合同金额" has-feedback>-->
+<!--              <a-input-number-->
+<!--                v-model:value="form.orderValue"-->
+<!--                :max="999999999999"-->
+<!--                :min="-999999999999"-->
+<!--                :precision="2"-->
+<!--                :step="0.01"-->
+<!--                placeholder="请输入合同金额"-->
+<!--                style="width: 100%"-->
+<!--              ></a-input-number>-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col v-bind="colLayout.cols">
             <a-form-item name="procureDeptId" label="采购部门名称" has-feedback>
               <AvicCommonSelect

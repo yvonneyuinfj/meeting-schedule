@@ -56,36 +56,36 @@
             </a-select>
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderName')">
-          <a-form-item
-            name="orderName"
-            label="合同名称"
-            :rules="fieldRequired('orderName')"
-            has-feedback
-          >
-            <a-input v-model:value="form.orderName" :disabled="fieldDisabled('orderName')"/>
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderNo')">
-          <a-form-item
-            name="orderNo"
-            label="合同编号"
-            :rules="fieldRequired('orderNo')"
-            has-feedback
-          >
-            <a-input v-model:value="form.orderNo" :disabled="fieldDisabled('orderNo')"/>
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderValue')">
-          <a-form-item
-            name="orderValue"
-            label="合同金额"
-            :rules="fieldRequired('orderValue')"
-            has-feedback
-          >
-            <a-input v-model:value="form.orderValue" :disabled="fieldDisabled('orderValue')"/>
-          </a-form-item>
-        </a-col>
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderName')">-->
+<!--          <a-form-item-->
+<!--            name="orderName"-->
+<!--            label="合同名称"-->
+<!--            :rules="fieldRequired('orderName')"-->
+<!--            has-feedback-->
+<!--          >-->
+<!--            <a-input v-model:value="form.orderName" :disabled="fieldDisabled('orderName')"/>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderNo')">-->
+<!--          <a-form-item-->
+<!--            name="orderNo"-->
+<!--            label="合同编号"-->
+<!--            :rules="fieldRequired('orderNo')"-->
+<!--            has-feedback-->
+<!--          >-->
+<!--            <a-input v-model:value="form.orderNo" :disabled="fieldDisabled('orderNo')"/>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
+<!--        <a-col v-bind="colLayout.cols" v-if="fieldVisible('orderValue')">-->
+<!--          <a-form-item-->
+<!--            name="orderValue"-->
+<!--            label="合同金额"-->
+<!--            :rules="fieldRequired('orderValue')"-->
+<!--            has-feedback-->
+<!--          >-->
+<!--            <a-input v-model:value="form.orderValue" :disabled="fieldDisabled('orderValue')"/>-->
+<!--          </a-form-item>-->
+<!--        </a-col>-->
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('procureDeptId')">
           <a-form-item
             name="procureDeptId"

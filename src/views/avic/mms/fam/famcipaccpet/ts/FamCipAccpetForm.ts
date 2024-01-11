@@ -32,9 +32,9 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   const rules: Record<string, Rule[]> = {
     accpetApplyNo: [{ required: true, message: '验收申请单号不能为空', trigger: 'change' }],
     accpetType: [{ required: true, message: '验收类型不能为空', trigger: 'change' }],
-    orderName: [{ required: true, message: '合同名称不能为空', trigger: 'change' }],
-    orderNo: [{ required: true, message: '合同编号不能为空', trigger: 'change' }],
-    orderValue: [{ required: true, message: '合同金额不能为空', trigger: 'change' }],
+    // orderName: [{ required: true, message: '合同名称不能为空', trigger: 'change' }],
+    // orderNo: [{ required: true, message: '合同编号不能为空', trigger: 'change' }],
+    // orderValue: [{ required: true, message: '合同金额不能为空', trigger: 'change' }],
     procureDeptName: [{ required: true, message: '采购部门名称不能为空', trigger: 'change' }],
     accpetDate: [{ required: true, message: '验收日期不能为空', trigger: 'change' }],
     managerDeptId: [{ required: true, message: '主管部门名称不能为空', trigger: 'change' }],

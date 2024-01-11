@@ -7,6 +7,7 @@
       table-key="famAccpetList"
       :height="300"
       :columns="columns"
+      :pagination="false"
       :row-key="record => record.id"
       :data-source="list"
       :loading="loading"
@@ -17,11 +18,12 @@
         fixed: true
       }"
       :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
       :total="totalPage"
       :customRow="customRow"
-      @change="handleTableChange"
+
     >
+      <!--      :pageParameter="queryParam.pageParameter"-->
+      <!--      @change="handleTableChange"-->
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
@@ -37,6 +39,16 @@
               </template>
               添加
             </a-button>
+            <a-input-number
+              v-if="props.accpetType === '1'"
+              style="width: 150px"
+              v-model:value="copyNumber"
+              :min="0"
+              :max="100"
+              :precision="0"
+              :step="1"
+              placeholder="请输入复制数量"
+            />
             <a-button
               v-if="props.accpetType === '1'"
               v-hasPermi="['famAccpetList:add']"
@@ -106,7 +118,8 @@
               'equipmentNo',
               'storageLocation',
               'registrationCode',
-              'militaryKeyEquipCode',
+              'militaryKeyEquipCode','equipmentNumber','storageType','storageNumber','storageCode','storageName','ipAddress','storageLevel'
+              ,'storageState','orderName','orderNo','orderValue','infProjectName','researchProjectName'
             ].includes(column.dataIndex)
             && (props.accpetType === '1' || (props.accpetType ==='2'  && props.assetClass === '2'))
           "
@@ -479,7 +492,9 @@
         </template>
       </template>
     </AvicTable>
-
+    <div style="padding-left: 10px;">
+      已选择{{ selectedRows.length }}条
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -516,17 +531,87 @@ const props = defineProps({
   }
 });
 const columns = [
-  ...AllColumns
+  ...AllColumns,
+  {
+    title: '合同名称',
+    dataIndex: 'orderName',
+    key: 'orderName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+    // customHeaderCell() {
+    //   return {
+    //     ['class']: 'required-table-title'
+    //   };
+    // }
+  },
+  {
+    title: '合同编号',
+    dataIndex: 'orderNo',
+    key: 'orderNo',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+    // customHeaderCell() {
+    //   return {
+    //     ['class']: 'required-table-title'
+    //   };
+    // }
+  },
+  {
+    title: '合同金额',
+    dataIndex: 'orderValue',
+    key: 'orderValue',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+    // customHeaderCell() {
+    //   return {
+    //     ['class']: 'required-table-title'
+    //   };
+    // }
+  },
+  {
+    title: '基建项目名称',
+    dataIndex: 'infProjectName',
+    key: 'infProjectName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+    // customHeaderCell() {
+    //   return {
+    //     ['class']: 'required-table-title'
+    //   };
+    // }
+  },
+  {
+    title: '科研项目名称',
+    dataIndex: 'researchProjectName',
+    key: 'researchProjectName',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+    // customHeaderCell() {
+    //   return {
+    //     ['class']: 'required-table-title'
+    //   };
+    // }
+  }
 ];
 
 const showTabel = ref(false);
 const queryForm = ref<FamCipAccpetDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
-  pageParameter: {
-    page: 1, // 页数
-    rows: 20 // 每页条数
-  },
+  // pageParameter: {
+  //   page: 1, // 页数
+  //   rows: 20 // 每页条数
+  // },
   searchParams: {},
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -540,6 +625,7 @@ const bodyStyle = {
 };
 const FamInventoryManageComponent = FamInventoryManage;
 const famAccpetList = ref(null);
+const copyNumber = ref();
 // const open = ref<boolean>(false);
 const famInventoryManage = ref(null);
 const list = ref([]); //表格数据集合
@@ -735,18 +821,22 @@ function handleCopy(ids, e) {
     return;
   }
   let itemList = [];
-  selectedRows.value.map(rows => {
-    let item = {
-      ...rows,
-      id: 'newLine' + proxy.$uuid(),
-      operationType_: 'insert',
-      editable: false // true为编辑中, false为未编辑
-    };
-    itemList.unshift(item);
-  });
+
+  for (let i = 0; i < (copyNumber.value || 1); i++) {
+    selectedRows.value.map(rows => {
+      let item = {
+        ...rows,
+        id: 'newLine' + proxy.$uuid(),
+        operationType_: 'insert',
+        editable: false // true为编辑中, false为未编辑
+      };
+      itemList.unshift(item);
+    });
+  }
   newData = [...itemList, ...newData];
   list.value = newData;
 }
+
 
 /** 编辑 */
 function handleEdit(record) {
@@ -803,27 +893,27 @@ function onSelectChange(rowKeys, rows) {
 }
 
 /** 表头排序 */
-function handleTableChange(pagination, _filters, sorter) {
-  queryParam.pageParameter.page = pagination.current;
-  queryParam.pageParameter.rows = pagination.pageSize;
-  if (proxy.$objIsNotBlank(sorter.field)) {
-    queryParam.sidx = sorter.field;
-    queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
-  }
-  getList();
-}
+// function handleTableChange(pagination, _filters, sorter) {
+//   queryParam.pageParameter.page = pagination.current;
+//   queryParam.pageParameter.rows = pagination.pageSize;
+//   if (proxy.$objIsNotBlank(sorter.field)) {
+//     queryParam.sidx = sorter.field;
+//     queryParam.sord = sorter.order === 'ascend' ? 'asc' : 'desc'; // 排序方式: desc降序 asc升序
+//   }
+//   getList();
+// }
 
 function getTreeNodeTitle(nodeTitle, record, name) {
   record[name] = nodeTitle;
 };
 
-function getTreeNodeCode(nodeId, record, name){
+function getTreeNodeCode(nodeId, record, name) {
   getTpmAssetClass(nodeId)
     .then(async res => {
       if (res.success) {
         record[name] = res.data.classCode;
       }
-    })
+    });
 }
 
 /**控件变更事件 */
