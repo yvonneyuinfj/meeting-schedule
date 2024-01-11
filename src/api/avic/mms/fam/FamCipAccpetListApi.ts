@@ -83,7 +83,7 @@ export interface FamAccpetListDto extends BaseBeanModel {
 export function listFamAccpetListByPage (
   param: QueryParamModel
 ): Promise<ResponsePageData<FamAccpetListDto>> {
-  return request.post(basePath + '/search-by-page/v1', param);
+  return request.post(basePath + '/search-by/v1', param);
 }
 
 /** 根据id加载数据 */
