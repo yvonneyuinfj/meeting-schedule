@@ -217,9 +217,9 @@
                   index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
                 }}
               </template>
-              <template v-else-if="column.dataIndex === 'secretLevelName'">
+              <template v-else-if="column.dataIndex === 'applyNo'">
                 <a @click="handleFlowDetail(record)">
-                  {{ record.secretLevelName }}
+                  {{ record.applyNo }}
                 </a>
               </template>
             </template>
@@ -284,23 +284,23 @@ const columns = [
     align: 'center',
     fixed: 'left'
   },
-  {
-    title: '数据密级',
-    dataIndex: 'secretLevelName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '备注',
-    dataIndex: 'note',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '数据密级',
+  //   dataIndex: 'secretLevelName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '备注',
+  //   dataIndex: 'note',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '申请单编号',
     dataIndex: 'applyNo',
@@ -342,15 +342,15 @@ const columns = [
     resizable: true,
     align: 'left'
   },
-  {
-    title: '分期金额',
-    dataIndex: 'fenqi',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '分期金额',
+  //   dataIndex: 'fenqi',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '流程状态',
     dataIndex: 'businessstate_',
