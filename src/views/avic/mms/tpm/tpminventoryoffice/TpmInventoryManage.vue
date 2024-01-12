@@ -1593,6 +1593,15 @@ const columns = [
     align: 'left'
   },
   {
+    title: '资产属性',
+    dataIndex: 'assetAttributeName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'left'
+  },
+  {
     title: '设备名称',
     dataIndex: 'equipmentName',
     ellipsis: true,
