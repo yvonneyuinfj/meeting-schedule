@@ -121,7 +121,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
   }
 
   async function validatorEquipmentType(_rule, value, _record) {
-    const codeList = ['1', '4', '6',];
+    const codeList = ['1', '4', '6'];
     if (form.value.assetClasst) {
       if (form.value.assetClasst && codeList.findIndex(item => item === form.value.assetClasst.charAt(0)) === -1 && !value) {
         return Promise.reject(new Error('设备类型必填！'));
@@ -239,6 +239,7 @@ export function useFamAccpetForm({ props: props, emit: emit }) {
       })
       .catch(error => {
         // 定位校验失败元素
+        closeFlowLoading(props.bpmInstanceObject);
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
