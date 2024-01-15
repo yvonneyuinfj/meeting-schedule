@@ -653,16 +653,16 @@
               />
             </a-form-item>
           </a-col>
-      <!--    <a-col v-bind="colLayout.cols2">
-            <a-form-item name="installLocation" label="安装地点" has-feedback>
-              <a-input
-                v-model:value="form.installLocation"
-                :maxLength="64"
-                placeholder="请输入安装地点"
-                :disabled="formDisable['installLocation']"
-              />
-            </a-form-item>
-          </a-col> -->
+          <!--    <a-col v-bind="colLayout.cols2">
+                <a-form-item name="installLocation" label="安装地点" has-feedback>
+                  <a-input
+                    v-model:value="form.installLocation"
+                    :maxLength="64"
+                    placeholder="请输入安装地点"
+                    :disabled="formDisable['installLocation']"
+                  />
+                </a-form-item>
+              </a-col> -->
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols4">
@@ -681,10 +681,13 @@
           </a-col>
         </a-row>
       </a-form>
-      <FamInventoryChangeListEdit ref="famInventoryChangeListEdit" @changeDisabled="changeFormDisable" />
+      <FamInventoryChangeListEdit ref="famInventoryChangeListEdit" @changeDisabled="changeFormDisable"/>
     </a-spin>
     <template #footer>
-      <a-button title="保存并启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">保存并启动流程
+      <a-button v-if="showProcess" title="保存并启动流程" type="primary" :loading="loading"
+                @click="saveAndStartProcess">保存并启动流程
+      </a-button>
+      <a-button v-else title="保存" type="primary" :loading="loading" @click="saveForm">保存
       </a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
@@ -722,7 +725,8 @@
 import { useFamInventoryChangeForm, emits } from './ts/FamInventoryChangeForm'; // 引入表单ts
 import FamInventoryChangeListEdit from '@/views/avic/mms/fam/faminventorychangelist/FamInventoryChangeListEdit.vue'; // 引入子表组件
 import { getFamAssetClass, getTreeData } from '@/api/avic/mms/fam/FamAssetClassApi';
-import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util'; // 引入子表组件
+import { getExpandedKeys, setNodeSlots } from '@/utils/tree-util';
+import custom from '@/views/avic/bpm/flowdetail/components/bpm-flow-canvas/shape/nodes/Custom/index.vue'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -765,6 +769,11 @@ const assetClasstClick = () => {
 function handleCancel() {
   assetClasstOpen.value = false;
 }
+
+const showProcess = computed(() => {
+  return ['C410', 'A220', 'A140', 'C450', 'C310', 'C350'].includes(proxy.$getLoginUser().entityDeptCode) ? true :
+    proxy.$getLoginUser().entityDeptCode === 'C150' ? false : form.value.responseUserId ? true : false;
+});
 
 /** 异步加载树节点 */
 async function onLoadData(treeNode) {
@@ -834,7 +843,7 @@ function handleSummit() {
 }
 
 function changeFormDisable(type) {
-  console.log('changeFormDisable', type)
+  console.log('changeFormDisable', type);
   if (type === 1) {
     formList.forEach((value) => {
       if (value === 'responseUserId' || value === 'storageLocation') {
@@ -863,6 +872,7 @@ const {
   secretLevelList,
   bodyStyle,
   assetsStatusList,
+  saveForm,
   ynMilitaryKeyEquipList,
   assetSecretLevelList,
   importedOrNotList,
