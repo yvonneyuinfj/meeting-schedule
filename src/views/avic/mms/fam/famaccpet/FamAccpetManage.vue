@@ -678,7 +678,7 @@ function handleEdit() {
   if (selectedRows.value.length !== 1) {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
-  }
+  }debugger
   if (selectedRows.value[0].businessstate_ && selectedRows.value[0].businessstate_ !== '拟稿中') {
     proxy.$message.warning('当前流程状态不可编辑');
     return;

@@ -43,7 +43,7 @@
                           </template>
                           删除
                         </a-button> -->
-            <!--          <a-button
+                     <a-button
                         title="导入"
                         type="primary"
                         ghost
@@ -53,7 +53,7 @@
                           <import-outlined/>
                         </template>
                         导入
-                      </a-button> -->
+                      </a-button>
           </a-space>
         </template>
         <template #toolBarRight>
@@ -92,8 +92,8 @@
         v-if="showImportModal"
         :formData="excelParams"
         title="单表模板导入"
-        importUrl="/mms/fam/famaccpetlists/importData/v1"
-        downloadTemplateUrl="/mms/fam/famaccpetlists/downloadTemplate/v1"
+        :importUrl="importUrl"
+        :downloadTemplateUrl="downloadTemplateUrl"
         @reloadData="getList"
         @close="showImportModal = false"
       />
@@ -186,6 +186,7 @@ const attachId = ref<string>('');
 const uploadLoading = ref<boolean>(false);
 const attachOpen = ref<boolean>(false);
 const list = ref([]); // 表格数据集合
+const cid = ref();
 const uploadFile = ref(null);
 const selectedRows = ref([]); // 选中行集合
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -199,6 +200,8 @@ const excelParams = ref({ tableName: 'famAssetClass' }); // 导入Excel数据过
 const isNewAssetList = ref([]); // 是否新增资产通用代码
 const importedOrNotList = ref([]); // 是否为进口设备通用代码
 const fileImgList = ref([]);
+const importUrl = ref();
+const downloadTemplateUrl = ref();
 const lookupParams = [
   { fieldName: 'isNewAsset', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' }
@@ -311,6 +314,17 @@ function handleKeyWordQuery(value) {
 
 /** 导入 */
 function handleImport() {
+  const id  =  props.mainId;
+  if(id ==""){
+    proxy.$message.warning('请选择一条主表进行导入！'); 
+    return
+  }
+  if (props.mainBpm && props.mainBpm !== '拟稿中') {
+    proxy.$message.warning('当前流程状态不可导入');
+    return;
+  }
+  downloadTemplateUrl.value = "/mms/fam/famaccpetlists/downloadTemplate/v1/"+props.mainId;
+  importUrl.value = "/mms/fam/famaccpetlists/importData/v1/"+props.mainId;
   showImportModal.value = true;
 }
 
@@ -318,7 +332,7 @@ function handleImport() {
 /** 子表删除 */
 function handleDelete(ids, type) {
   if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
+    proxy.$message.warning('请选择要删除的数据！'); 
     return;
   }
   proxy.$confirm({
