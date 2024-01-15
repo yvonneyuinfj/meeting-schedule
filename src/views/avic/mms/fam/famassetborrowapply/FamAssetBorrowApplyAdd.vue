@@ -66,6 +66,7 @@
                 v-model:value="form.handlePersonId"
                 type="userSelect"
                 placeholder="请选择经办人"
+                :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>
@@ -109,7 +110,8 @@
 </template>
 <script lang="ts" setup>
 import { useFamAssetBorrowApplyForm, emits } from './ts/FamAssetBorrowApplyForm'; // 引入表单ts
-import FamAssetBorrowApplyListEdit from '@/views/avic/mms/fam/famassetborrowapplylist/FamAssetBorrowApplyListEdit.vue'; // 引入子表组件
+import FamAssetBorrowApplyListEdit from '@/views/avic/mms/fam/famassetborrowapplylist/FamAssetBorrowApplyListEdit.vue';
+import dayjs from 'dayjs'; // 引入子表组件
 
 const props = defineProps({
   formId: {
@@ -130,7 +132,12 @@ const props = defineProps({
     type: Function
   }
 });
+const { proxy } = getCurrentInstance();
 const emit = defineEmits(emits);
+onMounted(() => {
+  form.value.handlePersonId = proxy.$getLoginUser().id;
+  form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
+});
 const {
   form,
   formRef,

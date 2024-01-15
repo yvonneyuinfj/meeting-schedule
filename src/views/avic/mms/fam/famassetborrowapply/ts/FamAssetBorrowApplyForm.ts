@@ -1,5 +1,9 @@
 import type { FamAssetBorrowApplyDto } from '@/api/avic/mms/fam/FamAssetBorrowApplyApi'; // 引入模块DTO
-import { getFamAssetBorrowApply, saveFamAssetBorrowApply, saveFormAndStartProcess } from '@/api/avic/mms/fam/FamAssetBorrowApplyApi'; // 引入模块API
+import {
+  getFamAssetBorrowApply,
+  saveFamAssetBorrowApply,
+  saveFormAndStartProcess
+} from '@/api/avic/mms/fam/FamAssetBorrowApplyApi'; // 引入模块API
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -12,6 +16,7 @@ import {
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 export const emits = ['reloadData', 'close'];
+
 export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
   const form = ref<FamAssetBorrowApplyDto>({});
@@ -25,6 +30,9 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
     borrowReson: [
       { required: true, message: '借用理由不能为空', trigger: 'change' }
     ],
+    borrowDeptId: [
+      { required: true, message: '借用部门不能为空', trigger: 'change' }
+    ],
     handlePersonId: [
       { required: true, message: '经办人id不能为空', trigger: 'change' }
     ],
@@ -37,7 +45,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout3; // 调用布局公共方法
+  const colLayout = proxy.$colLayout3; // 调用布局公共方法
   const loading = ref(false);
   const uploadFile = ref(null); // 附件ref
   const autoCode = ref(null); // 自动编码ref
@@ -47,7 +55,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
     bpmParams.value = props.params;
   } else {
     if (proxy.$route) {
-      bpmParams.value = proxy. $route.query;
+      bpmParams.value = proxy.$route.query;
     }
   }
   if (bpmParams) {
@@ -65,6 +73,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       initForm();
     }
   });
+
   /**
    * 编辑详情页面加载数据
    * @param {String} id 行数据的id
@@ -78,8 +87,8 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       .then(async res => {
         if (res.data) {
           form.value = res.data;
-        // 处理数据
-           loading.value = false;
+          // 处理数据
+          loading.value = false;
         } else {
           initForm();
           loading.value = false;
@@ -90,6 +99,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
         loading.value = false;
       });
   }
+
   /** 保存 */
   function saveForm(params) {
     formRef.value
@@ -117,8 +127,8 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
                   if (props.bpmInstanceObject) {
                     bpmButtonParams.value = { params, result: res.data };
                   }
-                  if (!form.value.id){
-                    form.value.id=res.data;
+                  if (!form.value.id) {
+                    form.value.id = res.data;
                   }
                   uploadFile.value.upload(form.value.id || res.data); // 附件上传
                 } else {
@@ -139,6 +149,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 设置添加表单的初始值 */
   function initForm() {
     // 初始化光标定位
@@ -146,6 +157,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       closeFlowLoading(props.bpmInstanceObject);
     });
   }
+
   /** 校验通过后，读取要启动的流程模板 */
   function getBpmDefine() {
     formRef.value
@@ -180,6 +192,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
         proxy.$scrollToFirstErrorField(formRef, error);
       });
   }
+
   /** 保存并启动流程 */
   async function saveAndStartProcess(params) {
     // 点击保存并启动流程按钮触发
@@ -197,10 +210,10 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
       postData.famAssetBorrowApplyListList = subInfoList; // 挂载子表数据
-        if (autoCode.value) {
-          // 获取编码码段值
-          postData.applyNo = autoCode.value.getSegmentValue();
-        }
+      if (autoCode.value) {
+        // 获取编码码段值
+        postData.applyNo = autoCode.value.getSegmentValue();
+      }
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
@@ -214,8 +227,8 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
               bpmButtonParams.value = { params, result: res.data };
             }
             bpmResult.value = res.data;
-            if (!form.value.id){
-              form.value.id=res.data.formId;
+            if (!form.value.id) {
+              form.value.id = res.data.formId;
             }
             uploadFile.value.upload(form.value.id || res.data); // 附件上传
           } else {
@@ -227,6 +240,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
         });
     }
   }
+
   /** 保存、保存并启动流程处理成功后的逻辑 */
   function successCallback() {
     if (props.bpmInstanceObject) {
@@ -248,6 +262,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 数据保存失败的回调 */
   function errorCallback() {
     if (props.bpmInstanceObject) {
@@ -259,6 +274,7 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+
   /** 附件上传完之后的回调函数 */
   function afterUploadEvent(successFile, errorFile) {
     if (errorFile.length > 0) {
@@ -269,37 +285,44 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
       successCallback();
     }
   }
+
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
   }
+
   /** 点击流程按钮的前置事件 */
   function beforeClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 点击流程按钮的后置事件 */
   function afterClickBpmButtons() {
     return new Promise(resolve => {
       resolve(true);
     });
   }
+
   /** 表单字段是否显示 */
   function fieldVisible(fieldName) {
     checkAuthJson();
     return getFieldVisible(authJson.value, fieldName);
   }
+
   /** 表单字段是否可编辑 */
   function fieldDisabled(fieldName) {
     checkAuthJson();
     return getFieldDisabled(authJson.value, fieldName, props.bpmInstanceObject);
   }
+
   /** 表单字段是否显示 */
   function fieldRequired(fieldName) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+
   /** 校验表单附件密级 */
   function validateUploaderFileSecret() {
     const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
@@ -309,11 +332,13 @@ export function useFamAssetBorrowApplyForm({ props: props, emit: emit }) {
     }
     return true;
   }
+
   /** 表单附件是否必填(按elementId) */
   function attachmentRequired(fieldName) {
     const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
     return res;
   }
+
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
