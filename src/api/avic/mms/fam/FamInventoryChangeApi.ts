@@ -4,6 +4,7 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/fam/faminventorychanges';
+
 /** FAM_INVENTORY_CHANGE */
 export interface FamInventoryChangeDto extends BaseBeanModel {
   /** 数据密级 */
@@ -150,6 +151,8 @@ export interface FamInventoryChangeDto extends BaseBeanModel {
   assetType?: any;
   /** 质保期 */
   warrantyPeriod?: string;
+  changeApplyNo?: string;
+  changeReason?: string;
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */
@@ -162,21 +165,21 @@ export function listFamInventoryChangeByPage(param: QueryParamModel): Promise<Re
 }
 
 /** 根据id加载数据 */
-export function getFamInventoryChange (id: string): Promise<ResponseBaseData<FamInventoryChangeDto>> {
+export function getFamInventoryChange(id: string): Promise<ResponseBaseData<FamInventoryChangeDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamInventoryChange (form: FamInventoryChangeDto): Promise<ResponseBaseData<any>> {
+export function saveFamInventoryChange(form: FamInventoryChangeDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,
@@ -197,4 +200,9 @@ export function exportExcel(param) {
     method: 'post'
   } as downloadParam;
   return downloadSysFile(download);
+}
+
+/**财务部提交及使用部门更改位置信息时新增及更新*/
+export function otherSaveFamInventoryChange(form: FamInventoryChangeDto): Promise<ResponseBaseData<any>> {
+  return request.post(basePath + '/other-save/v1', form);
 }
