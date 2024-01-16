@@ -687,7 +687,7 @@
       <a-button v-if="showProcess" title="保存并启动流程" type="primary" :loading="loading"
                 @click="saveAndStartProcess">保存并启动流程
       </a-button>
-      <a-button v-else title="保存" type="primary" :loading="loading" @click="saveForm">保存
+      <a-button v-else title="保存" type="primary" :loading="loading" @click="addForm">保存
       </a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
@@ -872,7 +872,7 @@ const {
   secretLevelList,
   bodyStyle,
   assetsStatusList,
-  saveForm,
+  addForm,
   ynMilitaryKeyEquipList,
   assetSecretLevelList,
   importedOrNotList,

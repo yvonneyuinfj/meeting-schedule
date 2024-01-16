@@ -39,13 +39,13 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
   const importedOrNotList = ref([]); // 是否为进口设备通用代码
   const assetTypeList = ref([]); // 资产分类通用代码
   const autoCode = ref(null); // 自动编码ref
-  const assetSecretLevelList = ref([])
+  const assetSecretLevelList = ref([]);
   const lookupParams = [
     { fieldName: 'assetsStatus', lookUpType: 'FAM_ASSETS_STATUS' },
     { fieldName: 'ynMilitaryKeyEquip', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'importedOrNot', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'assetType', lookUpType: 'FAM_ASSET_TYPE' },
-    { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' },
+    { fieldName: 'assetSecretLevel', lookUpType: 'FAM_SECRET_LEVEL' }
   ];
   const authJson = ref(null);
   // const formDisable: Map<string, boolean> = new Map();
@@ -169,6 +169,56 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
             const subInfoList = famInventoryChangeListEdit.value.getChangedData(); // 获取子表数据
             // 处理数据
             postData.famInventoryChangeListList = subInfoList; // 挂载子表数据
+            // 发送请求
+            saveFamInventoryChange(postData)
+              .then(res => {
+                if (res.success) {
+                  if (props.bpmInstanceObject) {
+                    bpmButtonParams.value = { params, result: res.data };
+                  }
+                  if (!form.value.id) {
+                    form.value.id = res.data;
+                  }
+                  successCallback();
+                } else {
+                  loading.value = false;
+                }
+              })
+              .catch(() => {
+                loading.value = false;
+              });
+          })
+          .catch(error => {
+            console.log('error', error);
+            loading.value = false;
+          });
+      })
+      .catch(error => {
+        // 定位校验失败元素
+        proxy.$scrollToFirstErrorField(formRef, error);
+      });
+  }
+
+  /** 保存 */
+  function addForm(params) {
+    formRef.value
+      .validate()
+      .then(async () => {
+        famInventoryChangeListEdit.value
+          .validate(async validate => {
+            if (!validate) {
+              return;
+            }
+            loading.value = true;
+            const postData = proxy.$lodash.cloneDeep(form.value);
+            const subInfoList = famInventoryChangeListEdit.value.getChangedData(); // 获取子表数据
+            // 处理数据
+            postData.famInventoryChangeListList = subInfoList; // 挂载子表数据
+            if (autoCode.value) {
+              // 获取编码码段值
+              postData.changeApplyNo = autoCode.value.getSegmentValue();
+            }
+
             // 发送请求
             saveFamInventoryChange(postData)
               .then(res => {
@@ -375,6 +425,7 @@ export function useFamInventoryChangeForm({ props: props, emit: emit }) {
     bodyStyle,
     formDisable,
     saveForm,
+    addForm,
     saveAndStartProcess,
     closeModal,
     fieldVisible,
