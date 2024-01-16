@@ -427,6 +427,17 @@ const columns = [
     resizable: true,
     align: 'left'
   },
+  {
+    title: '处置价格',
+    dataIndex: 'handlePrice',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    customRender: text => {
+      return proxy.$formatZero(text.value, 2);
+    },
+    align: 'right'
+  },
   // {
   //   title: '处置部门名称',
   //   dataIndex: 'handleDeptName',
