@@ -4,6 +4,7 @@ import type { downloadParam } from '@/utils/download-util';
 import { downloadSysFile } from '@/utils/download-util';
 
 const basePath = '/mms/fam/famhandles';
+
 /** FAM_HANDLE */
 export interface FamHandleDto extends BaseBeanModel {
   /** SECRET_LEVEL */
@@ -68,6 +69,8 @@ export interface FamHandleDto extends BaseBeanModel {
   applicationDocumentNumber?: string;
   /** 批复文号 */
   approvalNumber?: string;
+  /** 处置价格 */
+  handlePrice?: number;
   bpmState?: string;
   bpmType?: string;
   /** 子表集合 */
@@ -80,21 +83,21 @@ export function listFamHandleByPage(param: QueryParamModel): Promise<ResponsePag
 }
 
 /** 根据id加载数据 */
-export function getFamHandle (id: string): Promise<ResponseBaseData<FamHandleDto>> {
+export function getFamHandle(id: string): Promise<ResponseBaseData<FamHandleDto>> {
   return request.get(basePath + '/get/' + id + '/v1');
 }
 
 /** 保存表单数据 */
-export function saveFamHandle (form: FamHandleDto): Promise<ResponseBaseData<any>> {
+export function saveFamHandle(form: FamHandleDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,

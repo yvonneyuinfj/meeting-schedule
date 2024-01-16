@@ -10,19 +10,20 @@
       <a-row>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applyNo')">
           <a-form-item name="applyNo" label="申请单编号" :rules="fieldRequired('applyNo')" has-feedback>
-              <AvicAutoCode
-                v-model:value="form.applyNo"
-                ref="autoCode"
-                code-type="FAM_APPLY_NO"
-                code-param="FAM_HANDLE"
-                :allow-clear="true"
-                :disabled="fieldDisabled('applyNo')"
-                placeholder="请输入申请单编号"
-              />
+            <AvicAutoCode
+              v-model:value="form.applyNo"
+              ref="autoCode"
+              code-type="FAM_APPLY_NO"
+              code-param="FAM_HANDLE"
+              :allow-clear="true"
+              :disabled="fieldDisabled('applyNo')"
+              placeholder="请输入申请单编号"
+            />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('isUsedScientificrs')">
-          <a-form-item name="isUsedScientificrs" label="是否科研用" :rules="fieldRequired('isUsedScientificrs')" has-feedback>
+          <a-form-item name="isUsedScientificrs" label="是否科研用" :rules="fieldRequired('isUsedScientificrs')"
+                       has-feedback>
             <a-select
               v-model:value="form.isUsedScientificrs"
               :auto-focus="true"
@@ -62,15 +63,28 @@
             />
           </a-form-item>
         </a-col>
-        </a-row>
-        <a-row>
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePrice')">
+          <a-form-item name="handlePrice" label="处置价格" :rules="fieldRequired('handlePrice')" has-feedback>
+            <a-input-number
+              v-model:value="form.handlePrice"
+              :min="0"
+              :max="99999999.99"
+              :precision="2"
+              :step="0.01"
+              :disabled="fieldDisabled('handlePrice')"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
         <a-col v-bind="colLayout.cols3" v-if="fieldVisible('handleReason')">
           <a-form-item name="handleReason" label="处置理由" :rules="fieldRequired('handleReason')" has-feedback>
-            <a-textarea v-model:value="form.handleReason" :rows="2" :disabled="fieldDisabled('handleReason')" />
+            <a-textarea v-model:value="form.handleReason" :rows="2" :disabled="fieldDisabled('handleReason')"/>
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('assetAlternateSolution')">
-          <a-form-item name="assetAlternateSolution" label="资产更新替换方案" :rules="fieldRequired('assetAlternateSolution')" has-feedback>
+          <a-form-item name="assetAlternateSolution" label="资产更新替换方案"
+                       :rules="fieldRequired('assetAlternateSolution')" has-feedback>
             <a-input
               v-model:value="form.assetAlternateSolution"
               :disabled="fieldDisabled('assetAlternateSolution')"
@@ -116,7 +130,8 @@
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('applicationDocumentNumber')">
-          <a-form-item name="applicationDocumentNumber" label="申请文件号" :rules="fieldRequired('applicationDocumentNumber')" has-feedback>
+          <a-form-item name="applicationDocumentNumber" label="申请文件号"
+                       :rules="fieldRequired('applicationDocumentNumber')" has-feedback>
             <a-input
               v-model:value="form.applicationDocumentNumber"
               :disabled="fieldDisabled('applicationDocumentNumber')"
@@ -131,21 +146,21 @@
             />
           </a-form-item>
         </a-col>
-      <a-col v-bind="colLayout.cols3">
-        <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
-          <AvicUploader
-            element-id="1"
-            ref="uploadFile"
-            label="上传附件"
-            :form-id="form.id"
-            :bpm-instance-object="props.bpmInstanceObject"
-            :form-secret-level="form.secretLevel"
-            :allow-download="true"
-            table-name="FAM_HANDLE"
-            @afterUpload="afterUploadEvent"
-          />
-        </a-form-item>
-      </a-col>
+        <a-col v-bind="colLayout.cols3">
+          <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
+            <AvicUploader
+              element-id="1"
+              ref="uploadFile"
+              label="上传附件"
+              :form-id="form.id"
+              :bpm-instance-object="props.bpmInstanceObject"
+              :form-secret-level="form.secretLevel"
+              :allow-download="true"
+              table-name="FAM_HANDLE"
+              @afterUpload="afterUploadEvent"
+            />
+          </a-form-item>
+        </a-col>
       </a-row>
     </a-form>
     <FamHandleListEdit
@@ -206,7 +221,6 @@ const {
   bpmParams,
   layout,
   colLayout,
-  secretLevelList,
   isUsedScientificrsList,
   uploadFile,
   afterUploadEvent,

@@ -62,6 +62,18 @@
               />
             </a-form-item>
           </a-col>
+          <a-col v-bind="colLayout.cols">
+            <a-form-item name="handlePrice" label="处置价格">
+              <a-input-number
+                v-model:value="form.handlePrice"
+                :min="0"
+                :max="99999999.99"
+                :precision="2"
+                :step="0.01"
+                placeholder="请输入处置价格"
+              />
+            </a-form-item>
+          </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols3">

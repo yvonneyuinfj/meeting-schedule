@@ -1823,7 +1823,6 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = []; // 清空选中
   loading.value = true;
-  debugger
   switch (proxy.$getLoginUser().entityDeptCode) {
     case 'C150':
       break;

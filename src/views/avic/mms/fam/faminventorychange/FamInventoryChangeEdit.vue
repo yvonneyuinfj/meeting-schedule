@@ -246,8 +246,10 @@
                 v-model:value="form.responseUserId"
                 type="userSelect"
                 placeholder="请选择责任人"
-                :disabled="formDisable['responseUserId']"
+                :defaultShowValue="form.responseUserIdAlias"
+                disabled
               />
+              <!--              :disabled="formDisable['responseUserId']"-->
             </a-form-item>
           </a-col>
           <!--          <a-col v-bind="colLayout.cols2">-->
@@ -369,16 +371,16 @@
               />
             </a-form-item>
           </a-col>
-<!--          <a-col v-bind="colLayout.cols2">-->
-<!--            <a-form-item name="producer" label="生产商">-->
-<!--              <a-input-->
-<!--                v-model:value="form.producer"-->
-<!--                :maxLength="64"-->
-<!--                placeholder="请输入厂商"-->
-<!--                :disabled="formDisable.get('producer')"-->
-<!--              />-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="producer" label="生产商">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.producer"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入厂商"-->
+          <!--                :disabled="formDisable.get('producer')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <!--          <a-col v-bind="colLayout.cols2">-->
           <!--            <a-form-item name="buildProject" label="建设项目">-->
           <!--              <a-input-->
@@ -497,16 +499,16 @@
               </a-input>
             </a-form-item>
           </a-col>
-<!--          <a-col v-bind="colLayout.cols2">-->
-<!--            <a-form-item name="fundSource" label="资金来源">-->
-<!--              <a-input-->
-<!--                v-model:value="form.fundSource"-->
-<!--                :maxLength="64"-->
-<!--                placeholder="请输入资金来源"-->
-<!--                :disabled="formDisable['fundSource')"-->
-<!--              />-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col v-bind="colLayout.cols2">-->
+          <!--            <a-form-item name="fundSource" label="资金来源">-->
+          <!--              <a-input-->
+          <!--                v-model:value="form.fundSource"-->
+          <!--                :maxLength="64"-->
+          <!--                placeholder="请输入资金来源"-->
+          <!--                :disabled="formDisable['fundSource')"-->
+          <!--              />-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="projectName" label="项目名称">
               <a-input
@@ -681,10 +683,11 @@
           </a-col>
         </a-row>
       </a-form>
-      <FamInventoryChangeListEdit ref="famInventoryChangeListEdit" />
+      <FamInventoryChangeListEdit ref="famInventoryChangeListEdit"/>
     </a-spin>
     <template #footer>
-      <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+      <a-button v-if="showProcess" title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+      <a-button v-else title="保存" type="primary" :loading="loading" @click="otherSaveForm">保存</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
@@ -831,6 +834,11 @@ function handleSummit() {
     });
 }
 
+const showProcess = computed(() => {
+  return ['C410', 'A220', 'A140', 'C450', 'C310', 'C350'].includes(proxy.$getLoginUser().entityDeptCode) ? true :
+    proxy.$getLoginUser().entityDeptCode === 'C150' ? false : form.value.responseUserId ? true : false;
+});
+
 const {
   form,
   formRef,
@@ -840,7 +848,7 @@ const {
   assetSecretLevelList,
   loading,
   formDisable,
-  secretLevelList,
+  otherSaveForm,
   assetsStatusList,
   ynMilitaryKeyEquipList,
   bodyStyle,
