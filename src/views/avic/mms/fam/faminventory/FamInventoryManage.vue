@@ -821,7 +821,7 @@
               </template>
               删除
             </a-button> -->
-            <a-button
+   <!--         <a-button
                 v-hasPermi="['famInventory:import']"
                 title="导入"
                 type="primary"
@@ -832,7 +832,7 @@
                 <import-outlined/>
               </template>
               导入
-            </a-button>
+            </a-button> -->
             <a-button
                 v-hasPermi="['famInventory:export']"
                 title="导出"
