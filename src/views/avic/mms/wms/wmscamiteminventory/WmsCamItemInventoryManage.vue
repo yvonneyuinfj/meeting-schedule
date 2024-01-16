@@ -426,7 +426,7 @@ const columns = [
     dataIndex: 'mdsCustomerTypeId',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -435,7 +435,7 @@ const columns = [
     dataIndex: 'planNo',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -453,7 +453,7 @@ const columns = [
     dataIndex: 'mdsItemCode',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -462,7 +462,7 @@ const columns = [
     dataIndex: 'mdsItemName',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -532,7 +532,7 @@ const columns = [
     dataIndex: 'projectNumber',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -559,7 +559,7 @@ const columns = [
     dataIndex: 'batchEngineModel',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
@@ -568,7 +568,7 @@ const columns = [
     dataIndex: 'supplierBatchNumber',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'left'
   },
