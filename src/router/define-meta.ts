@@ -7,7 +7,8 @@ export const allowList = [
   'oauth2Login',
   'koalLogin',
   'httpheaderLogin',
-  'accessfromConsole'
+  'accessfromConsole',
+  'schedule'
 ]; // no redirect whitelist
 const ssoInfo = getssoInfo();
 let loginPath = '/user/login';

@@ -106,6 +106,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             ws: false,
             changeOrigin: true
             // rewrite: (p) => p.replace(/^\/api/, '')
+          },
+          // 门户改造
+          '/api/myportal': {
+            target: 'http://127.0.0.1:10100',
+            ws: false,
+            changeOrigin: true
           }
         }
     }
