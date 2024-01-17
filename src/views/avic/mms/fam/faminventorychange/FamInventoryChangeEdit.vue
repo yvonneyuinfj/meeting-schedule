@@ -132,6 +132,8 @@
                 :step="0.01"
                 placeholder="请输入资产原值"
                 style="width: 100%"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
                 :disabled="formDisable['assetOriginalValue']"
               ></a-input-number>
             </a-form-item>
@@ -192,6 +194,8 @@
                 :step="0.01"
                 placeholder="请输入资产净值"
                 style="width: 100%"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
                 :disabled="formDisable['assetNetValue']"
               ></a-input-number>
             </a-form-item>
@@ -568,6 +572,8 @@
                 :step="0.01"
                 placeholder="请输入资产单价"
                 style="width: 100%"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
                 :disabled="formDisable['assetUnit']"
               ></a-input-number>
             </a-form-item>

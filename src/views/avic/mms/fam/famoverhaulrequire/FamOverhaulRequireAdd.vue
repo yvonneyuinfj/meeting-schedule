@@ -119,7 +119,7 @@
             >
               <a-radio-group v-model:value="form.annualProvisional" @change="annualChange">
                 <a-radio
-                  v-for="item in annualProvisionalList"
+                  v-for="item in filterAnnualProvisionalList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                   :disabled="item.disabled"
@@ -289,11 +289,16 @@
               label="项目金额（万元）"
               has-feedback
             >
-              <a-input
+              <a-input-number
                 v-model:value="form.projectAmount"
-                :maxLength="64"
+                :disabled="annual === '1'"
+                :min="0"
+                :max="9999999999.99"
+                :precision="2"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+                :step="0.01"
                 placeholder="请输入项目金额（万元）"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
               />
             </a-form-item>
           </a-col>
@@ -590,6 +595,7 @@ const {
   editorRef,
   onCreated,
   uploadFile,
+  filterAnnualProvisionalList,
   changeManagerDept,
   afterUploadEvent,
   closeModal,

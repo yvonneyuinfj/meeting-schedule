@@ -174,7 +174,7 @@
                        has-feedback>
             <a-radio-group v-model:value="form.annualProvisional" :disabled="fieldDisabled('annualProvisional')">
               <a-radio
-                v-for="item in annualProvisionalList"
+                v-for="item in filterAnnualProvisionalList"
                 :key="item.sysLookupTlId"
                 :value="item.lookupCode"
               >
@@ -415,7 +415,7 @@ const {
   secretLevelList,
   maintCategoryList,
   isUsedScientificrsList,
-  annualProvisionalList,
+  filterAnnualProvisionalList,
   isNeedReviewList,
   managerDeptIdList,
   uploadFile,

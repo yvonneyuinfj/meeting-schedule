@@ -16,7 +16,16 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="budgetUnitPrice" label="预计单价（万元）">
-              <a-input v-model:value="form.budgetUnitPrice" :maxLength="16" placeholder="请输入预计单价（万元）" />
+              <a-input-number
+                v-model:value="form.budgetUnitPrice"
+                :min="0"
+                :max="9999999999.99"
+                :precision="2"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+                :step="0.01"
+                placeholder="请输入预计单价（万元）"
+              />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">

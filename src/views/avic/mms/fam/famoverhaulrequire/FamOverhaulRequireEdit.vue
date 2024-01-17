@@ -97,7 +97,7 @@
             <a-form-item name="annualProvisional" label="年度/临时">
               <a-radio-group v-model:value="form.annualProvisional">
                 <a-radio
-                  v-for="item in annualProvisionalList"
+                  v-for="item in filterAnnualProvisionalList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                   :disabled="item.disabled"
@@ -238,6 +238,8 @@
                 :min="0"
                 :max="9999999999.99"
                 :precision="2"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
                 :step="0.01"
                 placeholder="请输入项目金额（万元）"
               />
@@ -472,6 +474,7 @@ const {
   isUsedScientificrsList,
   changeManagerDept,
   annualProvisionalList,
+  filterAnnualProvisionalList,
   isNeedReviewList,
   managerDeptIdList,
   uploadFile,

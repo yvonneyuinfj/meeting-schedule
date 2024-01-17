@@ -68,6 +68,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
   const maintCategoryList = ref([]); // 维修类别通用代码
   const isUsedScientificrsList = ref([]); // 是否使用型号经费通用代码
   const annualProvisionalList = ref([]); // 年度/临时通用代码
+  const filterAnnualProvisionalList = ref([]);
   const autoCode = ref(null); // 自动编码ref
   const isNeedReviewList = ref([]); // 是否需要评审通用代码
   const isImproveList = ref([]); // 是否提高固定资产性能
@@ -146,22 +147,24 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
 
   function changeManagerDept(v, type) {
     if (v && (v === 'C410' || v === 'A140')) {
+      filterAnnualProvisionalList.value = [];
       annualProvisionalList.value.map(item => {
-        item['disabled'] = false;
-        if (item.lookupCode == '3') {
-          item['disabled'] = true;
-          if (type && type !== 'init') form.value.annualProvisional = '';
-        }
-      });
-    }
-    if (v && (v !== 'C410' && v !== 'A140')) {
-      annualProvisionalList.value.map(item => {
-        item['disabled'] = false;
         if (item.lookupCode !== '3') {
-          item['disabled'] = true;
+          filterAnnualProvisionalList.value.push(item);
           if (type && type !== 'init') form.value.annualProvisional = '';
         }
       });
+    } else if (v && (v !== 'C410' && v !== 'A140')) {
+      annualProvisionalList.value.map(item => {
+        filterAnnualProvisionalList.value = [];
+        if (item.lookupCode === '3') {
+          filterAnnualProvisionalList.value.push(item);
+          if (type && type !== 'init') form.value.annualProvisional = '';
+        }
+      });
+    } else {
+      filterAnnualProvisionalList.value = [];
+      filterAnnualProvisionalList.value = annualProvisionalList.value;
     }
   }
 
@@ -487,6 +490,7 @@ export function useFamOverhaulRequireForm({ props: props, emit: emit }) {
     maintCategoryList,
     isUsedScientificrsList,
     changeManagerDept,
+    filterAnnualProvisionalList,
     annualProvisionalList,
     isNeedReviewList,
     isImproveList,

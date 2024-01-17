@@ -63,12 +63,34 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="budgetUnivalent" label="预算单价（元）">
-              <a-input v-model:value="form.budgetUnivalent" :maxLength="22" placeholder="请输入预算单价（元）" @input="calculate" />
+              <a-input-number
+                v-model:value="form.budgetUnivalent"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
+                @input="calculate"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+                placeholder="请输入合同金额"
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="budgetTotal" label="预算总价（元）">
-              <a-input v-model:value="form.budgetTotal" :maxLength="22" placeholder="请输入预算总价（元）" disabled />
+              <a-input-number
+                v-model:value="form.budgetTotal"
+                :max="999999999999"
+                :min="-999999999999"
+                :precision="2"
+                :step="0.01"
+                disabled=""
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
+                placeholder="请输入合同金额"
+                style="width: 100%"
+              ></a-input-number>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">

@@ -114,6 +114,8 @@
                 :min="-999999999999"
                 :precision="2"
                 :step="0.01"
+                :formatter="value => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\￥\s?|(,*)/g, '')"
                 placeholder="请输入合同金额"
                 style="width: 100%"
               ></a-input-number>
