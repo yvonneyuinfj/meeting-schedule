@@ -84,6 +84,7 @@
       :dept-level="deptLevel"
       :view-system-dept="viewSystemDept"
       :dept-url="deptUrl"
+      :filter-group="filterGroup"
       :method-type="methodType"
       :dept-search-url="deptSearchUrl"
       :dept-expand-level="deptExpandLevel"
@@ -320,6 +321,8 @@ const props = defineProps({
   getInitPositionInfoUrl: { type: String },
   /** 获取初始化岗位的组织信息请求类型 */
   getInitPositionInfoMethod: { type: String },
+  /** 是否过滤群组 */
+  filterGroup: { type: Boolean, required: false, default: false },
   /** 用户可选择的维度 */
   userSelectTabs: {
     type: Array,

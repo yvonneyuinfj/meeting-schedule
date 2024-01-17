@@ -21,7 +21,7 @@
           <template #title>
             <span>{{ titleTips }}</span>
           </template>
-          <avic-icon svg="avic-question-fill" />
+          <avic-icon svg="avic-question-fill"/>
         </a-tooltip>
       </h2>
     </div>
@@ -56,7 +56,7 @@
                 svg="avic-organization-chart"
                 color="#24b3b3"
               />
-              <avic-icon color="#0035cc" v-else svg="avic-building-fill" />
+              <avic-icon color="#0035cc" v-else svg="avic-building-fill"/>
             </span>
             <span v-if="dataRef.title.indexOf(keyword) > -1">
               {{ dataRef.title.substr(0, dataRef.title.indexOf(keyword)) }}
@@ -74,7 +74,7 @@
       <div class="container-right">
         <div class="container-right-top">
           已选{{ name + ` (` + selectLength + `)` }}
-          <delete-outlined class="total-delete-icon" title="清空" @click="handleDelTotal" />
+          <delete-outlined class="total-delete-icon" title="清空" @click="handleDelTotal"/>
         </div>
         <div class="checkgroup">
           <s-table
@@ -89,11 +89,11 @@
             <template #bodyCell="{ column, text, record }">
               <template v-if="column.key === 'title'">
                 <span class="" :title="record['title']">
-                  <avic-icon svg="avic-organization-chart" color="#24b3b3" />
+                  <avic-icon svg="avic-organization-chart" color="#24b3b3"/>
                   {{ text }}
                 </span>
                 <span class="checkclose" title="删除" @click="handleDelItem($event, record)">
-                  <avic-icon svg="avic-close-fill" />
+                  <avic-icon svg="avic-close-fill"/>
                 </span>
               </template>
             </template>
@@ -105,6 +105,7 @@
 </template>
 <script lang="ts" setup>
 import { getInitDeptInfo, httpRequest } from './api';
+
 const { proxy } = getCurrentInstance();
 const props = defineProps({
   /** 是否显示 */
@@ -133,6 +134,8 @@ const props = defineProps({
   defaultLoadDeptId: { type: String, required: false, default: '' },
   /** 部门等级 */
   deptLevel: { type: Number, required: false },
+  /** 是否过滤群组 */
+  filterGroup: { type: Boolean, required: false, default: false },
   /** 是否显示无效部门 */
   viewSystemDept: { type: Boolean, required: false, default: false },
   /** 部门请求地址 */
@@ -331,7 +334,8 @@ function initDeptInfo(data) {
         $emit('defaultBack', result);
       }, 100);
     })
-    .catch(() => {});
+    .catch(() => {
+    });
 }
 
 /**
@@ -464,7 +468,8 @@ function loadDataAsyn(node) {
         }
         resolve();
       })
-      .catch(() => {});
+      .catch(() => {
+      });
   });
 }
 
@@ -528,6 +533,7 @@ function setTreeData(data) {
           tim.selectable = false;
         } else {
           tim.selectable = true;
+          if(props.filterGroup && tim.attributes.deptCode.length > 4) tim.selectable = false;
         }
       }
       if (tim.children) {

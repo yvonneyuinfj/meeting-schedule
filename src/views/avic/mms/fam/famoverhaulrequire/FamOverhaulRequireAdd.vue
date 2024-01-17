@@ -263,6 +263,7 @@
               <AvicCommonSelect
                 v-model:value="form.budgetOrg"
                 :disabled="annual === '1'"
+                :filterGroup="true"
                 type="deptSelect"
                 placeholder="请选择预算组织"
                 :defaultShowValue="form.budgetOrgAlias"
