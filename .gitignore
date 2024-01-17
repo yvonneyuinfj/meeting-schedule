@@ -24,3 +24,5 @@ pnpm-debug.log*
 # ignore lock
 package-lock.json
 /js
+.vscode/settings.json
+yarn.lock

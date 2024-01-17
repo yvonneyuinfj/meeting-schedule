@@ -2,6 +2,7 @@ import 'ant-design-vue/dist/antd.variable.less';
 import '@surely-vue/table/dist/index.less';
 import './assets/styles/base-style.less';
 import './assets/styles/excel-form-style.less';
+import './assets/styles/full-calendar.less';
 import VueGridLayout from 'vue-grid-layout';
 
 import { createApp } from 'vue';
