@@ -2,8 +2,8 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable
-      ref="pmsFindSourceVendor"
-      table-key="pmsFindSourceVendor"
+      ref="pmsReviewExpert"
+      table-key="pmsReviewExpert"
       :height="300"
       :columns="columns"
       :row-key="record => record.id"
@@ -25,7 +25,7 @@
         <a-space>
           <a-space>
             <a-button
-              v-hasPermi="['pmsFindSourceVendor:add']"
+              v-hasPermi="['pmsReviewExpert:add']"
               title="添加"
               type="primary"
               @click="handleAdd"
@@ -36,7 +36,7 @@
               添加
             </a-button>
             <a-button
-              v-hasPermi="['pmsFindSourceVendor:del']"
+              v-hasPermi="['pmsReviewExpert:del']"
               title="删除"
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
@@ -57,19 +57,19 @@
       </template>
       <template #bodyCell="{ column, text, record }">
           <AvicRowEdit
-           v-if="column.dataIndex === 'isSatisfactory'"
+           v-if="column.dataIndex === 'expertType'"
             :record="record"
             :column="column.dataIndex"
           >
             <template #edit>
               <a-select
-                v-model:value="record.isSatisfactory"
+                v-model:value="record.expertType"
                 style="width: 100%"
-                placeholder="请选择是否符合要求"
-                @change="(value)=>changeControlValue(value,record,'isSatisfactory')"
+                placeholder="请选择专家类型"
+                @change="(value)=>changeControlValue(value,record,'expertType')"
               >
                 <a-select-option
-                  v-for="select in isSatisfactoryList"
+                  v-for="select in expertTypeList"
                   :key="select.sysLookupTlId"
                   :value="select.lookupCode"
                   :title="select.lookupName"
@@ -81,110 +81,53 @@
             </template>
             <template #default>
               <AvicDictTag
-                :value="record.isSatisfactoryName"
-                :options="isSatisfactoryList"
+                :value="record.expertTypeName"
+                :options="expertTypeList"
               />
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'mdsVendorId'"
+            v-else-if="column.dataIndex === 'deptId'"
             :record="record"
             :column="column.dataIndex"
           >
             <template #edit>
-              <AvicModalSelect
-                v-model:value="record.mdsVendorId"
-                title="选择供应商名称"
-                placeholder="请选择供应商名称"
-                valueField="id"
-                showField="vendorName"
-                :defaultShowValue="record.mdsVendorName"
-                :selectComponent="mdsVendorSelectComponent"
-                :allow-clear="true"
-                @selectConfirm="changeVendor($event, record)"
-              />
+              <AvicCommonSelect
+                v-model:value="record.deptId"
+                :defaultShowValue="record.deptIdAlias"
+                placeholder="请选择部门"
+                type="deptSelect"
+                @callback="
+                  (value, _selectRows) => {
+                    changeCommonSelect(value,record,'deptId')
+                  }
+                "
+            />
             </template>
             <template #default>
-              {{ record.mdsVendorName }}
+              {{ record['deptIdAlias'] }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="column.dataIndex === 'isRelevance'"
+            v-else-if="column.dataIndex === 'expertId'"
             :record="record"
             :column="column.dataIndex"
           >
             <template #edit>
-              <a-select
-                v-model:value="record.isRelevance"
-                style="width: 100%"
-                placeholder="请选择候选供应商关联关系"
-                @change="(value)=>changeControlValue(value,record,'isRelevance')"
-              >
-                <a-select-option
-                  v-for="select in isRelevanceList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
+              <AvicCommonSelect
+                v-model:value="record.expertId"
+                :defaultShowValue="record.expertIdAlias"
+                placeholder="请选择专家名称"
+                type="userSelect"
+                @callback="
+                  (value, _selectRows) => {
+                    changeCommonSelect(value,record,'expertId')
+                  }
+                "
+            />
             </template>
             <template #default>
-              <AvicDictTag
-                :value="record.isRelevanceName"
-                :options="isRelevanceList"
-              />
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'isStandard'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
-                v-model:value="record.isStandard"
-                style="width: 100%"
-                placeholder="请选择是否所合格供应商"
-                @change="(value)=>changeControlValue(value,record,'isStandard')"
-              >
-                <a-select-option
-                  v-for="select in isStandardList"
-                  :key="select.sysLookupTlId"
-                  :value="select.lookupCode"
-                  :title="select.lookupName"
-                  :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              <AvicDictTag
-                :value="record.isStandardName"
-                :options="isStandardList"
-              />
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="['quote','finalPrice'].includes(
-               column.dataIndex
-              )"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-input
-                v-model:value="record[column.dataIndex]"
-                :maxLength="22"
-                @input="$forceUpdate()"
-                style="width: 100%"
-                placeholder="请输入"
-                @blur="blurInput($event, record, column.dataIndex)"
-             >
-              </a-input>
+              {{ record['expertIdAlias'] }}
             </template>
           </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
@@ -205,11 +148,8 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { PmsFindSourceVendorDto } from '@/api/avic/mms/pms/PmsFindSourceVendorApi'; // 引入模块DTO
-import { listPmsFindSourceVendorByPage } from '@/api/avic/mms/pms/PmsFindSourceVendorApi'; // 引入模块API
-import MdsVendorSelect from '@/views/avic/mms/mds/mdsvendor/MdsVendorSelect.vue';
-
-const mdsVendorSelectComponent = MdsVendorSelect;
+import type { PmsReviewExpertDto } from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块DTO
+import { listPmsReviewExpertByPage } from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -226,9 +166,9 @@ const props = defineProps({
 });
 const columns = [
   {
-    title: '候选供应商名称',
-    dataIndex: 'mdsVendorId',
-    key: 'mdsVendorId',
+    title: '专家类型',
+    dataIndex: 'expertType',
+    key: 'expertType',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -237,71 +177,28 @@ const columns = [
         ['class']: 'required-table-title'
       };
     },
+    align: 'center'
+  },
+  {
+    title: '专家名称',
+    dataIndex: 'expertId',
+    key: 'expertId',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
     align: 'left'
   },
   {
-    title: '是否所合格供应商',
-    dataIndex: 'isStandard',
-    key: 'isStandard',
+    title: '部门',
+    dataIndex: 'deptId',
+    key: 'deptId',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '候选供应商关联关系',
-    dataIndex: 'isRelevance',
-    key: 'isRelevance',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  {
-    title: '是否符合要求',
-    dataIndex: 'isSatisfactory',
-    key: 'isSatisfactory',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
-  },
-  // {
-  //   title: '报价（元）',
-  //   dataIndex: 'quote',
-  //   key: 'quote',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '最终价格（元）',
-  //   dataIndex: 'finalPrice',
-  //   key: 'finalPrice',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-
+    align: 'left'
+  }
 ] as any[];
-const queryForm = ref<PmsFindSourceVendorDto>({});
+const queryForm = ref<PmsReviewExpertDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -313,7 +210,7 @@ const queryParam = reactive({
   sidx: null, // 排序字段
   sord: null // 排序方式: desc降序 asc升序
 });
-const pmsFindSourceVendor = ref(null);
+const pmsReviewExpert = ref(null);
 const list = ref([]); //表格数据集合
 const initialList = ref([]); // 记录每次刷新得到的表格的数据
 const selectedRowKeys = ref([]); // 选中数据主键集合
@@ -321,27 +218,14 @@ const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
-const isStandardList = ref([]); // 是否所合格供应商通用代码
-const isRelevanceList = ref([]); // 候选供应商关联关系通用代码
-const isSatisfactoryList = ref([]); // 是否符合要求通用代码
-const secretLevelList = ref([]); // SECRET_LEVEL通用代码
+const expertTypeList = ref([]); // 专家类型通用代码
+const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
-  { fieldName: 'isStandard', lookUpType: 'YN_FLAG' },
-  { fieldName: 'isRelevance', lookUpType: 'YN_FLAG' },
-  { fieldName: 'isSatisfactory', lookUpType: 'YN_FLAG' }
+  { fieldName: 'expertType', lookUpType: 'PMS_EXPERT_TYPE' }
 ];
 const validateRules = {
-  mdsVendorId: [
-    { required:true, message: '供应商名称列不能为空' }
-  ],
-  isStandard: [
-    { required:true, message: '是否所合格供应商列不能为空' }
-  ],
-  isRelevance: [
-    { required:true, message: '候选供应商关联关系列不能为空' }
-  ],
-  isSatisfactory: [
-    { required:true, message: '是否符合要求列不能为空' }
+  expertType: [
+    { required:true, message: '专家类型列不能为空' }
   ]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
@@ -369,9 +253,9 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  queryForm.value.pmsFindSourceId = props.mainId ? props.mainId : '-1';
+  queryForm.value.pmsReviewId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
-  listPmsFindSourceVendorByPage(queryParam)
+  listPmsReviewExpertByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
@@ -388,9 +272,7 @@ function getList() {
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
-    isStandardList.value = result.isStandard;
-    isRelevanceList.value = result.isRelevance;
-    isSatisfactoryList.value = result.isSatisfactory;
+    expertTypeList.value = result.expertType;
   });
 }
 /** 获取修改的数据 */
@@ -407,14 +289,9 @@ function handleAdd() {
   let item = {
     id: 'newLine' + proxy.$uuid(),
     operationType_: 'insert',
-    mdsVendorId: '',
-    isStandard: undefined,
-    isRelevance: undefined,
-    isSatisfactory: undefined,
-    quote: '',
-    quoteCn: '',
-    finalPrice: '',
-    finalPriceCn: '',
+    expertType: undefined,
+    expertId: '',
+    deptId: '',
     editable: true // true为编辑中, false为未编辑
   };
   const newData = [...list.value];
@@ -491,6 +368,10 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+/** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
+function changeCommonSelect(value, record, column) {
+  record[column + 'Alias'] = value.names;
+}
 /**控件变更事件 */
 function changeControlValue(values, record, column) {
   let labels = [];
@@ -510,15 +391,11 @@ function changeControlValue(values, record, column) {
     record[column + 'Name'] = labels.join(',');
   }
 }
-/** 输入框的值失去焦点 */
-function blurInput(e, record, column) {
-  proxy.$validateData(e.target.value, column, validateRules, record); // 校验数据
-}
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
   for (let index in records) {
-    flag = proxy.$validateRecordData(records[index], validateRules, list.value, pmsFindSourceVendor);
+    flag = proxy.$validateRecordData(records[index], validateRules, list.value, pmsReviewExpert);
     if (!flag) {
       break;
     }
@@ -541,9 +418,20 @@ function validate(callback) {
   }
 }
 
-function changeVendor(e, record) {
-  record.mdsVendorName = e[0].vendorName;
-}
+watch(
+  () => props.mainId,
+  newVal => {
+    if (newVal) {
+      getList(); // 查询表格数据
+    } else {
+      selectedRowKeys.value = []; // 清空选中
+      selectedRows.value = [];
+      list.value = [];
+      totalPage.value = 0;
+    }
+  },
+  { immediate: true }
+);
 
 defineExpose({
   validate,

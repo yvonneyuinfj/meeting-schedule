@@ -131,48 +131,12 @@
               <a-space>
                 <a-button
                   v-hasPermi="['pmsFindSource:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleAdd"
-                >
-                  <template #icon>
-                    <plus-outlined/>
-                  </template>
-                  添加
-                </a-button>
-                <a-button
-                  v-hasPermi="['pmsFindSource:add']"
                   :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
                   type="default"
                   :loading="delLoading"
                   @click="handleStartFlow"
                 >
                   提交审批
-                </a-button>
-                <a-button
-                  v-hasPermi="['pmsFindSource:edit']"
-                  title="编辑"
-                  type="primary"
-                  ghost
-                  @click="handleEdit"
-                >
-                  <template #icon>
-                    <edit-outlined/>
-                  </template>
-                  编辑
-                </a-button>
-                <a-button
-                  v-hasPermi="['pmsFindSource:del']"
-                  title="删除"
-                  danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  :loading="delLoading"
-                  @click="handleDelete(selectedRows, selectedRowKeys)"
-                >
-                  <template #icon>
-                    <delete-outlined/>
-                  </template>
-                  删除
                 </a-button>
               </a-space>
             </template>
@@ -209,24 +173,8 @@
           </AvicTable>
         </div>
       </div>
-      <!-- 添加页面弹窗 -->
-      <PmsFindSourceAdd
-        v-if="showAddModal"
-        ref="addModal"
-        :bpmOperatorRefresh="getList"
-        @reloadData="getList"
-        @close="showAddModal = false"
-      />
-      <!-- 编辑页面弹窗 -->
-      <PmsFindSourceEdit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
-      />
       <!-- 详情页面弹窗 -->
-      <PmsFindSourceDetail
+      <PmsReviewDetail
         v-if="showDetailModal"
         ref="detailModal"
         :form-id="formId"
@@ -234,26 +182,55 @@
       />
     </AvicPane>
     <AvicPane>
-      <!--子表组件-->
-      <PmsFindSourceVendorManage
-        key="pmsFindSourceVendorManage"
-        ref="pmsFindSourceVendorManage"
-        :mainId="mainId"
-      />
+      <AvicSplit>
+        <AvicPane size="300px">
+          <div style="padding: 8px;">
+            <a-button title="保存" type="primary" :loading="saveLoading" @click="saveForm">
+              保存
+            </a-button>
+            <div style="margin: 8px 0"> 采购评审情况记录: </div>
+            <a-textarea
+              :autosize="{ minRows: 8, maxRows: 12 }"
+              v-model:value="reviewContent"
+              placeholder="请维护采购评审情况记录"
+              allow-clear/>
+          </div>
+        </AvicPane>
+        <AvicPane>
+          <!--子表组件-->
+          <PmsReviewVendorEdit
+            key="pmsReviewVendorEdit"
+            ref="pmsReviewVendorEdit"
+            :mainId="mainId"
+          />
+        </AvicPane>
+        <AvicPane>
+          <!--子表组件-->
+          <PmsReviewExpertEdit
+            key="pmsReviewExpertEdit"
+            ref="pmsReviewExpertEdit"
+            :mainId="mainId"
+          />
+        </AvicPane>
+      </AvicSplit>
+
     </AvicPane>
   </AvicSplit>
 </template>
 <script lang="ts" setup>
-import type {PmsFindSourceDto} from '@/api/avic/mms/pms/PmsFindSourceApi'; // 引入模块DTO
-import {listPmsFindSourceByPage, delPmsFindSource, saveFormAndStartProcess} from '@/api/avic/mms/pms/PmsFindSourceApi'; // 引入模块API
-import PmsFindSourceAdd from './PmsFindSourceAdd.vue'; // 引入添加页面组件
-import PmsFindSourceEdit from './PmsFindSourceEdit.vue'; // 引入编辑页面组件
-import PmsFindSourceDetail from './PmsFindSourceDetail.vue'; // 引入详情页面组件
-import PmsFindSourceVendorManage from '../pmsfindsourcevendor/PmsFindSourceVendorManage.vue'; // 引入子表页面组件
+import type {PmsReviewDto} from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块DTO
+import {listPmsReviewByPage, saveFormAndStartProcess} from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块API
+import PmsReviewDetail from './PmsReviewDetail.vue'; // 引入详情页面组件
 import flowUtils, {startFlowByFormCode} from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import PmsReviewExpertEdit from '../pmsreviewexpert/PmsReviewExpertEdit.vue'; // 引入子表页面组件
+import PmsReviewVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsReviewVendorEdit.vue'
 
+const pmsReviewExpertEdit = ref(null)
+const pmsReviewVendorEdit = ref(null)
+
+const reviewContent = ref('')
+const saveLoading = ref(false)
 const {proxy} = getCurrentInstance();
-
 const layout = {
   labelCol: {flex: '120px'},
   wrapperCol: {flex: '1'}
@@ -366,7 +343,7 @@ const columns = [
     fixed: 'right'
   }
 ];
-const queryForm = ref<PmsFindSourceDto>({
+const queryForm = ref<PmsReviewDto>({
   bpmState: 'all',
   bpmType: 'all'
 }); // 高级查询对象
@@ -394,15 +371,6 @@ const selectedRows = ref([]); //选中行集合
 const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
-const procurementMethodList = ref([]); // 采购方式通用代码
-const pmsPriceList = ref([]); // 采购价格通用代码
-const secretLevelList = ref([]); // 密级通用代码
-const supplierSelectionCriteriaList = ref([]); // 供应商中选标准通用代码
-const lookupParams = [
-  {fieldName: 'procurementMethod', lookUpType: 'PMS_PROCUREMENT_METHOD'},
-  {fieldName: 'pmsPrice', lookUpType: 'PMS_PRICE'},
-  {fieldName: 'supplierSelectionCriteria', lookUpType: 'PMS_SUPPLIER_SELECTION_CRITERIA'}
-];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
 });
@@ -410,8 +378,6 @@ const mainId = computed(() => {
 onMounted(() => {
   // 加载表格数据
   getList();
-  // 加载查询区所需通用代码
-  getLookupList();
 });
 
 /** 查询数据  */
@@ -419,7 +385,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  listPmsFindSourceByPage(queryParam)
+  listPmsReviewByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
@@ -438,15 +404,6 @@ function getList() {
       totalPage.value = 0;
       loading.value = false;
     });
-}
-
-/** 获取通用代码  */
-function getLookupList() {
-  proxy.$getLookupByType(lookupParams, result => {
-    procurementMethodList.value = result.procurementMethod;
-    pmsPriceList.value = result.pmsPrice;
-    supplierSelectionCriteriaList.value = result.supplierSelectionCriteria;
-  });
 }
 
 /** 根据流程状态及发起人查询数据 */
@@ -482,8 +439,7 @@ function toggleAdvanced() {
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
-    reqPlanNo: value,
-    pmsTaskNo: value
+    pmsFindSourceId: value
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
@@ -513,40 +469,6 @@ function handleFlowDetail(record) {
       bpmOperatorRefresh: getList
     });
   }
-}
-
-/** 删除 */
-function handleDelete(rows, ids) {
-  if (ids.length == 0) {
-    proxy.$message.warning('请选择要删除的数据！');
-    return;
-  }
-  if (rows.filter(row => row.bpmState && row.bpmState !== 'start')?.length > 0) {
-    proxy.$message.warning('只有拟稿中的数据才可以删除！');
-    return;
-  }
-  proxy.$confirm({
-    title: '确定删除已选数据及关联的子表数据吗？',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      delPmsFindSource(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
-    }
-  });
 }
 
 /** 勾选复选框时触发 */
@@ -583,14 +505,14 @@ function handleStartFlow() {
     onOk: () => {
       delLoading.value = true;
       startFlowByFormCode({
-        formCode: 'PmsFindSource',
+        formCode: 'PmsReview',
         formData: selectedRows.value[0],
         callback: bpmDefinedInfo => {
           // 处理数据
           const postData = proxy.$lodash.cloneDeep(selectedRows.value[0]);
           const params = {
             processDefId: bpmDefinedInfo.dbid || bpmDefinedInfo.value.defineId,
-            formCode: 'PmsFindSource',
+            formCode: 'PmsReview',
             postData
           };
           saveFormAndStartProcess(params)
@@ -613,6 +535,10 @@ function handleStartFlow() {
       });
     }
   });
+}
+
+function saveForm() {
+
 }
 
 </script>

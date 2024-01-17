@@ -3,8 +3,8 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-        ref="pmsFindSourceVendor"
-        table-key="pmsFindSourceVendor"
+        ref="pmsReviewExpert"
+        table-key="pmsReviewExpert"
         :columns="columns"
         :row-key="record => record.id"
         :data-source="list"
@@ -49,7 +49,7 @@
           <a-input-search
             class="opt-btn-commonsearch"
             style="width: 200px"
-            placeholder="请输入供应商名称或报价（元）"
+            placeholder="请输入专家编码或部门名称"
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { listPmsFindSourceVendorByPage, delPmsFindSourceVendor } from '@/api/avic/mms/pms/PmsFindSourceVendorApi'; // 引入模块API
+import { listPmsReviewExpertByPage, delPmsReviewExpert } from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块API
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -93,69 +93,25 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '供应商名称',
-    dataIndex: 'mdsVendorName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否所合格供应商',
-    dataIndex: 'isStandardName',
+    title: '专家类型',
+    dataIndex: 'expertTypeName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   },
   {
-    title: '候选供应商关联关系',
-    dataIndex: 'isRelevanceName',
+    title: '专家名称',
+    dataIndex: 'expertIdAlias',
     ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '是否符合要求',
-    dataIndex: 'isSatisfactoryName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  {
-    title: '报价（元）',
-    dataIndex: 'quote',
-    ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
   },
   {
-    title: '报价大写',
-    dataIndex: 'quoteCn',
+    title: '部门',
+    dataIndex: 'deptIdAlias',
     ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '最终价格（元）',
-    dataIndex: 'finalPrice',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '最终价格大写',
-    dataIndex: 'finalPriceCn',
-    ellipsis: true,
-    sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'left'
@@ -175,7 +131,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    pmsFindSourceId: ''
+    pmsReviewId: ''
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -187,14 +143,10 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
-const isStandardList = ref([]); // 是否所合格供应商通用代码
-const isRelevanceList = ref([]); // 候选供应商关联关系通用代码
-const isSatisfactoryList = ref([]); // 是否符合要求通用代码
-const secretLevelList = ref([]); // SECRET_LEVEL通用代码
+const expertTypeList = ref([]); // 专家类型通用代码
+const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
-  { fieldName: 'isStandard', lookUpType: 'YN_FLAG' },
-  { fieldName: 'isRelevance', lookUpType: 'YN_FLAG' },
-  { fieldName: 'isSatisfactory', lookUpType: 'YN_FLAG' }
+  { fieldName: 'expertType', lookUpType: 'PMS_EXPERT_TYPE' }
 ];
 
 onMounted(() => {
@@ -209,8 +161,8 @@ function getList () {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  queryParam.searchParams.pmsFindSourceId = props.mainId ? props.mainId : '-1';
-  listPmsFindSourceVendorByPage(queryParam)
+  queryParam.searchParams.pmsReviewId = props.mainId ? props.mainId : '-1';
+  listPmsReviewExpertByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
@@ -225,16 +177,14 @@ function getList () {
 /** 获取通用代码  */
 function getLookupList () {
   proxy.$getLookupByType(lookupParams, result => {
-    isStandardList.value = result.isStandard;
-    isRelevanceList.value = result.isRelevance;
-    isSatisfactoryList.value = result.isSatisfactory;
+    expertTypeList.value = result.expertType;
   });
 }
 /** 快速查询逻辑 */
 function handleKeyWordQuery (value) {
   const keyWord = {
-    mdsVendorName: value,
-    quote: value
+    expertCode: value,
+    deptName: value
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
@@ -252,7 +202,7 @@ function handleDelete (ids, type) {
     cancelText: '取消',
     onOk: () => {
       delLoading.value = true;
-      delPmsFindSourceVendor(ids)
+      delPmsReviewExpert(ids)
         .then(res => {
           if (res.success) {
             proxy.$message.success('删除成功！');

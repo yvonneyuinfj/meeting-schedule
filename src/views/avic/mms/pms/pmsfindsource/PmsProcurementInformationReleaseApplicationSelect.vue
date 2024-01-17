@@ -7,57 +7,57 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购任务编号">
               <a-input
-                  v-model:value="queryForm.pmsTaskNo"
-                  :allow-clear="true"
-                  placeholder="请输入采购任务编号"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.pmsTaskNo"
+                :allow-clear="true"
+                placeholder="请输入采购任务编号"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购计划号">
               <a-input
-                  v-model:value="queryForm.reqPlanNo"
-                  :allow-clear="true"
-                  placeholder="请输入采购计划号"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.reqPlanNo"
+                :allow-clear="true"
+                placeholder="请输入采购计划号"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item label="采购计划名称">
               <a-input
-                  v-model:value="queryForm.reqPlanName"
-                  :allow-clear="true"
-                  placeholder="请输入采购计划名称"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.reqPlanName"
+                :allow-clear="true"
+                placeholder="请输入采购计划名称"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="所属项目课题号">
               <a-input
-                  v-model:value="queryForm.projectTopicNumber"
-                  :allow-clear="true"
-                  placeholder="请输入所属项目课题号"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.projectTopicNumber"
+                :allow-clear="true"
+                placeholder="请输入所属项目课题号"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="密级">
               <a-select
-                  v-model:value="queryForm.secretLevel"
-                  :allow-clear="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  :show-search="true"
-                  option-filter-prop="children"
-                  placeholder="请选择密级"
+                v-model:value="queryForm.secretLevel"
+                :allow-clear="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                :show-search="true"
+                option-filter-prop="children"
+                placeholder="请选择密级"
               >
                 <a-select-option
-                    v-for="item in secretLevelList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in secretLevelList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -67,17 +67,17 @@
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="产品类型">
               <a-select
-                  v-model:value="queryForm.productType"
-                  :allow-clear="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  :show-search="true"
-                  option-filter-prop="children"
-                  placeholder="请选择产品类型"
+                v-model:value="queryForm.productType"
+                :allow-clear="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                :show-search="true"
+                option-filter-prop="children"
+                placeholder="请选择产品类型"
               >
                 <a-select-option
-                    v-for="item in productTypeList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in productTypeList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -87,17 +87,17 @@
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="产品需求分类">
               <a-select
-                  v-model:value="queryForm.productReqClassify"
-                  :allow-clear="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  :show-search="true"
-                  option-filter-prop="children"
-                  placeholder="请选择产品需求分类"
+                v-model:value="queryForm.productReqClassify"
+                :allow-clear="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                :show-search="true"
+                option-filter-prop="children"
+                placeholder="请选择产品需求分类"
               >
                 <a-select-option
-                    v-for="item in productReqClassifyList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in productReqClassifyList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -107,17 +107,17 @@
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="产品和服务类别">
               <a-select
-                  v-model:value="queryForm.productServiceCategory"
-                  :allow-clear="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  :show-search="true"
-                  option-filter-prop="children"
-                  placeholder="请选择产品和服务类别"
+                v-model:value="queryForm.productServiceCategory"
+                :allow-clear="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                :show-search="true"
+                option-filter-prop="children"
+                placeholder="请选择产品和服务类别"
               >
                 <a-select-option
-                    v-for="item in productServiceCategoryList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in productServiceCategoryList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -127,17 +127,17 @@
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="采购阶段">
               <a-select
-                  v-model:value="queryForm.procureStage"
-                  :allow-clear="true"
-                  :get-popup-container="triggerNode => triggerNode.parentNode"
-                  :show-search="true"
-                  option-filter-prop="children"
-                  placeholder="请选择采购阶段"
+                v-model:value="queryForm.procureStage"
+                :allow-clear="true"
+                :get-popup-container="triggerNode => triggerNode.parentNode"
+                :show-search="true"
+                option-filter-prop="children"
+                placeholder="请选择采购阶段"
               >
                 <a-select-option
-                    v-for="item in procureStageList"
-                    :key="item.sysLookupTlId"
-                    :value="item.lookupCode"
+                  v-for="item in procureStageList"
+                  :key="item.sysLookupTlId"
+                  :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-select-option>
@@ -147,26 +147,26 @@
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="预算金额">
               <a-input
-                  v-model:value="queryForm.budgetAmount"
-                  :allow-clear="true"
-                  placeholder="请输入预算金额"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.budgetAmount"
+                :allow-clear="true"
+                placeholder="请输入预算金额"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col v-show="advanced" v-bind="colLayout.cols">
             <a-form-item label="需求文件归档编号">
               <a-input
-                  v-model:value="queryForm.requirementsDocumentArchivingCode"
-                  :allow-clear="true"
-                  placeholder="请输入需求文件归档编号"
-                  @pressEnter="handleQuery"
+                v-model:value="queryForm.requirementsDocumentArchivingCode"
+                :allow-clear="true"
+                placeholder="请输入需求文件归档编号"
+                @pressEnter="handleQuery"
               />
             </a-form-item>
           </a-col>
           <a-col
-              style="margin-left: auto"
-              v-bind="colLayout.cols"
+            style="margin-left: auto"
+            v-bind="colLayout.cols"
           >
             <div class="table-page-search-submitButtons">
               <a-space>
@@ -192,30 +192,30 @@
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
-          ref="pmsProcurementInformationReleaseApplication"
-          :columns="columns"
-          :customRow="customRow"
-          :data-source="list"
-          :loading="loading"
-          :pageParameter="queryParam.pageParameter"
-          :row-key="record => record.id"
-          :row-selection="{
+        ref="pmsProcurementInformationReleaseApplication"
+        :columns="columns"
+        :customRow="customRow"
+        :data-source="list"
+        :loading="loading"
+        :pageParameter="queryParam.pageParameter"
+        :row-key="record => record.id"
+        :row-selection="{
           selectedRowKeys: selectedRowKeys,
           onChange: onSelectChange,
           columnWidth: 40,
           fixed: true
         }"
-          :show-table-setting="false"
-          :total="totalPage"
-          table-key="pmsProcurementInformationReleaseApplication"
-          @change="handleTableChange"
-          @refresh="getList"
+        :show-table-setting="false"
+        :total="totalPage"
+        table-key="pmsProcurementInformationReleaseApplication"
+        @change="handleTableChange"
+        @refresh="getList"
       >
         <template #bodyCell="{ column, text, record, index }">
           <template v-if="column.dataIndex === 'id'">
             {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
           </template>
-          </template>
+        </template>
       </AvicTable>
     </div>
   </div>
@@ -229,10 +229,10 @@ import {
 } from '@/api/avic/mms/pms/PmsProcurementInformationReleaseApplicationApi'; // 引入模块API
 
 const $emit = defineEmits(['select', 'handleRowDblClick']);
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 const layout = {
-  labelCol: { flex: '0 0 120px' },
-  wrapperCol: { flex: '1 1 0' }
+  labelCol: {flex: '0 0 120px'},
+  wrapperCol: {flex: '1 1 0'}
 };
 const colLayout = proxy.$colLayout4; // 页面表单响应式布局对象
 const columns = [
@@ -391,13 +391,13 @@ const qualificationRequirementsList = ref([]); // 资质要求通用代码
 const professionalFieldList = ref([]); // 专业领域通用代码
 const dockingWorkdaysList = ref([]); // 对接工作日通用代码
 const lookupParams = [
-  { fieldName: 'productType', lookUpType: 'PMS_PRODUCT_TYPE' },
-  { fieldName: 'productReqClassify', lookUpType: 'PMS_PRODUCT_REQ_CLASSIFY' },
-  { fieldName: 'productServiceCategory', lookUpType: 'PMS_PRODUCT_SERVICE_CATEGORY' },
-  { fieldName: 'procureStage', lookUpType: 'PMS_PROCURE_STAGE' },
-  { fieldName: 'qualificationRequirements', lookUpType: 'PMS_QUALIFICATION_REQUIREMENTS' },
-  { fieldName: 'professionalField', lookUpType: 'PMS_PROFESSIONAL_FIELD' },
-  { fieldName: 'dockingWorkdays', lookUpType: 'PMS_DOCKING_WORKDAYS' }
+  {fieldName: 'productType', lookUpType: 'PMS_PRODUCT_TYPE'},
+  {fieldName: 'productReqClassify', lookUpType: 'PMS_PRODUCT_REQ_CLASSIFY'},
+  {fieldName: 'productServiceCategory', lookUpType: 'PMS_PRODUCT_SERVICE_CATEGORY'},
+  {fieldName: 'procureStage', lookUpType: 'PMS_PROCURE_STAGE'},
+  {fieldName: 'qualificationRequirements', lookUpType: 'PMS_QUALIFICATION_REQUIREMENTS'},
+  {fieldName: 'professionalField', lookUpType: 'PMS_PROFESSIONAL_FIELD'},
+  {fieldName: 'dockingWorkdays', lookUpType: 'PMS_DOCKING_WORKDAYS'}
 ];
 const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
 const attachOpen = ref(false); // 附件弹窗
@@ -418,16 +418,16 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listPmsProcurementInformationReleaseApplicationByPage(queryParam)
-      .then(response => {
-        list.value = response.data.result;
-        totalPage.value = response.data.pageParameter.totalCount;
-        loading.value = false;
-      })
-      .catch(() => {
-        list.value = [];
-        totalPage.value = 0;
-        loading.value = false;
-      });
+    .then(response => {
+      list.value = response.data.result;
+      totalPage.value = response.data.pageParameter.totalCount;
+      loading.value = false;
+    })
+    .catch(() => {
+      list.value = [];
+      totalPage.value = 0;
+      loading.value = false;
+    });
 }
 
 /** 获取通用代码 */

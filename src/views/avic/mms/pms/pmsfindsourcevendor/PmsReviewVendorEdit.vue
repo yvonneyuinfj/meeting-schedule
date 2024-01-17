@@ -9,53 +9,18 @@
       :row-key="record => record.id"
       :data-source="list"
       :loading="loading"
-      :row-selection="{
-        selectedRowKeys: selectedRowKeys,
-        onChange: onSelectChange,
-        columnWidth: 40,
-        fixed: true
-      }"
       :showTableSetting="false"
       :pageParameter="queryParam.pageParameter"
       :total="totalPage"
       :customRow="customRow"
       @change="handleTableChange"
     >
-      <template v-if="!props.readOnly" #toolBarLeft>
-        <a-space>
-          <a-space>
-            <a-button
-              v-hasPermi="['pmsFindSourceVendor:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
-            >
-              <template #icon>
-                <plus-outlined />
-              </template>
-              添加
-            </a-button>
-            <a-button
-              v-hasPermi="['pmsFindSourceVendor:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
-                event => {
-                  handleDelete(selectedRowKeys, event);
-                }
-              "
-            >
-              <template #icon>
-                <delete-outlined />
-              </template>
-              删除
-            </a-button>
-          </a-space>
-        </a-space>
-      </template>
-      <template #bodyCell="{ column, text, record }">
+      <template #bodyCell="{ column, text, record, index }">
+        <template v-if="column.dataIndex === 'id'">
+          {{
+            index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1)
+          }}
+        </template>
           <AvicRowEdit
            v-if="column.dataIndex === 'isSatisfactory'"
             :record="record"
@@ -84,28 +49,6 @@
                 :value="record.isSatisfactoryName"
                 :options="isSatisfactoryList"
               />
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'mdsVendorId'"
-            :record="record"
-            :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicModalSelect
-                v-model:value="record.mdsVendorId"
-                title="选择供应商名称"
-                placeholder="请选择供应商名称"
-                valueField="id"
-                showField="vendorName"
-                :defaultShowValue="record.mdsVendorName"
-                :selectComponent="mdsVendorSelectComponent"
-                :allow-clear="true"
-                @selectConfirm="changeVendor($event, record)"
-              />
-            </template>
-            <template #default>
-              {{ record.mdsVendorName }}
             </template>
           </AvicRowEdit>
           <AvicRowEdit
@@ -169,7 +112,7 @@
             </template>
           </AvicRowEdit>
           <AvicRowEdit
-            v-else-if="['quote','finalPrice'].includes(
+            v-else-if="['quote','finalPrice', 'score'].includes(
                column.dataIndex
               )"
             :record="record"
@@ -177,6 +120,7 @@
           >
             <template #edit>
               <a-input
+                type="number"
                 v-model:value="record[column.dataIndex]"
                 :maxLength="22"
                 @input="$forceUpdate()"
@@ -207,9 +151,7 @@
 <script lang="ts" setup>
 import type { PmsFindSourceVendorDto } from '@/api/avic/mms/pms/PmsFindSourceVendorApi'; // 引入模块DTO
 import { listPmsFindSourceVendorByPage } from '@/api/avic/mms/pms/PmsFindSourceVendorApi'; // 引入模块API
-import MdsVendorSelect from '@/views/avic/mms/mds/mdsvendor/MdsVendorSelect.vue';
 
-const mdsVendorSelectComponent = MdsVendorSelect;
 
 const { proxy } = getCurrentInstance();
 const props = defineProps({
@@ -226,9 +168,17 @@ const props = defineProps({
 });
 const columns = [
   {
+    title: '序号',
+    dataIndex: 'id',
+    ellipsis: true,
+    width: 60,
+    align: 'center',
+    fixed: 'left'
+  },
+  {
     title: '候选供应商名称',
-    dataIndex: 'mdsVendorId',
-    key: 'mdsVendorId',
+    dataIndex: 'mdsVendorName',
+    key: 'mdsVendorName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -240,65 +190,32 @@ const columns = [
     align: 'left'
   },
   {
-    title: '是否所合格供应商',
-    dataIndex: 'isStandard',
-    key: 'isStandard',
+    title: '报价（元）',
+    dataIndex: 'quote',
+    key: 'quote',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
+    align: 'left'
   },
   {
-    title: '候选供应商关联关系',
-    dataIndex: 'isRelevance',
-    key: 'isRelevance',
+    title: '最终价格（元）',
+    dataIndex: 'finalPrice',
+    key: 'finalPrice',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
+    align: 'left'
   },
   {
-    title: '是否符合要求',
-    dataIndex: 'isSatisfactory',
-    key: 'isSatisfactory',
+    title: '综合评分',
+    dataIndex: 'score',
+    key: 'score',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
-      return {
-        ['class']: 'required-table-title'
-      };
-    },
-    align: 'center'
+    align: 'left'
   },
-  // {
-  //   title: '报价（元）',
-  //   dataIndex: 'quote',
-  //   key: 'quote',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '最终价格（元）',
-  //   dataIndex: 'finalPrice',
-  //   key: 'finalPrice',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
 
 ] as any[];
 const queryForm = ref<PmsFindSourceVendorDto>({});
@@ -346,17 +263,6 @@ const validateRules = {
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
-// 非只读状态添加操作列
-if (!props.readOnly) {
-  columns.push({
-    title: '操作',
-    dataIndex: 'action',
-    key: 'action',
-    width: 120,
-    fixed: 'right',
-    align: 'center'
-  });
-}
 
 onMounted(() => {
   // 加载表格数据
@@ -544,6 +450,21 @@ function validate(callback) {
 function changeVendor(e, record) {
   record.mdsVendorName = e[0].vendorName;
 }
+
+watch(
+  () => props.mainId,
+  newVal => {
+    if (newVal) {
+      getList(); // 查询表格数据
+    } else {
+      selectedRowKeys.value = []; // 清空选中
+      selectedRows.value = [];
+      list.value = [];
+      totalPage.value = 0;
+    }
+  },
+  { immediate: true }
+);
 
 defineExpose({
   validate,

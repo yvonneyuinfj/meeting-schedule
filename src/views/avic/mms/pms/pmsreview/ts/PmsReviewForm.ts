@@ -1,5 +1,5 @@
-import type { PmsFindSourceDto } from '@/api/avic/mms/pms/PmsFindSourceApi'; // 引入模块DTO
-import { getPmsFindSource, savePmsFindSource, saveFormAndStartProcess } from '@/api/avic/mms/pms/PmsFindSourceApi'; // 引入模块API
+import type { PmsReviewDto } from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块DTO
+import { getPmsReview, savePmsReview, saveFormAndStartProcess } from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块API
 import {
   default as flowUtils,
   startFlowByFormCode,
@@ -12,45 +12,24 @@ import {
 } from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 
 export const emits = ['reloadData', 'close'];
-export function usePmsFindSourceForm({ props: props, emit: emit }) {
+export function usePmsReviewForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<PmsFindSourceDto>({});
+  const form = ref<PmsReviewDto>({});
   const formRef = ref(null);
-  const formCode = 'PmsFindSource';
+  const formCode = 'PmsReview';
   const openType = ref('add'); // 流程表单的打开方式，add: 流程中心打开, edit: 待办打开
   const bpmParams = ref<any>({}); // 存储来自prop或者url的参数信息
   const bpmButtonParams = ref<any>({}); // 提交按钮传递的参数
   const bpmResult = ref(null); // 表单驱动方式启动流程的流程数据
   const rules: Record<string, Rule[]> = {
-    reqPlanName: [
-      { required: true, message: '采购计划名称不能为空', trigger: 'change' }
-    ],
-    handlePersonId: [
-      { required: true, message: '经办人不能为空', trigger: 'change' }
-    ],
-    vendorReason: [
-      { required: true, message: '供应商理由不能为空', trigger: 'change' }
-    ],
-    vendorReviewMode: [
-      { required: true, message: '候选供应商审查方式不能为空', trigger: 'change' }
-    ],
   };
-  const pmsFindSourceVendorEdit = ref();
+  const pmsReviewExpertEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
   };
-  const colLayout = proxy. $colLayout1; // 调用布局公共方法
+  const colLayout = proxy. $colLayout2; // 调用布局公共方法
   const loading = ref(false);
-  const procurementMethodList = ref([]); // 采购方式通用代码
-  const pmsPriceList = ref([]); // 采购价格通用代码
-  const secretLevelList = ref([]); // 密级通用代码
-  const supplierSelectionCriteriaList = ref([]); // 供应商中选标准通用代码
-  const lookupParams = [
-    { fieldName: 'procurementMethod', lookUpType: 'PMS_PROCUREMENT_METHOD' },
-    { fieldName: 'pmsPrice', lookUpType: 'PMS_PRICE' },
-    { fieldName: 'supplierSelectionCriteria', lookUpType: 'PMS_SUPPLIER_SELECTION_CRITERIA' }
-    ];
   const authJson = ref(null);
 
   if (props.params) {
@@ -67,8 +46,6 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
   }
 
   onMounted(() => {
-    // 加载查询区所需通用代码
-    getLookupList();
     if (props.formId || form.value.id) {
       // 编辑详情页面加载数据
       getFormData(props.formId || form.value.id);
@@ -77,14 +54,6 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
       initForm();
     }
   });
-  /** 获取通用代码  */
-  function getLookupList () {
-    proxy.$getLookupByType(lookupParams, result => {
-    procurementMethodList.value = result.procurementMethod;
-    pmsPriceList.value = result.pmsPrice;
-    supplierSelectionCriteriaList.value = result.supplierSelectionCriteria;
-    });
-  }
   /**
    * 编辑详情页面加载数据
    * @param {String} id 行数据的id
@@ -94,7 +63,7 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
       return;
     }
     loading.value = true;
-    getPmsFindSource(id)
+    getPmsReview(id)
       .then(async res => {
         if (res.data) {
           form.value = res.data;
@@ -115,18 +84,18 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(async () => {
-        pmsFindSourceVendorEdit.value
+        pmsReviewExpertEdit.value
           .validate(async validate => {
             if (!validate) {
               return;
             }
             loading.value = true;
             const postData = proxy.$lodash.cloneDeep(form.value);
-            const subInfoList = pmsFindSourceVendorEdit.value.getChangedData(); // 获取子表数据
+            const subInfoList = pmsReviewExpertEdit.value.getChangedData(); // 获取子表数据
             // 处理数据
-            postData.pmsFindSourceVendorList = subInfoList; // 挂载子表数据
+            postData.pmsReviewExpertList = subInfoList; // 挂载子表数据
             // 发送请求
-            savePmsFindSource(postData)
+            savePmsReview(postData)
               .then(res => {
                 if (res.success) {
                   if (props.bpmInstanceObject) {
@@ -166,7 +135,7 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
     formRef.value
       .validate()
       .then(() => {
-        pmsFindSourceVendorEdit.value
+        pmsReviewExpertEdit.value
           .validate(validate => {
             if (!validate) {
               return;
@@ -197,11 +166,11 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
       // 校验表单并选择需要启动的流程模板
       getBpmDefine();
     } else {
-      const subInfoList = pmsFindSourceVendorEdit.value.getChangedData(); // 获取子表数据
+      const subInfoList = pmsReviewExpertEdit.value.getChangedData(); // 获取子表数据
       loading.value = true;
       // 处理数据
       const postData = proxy.$lodash.cloneDeep(form.value);
-      postData.pmsFindSourceVendorList = subInfoList; // 挂载子表数据
+      postData.pmsReviewExpertList = subInfoList; // 挂载子表数据
       const param = {
         processDefId: params.dbid || bpmParams.value.defineId,
         formCode: formCode,
@@ -305,10 +274,6 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
-    procurementMethodList,
-    pmsPriceList,
-    secretLevelList,
-    supplierSelectionCriteriaList,
     saveForm,
     saveAndStartProcess,
     closeModal,
@@ -317,7 +282,7 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
     fieldRequired,
     beforeClickBpmButtons,
     afterClickBpmButtons,
-    pmsFindSourceVendorEdit
+    pmsReviewExpertEdit
   };
 }
 

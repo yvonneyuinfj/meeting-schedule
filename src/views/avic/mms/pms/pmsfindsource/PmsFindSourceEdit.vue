@@ -17,30 +17,26 @@
         class="form-excel-style"
       >
         <a-row :gutter="0">
-          <a-col v-bind="colLayout.cols">
+          <a-col :span="12">
             <a-form-item name="reqPlanName" label="采购计划名称" has-feedback>
-              <a-input
-                v-model:value="form.reqPlanName"
-                :maxLength="4000"
-                :auto-focus="true"
-                placeholder="请输入采购计划名称"
+              <AvicModalSelect
+                v-model:value="form.pmsPlanId"
+                title="选择采购计划名称"
+                placeholder="请选择采购计划名称"
+                valueField="pmsPlanId"
+                showField="reqPlanName"
+                :defaultShowValue="form.reqPlanName"
+                :selectComponent="PmsProcurementInformationReleaseApplicationSelectComponent"
+                :allow-clear="true"
+                @selectConfirm="changePlan($event, form)"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="pmsProcurementInformationReleaseApplicationId" label="科研采购信息发布申请ID">
-              <a-input
-                v-model:value="form.pmsProcurementInformationReleaseApplicationId"
-                :maxLength="64"
-                placeholder="请输入科研采购信息发布申请ID"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col v-bind="colLayout.cols">
-            <a-form-item name="pmsMethod" label="采购方式">
-              <a-radio-group v-model:value="form.pmsMethod">
+            <a-form-item name="procurementMethod" label="采购方式">
+              <a-radio-group v-model:value="form.procurementMethod" disabled>
                 <a-radio
-                  v-for="item in pmsMethodList"
+                  v-for="item in procurementMethodList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -66,11 +62,11 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item
-              name="projectTopicNumber"
+              name="vendorReason"
               label="确定供应商理由"
             >
               <a-textarea
-                v-model:value="form.projectTopicNumber"
+                v-model:value="form.vendorReason"
                 :rows="2"
                 :maxLength="4000"
                 placeholder="请输入确定供应商理由"
@@ -81,11 +77,11 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item
-              name="productReqClassify"
+              name="vendorReviewMode"
               label="候选供应商审查方式"
             >
               <a-textarea
-                v-model:value="form.productReqClassify"
+                v-model:value="form.vendorReviewMode"
                 :rows="2"
                 :maxLength="4000"
                 placeholder="请输入候选供应商审查方式"
@@ -114,7 +110,12 @@
 </template>
 <script lang="ts" setup>
 import { usePmsFindSourceForm, emits } from './ts/PmsFindSourceForm'; // 引入表单ts
-import PmsFindSourceVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsFindSourceVendorEdit.vue'; // 引入子表组件
+import PmsFindSourceVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsFindSourceVendorEdit.vue';
+import PmsProcurementInformationReleaseApplicationSelect
+  from "@/views/avic/mms/pms/pmsfindsource/PmsProcurementInformationReleaseApplicationSelect.vue"; // 引入子表组件
+
+const PmsProcurementInformationReleaseApplicationSelectComponent = PmsProcurementInformationReleaseApplicationSelect;
+
 
 const props = defineProps({
   formId: {
@@ -135,6 +136,17 @@ const props = defineProps({
     type: Function
   }
 });
+
+function changePlan(e, record) {
+  record.pmsTaskNo = e[0].pmsTaskNo;
+  record.reqPlanNo = e[0].reqPlanNo;
+  record.reqPlanName = e[0].reqPlanName;
+  record.pmsProcurementInformationReleaseApplicationId = e[0].id;
+  record.secretLevel = e[0].secretLevel;
+  record.procurementMethod = e[0].procurementMethod;
+  record.supplierSelectionCriteria = e[0].supplierSelectionCriteria;
+}
+
 const emit = defineEmits(emits);
 const {
   form,
@@ -143,9 +155,10 @@ const {
   layout,
   colLayout,
   loading,
-  pmsMethodList,
+  procurementMethodList,
   pmsPriceList,
   secretLevelList,
+  supplierSelectionCriteriaList,
   saveForm,
   closeModal,
   pmsFindSourceVendorEdit

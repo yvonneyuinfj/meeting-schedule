@@ -32,10 +32,10 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="pmsMethod" label="采购方式">
-              <a-radio-group v-model:value="form.pmsMethod">
+            <a-form-item name="procurementMethod" label="采购方式">
+              <a-radio-group v-model:value="form.procurementMethod" disabled>
                 <a-radio
-                  v-for="item in pmsMethodList"
+                  v-for="item in procurementMethodList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -61,11 +61,11 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item
-              name="projectTopicNumber"
+              name="vendorReason"
               label="确定供应商理由"
             >
               <a-textarea
-                v-model:value="form.projectTopicNumber"
+                v-model:value="form.vendorReason"
                 :rows="2"
                 :maxLength="4000"
                 placeholder="请输入确定供应商理由"
@@ -76,11 +76,11 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item
-              name="productReqClassify"
+              name="vendorReviewMode"
               label="候选供应商审查方式"
             >
               <a-textarea
-                v-model:value="form.productReqClassify"
+                v-model:value="form.vendorReviewMode"
                 :rows="2"
                 :maxLength="4000"
                 placeholder="请输入候选供应商审查方式"
@@ -98,7 +98,7 @@
           </a-col>
         </a-row>
       </a-form>
-      <PmsFindSourceVendorEdit ref="pmsFindSourceVendorEdit"/>
+      <PmsFindSourceVendorEdit ref="pmsFindSourceVendorEdit" />
     </a-spin>
     <template #footer>
       <a-button title="保存并启动流程" type="primary" :loading="loading" @click="saveAndStartProcess">保存并启动流程
@@ -109,7 +109,7 @@
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import {usePmsFindSourceForm, emits} from './ts/PmsFindSourceForm'; // 引入表单ts
+import { usePmsFindSourceForm, emits } from './ts/PmsFindSourceForm'; // 引入表单ts
 import PmsFindSourceVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsFindSourceVendorEdit.vue'; // 引入子表组件
 import PmsProcurementInformationReleaseApplicationSelect from './PmsProcurementInformationReleaseApplicationSelect.vue'
 
@@ -141,6 +141,8 @@ function changePlan(e, record) {
   record.reqPlanName = e[0].reqPlanName;
   record.pmsProcurementInformationReleaseApplicationId = e[0].id;
   record.secretLevel = e[0].secretLevel;
+  record.procurementMethod = e[0].procurementMethod;
+  record.supplierSelectionCriteria = e[0].supplierSelectionCriteria;
 }
 
 
@@ -152,9 +154,10 @@ const {
   layout,
   colLayout,
   loading,
-  pmsMethodList,
+  procurementMethodList,
   pmsPriceList,
   secretLevelList,
+  supplierSelectionCriteriaList,
   closeModal,
   saveForm,
   saveAndStartProcess,

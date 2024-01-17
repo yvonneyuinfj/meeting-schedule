@@ -17,19 +17,11 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('pmsProcurementInformationReleaseApplicationId')">
-          <a-form-item name="pmsProcurementInformationReleaseApplicationId" label="科研采购信息发布申请ID" :rules="fieldRequired('pmsProcurementInformationReleaseApplicationId')" has-feedback>
-            <a-input
-              v-model:value="form.pmsProcurementInformationReleaseApplicationId"
-              :disabled="fieldDisabled('pmsProcurementInformationReleaseApplicationId')"
-            />
-          </a-form-item>
-        </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('pmsMethod')">
-          <a-form-item name="pmsMethod" label="采购方式" :rules="fieldRequired('pmsMethod')" has-feedback>
-            <a-radio-group v-model:value="form.pmsMethod" :disabled="fieldDisabled('pmsMethod')">
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('procurementMethod')">
+          <a-form-item name="procurementMethod" label="采购方式" :rules="fieldRequired('procurementMethod')" has-feedback>
+            <a-radio-group v-model:value="form.procurementMethod" :disabled="fieldDisabled('procurementMethod')">
               <a-radio
-                v-for="item in pmsMethodList"
+                v-for="item in procurementMethodList"
                 :key="item.sysLookupTlId"
                 :value="item.lookupCode"
               >
@@ -53,16 +45,16 @@
         </a-col>
         </a-row>
         <a-row>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('projectTopicNumber')">
-          <a-form-item name="projectTopicNumber" label="确定供应商理由" :rules="fieldRequired('projectTopicNumber')" has-feedback>
-            <a-textarea v-model:value="form.projectTopicNumber" :rows="2" :disabled="fieldDisabled('projectTopicNumber')" />
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('vendorReason')">
+          <a-form-item name="vendorReason" label="确定供应商理由" :rules="fieldRequired('vendorReason')" has-feedback>
+            <a-textarea v-model:value="form.vendorReason" :rows="2" :disabled="fieldDisabled('vendorReason')" />
           </a-form-item>
         </a-col>
         </a-row>
         <a-row>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('productReqClassify')">
-          <a-form-item name="productReqClassify" label="候选供应商审查方式" :rules="fieldRequired('productReqClassify')" has-feedback>
-            <a-textarea v-model:value="form.productReqClassify" :rows="2" :disabled="fieldDisabled('productReqClassify')" />
+        <a-col v-bind="colLayout.cols" v-if="fieldVisible('vendorReviewMode')">
+          <a-form-item name="vendorReviewMode" label="候选供应商审查方式" :rules="fieldRequired('vendorReviewMode')" has-feedback>
+            <a-textarea v-model:value="form.vendorReviewMode" :rows="2" :disabled="fieldDisabled('vendorReviewMode')" />
           </a-form-item>
         </a-col>
         <a-col v-bind="colLayout.cols" v-if="fieldVisible('handlePersonId')">
@@ -135,9 +127,10 @@ const {
   bpmParams,
   layout,
   colLayout,
-  pmsMethodList,
+  procurementMethodList,
   pmsPriceList,
   secretLevelList,
+  supplierSelectionCriteriaList,
   pmsFindSourceVendorEdit,
   fieldVisible,
   fieldDisabled,
