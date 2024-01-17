@@ -434,6 +434,7 @@
               <AvicCommonSelect
                 v-model:value="form.applyDeptId"
                 type="deptSelect"
+                disabled
                 placeholder="请选择申请部门"
                 :defaultShowValue="form.applyDeptIdAlias"
               />
@@ -460,6 +461,7 @@
             >
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
+                disabled
                 type="userSelect"
                 placeholder="请选择需求申请人名称"
                 :defaultShowValue="form.handlePersonIdAlias"
@@ -601,8 +603,8 @@ const {
 onMounted(() => {
   form.value.handlePersonId = proxy.$getLoginUser().id;
   form.value.handlePersonIdAlias = proxy.$getLoginUser().name;
-  form.value.applyDeptId = proxy.$getLoginUser().deptId;
-  form.value.applyDeptIdAlias = proxy.$getLoginUser().deptName;
+  form.value.applyDeptId = proxy.$getLoginUser().entityDeptId;
+  form.value.applyDeptIdAlias = proxy.$getLoginUser().entityDeptName;
 });
 
 const changeIsimp = (v) => {

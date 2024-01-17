@@ -53,7 +53,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersionId" label="经办人">
               <AvicCommonSelect v-model:value="form.handlePersionId" type="userSelect" placeholder="请选择经办人"
-                :defaultShowValue="form.handlePersionIdAlias" />
+                disabled :defaultShowValue="form.handlePersionIdAlias" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" hidden>
@@ -64,7 +64,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useDeptId" label="使用部门">
               <AvicCommonSelect v-model:value="form.useDeptId" type="deptSelect" placeholder="请选择使用部门"
-                :defaultShowValue="form.useDeptIdAlias" />
+                disabled :defaultShowValue="form.useDeptIdAlias" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" hidden>

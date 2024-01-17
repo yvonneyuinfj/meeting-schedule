@@ -5,53 +5,57 @@
         <a-row :gutter="0">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="billNo" label="单据号" has-feedback>
-              <a-input v-model:value="form.billNo" disabled />
+              <a-input v-model:value="form.billNo" disabled/>
             </a-form-item>
           </a-col>
         </a-row>
         <a-row>
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="handelReason" label="处置理由">
-              <a-textarea v-model:value="form.handelReason" :rows="2" :maxLength="4000" placeholder="请输入处置理由" />
+              <a-textarea v-model:value="form.handelReason" :rows="2" :maxLength="4000" placeholder="请输入处置理由"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptId" label="主管部门">
               <AvicCommonSelect v-model:value="form.managerDeptId" type="deptSelect" placeholder="请选择主管部门"
-                :defaultShowValue="form.managerDeptIdAlias" />
+                                :defaultShowValue="form.managerDeptIdAlias"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="managerDeptName" label="主管部门名称">
-              <a-input v-model:value="form.managerDeptName" :maxLength="64" :auto-focus="true" placeholder="请输入主管部门名称" />
+              <a-input v-model:value="form.managerDeptName" :maxLength="64" :auto-focus="true"
+                       placeholder="请输入主管部门名称"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useDeptId" label="使用部门">
               <AvicCommonSelect v-model:value="form.useDeptId" type="deptSelect" placeholder="请选择使用部门"
-                :defaultShowValue="form.useDeptIdAlias" />
+                                disabled
+                                :defaultShowValue="form.useDeptIdAlias"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useDeptName" label="使用部门名称">
-              <a-input v-model:value="form.useDeptName" :maxLength="64" placeholder="请输入使用部门名称" />
+              <a-input v-model:value="form.useDeptName" :maxLength="64" placeholder="请输入使用部门名称"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersionId" label="经办人">
               <AvicCommonSelect v-model:value="form.handlePersionId" type="deptSelect" placeholder="请选择经办人"
-                :defaultShowValue="form.handlePersionIdAlias" />
+                                disabled
+                                :defaultShowValue="form.handlePersionIdAlias"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersionName" label="经办人名称">
-              <a-input v-model:value="form.handlePersionName" :maxLength="64" placeholder="请输入经办人名称" />
+              <a-input v-model:value="form.handlePersionName" :maxLength="64" placeholder="请输入经办人名称"/>
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="secretLevel" label="数据密级" has-feedback>
               <a-select v-model:value="form.secretLevel" :get-popup-container="triggerNode => triggerNode.parentNode"
-                option-filter-prop="children" :show-search="true" :allow-clear="true" placeholder="请选择数据密级">
+                        option-filter-prop="children" :show-search="true" :allow-clear="true"
+                        placeholder="请选择数据密级">
                 <a-select-option v-for="item in secretLevelList" :key="item.sysLookupTlId" :value="item.lookupCode">
                   {{ item.lookupName }}
                 </a-select-option>
@@ -60,14 +64,16 @@
           </a-col>
           <a-col v-bind="colLayout.cols2">
             <a-form-item label="附件">
-              <AvicUploader element-id="1" form-type="edit" ref="uploadFile" :allow-download="true" :allow-preview="true"
-                :allow-delete="true" :allow-update-secret-level="true" :form-id="form.id"
-                :form-secret-level="form.secretLevel" table-name="FAM_INVISIBLE_HANDLE" @afterUpload="afterUploadEvent" />
+              <AvicUploader element-id="1" form-type="edit" ref="uploadFile" :allow-download="true"
+                            :allow-preview="true"
+                            :allow-delete="true" :allow-update-secret-level="true" :form-id="form.id"
+                            :form-secret-level="form.secretLevel" table-name="FAM_INVISIBLE_HANDLE"
+                            @afterUpload="afterUploadEvent"/>
             </a-form-item>
           </a-col>
         </a-row>
-          </a-form>
-          <FamInvisibleHandleLEdit ref="famInvisibleHandleLEdit" :mainId="formId || form.id" />
+      </a-form>
+      <FamInvisibleHandleLEdit ref="famInvisibleHandleLEdit" :mainId="formId || form.id"/>
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>

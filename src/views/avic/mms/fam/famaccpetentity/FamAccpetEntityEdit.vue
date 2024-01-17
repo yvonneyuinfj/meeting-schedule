@@ -191,6 +191,7 @@
             <a-form-item name="handlePersonId" label="经办人名称" has-feedback>
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
+                disabled
                 type="userSelect"
                 placeholder="请选择经办人名称"
                 :defaultShowValue="form.handlePersonIdAlias"

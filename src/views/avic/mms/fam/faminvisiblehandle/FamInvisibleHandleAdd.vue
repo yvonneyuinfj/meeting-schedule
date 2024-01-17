@@ -29,6 +29,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useDeptId" label="使用部门">
               <AvicCommonSelect v-model:value="form.useDeptId" type="deptSelect" placeholder="请选择使用部门"
+                                disabled
                 :defaultShowValue='proxy.$getLoginUser().deptName' />
             </a-form-item>
           </a-col>
@@ -40,6 +41,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersionId" label="经办人">
               <AvicCommonSelect v-model:value="form.handlePersionId" type="deptSelect" placeholder="请选择经办人"
+                                disabled
                 :defaultShowValue='proxy.$getLoginUser().name' />
             </a-form-item>
           </a-col>
@@ -123,7 +125,7 @@ const {
 onMounted(() => {
   form.value.handlePersionId = proxy.$getLoginUser().id;
   form.value.handlePersionName = proxy.$getLoginUser().name;
-  form.value.useDeptId = proxy.$getLoginUser().deptId;
-  form.value.useDeptName = proxy.$getLoginUser().deptName;
+  form.value.useDeptId = proxy.$getLoginUser().entityDeptId;
+  form.value.useDeptName = proxy.$getLoginUser().entityDeptName;
 });
 </script>

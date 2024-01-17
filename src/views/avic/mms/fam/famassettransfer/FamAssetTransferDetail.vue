@@ -73,6 +73,7 @@
             <AvicCommonSelect
               v-model:value="form.handlePersonId"
               type="userSelect"
+
               :defaultShowValue="form.handlePersonIdAlias"
               :disabled="fieldDisabled('handlePersonId')"
             />

@@ -359,6 +359,7 @@
               <AvicCommonSelect
                 v-model:value="form.applyDeptId"
                 type="deptSelect"
+                disabled
                 placeholder="请选择申请部门名称"
                 :defaultShowValue="form.applyDeptIdAlias"
               />
@@ -378,6 +379,7 @@
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
+                disabled
                 placeholder="请选择需求申请人名称"
                 :defaultShowValue="form.handlePersonIdAlias"
               />

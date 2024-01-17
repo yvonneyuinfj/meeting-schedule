@@ -200,7 +200,7 @@ const {
 });
 onMounted(() => {
   form.value.qualityDate = dayjs().format('YYYY-MM-DD');
-  form.value.appllDeptId = proxy.$getLoginUser().deptId;
+  form.value.appllDeptId = proxy.$getLoginUser().entityDeptId;
   form.value.applyDate = dayjs().format('YYYY-MM-DD');
 });
 

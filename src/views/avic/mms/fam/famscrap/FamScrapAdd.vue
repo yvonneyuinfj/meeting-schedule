@@ -129,6 +129,7 @@
               <AvicCommonSelect
                 v-model:value="form.handlePersonId"
                 type="userSelect"
+                disabled
                 placeholder="请选择经办人"
                 :defaultShowValue="form.handlePersonIdAlias"
               />

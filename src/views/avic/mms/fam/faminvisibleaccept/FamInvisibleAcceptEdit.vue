@@ -16,7 +16,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="persionLiable" label="责任人" has-feedback>
               <AvicCommonSelect v-model:value="form.persionLiable" type="userSelect" placeholder="请选择责任人"
-                :defaultShowValue="form.persionLiableAlias" />
+               disabled  :defaultShowValue="form.persionLiableAlias" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -33,7 +33,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item name="useDeptId" label="使用部门" has-feedback>
               <AvicCommonSelect v-model:value="form.useDeptId" type="deptSelect" placeholder="请选择使用部门"
-                :defaultShowValue="form.useDeptIdAlias" />
+                                disabled :defaultShowValue="form.useDeptIdAlias" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols" hidden>
