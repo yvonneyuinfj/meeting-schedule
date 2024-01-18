@@ -33,6 +33,7 @@
           <a-space>
             <a-button
               danger
+              v-show="!readOnly"
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               title="删除"
               :loading="delLoading"
@@ -81,6 +82,11 @@ const props = defineProps({
   mainId: {
     type: String,
     default: ''
+  },
+  // 只读
+  readOnly: {
+    type: Boolean,
+    default: false
   }
 });
 const columns = [

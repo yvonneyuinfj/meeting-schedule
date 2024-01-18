@@ -1,9 +1,10 @@
 import request from '@/utils/request';
-import type { BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel } from '@/api/model/baseModel';
-import type { downloadParam } from '@/utils/download-util';
-import { downloadSysFile } from '@/utils/download-util';
+import type {BaseBeanModel, ResponsePageData, ResponseBaseData, QueryParamModel} from '@/api/model/baseModel';
+import type {downloadParam} from '@/utils/download-util';
+import {downloadSysFile} from '@/utils/download-util';
 
 const basePath = '/mms/pms/pmsreviews';
+
 /** 采购评审 */
 export interface PmsReviewDto extends BaseBeanModel {
   /** 采购寻源 */
@@ -16,6 +17,11 @@ export interface PmsReviewDto extends BaseBeanModel {
   reviewContent?: string;
   bpmState?: string;
   bpmType?: string;
+  procurementMethodName?: string;
+  pmsPriceName?: string;
+  pmsTaskNo?: string;
+  reqPlanNo?: string;
+  reqPlanName?: string;
   /** 子表集合 */
   pmsReviewExpertList?: [];
 }
@@ -26,21 +32,21 @@ export function listPmsReviewByPage(param: QueryParamModel): Promise<ResponsePag
 }
 
 /** 根据id加载数据 */
-export function getPmsReview (id: string): Promise<ResponseBaseData<PmsReviewDto>> {
-  return request.get(basePath + '/get/' + id + '/v1');
+export function getPmsReview(id: string): Promise<ResponseBaseData<PmsReviewDto>> {
+  return request.get(basePath + '/detail/' + id);
 }
 
 /** 保存表单数据 */
-export function savePmsReview (form: PmsReviewDto): Promise<ResponseBaseData<any>> {
+export function savePmsReview(form: PmsReviewDto): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save/v1', form);
 }
 
 /** 保存并启动流程 */
 export function saveFormAndStartProcess({
-  processDefId,
-  formCode,
-  postData
-}): Promise<ResponseBaseData<any>> {
+                                          processDefId,
+                                          formCode,
+                                          postData
+                                        }): Promise<ResponseBaseData<any>> {
   return request.post(basePath + '/save-and-start-process/v1', {
     processDefId,
     formCode,
@@ -50,7 +56,7 @@ export function saveFormAndStartProcess({
 
 /** 根据id集合删除数据 */
 export function delPmsReview(ids: [string]): Promise<ResponseBaseData<any>> {
-  return request.delete(basePath + '/delete-by-ids/v1', { data: ids });
+  return request.delete(basePath + '/delete-by-ids/v1', {data: ids});
 }
 
 /** 导出Excel */

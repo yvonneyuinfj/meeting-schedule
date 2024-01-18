@@ -225,7 +225,7 @@ import type {
   PmsProcurementInformationReleaseApplicationDto
 } from '@/api/avic/mms/pms/PmsProcurementInformationReleaseApplicationApi'; // 引入模块DTO
 import {
-  listPmsProcurementInformationReleaseApplicationByPage,
+  listPmsFindSourceApplicationByPage,
 } from '@/api/avic/mms/pms/PmsProcurementInformationReleaseApplicationApi'; // 引入模块API
 
 const $emit = defineEmits(['select', 'handleRowDblClick']);
@@ -417,7 +417,7 @@ function getList() {
   selectedRowKeys.value = []; // 清空选中
   selectedRows.value = [];
   loading.value = true;
-  listPmsProcurementInformationReleaseApplicationByPage(queryParam)
+  listPmsFindSourceApplicationByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;

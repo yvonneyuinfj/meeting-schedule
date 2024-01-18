@@ -9,37 +9,37 @@
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="计划编号">
                   <a-input
-                    v-model:value="queryForm.reqPlanNo"
-                    placeholder="计划编号"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
+                      v-model:value="queryForm.reqPlanNo"
+                      placeholder="计划编号"
+                      :allow-clear="true"
+                      @pressEnter="handleQuery"
                   />
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="计划名称">
                   <a-input
-                    v-model:value="queryForm.reqPlanName"
-                    placeholder="计划名称"
-                    :allow-clear="true"
-                    @pressEnter="handleQuery"
+                      v-model:value="queryForm.reqPlanName"
+                      placeholder="计划名称"
+                      :allow-clear="true"
+                      @pressEnter="handleQuery"
                   />
                 </a-form-item>
               </a-col>
               <a-col v-bind="colLayout.cols">
                 <a-form-item label="采购方式">
                   <a-select
-                    v-model:value="queryForm.procurementMethod"
-                    :get-popup-container="triggerNode => triggerNode.parentNode"
-                    option-filter-prop="children"
-                    :show-search="true"
-                    :allow-clear="true"
-                    placeholder="请选择采购方式"
+                      v-model:value="queryForm.procurementMethod"
+                      :get-popup-container="triggerNode => triggerNode.parentNode"
+                      option-filter-prop="children"
+                      :show-search="true"
+                      :allow-clear="true"
+                      placeholder="请选择采购方式"
                   >
                     <a-select-option
-                      v-for="item in procurementMethodList"
-                      :key="item.sysLookupTlId"
-                      :value="item.lookupCode"
+                        v-for="item in procurementMethodList"
+                        :key="item.sysLookupTlId"
+                        :value="item.lookupCode"
                     >
                       {{ item.lookupName }}
                     </a-select-option>
@@ -49,17 +49,17 @@
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="采购价格">
                   <a-select
-                    v-model:value="queryForm.pmsPrice"
-                    :get-popup-container="triggerNode => triggerNode.parentNode"
-                    option-filter-prop="children"
-                    :show-search="true"
-                    :allow-clear="true"
-                    placeholder="请选择采购价格"
+                      v-model:value="queryForm.pmsPrice"
+                      :get-popup-container="triggerNode => triggerNode.parentNode"
+                      option-filter-prop="children"
+                      :show-search="true"
+                      :allow-clear="true"
+                      placeholder="请选择采购价格"
                   >
                     <a-select-option
-                      v-for="item in pmsPriceList"
-                      :key="item.sysLookupTlId"
-                      :value="item.lookupCode"
+                        v-for="item in pmsPriceList"
+                        :key="item.sysLookupTlId"
+                        :value="item.lookupCode"
                     >
                       {{ item.lookupName }}
                     </a-select-option>
@@ -69,11 +69,11 @@
               <a-col v-bind="colLayout.cols" v-show="advanced">
                 <a-form-item label="经办人">
                   <AvicCommonSelect
-                    v-model:value="queryForm.handlePersonId"
-                    type="userSelect"
-                    placeholder="请选择经办人"
-                    :defaultShowValue="queryForm.handlePersonIdAlias"
-                    @callback="
+                      v-model:value="queryForm.handlePersonId"
+                      type="userSelect"
+                      placeholder="请选择经办人"
+                      :defaultShowValue="queryForm.handlePersonIdAlias"
+                      @callback="
                       result => {
                         queryForm.handlePersonIdAlias = result.names;
                       }
@@ -82,8 +82,8 @@
                 </a-form-item>
               </a-col>
               <a-col
-                v-bind="colLayout.cols"
-                style="margin-left: auto"
+                  v-bind="colLayout.cols"
+                  style="margin-left: auto"
               >
                 <div class="table-page-search-submitButtons">
                   <a-space>
@@ -109,31 +109,31 @@
         <!-- 表格组件 -->
         <div class="table-wrapper">
           <AvicTable
-            ref="pmsFindSource"
-            table-key="pmsFindSource"
-            :columns="columns"
-            :row-key="record => record.id"
-            :data-source="list"
-            :loading="loading"
-            :row-selection="{
+              ref="pmsFindSource"
+              table-key="pmsFindSource"
+              :columns="columns"
+              :row-key="record => record.id"
+              :data-source="list"
+              :loading="loading"
+              :row-selection="{
               selectedRowKeys: selectedRowKeys,
               onChange: onSelectChange,
               columnWidth: 40,
               fixed: true
             }"
-            rowClickSelectionType="radio"
-            :pageParameter="queryParam.pageParameter"
-            :total="totalPage"
-            @change="handleTableChange"
-            @refresh="getList"
+              rowClickSelectionType="radio"
+              :pageParameter="queryParam.pageParameter"
+              :total="totalPage"
+              @change="handleTableChange"
+              @refresh="getList"
           >
             <template #toolBarLeft>
               <a-space>
                 <a-button
-                  v-hasPermi="['pmsFindSource:add']"
-                  title="添加"
-                  type="primary"
-                  @click="handleAdd"
+                    v-hasPermi="['pmsFindSource:add']"
+                    title="添加"
+                    type="primary"
+                    @click="handleAdd"
                 >
                   <template #icon>
                     <plus-outlined/>
@@ -141,20 +141,20 @@
                   添加
                 </a-button>
                 <a-button
-                  v-hasPermi="['pmsFindSource:add']"
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  type="default"
-                  :loading="delLoading"
-                  @click="handleStartFlow"
+                    v-hasPermi="['pmsFindSource:add']"
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    type="default"
+                    :loading="delLoading"
+                    @click="handleStartFlow"
                 >
                   提交审批
                 </a-button>
                 <a-button
-                  v-hasPermi="['pmsFindSource:edit']"
-                  title="编辑"
-                  type="primary"
-                  ghost
-                  @click="handleEdit"
+                    v-hasPermi="['pmsFindSource:edit']"
+                    title="编辑"
+                    type="primary"
+                    ghost
+                    @click="handleEdit"
                 >
                   <template #icon>
                     <edit-outlined/>
@@ -162,12 +162,12 @@
                   编辑
                 </a-button>
                 <a-button
-                  v-hasPermi="['pmsFindSource:del']"
-                  title="删除"
-                  danger
-                  :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-                  :loading="delLoading"
-                  @click="handleDelete(selectedRows, selectedRowKeys)"
+                    v-hasPermi="['pmsFindSource:del']"
+                    title="删除"
+                    danger
+                    :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                    :loading="delLoading"
+                    @click="handleDelete(selectedRows, selectedRowKeys)"
                 >
                   <template #icon>
                     <delete-outlined/>
@@ -179,18 +179,18 @@
             <template #toolBarRight>
               <a-space>
                 <AvicBpmFilter
-                  :allFileAuth="['pmsFindSource:all']"
-                  :myFileAuth="['pmsFindSource:my']"
-                  :defaultBpmType='queryForm.bpmType'
-                  :defaultBpmState='queryForm.bpmState'
-                  @change="changeBpmFilter"
+                    :allFileAuth="['pmsFindSource:all']"
+                    :myFileAuth="['pmsFindSource:my']"
+                    :defaultBpmType='queryForm.bpmType'
+                    :defaultBpmState='queryForm.bpmState'
+                    @change="changeBpmFilter"
                 />
                 <a-input-search
-                  class="opt-btn-commonsearch"
-                  style="width: 200px"
-                  placeholder="请输入计划编号或采购任务编号"
-                  :allow-clear="true"
-                  @search="handleKeyWordQuery"
+                    class="opt-btn-commonsearch"
+                    style="width: 200px"
+                    placeholder="请输入计划编号或采购任务编号"
+                    :allow-clear="true"
+                    @search="handleKeyWordQuery"
                 />
               </a-space>
             </template>
@@ -205,43 +205,59 @@
                   {{ record.reqPlanName }}
                 </a>
               </template>
+              <template v-else-if="column.dataIndex === 'procurementRequirements'">
+                <a @click="handleProcurementRequirements(record)">
+                  查看
+                </a>
+              </template>
+              <template v-else-if="column.dataIndex === 'detail'">
+                <a @click="handleDetail(record)">
+                  查看
+                </a>
+              </template>
             </template>
           </AvicTable>
         </div>
       </div>
       <!-- 添加页面弹窗 -->
       <PmsFindSourceAdd
-        v-if="showAddModal"
-        ref="addModal"
-        :bpmOperatorRefresh="getList"
-        @reloadData="getList"
-        @close="showAddModal = false"
+          v-if="showAddModal"
+          ref="addModal"
+          :bpmOperatorRefresh="getList"
+          @reloadData="getList"
+          @close="showAddModal = false"
       />
       <!-- 编辑页面弹窗 -->
       <PmsFindSourceEdit
-        v-if="showEditModal"
-        ref="editModal"
-        :form-id="formId"
-        @reloadData="getList"
-        @close="showEditModal = false"
+          v-if="showEditModal"
+          ref="editModal"
+          :form-id="formId"
+          @reloadData="getList"
+          @close="showEditModal = false"
+          :read-only="editModalReadOnly"
       />
       <!-- 详情页面弹窗 -->
       <PmsFindSourceDetail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
+          v-if="showDetailModal"
+          ref="detailModal"
+          :form-id="formId"
+          @close="showDetailModal = false"
       />
     </AvicPane>
     <AvicPane>
       <!--子表组件-->
       <PmsFindSourceVendorManage
-        key="pmsFindSourceVendorManage"
-        ref="pmsFindSourceVendorManage"
-        :mainId="mainId"
+          key="pmsFindSourceVendorManage"
+          ref="pmsFindSourceVendorManage"
+          :mainId="mainId"
+          :read-only="vendorReadOnly"
       />
     </AvicPane>
   </AvicSplit>
+  <!-- 子表组件 -->
+  <pms-procurement-requirements-detail v-if="procurementRequirementsOpen" ref="pmsProcurementRequirementsDetail"
+                                       :form-id="pmsProcurementRequirementsId"
+                                       @close="procurementRequirementsOpen = false"/>
 </template>
 <script lang="ts" setup>
 import type {PmsFindSourceDto} from '@/api/avic/mms/pms/PmsFindSourceApi'; // 引入模块DTO
@@ -251,8 +267,11 @@ import PmsFindSourceEdit from './PmsFindSourceEdit.vue'; // 引入编辑页面�
 import PmsFindSourceDetail from './PmsFindSourceDetail.vue'; // 引入详情页面组件
 import PmsFindSourceVendorManage from '../pmsfindsourcevendor/PmsFindSourceVendorManage.vue'; // 引入子表页面组件
 import flowUtils, {startFlowByFormCode} from '@/views/avic/bpm/bpmutils/FlowUtils.js';
+import PmsProcurementRequirementsDetail
+  from "@/views/avic/mms/pms/pmsprocurementinformationreleaseapplication/PmsProcurementRequirementsDetail.vue";
 
 const {proxy} = getCurrentInstance();
+const procurementRequirementsOpen = ref(false); // 附件弹窗
 
 const layout = {
   labelCol: {flex: '120px'},
@@ -336,6 +355,24 @@ const columns = [
     align: 'left'
   },
   {
+    title: '采购要求',
+    dataIndex: 'procurementRequirements',
+    key: 'procurementRequirements',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '详细',
+    dataIndex: 'detail',
+    key: 'detail',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '经办人',
     dataIndex: 'handlePersonIdAlias',
     ellipsis: true,
@@ -385,6 +422,7 @@ const queryParam = reactive({
 });
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
+const editModalReadOnly = ref(false); // 编辑弹窗只读
 const showDetailModal = ref(false); // 是否展示详情弹窗
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); //表格数据集合
@@ -398,6 +436,7 @@ const procurementMethodList = ref([]); // 采购方式通用代码
 const pmsPriceList = ref([]); // 采购价格通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const supplierSelectionCriteriaList = ref([]); // 供应商中选标准通用代码
+const pmsProcurementRequirementsId = ref(''); // 当前行数据id
 const lookupParams = [
   {fieldName: 'procurementMethod', lookUpType: 'PMS_PROCUREMENT_METHOD'},
   {fieldName: 'pmsPrice', lookUpType: 'PMS_PRICE'},
@@ -405,6 +444,9 @@ const lookupParams = [
 ];
 const mainId = computed(() => {
   return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
+});
+const vendorReadOnly = computed(() => {
+  return selectedRows.value.filter(row => row.bpmState && row.bpmState !== 'start')?.length > 0;
 });
 
 onMounted(() => {
@@ -420,24 +462,24 @@ function getList() {
   selectedRows.value = [];
   loading.value = true;
   listPmsFindSourceByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      // 设置表格初始选中项
-      if (list.value.length > 0) {
-        selectedRowKeys.value = [list.value[0]['id']];
-        selectedRows.value = [list.value[0]];
-      } else {
-        selectedRowKeys.value = [];
-        selectedRows.value = [];
-      }
-      loading.value = false;
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        // 设置表格初始选中项
+        if (list.value.length > 0) {
+          selectedRowKeys.value = [list.value[0]['id']];
+          selectedRows.value = [list.value[0]];
+        } else {
+          selectedRowKeys.value = [];
+          selectedRows.value = [];
+        }
+        loading.value = false;
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
 
 /** 获取通用代码  */
@@ -501,7 +543,12 @@ function handleEdit() {
     proxy.$message.warning('请选择一条要编辑的数据！');
     return;
   }
+  if (selectedRows.value.filter(row => row.bpmState && row.bpmState !== 'start')?.length > 0) {
+    proxy.$message.warning('只有拟稿中的数据才可以编辑！');
+    return;
+  }
   formId.value = selectedRows.value[0].id;
+  editModalReadOnly.value = false;
   showEditModal.value = true;
 }
 
@@ -512,6 +559,15 @@ function handleFlowDetail(record) {
       formId: record.id,
       bpmOperatorRefresh: getList
     });
+  }
+}
+
+/** 打开详情页面 */
+function handleDetail(record) {
+  if (record.id) {
+    formId.value = record.id;
+    editModalReadOnly.value = true;
+    showEditModal.value = true;
   }
 }
 
@@ -532,19 +588,19 @@ function handleDelete(rows, ids) {
     onOk: () => {
       delLoading.value = true;
       delPmsFindSource(ids)
-        .then(res => {
-          if (res.success) {
-            proxy.$message.success('删除成功！');
-            // 清空选中
-            selectedRowKeys.value = [];
-            selectedRows.value = [];
-            getList();
-          }
-          delLoading.value = false;
-        })
-        .catch(() => {
-          delLoading.value = false;
-        });
+          .then(res => {
+            if (res.success) {
+              proxy.$message.success('删除成功！');
+              // 清空选中
+              selectedRowKeys.value = [];
+              selectedRows.value = [];
+              getList();
+            }
+            delLoading.value = false;
+          })
+          .catch(() => {
+            delLoading.value = false;
+          });
     }
   });
 }
@@ -594,25 +650,31 @@ function handleStartFlow() {
             postData
           };
           saveFormAndStartProcess(params)
-            .then(res => {
-              if (res.success) {
-                handleFlowDetail(postData);
-                proxy.$message.info('提交流程成功！');
-                handleQuery();
-              } else {
+              .then(res => {
+                if (res.success) {
+                  handleFlowDetail(postData);
+                  proxy.$message.info('提交流程成功！');
+                  handleQuery();
+                } else {
+                  proxy.$message.info('提交流程失败！');
+                }
+                delLoading.value = false;
+              })
+              .catch((error) => {
+                proxy.$message.warning(error.message);
                 proxy.$message.info('提交流程失败！');
-              }
-              delLoading.value = false;
-            })
-            .catch((error) => {
-              proxy.$message.warning(error.message);
-              proxy.$message.info('提交流程失败！');
-              delLoading.value = false;
-            });
+                delLoading.value = false;
+              });
         }
       });
     }
   });
+}
+
+/** 查看 */
+function handleProcurementRequirements(record) {
+  pmsProcurementRequirementsId.value = record.pmsProcurementRequirementsId;
+  procurementRequirementsOpen.value = true;
 }
 
 </script>

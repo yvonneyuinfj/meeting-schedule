@@ -56,6 +56,11 @@ export function listPmsProcurementInformationReleaseApplicationByPage(param: Que
   return request.post(basePath + '/search-by-page/v1', param);
 }
 
+/** 获取分页数据 */
+export function listPmsFindSourceApplicationByPage(param: QueryParamModel): Promise<ResponsePageData<PmsProcurementInformationReleaseApplicationDto>> {
+  return request.post(basePath + '/search-by-page/findSource', param);
+}
+
 /** 根据id加载数据 */
 export function getPmsProcurementInformationReleaseApplication (id: string): Promise<ResponseBaseData<PmsProcurementInformationReleaseApplicationDto>> {
   return request.get(basePath + '/get/' + id + '/v1');

@@ -112,7 +112,7 @@
             ref="pmsFindSource"
             table-key="pmsFindSource"
             :columns="columns"
-            :row-key="record => record.id"
+            :row-key="record => record.pmsFindSourceId"
             :data-source="list"
             :loading="loading"
             :row-selection="{
@@ -165,21 +165,24 @@
                 }}
               </template>
               <template v-else-if="column.dataIndex === 'reqPlanName'">
-                <a @click="handleFlowDetail(record)">
+                <a @click="handleFlowDetail(record.pmsReviewId)">
                   {{ record.reqPlanName }}
+                </a>
+              </template>
+              <template v-else-if="column.dataIndex === 'procurementRequirements'">
+                <a @click="handleProcurementRequirements(record)">
+                  查看
+                </a>
+              </template>
+              <template v-else-if="column.dataIndex === 'detail'">
+                <a @click="handleFindSourceDetail(record)">
+                  查看
                 </a>
               </template>
             </template>
           </AvicTable>
         </div>
       </div>
-      <!-- 详情页面弹窗 -->
-      <PmsReviewDetail
-        v-if="showDetailModal"
-        ref="detailModal"
-        :form-id="formId"
-        @close="showDetailModal = false"
-      />
     </AvicPane>
     <AvicPane>
       <AvicSplit>
@@ -188,9 +191,9 @@
             <a-button title="保存" type="primary" :loading="saveLoading" @click="saveForm">
               保存
             </a-button>
-            <div style="margin: 8px 0"> 采购评审情况记录: </div>
+            <div style="margin: 8px 0"> 采购评审情况记录:</div>
             <a-textarea
-              :autosize="{ minRows: 8, maxRows: 12 }"
+              :autosize="{ minRows: 10, maxRows: 10 }"
               v-model:value="reviewContent"
               placeholder="请维护采购评审情况记录"
               allow-clear/>
@@ -209,8 +212,21 @@
           <PmsReviewExpertEdit
             key="pmsReviewExpertEdit"
             ref="pmsReviewExpertEdit"
-            :mainId="mainId"
+            :mainId="pmsReviewId"
           />
+          <!-- 详情页面弹窗 -->
+          <PmsFindSourceEdit
+              v-if="showEditModal"
+              ref="editModal"
+              :form-id="pmsFindSourceId"
+              @reloadData="getList"
+              @close="showEditModal = false"
+              :read-only="editModalReadOnly"
+          />
+          <!-- 子表组件 -->
+          <pms-procurement-requirements-detail v-if="procurementRequirementsOpen" ref="pmsProcurementRequirementsDetail"
+                                               :form-id="pmsProcurementRequirementsId"
+                                               @close="procurementRequirementsOpen = false"/>
         </AvicPane>
       </AvicSplit>
 
@@ -219,16 +235,21 @@
 </template>
 <script lang="ts" setup>
 import type {PmsReviewDto} from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块DTO
-import {listPmsReviewByPage, saveFormAndStartProcess} from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块API
-import PmsReviewDetail from './PmsReviewDetail.vue'; // 引入详情页面组件
+import {listPmsReviewByPage, saveFormAndStartProcess, savePmsReview} from '@/api/avic/mms/pms/PmsReviewApi'; // 引入模块API
 import flowUtils, {startFlowByFormCode} from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 import PmsReviewExpertEdit from '../pmsreviewexpert/PmsReviewExpertEdit.vue'; // 引入子表页面组件
 import PmsReviewVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsReviewVendorEdit.vue'
+import PmsProcurementRequirementsDetail
+  from "@/views/avic/mms/pms/pmsprocurementinformationreleaseapplication/PmsProcurementRequirementsDetail.vue";
+import PmsFindSourceEdit from "@/views/avic/mms/pms/pmsfindsource/PmsFindSourceEdit.vue";
+
+const procurementRequirementsOpen = ref(false); // 附件弹窗
 
 const pmsReviewExpertEdit = ref(null)
 const pmsReviewVendorEdit = ref(null)
+const pmsProcurementRequirementsId = ref('')
+const pmsFindSourceId = ref('')
 
-const reviewContent = ref('')
 const saveLoading = ref(false)
 const {proxy} = getCurrentInstance();
 const layout = {
@@ -321,6 +342,24 @@ const columns = [
     align: 'left'
   },
   {
+    title: '采购要求',
+    dataIndex: 'procurementRequirements',
+    key: 'procurementRequirements',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
+    title: '选商方式',
+    dataIndex: 'detail',
+    key: 'detail',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
+  },
+  {
     title: '流程状态',
     dataIndex: 'businessstate_',
     ellipsis: true,
@@ -362,6 +401,7 @@ const queryParam = reactive({
 });
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
+const editModalReadOnly = ref(false); // 编辑弹窗只读
 const showDetailModal = ref(false); // 是否展示详情弹窗
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); //表格数据集合
@@ -372,8 +412,20 @@ const loading = ref(false); // 表格loading状态
 const delLoading = ref(false); // 删除按钮loading状态
 const totalPage = ref(0);
 const mainId = computed(() => {
-  return selectedRowKeys.value.length === 1 ? selectedRowKeys.value[0] : ''; // 主表传入子表的id
+  return selectedRows.value.length === 1 ? selectedRows.value[0].pmsFindSourceId : ''; // 主表传入子表的id
 });
+const pmsReviewId = computed(() => {
+  return selectedRows.value.length === 1 ? selectedRows.value[0].pmsReviewId : ''; // 主表传入子表的id
+});
+const reviewContent = ref('')
+
+watch(
+  () => selectedRows,
+  newValue => {
+    reviewContent.value = newValue.value.length === 1 ? newValue.value[0].reviewContent : '';
+  },
+  {immediate: true, deep: true}
+)
 
 onMounted(() => {
   // 加载表格数据
@@ -439,33 +491,20 @@ function toggleAdvanced() {
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
-    pmsFindSourceId: value
+    reqPlanNo: value,
+    pmsTaskNo: value,
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
   getList();
 }
 
-/** 添加 */
-function handleAdd() {
-  showAddModal.value = true;
-}
-
-/** 编辑 */
-function handleEdit() {
-  if (selectedRows.value.length !== 1) {
-    proxy.$message.warning('请选择一条要编辑的数据！');
-    return;
-  }
-  formId.value = selectedRows.value[0].id;
-  showEditModal.value = true;
-}
 
 /** 打开流程详情页面 */
-function handleFlowDetail(record) {
-  if (record.id) {
+function handleFlowDetail(formId) {
+  if (formId) {
     flowUtils.detailByOptions({
-      formId: record.id,
+      formId,
       bpmOperatorRefresh: getList
     });
   }
@@ -488,57 +527,100 @@ function handleTableChange(pagination, filters, sorter) {
   getList();
 }
 
-/** 提交流程 */
-function handleStartFlow() {
+// 校验并获取数据
+function getPostData(callback) {
   if (selectedRows.value.length !== 1) {
-    proxy.$message.warning('请选择一条要提交流程的数据！');
+    proxy.$message.warning('请选择一条要保存的数据！');
     return;
   }
+  pmsReviewExpertEdit.value.validate(validate => {
+    if (!validate) {
+      return;
+    }
+    pmsReviewVendorEdit.value.validate(validate => {
+      if (!validate) {
+        return;
+      }
+    })
+    callback({
+      id: selectedRows.value[0].pmsReviewId, // 采购评审ID，为空则为新增评审数据
+      pmsFindSourceId: selectedRows.value[0].pmsFindSourceId, // 采购寻源ID
+      pmsPlanId: selectedRows.value[0].pmsPlanId, // 采购计划ID
+      reviewContent: reviewContent.value, // 采购评审情况记录
+      version: selectedRows.value[0].version, // 采购评审数据版本（用于更新数据）
+      pmsReviewExpertList: pmsReviewExpertEdit.value.getChangedData(), // 采购评审专家列表
+      pmsFindSourceVendorList: pmsReviewVendorEdit.value.getChangedData() // 采购寻源供应商列表
+    })
+  })
+}
+
+/** 提交流程 */
+function handleStartFlow() {
   if (selectedRows.value[0].businessstate_ != '') {
     proxy.$message.warning('流程已存在，不能重复提交！');
     return;
   }
-  proxy.$confirm({
-    title: '确定提交流程吗？',
-    okText: '确定',
-    cancelText: '取消',
-    onOk: () => {
-      delLoading.value = true;
-      startFlowByFormCode({
-        formCode: 'PmsReview',
-        formData: selectedRows.value[0],
-        callback: bpmDefinedInfo => {
-          // 处理数据
-          const postData = proxy.$lodash.cloneDeep(selectedRows.value[0]);
-          const params = {
-            processDefId: bpmDefinedInfo.dbid || bpmDefinedInfo.value.defineId,
-            formCode: 'PmsReview',
-            postData
-          };
-          saveFormAndStartProcess(params)
-            .then(res => {
+  getPostData(postData => {
+    proxy.$confirm({
+      title: '确定提交流程吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        delLoading.value = true;
+        startFlowByFormCode({
+          formCode: 'PmsReview',
+          formData: postData,
+          callback: bpmDefinedInfo => {
+            // 处理数据
+            const params = {
+              processDefId: bpmDefinedInfo.dbid || bpmDefinedInfo.value.defineId,
+              formCode: 'PmsReview',
+              postData
+            };
+            saveFormAndStartProcess(params).then(res => {
               if (res.success) {
-                handleFlowDetail(postData);
+                handleFlowDetail(res.data.formId);
                 proxy.$message.info('提交流程成功！');
                 handleQuery();
               } else {
                 proxy.$message.info('提交流程失败！');
               }
-              delLoading.value = false;
-            })
-            .catch((error) => {
+            }).catch((error) => {
               proxy.$message.warning(error.message);
               proxy.$message.info('提交流程失败！');
-              delLoading.value = false;
-            });
-        }
-      });
-    }
+            }).finally(() => delLoading.value = false);
+          }
+        });
+      }
+    });
   });
 }
 
 function saveForm() {
+  getPostData(postData => {
+    savePmsReview(postData).then(res => {
+      if (res.success) {
+        proxy.$message.info('保存成功！');
+        getList();
+      }
+    }).finally(() => {
+      loading.value = false;
+    });
+  })
+}
 
+/** 查看 */
+function handleProcurementRequirements(record) {
+  pmsProcurementRequirementsId.value = record.pmsProcurementRequirementsId;
+  procurementRequirementsOpen.value = true;
+}
+/** 打开详情页面 */
+function handleFindSourceDetail(record) {
+  if (record.pmsFindSourceId) {
+    pmsFindSourceId.value = record.pmsFindSourceId;
+    editModalReadOnly.value = true;
+    showEditModal.value = true;
+  }
 }
 
 </script>

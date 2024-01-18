@@ -37,7 +37,7 @@ export function usePmsFindSourceForm({ props: props, emit: emit }) {
   };
   const pmsFindSourceVendorEdit = ref();
   const layout = {
-    labelCol: { flex: '140px' },
+    labelCol: { flex: '170px' },
     wrapperCol: { flex: '1' }
   };
   const colLayout = proxy. $colLayout1; // 调用布局公共方法

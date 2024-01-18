@@ -1,34 +1,35 @@
 <template>
   <AvicModal
-    :visible="true"
-    title="编辑"
-    width="960px"
-    height="520px"
-    :centered="true"
-    @cancel="closeModal"
+      :visible="true"
+      :title="readOnly ? '详情' : '编辑'"
+      width="960px"
+      height="520px"
+      :centered="true"
+      @cancel="closeModal"
   >
     <a-spin :spinning="loading">
       <a-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        v-bind="layout"
-        layout="horizontal"
-        class="form-excel-style"
+          ref="formRef"
+          :model="form"
+          :rules="rules"
+          v-bind="layout"
+          layout="horizontal"
+          class="form-excel-style"
       >
         <a-row :gutter="0">
           <a-col :span="12">
             <a-form-item name="reqPlanName" label="采购计划名称" has-feedback>
               <AvicModalSelect
-                v-model:value="form.pmsPlanId"
-                title="选择采购计划名称"
-                placeholder="请选择采购计划名称"
-                valueField="pmsPlanId"
-                showField="reqPlanName"
-                :defaultShowValue="form.reqPlanName"
-                :selectComponent="PmsProcurementInformationReleaseApplicationSelectComponent"
-                :allow-clear="true"
-                @selectConfirm="changePlan($event, form)"
+                  v-model:value="form.pmsPlanId"
+                  title="选择采购计划名称"
+                  placeholder="请选择采购计划名称"
+                  valueField="pmsPlanId"
+                  showField="reqPlanName"
+                  :defaultShowValue="form.reqPlanName"
+                  :selectComponent="PmsProcurementInformationReleaseApplicationSelectComponent"
+                  :allow-clear="true"
+                  @selectConfirm="changePlan($event, form)"
+                  :disabled="readOnly"
               />
             </a-form-item>
           </a-col>
@@ -36,9 +37,9 @@
             <a-form-item name="procurementMethod" label="采购方式">
               <a-radio-group v-model:value="form.procurementMethod" disabled>
                 <a-radio
-                  v-for="item in procurementMethodList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    v-for="item in procurementMethodList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-radio>
@@ -49,9 +50,10 @@
             <a-form-item name="pmsPrice" label="采购价格">
               <a-radio-group v-model:value="form.pmsPrice">
                 <a-radio
-                  v-for="item in pmsPriceList"
-                  :key="item.sysLookupTlId"
-                  :value="item.lookupCode"
+                    :disabled="readOnly"
+                    v-for="item in pmsPriceList"
+                    :key="item.sysLookupTlId"
+                    :value="item.lookupCode"
                 >
                   {{ item.lookupName }}
                 </a-radio>
@@ -62,14 +64,15 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item
-              name="vendorReason"
-              label="确定供应商理由"
+                name="vendorReason"
+                label="确定供应商理由"
             >
               <a-textarea
-                v-model:value="form.vendorReason"
-                :rows="2"
-                :maxLength="4000"
-                placeholder="请输入确定供应商理由"
+                  v-model:value="form.vendorReason"
+                  :disabled="readOnly"
+                  :rows="2"
+                  :maxLength="4000"
+                  placeholder="请输入确定供应商理由"
               />
             </a-form-item>
           </a-col>
@@ -77,39 +80,41 @@
         <a-row>
           <a-col v-bind="colLayout.cols">
             <a-form-item
-              name="vendorReviewMode"
-              label="候选供应商审查方式"
+                name="vendorReviewMode"
+                label="候选供应商审查方式"
             >
               <a-textarea
-                v-model:value="form.vendorReviewMode"
-                :rows="2"
-                :maxLength="4000"
-                placeholder="请输入候选供应商审查方式"
+                  :disabled="readOnly"
+                  v-model:value="form.vendorReviewMode"
+                  :rows="2"
+                  :maxLength="4000"
+                  placeholder="请输入候选供应商审查方式"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="handlePersonId" label="经办人" has-feedback>
               <AvicCommonSelect
-                v-model:value="form.handlePersonId"
-                type="userSelect"
-                placeholder="请选择经办人"
-                :defaultShowValue="form.handlePersonIdAlias"
+                  :disabled="readOnly"
+                  v-model:value="form.handlePersonId"
+                  type="userSelect"
+                  placeholder="请选择经办人"
+                  :defaultShowValue="form.handlePersonIdAlias"
               />
             </a-form-item>
           </a-col>
         </a-row>
-        <PmsFindSourceVendorEdit ref="pmsFindSourceVendorEdit" :mainId="formId || form.id" />
+        <PmsFindSourceVendorEdit :read-only="readOnly" ref="pmsFindSourceVendorEdit" :mainId="formId || form.id"/>
       </a-form>
     </a-spin>
     <template #footer>
-      <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+      <a-button v-show="!readOnly" title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
 </template>
 <script lang="ts" setup>
-import { usePmsFindSourceForm, emits } from './ts/PmsFindSourceForm'; // 引入表单ts
+import {usePmsFindSourceForm, emits} from './ts/PmsFindSourceForm'; // 引入表单ts
 import PmsFindSourceVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsFindSourceVendorEdit.vue';
 import PmsProcurementInformationReleaseApplicationSelect
   from "@/views/avic/mms/pms/pmsfindsource/PmsProcurementInformationReleaseApplicationSelect.vue"; // 引入子表组件
@@ -121,6 +126,11 @@ const props = defineProps({
   formId: {
     type: String,
     default: ''
+  },
+  readOnly: {
+    type: Boolean,
+    required: false,
+    default: false
   },
   bpmInstanceObject: {
     type: Object

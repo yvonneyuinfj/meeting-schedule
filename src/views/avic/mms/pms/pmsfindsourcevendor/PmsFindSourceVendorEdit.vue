@@ -472,7 +472,9 @@ function handleDelete(ids, e) {
 function customRow(record) {
   return {
     onClick: () => {
-      handleEdit(record);
+      if (!props.readOnly) {
+        handleEdit(record);
+      }
     }
   };
 }

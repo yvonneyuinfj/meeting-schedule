@@ -24,6 +24,7 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
   const rules: Record<string, Rule[]> = {
   };
   const pmsReviewExpertEdit = ref();
+  const pmsReviewVendorEdit = ref();
   const layout = {
     labelCol: { flex: '140px' },
     wrapperCol: { flex: '1' }
@@ -92,8 +93,10 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
             loading.value = true;
             const postData = proxy.$lodash.cloneDeep(form.value);
             const subInfoList = pmsReviewExpertEdit.value.getChangedData(); // 获取子表数据
+            const subInfoList2 = pmsReviewVendorEdit.value.getChangedData(); // 获取子表数据
             // 处理数据
             postData.pmsReviewExpertList = subInfoList; // 挂载子表数据
+            postData.pmsFindSourceVendorList = subInfoList2; // 挂载子表数据
             // 发送请求
             savePmsReview(postData)
               .then(res => {
@@ -282,7 +285,8 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
     fieldRequired,
     beforeClickBpmButtons,
     afterClickBpmButtons,
-    pmsReviewExpertEdit
+    pmsReviewExpertEdit,
+    pmsReviewVendorEdit
   };
 }
 

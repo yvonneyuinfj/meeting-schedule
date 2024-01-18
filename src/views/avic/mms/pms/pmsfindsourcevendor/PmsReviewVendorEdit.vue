@@ -123,6 +123,7 @@
                 type="number"
                 v-model:value="record[column.dataIndex]"
                 :maxLength="22"
+                :min="0"
                 @input="$forceUpdate()"
                 style="width: 100%"
                 placeholder="请输入"
@@ -176,7 +177,7 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '候选供应商名称',
+    title: '供应商名称',
     dataIndex: 'mdsVendorName',
     key: 'mdsVendorName',
     ellipsis: true,
@@ -248,18 +249,6 @@ const lookupParams = [
   { fieldName: 'isSatisfactory', lookUpType: 'YN_FLAG' }
 ];
 const validateRules = {
-  mdsVendorId: [
-    { required:true, message: '供应商名称列不能为空' }
-  ],
-  isStandard: [
-    { required:true, message: '是否所合格供应商列不能为空' }
-  ],
-  isRelevance: [
-    { required:true, message: '候选供应商关联关系列不能为空' }
-  ],
-  isSatisfactory: [
-    { required:true, message: '是否符合要求列不能为空' }
-  ]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
 
@@ -378,7 +367,9 @@ function handleDelete(ids, e) {
 function customRow(record) {
   return {
     onClick: () => {
-      handleEdit(record);
+      if (!props.readOnly) {
+        handleEdit(record);
+      }
     }
   };
 }

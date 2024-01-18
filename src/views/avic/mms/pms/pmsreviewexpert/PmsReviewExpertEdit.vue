@@ -2,53 +2,53 @@
   <!-- 表格组件 -->
   <div style="padding-bottom: 8px">
     <AvicTable
-      ref="pmsReviewExpert"
-      table-key="pmsReviewExpert"
-      :height="300"
-      :columns="columns"
-      :row-key="record => record.id"
-      :data-source="list"
-      :loading="loading"
-      :row-selection="{
+        ref="pmsReviewExpert"
+        table-key="pmsReviewExpert"
+        :height="300"
+        :columns="columns"
+        :row-key="record => record.id"
+        :data-source="list"
+        :loading="loading"
+        :row-selection="{
         selectedRowKeys: selectedRowKeys,
         onChange: onSelectChange,
         columnWidth: 40,
         fixed: true
       }"
-      :showTableSetting="false"
-      :pageParameter="queryParam.pageParameter"
-      :total="totalPage"
-      :customRow="customRow"
-      @change="handleTableChange"
+        :showTableSetting="false"
+        :pageParameter="queryParam.pageParameter"
+        :total="totalPage"
+        :customRow="customRow"
+        @change="handleTableChange"
     >
       <template v-if="!props.readOnly" #toolBarLeft>
         <a-space>
           <a-space>
             <a-button
-              v-hasPermi="['pmsReviewExpert:add']"
-              title="添加"
-              type="primary"
-              @click="handleAdd"
+                v-hasPermi="['pmsReviewExpert:add']"
+                title="分配专家"
+                type="primary"
+                @click="handleAdd"
             >
               <template #icon>
-                <plus-outlined />
+                <plus-outlined/>
               </template>
-              添加
+              分配专家
             </a-button>
             <a-button
-              v-hasPermi="['pmsReviewExpert:del']"
-              title="删除"
-              danger
-              :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
-              :loading="delLoading"
-              @click="
+                v-hasPermi="['pmsReviewExpert:del']"
+                title="删除"
+                danger
+                :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
+                :loading="delLoading"
+                @click="
                 event => {
                   handleDelete(selectedRowKeys, event);
                 }
               "
             >
               <template #icon>
-                <delete-outlined />
+                <delete-outlined/>
               </template>
               删除
             </a-button>
@@ -56,85 +56,104 @@
         </a-space>
       </template>
       <template #bodyCell="{ column, text, record }">
-          <AvicRowEdit
-           v-if="column.dataIndex === 'expertType'"
+        <AvicRowEdit
+            v-if="column.dataIndex === 'expertType'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <a-select
+        >
+          <template #edit>
+            <a-select
                 v-model:value="record.expertType"
                 style="width: 100%"
                 placeholder="请选择专家类型"
-                @change="(value)=>changeControlValue(value,record,'expertType')"
-              >
-                <a-select-option
+                @change="(value)=>changeExpertType(value,record,'expertType')"
+            >
+              <a-select-option
                   v-for="select in expertTypeList"
                   :key="select.sysLookupTlId"
                   :value="select.lookupCode"
                   :title="select.lookupName"
                   :disabled="select.disabled === true"
-                >
-                  {{ select.lookupName }}
-                </a-select-option>
-              </a-select>
-            </template>
-            <template #default>
-              <AvicDictTag
+              >
+                {{ select.lookupName }}
+              </a-select-option>
+            </a-select>
+          </template>
+          <template #default>
+            <AvicDictTag
                 :value="record.expertTypeName"
                 :options="expertTypeList"
-              />
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
+            />
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
             v-else-if="column.dataIndex === 'deptId'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicCommonSelect
+        >
+          <template #edit>
+            <a-input
+                v-if="isOuter"
+                v-model:value="record.deptName"
+                :maxLength="22"
+                style="width: 100%"
+                placeholder="请输入"
+            >
+            </a-input>
+            <AvicCommonSelect
+                v-else
+                disabled
                 v-model:value="record.deptId"
-                :defaultShowValue="record.deptIdAlias"
+                :defaultShowValue="record.deptName"
                 placeholder="请选择部门"
                 type="deptSelect"
                 @callback="
                   (value, _selectRows) => {
-                    changeCommonSelect(value,record,'deptId')
+                    changeDeptSelect(value,record,'deptId')
                   }
                 "
             />
-            </template>
-            <template #default>
-              {{ record['deptIdAlias'] }}
-            </template>
-          </AvicRowEdit>
-          <AvicRowEdit
-            v-else-if="column.dataIndex === 'expertId'"
+          </template>
+          <template #default>
+            {{ record['deptName'] }}
+          </template>
+        </AvicRowEdit>
+        <AvicRowEdit
+            v-else-if="column.dataIndex === 'expertName'"
             :record="record"
             :column="column.dataIndex"
-          >
-            <template #edit>
-              <AvicCommonSelect
+        >
+          <template #edit>
+            <a-input
+                v-if="isOuter"
+                v-model:value="record.expertName"
+                :maxLength="22"
+                style="width: 100%"
+                placeholder="请输入"
+            >
+            </a-input>
+            <AvicCommonSelect
+                v-else
                 v-model:value="record.expertId"
-                :defaultShowValue="record.expertIdAlias"
+                :defaultShowValue="record.expertName"
                 placeholder="请选择专家名称"
                 type="userSelect"
                 @callback="
                   (value, _selectRows) => {
-                    changeCommonSelect(value,record,'expertId')
+                    changeUserSelect(value,record,'expertId')
                   }
                 "
             />
-            </template>
-            <template #default>
-              {{ record['expertIdAlias'] }}
-            </template>
-          </AvicRowEdit>
+          </template>
+          <template #default>
+            {{ record['expertName'] }}
+          </template>
+        </AvicRowEdit>
         <template v-else-if="column.dataIndex === 'action' && !props.readOnly">
           <a-button
-            class="inner-btn"
-            type="link"
-            @click="
+              class="inner-btn"
+              type="link"
+              @click="
               event => {
                 handleDelete([record.id], event);
               }
@@ -148,10 +167,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { PmsReviewExpertDto } from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块DTO
-import { listPmsReviewExpertByPage } from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块API
+import type {PmsReviewExpertDto} from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块DTO
+import {listPmsReviewExpertByPage} from '@/api/avic/mms/pms/PmsReviewExpertApi'; // 引入模块API
 
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 const props = defineProps({
   // 主表选中项的keys集合
   mainId: {
@@ -172,7 +191,7 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    customHeaderCell () {
+    customHeaderCell() {
       return {
         ['class']: 'required-table-title'
       };
@@ -181,8 +200,8 @@ const columns = [
   },
   {
     title: '专家名称',
-    dataIndex: 'expertId',
-    key: 'expertId',
+    dataIndex: 'expertName',
+    key: 'expertName',
     ellipsis: true,
     minWidth: 120,
     resizable: true,
@@ -217,15 +236,19 @@ const selectedRowKeys = ref([]); // 选中数据主键集合
 const selectedRows = ref([]); // 选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
+const isOuter = ref(true);
 const totalPage = ref(0);
 const expertTypeList = ref([]); // 专家类型通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
-  { fieldName: 'expertType', lookUpType: 'PMS_EXPERT_TYPE' }
+  {fieldName: 'expertType', lookUpType: 'PMS_EXPERT_TYPE'}
 ];
 const validateRules = {
   expertType: [
-    { required:true, message: '专家类型列不能为空' }
+    {required: true, message: '专家类型列不能为空'}
+  ],
+  expertName: [
+    {required: true, message: '专家名称列不能为空'}
   ]
 }; // 必填列,便于保存和新增数据时校验
 const deletedData = ref([]); // 前台删除数据的记录
@@ -247,7 +270,10 @@ onMounted(() => {
   getList();
   // 加载查询区所需通用代码
   getLookupList();
+
+  console.log('prop>>', props)
 });
+
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
@@ -256,25 +282,27 @@ function getList() {
   queryForm.value.pmsReviewId = props.mainId ? props.mainId : '-1';
   queryParam.searchParams = queryForm.value;
   listPmsReviewExpertByPage(queryParam)
-    .then(response => {
-      list.value = response.data.result;
-      totalPage.value = response.data.pageParameter.totalCount;
-      loading.value = false;
-      // 查询的初始数据,保存时做比对
-      initialList.value = proxy.$lodash.cloneDeep(list.value);
-    })
-    .catch(() => {
-      list.value = [];
-      totalPage.value = 0;
-      loading.value = false;
-    });
+      .then(response => {
+        list.value = response.data.result;
+        totalPage.value = response.data.pageParameter.totalCount;
+        loading.value = false;
+        // 查询的初始数据,保存时做比对
+        initialList.value = proxy.$lodash.cloneDeep(list.value);
+      })
+      .catch(() => {
+        list.value = [];
+        totalPage.value = 0;
+        loading.value = false;
+      });
 }
+
 /** 获取通用代码  */
 function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     expertTypeList.value = result.expertType;
   });
 }
+
 /** 获取修改的数据 */
 function getChangedData() {
   deletedData.value.forEach(item => {
@@ -306,6 +334,7 @@ function handleAdd() {
   newData.unshift(item);
   list.value = newData;
 }
+
 /** 编辑 */
 function handleEdit(record) {
   record.editable = true;
@@ -349,15 +378,19 @@ function handleDelete(ids, e) {
 function customRow(record) {
   return {
     onClick: () => {
-      handleEdit(record);
+      if (!props.readOnly) {
+        handleEdit(record);
+      }
     }
   };
 }
+
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
 }
+
 /** 表头排序 */
 function handleTableChange(pagination, _filters, sorter) {
   queryParam.pageParameter.page = pagination.current;
@@ -368,29 +401,45 @@ function handleTableChange(pagination, _filters, sorter) {
   }
   getList();
 }
+
 /** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
-function changeCommonSelect(value, record, column) {
-  record[column + 'Alias'] = value.names;
+function changeUserSelect(value, record, column) {
+  record.expertName = value.names;
+  record.expertCode = value.ids;
+  record.deptName = value.deptname;
+  record.deptCode = value.deptid;
+  record.deptId = value.deptid;
 }
+
+/** 选人，选部门，选角色，选岗位，选组件的值变化事件 */
+function changeDeptSelect(value, record, column) {
+  record.deptName = value.names;
+  record.deptCode = value.ids;
+}
+
 /**控件变更事件 */
-function changeControlValue(values, record, column) {
-  let labels = [];
-  if (Array.isArray(values)) {
-    // 多选处理
-    for (let i = 0; i < values.length; i++) {
-      // 从对应的通用代码中查询对应的label
-      const target = proxy[column + 'List'].find(item => values[i] === item.lookupCode);
-      labels.push(target.lookupName);
-    }
+function changeExpertType(values, record, column) {
+  // 单选处理
+  const target = proxy[column + 'List'].find(item => values === item.lookupCode);
+  record[column + 'Name'] = target.lookupName;
+
+  if (values === '20') {
+    record.deptId = '';
+    record.deptCode = '';
+    record.deptName = '';
+    record.expertId = '';
+    record.expertCode = '';
+    record.expertName = '';
+    isOuter.value = true;
   } else {
-    // 单选处理
-    const target = proxy[column + 'List'].find(item => values === item.lookupCode);
-    labels.push(target.lookupName);
-  }
-  if (record) {
-    record[column + 'Name'] = labels.join(',');
+    if (isOuter.value) {
+      record.deptName = '';
+      record.expertName = '';
+    }
+    isOuter.value = false;
   }
 }
+
 /** 批量数据校验 */
 function validateRecordData(records) {
   let flag = true;
@@ -402,6 +451,7 @@ function validateRecordData(records) {
   }
   return flag;
 }
+
 /** 校验并执行回调函数*/
 function validate(callback) {
   const changedData = proxy.$getChangeRecords(list, initialList);
@@ -419,18 +469,18 @@ function validate(callback) {
 }
 
 watch(
-  () => props.mainId,
-  newVal => {
-    if (newVal) {
-      getList(); // 查询表格数据
-    } else {
-      selectedRowKeys.value = []; // 清空选中
-      selectedRows.value = [];
-      list.value = [];
-      totalPage.value = 0;
-    }
-  },
-  { immediate: true }
+    () => props.mainId,
+    newVal => {
+      if (newVal) {
+        getList(); // 查询表格数据
+      } else {
+        selectedRowKeys.value = []; // 清空选中
+        selectedRows.value = [];
+        list.value = [];
+        totalPage.value = 0;
+      }
+    },
+    {immediate: true}
 );
 
 defineExpose({
