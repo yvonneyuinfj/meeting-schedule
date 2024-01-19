@@ -179,6 +179,9 @@
                   查看
                 </a>
               </template>
+              <template v-else-if="column.dataIndex === 'attach'">
+                <a @click="handleAttach(record)">查看</a>
+              </template>
             </template>
           </AvicTable>
         </div>
@@ -227,6 +230,16 @@
           <pms-procurement-requirements-detail v-if="procurementRequirementsOpen" ref="pmsProcurementRequirementsDetail"
                                                :form-id="pmsProcurementRequirementsId"
                                                @close="procurementRequirementsOpen = false"/>
+
+          <AttachModal
+            v-if="attachOpen"
+            table-name="PMS_REVIEW"
+            :attachOpen="attachOpen"
+            :attach-form="attchForm"
+            :save-form="saveBeforeUpload"
+            @close="closeAttach"
+            @reloadData="getList"/>
+
         </AvicPane>
       </AvicSplit>
 
@@ -242,15 +255,22 @@ import PmsReviewVendorEdit from '@/views/avic/mms/pms/pmsfindsourcevendor/PmsRev
 import PmsProcurementRequirementsDetail
   from "@/views/avic/mms/pms/pmsprocurementinformationreleaseapplication/PmsProcurementRequirementsDetail.vue";
 import PmsFindSourceEdit from "@/views/avic/mms/pms/pmsfindsource/PmsFindSourceEdit.vue";
+import AttachModal from "@/views/avic/mms/pms/pmsreview/AttachModal.vue";
 
 const procurementRequirementsOpen = ref(false); // 附件弹窗
 
-const pmsReviewExpertEdit = ref(null)
-const pmsReviewVendorEdit = ref(null)
-const pmsProcurementRequirementsId = ref('')
-const pmsFindSourceId = ref('')
+const pmsReviewExpertEdit = ref(null);
+const pmsReviewVendorEdit = ref(null);
+const pmsProcurementRequirementsId = ref('');
+const pmsFindSourceId = ref('');
 
-const saveLoading = ref(false)
+const saveLoading = ref(false);
+const attachOpen = ref(false); // 附件弹窗
+const attchForm = reactive({
+  id: '',
+  secretLevel: ''
+});
+
 const {proxy} = getCurrentInstance();
 const layout = {
   labelCol: {flex: '120px'},
@@ -340,6 +360,15 @@ const columns = [
     minWidth: 120,
     resizable: true,
     align: 'left'
+  },
+  {
+    title: '附件',
+    dataIndex: 'attach',
+    key: 'attach',
+    ellipsis: true,
+    minWidth: 120,
+    resizable: true,
+    align: 'center'
   },
   {
     title: '采购要求',
@@ -600,13 +629,18 @@ function saveForm() {
   getPostData(postData => {
     savePmsReview(postData).then(res => {
       if (res.success) {
-        proxy.$message.info('保存成功！');
         getList();
       }
-    }).finally(() => {
-      loading.value = false;
     });
   })
+}
+
+function saveBeforeUpload(callback) {
+  savePmsReview(attchForm).then(res => {
+    if (res.success) {
+      callback(res.data)
+    }
+  });
 }
 
 /** 查看 */
@@ -622,6 +656,22 @@ function handleFindSourceDetail(record) {
     showEditModal.value = true;
   }
 }
+
+/** 打开附件查看 */
+const handleAttach = record => {
+  attachOpen.value = true;
+  attchForm.id = record.pmsReviewId;
+  attchForm.pmsFindSourceId = record.pmsFindSourceId;
+  attchForm.secretLevel = record.secretLevel;
+};
+
+/** 关闭附件 */
+const closeAttach = () => {
+  attachOpen.value = false;
+  attchForm.id = null;
+  attchForm.secretLevel = null;
+};
+
 
 </script>
 

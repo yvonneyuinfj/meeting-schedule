@@ -31,6 +31,7 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
   };
   const colLayout = proxy. $colLayout2; // 调用布局公共方法
   const loading = ref(false);
+  const uploadFile = ref(null); // 附件ref
   const authJson = ref(null);
 
   if (props.params) {
@@ -90,6 +91,11 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
             if (!validate) {
               return;
             }
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
+              return;
+            }
             loading.value = true;
             const postData = proxy.$lodash.cloneDeep(form.value);
             const subInfoList = pmsReviewExpertEdit.value.getChangedData(); // 获取子表数据
@@ -107,7 +113,7 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
                   if (!form.value.id){
                     form.value.id=res.data;
                   }
-                  successCallback();
+                  uploadFile.value.upload(form.value.id || res.data); // 附件上传
                 } else {
                   loading.value = false;
                 }
@@ -143,6 +149,11 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
             if (!validate) {
               return;
             }
+            // 附件密级校验
+            const validateResult = validateUploaderFileSecret();
+            if (!validateResult) {
+              return;
+            }
             startFlowByFormCode({
               formCode: formCode,
               callback: bpmDefinedInfo => {
@@ -169,6 +180,11 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
       // 校验表单并选择需要启动的流程模板
       getBpmDefine();
     } else {
+      // 附件密级校验
+      const validateResult = validateUploaderFileSecret();
+      if (!validateResult) {
+        return;
+      }
       const subInfoList = pmsReviewExpertEdit.value.getChangedData(); // 获取子表数据
       loading.value = true;
       // 处理数据
@@ -190,7 +206,7 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
             if (!form.value.id){
               form.value.id=res.data.formId;
             }
-            successCallback();
+            uploadFile.value.upload(form.value.id || res.data); // 附件上传
           } else {
             errorCallback();
           }
@@ -232,6 +248,16 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
       emit('close');
     }
   }
+  /** 附件上传完之后的回调函数 */
+  function afterUploadEvent(successFile, errorFile) {
+    if (errorFile.length > 0) {
+      // 有附件保存失败的处理
+      errorCallback();
+    } else {
+      // 所有附件都保存成功的处理
+      successCallback();
+    }
+  }
   /** 返回关闭事件 */
   function closeModal() {
     emit('close');
@@ -263,6 +289,20 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
     checkAuthJson();
     return getFieldRequired(authJson.value, fieldName, rules, props.bpmInstanceObject);
   }
+  /** 校验表单附件密级 */
+  function validateUploaderFileSecret() {
+    const errorMessage = uploadFile.value.validateUploaderFileSecret(form.value.secretLevel);
+    if (errorMessage) {
+      closeFlowLoading(props.bpmInstanceObject);
+      return false;
+    }
+    return true;
+  }
+  /** 表单附件是否必填(按elementId) */
+  function attachmentRequired(fieldName) {
+    const res = flowUtils.attachmentRequired(props.bpmInstanceObject, fieldName);
+    return res;
+  }
   function checkAuthJson() {
     if (authJson.value == null) {
       authJson.value = getFieldAuth(props.bpmInstanceObject);
@@ -277,6 +317,9 @@ export function usePmsReviewForm({ props: props, emit: emit }) {
     layout,
     colLayout,
     loading,
+    uploadFile,
+    afterUploadEvent,
+    attachmentRequired,
     saveForm,
     saveAndStartProcess,
     closeModal,

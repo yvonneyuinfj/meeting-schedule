@@ -54,17 +54,31 @@
             />
           </a-form-item>
         </a-col>
-        <a-col v-bind="colLayout.cols" v-if="fieldVisible('reviewContent')">
-          <a-form-item name="reviewContent" label="采购评审情况记录" :rules="fieldRequired('reviewContent')"
-                       has-feedback>
-            <a-input
-                v-model:value="form.reviewContent"
-                :disabled="fieldDisabled('reviewContent')"
+        <a-col v-bind="colLayout.cols2" v-if="fieldVisible('reviewContent')">
+          <a-form-item name="reviewContent" label="采购评审情况记录" :rules="fieldRequired('reviewContent')" has-feedback>
+            <a-textarea v-model:value="form.reviewContent" :rows="6" :disabled="fieldDisabled('reviewContent')" />
+          </a-form-item>
+        </a-col>
+
+        <a-col v-bind="colLayout.cols2">
+          <a-form-item label="上传附件" type="attachment" :rules="attachmentRequired('uploadFile')">
+            <AvicUploader
+              element-id="1"
+              ref="uploadFile"
+              label="上传附件"
+              :form-id="form.id"
+              :bpm-instance-object="props.bpmInstanceObject"
+              :form-secret-level="form.secretLevel"
+              :allow-download="true"
+              table-name="PMS_REVIEW"
+              @afterUpload="afterUploadEvent"
             />
           </a-form-item>
         </a-col>
       </a-row>
+
     </a-form>
+
     <a-row>
       <a-col :span="12">
         <PmsReviewVendorEdit
@@ -141,6 +155,9 @@ const {
   bpmParams,
   layout,
   colLayout,
+  uploadFile,
+  afterUploadEvent,
+  attachmentRequired,
   pmsReviewExpertEdit,
   pmsReviewVendorEdit,
   fieldVisible,
