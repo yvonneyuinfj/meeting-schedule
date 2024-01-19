@@ -202,34 +202,43 @@
               </template>
               导出
             </a-button>
-          </a-space>
-        </template>
-        <template #toolBarRight>
-          <a-space>
-            <AvicBpmFilter :allFileAuth="['famAddApplyManage:all']" :myFileAuth="['famAddApplyManage:my']"
-              :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
-            <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入申请单号" :allow-clear="true"
-              @search="handleKeyWordQuery" />
-          </a-space>
-        </template>
-        <template #bodyCell="{ column, text, record, index }">
-          <template v-if="column.dataIndex === 'id'">
-            {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+                  <a-button v-hasPermi="['famAddApplyManage:print']" title="打印" type="primary" ghost @click="handlePrint">
+                    <template #icon>
+                      <avic-icon svg='avic-save-3-line' />
+                    </template>
+                    打印
+                  </a-button>
+            </a-space>
           </template>
-          <template v-else-if="column.dataIndex === 'applyNo'">
-            <a @click="handleFlowDetail(record)">
-              {{ record.applyNo }}
-            </a>
+          <template #toolBarRight>
+            <a-space>
+              <AvicBpmFilter :allFileAuth="['famAddApplyManage:all']" :myFileAuth="['famAddApplyManage:my']"
+                :defaultBpmType='queryForm.bpmType' :defaultBpmState='queryForm.bpmState' @change="changeBpmFilter" />
+              <a-input-search class="opt-btn-commonsearch" style="width: 200px" placeholder="请输入申请单号" :allow-clear="true"
+                @search="handleKeyWordQuery" />
+            </a-space>
           </template>
-        </template>
-      </AvicTable>
-    </div>
-    <!-- 添加页面弹窗 -->
-    <FamAddApplyManageAdd v-if="showAddModal" ref="addModal" :bpmOperatorRefresh="getList" @reloadData="getList"
-      @close="showAddModal = false" />
-    <!-- 编辑页面弹窗 -->
-    <FamAddApplyManageEdit v-if="showEditModal" ref="editModal" :form-id="formId" @reloadData="getList"
-      @close="showEditModal = false" />
+          <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.dataIndex === 'id'">
+              {{ index + 1 + queryParam.pageParameter.rows * (queryParam.pageParameter.page - 1) }}
+            </template>
+            <template v-else-if="column.dataIndex === 'applyNo'">
+              <a @click="handleFlowDetail(record)">
+                {{ record.applyNo }}
+              </a>
+            </template>
+          </template>
+        </AvicTable>
+      </div>
+      <!-- 添加页面弹窗 -->
+      <FamAddApplyManageAdd v-if="showAddModal" ref="addModal" :bpmOperatorRefresh="getList" @reloadData="getList"
+        @close="showAddModal = false" />
+      <!-- 编辑页面弹窗 -->
+      <FamAddApplyManageEdit v-if="showEditModal" ref="editModal" :form-id="formId" @reloadData="getList"
+        @close="showEditModal = false" />
+      <!-- 打印页面弹窗（全屏） -->
+      <FamAddApplyManageDetailForPrint v-if="showDetailModal" ref="detailModal" :form-id="formId" @reloadData="getList"
+        @close="showDetailModal = false" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -237,6 +246,7 @@ import type { FamAddApplyManageDto } from '@/api/avic/mms/fam/FamAddApplyManageA
 import { listFamAddApplyManageByPage, delFamAddApplyManage, exportExcel } from '@/api/avic/mms/fam/FamAddApplyManageApi'; // 引入模块API
 import FamAddApplyManageAdd from './FamAddApplyManageAdd.vue'; // 引入添加页面组件
 import FamAddApplyManageEdit from './FamAddApplyManageEdit.vue'; // 引入编辑页面组件
+import FamAddApplyManageDetailForPrint from './FamAddApplyManageDetailForPrint.vue'; // 引入打印页面组件
 import flowUtils from '@/views/avic/bpm/bpmutils/FlowUtils.js';
 const { proxy } = getCurrentInstance();
 const layout = {
@@ -495,6 +505,7 @@ const queryParam = reactive({
 });
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
+const showDetailModal = ref(false); // 是否展示打印弹窗
 const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
@@ -601,6 +612,15 @@ function handleEdit() {
   }
   formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
+}
+/** 打印 */
+function handlePrint() {
+  if (selectedRows.value.length !== 1) {
+    proxy.$message.warning('请选择一条要打印的数据！');
+    return;
+  }
+  formId.value = selectedRows.value[0].id;
+  showDetailModal.value = true;
 }
 /** 打开流程详情页面 */
 function handleFlowDetail(record) {

@@ -69,7 +69,7 @@
             <template #footer>
               <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
               <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
-                          <a-button type="primary" v-print="printObj">打印</a-button>
+                            <!-- <a-button type="primary" v-print="printObj">打印</a-button> -->
                       </template>
                     </AvicModal>
 </template>
