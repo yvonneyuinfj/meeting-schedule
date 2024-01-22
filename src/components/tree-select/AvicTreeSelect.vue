@@ -17,20 +17,27 @@
     "
     :get-popup-container="e => e.parentElement"
   >
-    <a-input v-model:value="showValue" @change="handleInput" @click="handleTrigger">
+    <a-input
+      v-model:value="showValue"
+      @change="handleInput"
+      @click="handleTrigger"
+      :placeholder="props.placeholder"
+    >
       <template #suffix>
         <!-- <AvicIcon svg="avic-app-channel" @click="handleTrigger" /> -->
-        <avic-icon svg="avic-node-tree" @click="handleTrigger" color="#86909c" />
+        <avic-icon svg="avic-component-tree" @click="handleTrigger" color="#86909c" />
       </template>
     </a-input>
     <template #overlay>
       <div>
-        <a-input-search
-          style="padding: 4px"
-          :allow-clear="true"
-          placeholder="输入回车查询"
-          @search="handleSearchTree"
-        />
+        <a-form-item-rest>
+          <a-input-search
+            style="padding: 4px"
+            :allow-clear="true"
+            placeholder="输入回车查询"
+            @search="handleSearchTree"
+          />
+        </a-form-item-rest>
         <a-spin :spinning="loading">
           <div :style="{ height: treeSelectHeight - 40 + 'px', overflow: 'auto', padding: '4px' }">
             <a-tree
@@ -104,7 +111,8 @@ const props = defineProps({
     type: Object,
     required: false, //校验
     default: () => {}
-  }
+  },
+  placeholder: { type: String, default: '请选择' }
 });
 // 数据双向绑定事件
 const $emit = defineEmits(['input', 'change', 'select', 'update:value']);
@@ -141,7 +149,7 @@ watch(
   bindValue,
   newVal => {
     $emit('input', newVal);
-    $emit('change', newVal);
+    $emit('change', [newVal, showValue.value]);
     $emit('update:value', newVal);
   },
   { immediate: true }
