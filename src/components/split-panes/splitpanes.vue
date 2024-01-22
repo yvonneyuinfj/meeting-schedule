@@ -40,7 +40,8 @@ export default {
       checkHasLastPane: this.checkHasLastPane,
       getPaneSize: this.getPaneSize,
       horizontal: this.horizontal,
-      getSplitSize: this.getSplitSize
+      getSplitSize: this.getSplitSize,
+      onMouseMove:this.onMouseMove
     };
   },
 
