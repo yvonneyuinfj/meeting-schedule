@@ -37,6 +37,7 @@
                 @selectConfirm="handleSelectConfirm"
                 @clear="handleSelectClear"
                 style="top: 20px"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -66,6 +67,7 @@
                 :maxLength="128"
                 :auto-focus="true"
                 placeholder="请输入会议名称"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -76,6 +78,7 @@
                 v-model:value="form.phoneNumber"
                 :maxLength="50"
                 placeholder="请输入联系电话"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -88,6 +91,7 @@
                 format="YYYY-MM-DD HH:mm"
                 value-format="YYYY-MM-DD HH:mm"
                 placeholder="请选择占用开始时间"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -100,6 +104,7 @@
                 format="YYYY-MM-DD HH:mm"
                 value-format="YYYY-MM-DD HH:mm"
                 placeholder="请选择结束时间"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -112,6 +117,7 @@
                 format="YYYY-MM-DD HH:mm"
                 value-format="YYYY-MM-DD HH:mm"
                 placeholder="请选择会议开始时间"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -125,6 +131,7 @@
                 :show-search="true"
                 :allow-clear="true"
                 placeholder="请选择会议密级"
+                disabled
               >
                 <a-select-option
                   v-for="item in secretLevelList"
@@ -147,6 +154,7 @@
                 :allowSelectNonIsLeaf="false"
                 placeholder="请选择会议类型"
                 @change="handleTreeSelectChange($event, 'meetingTypeName')"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -159,6 +167,7 @@
                 :max="99"
                 :precision="0"
                 :step="1"
+                disabled
               >
                 <template #addonAfter>
                   <span style="display: inline-block; width: 50px">天</span>
@@ -174,6 +183,7 @@
                 :maxLength="512"
                 placeholder="请输入会议内容"
                 allow-clear
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -186,6 +196,7 @@
                 type="userSelect"
                 placeholder="请选择主持人"
                 @callback="selectCallback('hostName', $event)"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -198,6 +209,7 @@
                 type="deptSelect"
                 placeholder="请选择组织单位"
                 @callback="selectCallback('orgDeptName', $event)"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -211,6 +223,7 @@
                 placeholder="请选择参会人员"
                 selectModel="multi"
                 @callback="selectCallback('attendeeNames', $event)"
+                disabled
               />
             </a-form-item>
           </a-col>
@@ -218,7 +231,7 @@
           <!-- 备注 -->
           <a-col v-bind="colLayout.cols2">
             <a-form-item name="note" label="备注">
-              <a-textarea v-model:value="form.note" :maxLength="256" placeholder="请输入备注" />
+              <a-textarea v-model:value="form.note" :maxLength="256" placeholder="请输入备注" disabled/>
             </a-form-item>
           </a-col>
 
@@ -226,16 +239,13 @@
             <a-form-item label="附件">
               <AvicUploader
                 element-id="1"
-                form-type="edit"
-                ref="uploadFile"
-                :allow-download="true"
+                form-type="detail"
+                :allow-add="false"
                 :allow-preview="true"
-                :allow-delete="true"
-                :allow-update-secret-level="true"
+                :allow-download="true"
                 :form-id="form.id"
                 :form-secret-level="form.secretLevel"
                 table-name="MEETING"
-                @afterUpload="afterUploadEvent"
               />
             </a-form-item>
           </a-col>
@@ -245,6 +255,15 @@
     </a-spin>
     <template #footer>
       <a-button title="保存" type="primary" :loading="loading" @click="saveForm">保存</a-button>
+      <a-button
+        title="保存并启动流程"
+        type="primary"
+        :loading="loading"
+        @click="saveAndStartProcess"
+        v-show="form.ynApprove === 'Y'"
+      >
+        保存并启动流程
+      </a-button>
       <a-button title="返回" type="primary" ghost @click="closeModal">返回</a-button>
     </template>
   </AvicModal>
@@ -294,7 +313,7 @@ const {
   afterUploadEvent,
   closeModal,
   selectCallback,
-  // saveAndStartProcess,
+  saveAndStartProcess,
   saveForm,
   handleSelectConfirm,
   handleSelectClear,

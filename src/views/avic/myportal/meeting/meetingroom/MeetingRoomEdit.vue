@@ -8,13 +8,7 @@
     @cancel="closeModal"
   >
     <a-spin :spinning="loading">
-      <a-form
-        ref="formRef"
-        :model="form"
-        :rules="rules"
-        v-bind="layout"
-        layout="horizontal"
-       >
+      <a-form ref="formRef" :model="form" :rules="rules" v-bind="layout" layout="horizontal">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item name="name" label="会议室名称" has-feedback>
@@ -144,6 +138,7 @@
                 type="userSelect"
                 placeholder="请选择审批人员IDS"
                 :defaultShowValue="form.approvalIdsAlias"
+                selectModel="multi"
               />
             </a-form-item>
           </a-col>
@@ -169,11 +164,7 @@
           </a-col>
           <a-col v-bind="colLayout.cols">
             <a-form-item name="note" label="备注">
-              <a-input
-                v-model:value="form.note"
-                :maxLength="256"
-                placeholder="请输入备注"
-              />
+              <a-input v-model:value="form.note" :maxLength="256" placeholder="请输入备注" />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
@@ -241,5 +232,3 @@ const {
   emit: emit
 });
 </script>
-
-

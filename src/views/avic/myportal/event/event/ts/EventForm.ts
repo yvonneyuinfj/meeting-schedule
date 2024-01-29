@@ -1,9 +1,10 @@
-import type { EventDto } from '@/api/avic/myportal/event/EventApi'; // 引入模块DTO
-import { getEvent, saveEvent } from '@/api/avic/myportal/event/EventApi'; // 引入模块API
+import type { MeetingDto } from '@/api/avic/myportal/meeting/MeetingApi'; // 引入模块DTO
+import { getMeeting, saveMeeting } from '@/api/avic/myportal/meeting/MeetingApi';
+import dayjs from 'dayjs'; // 引入模块API
 export const emits = ['reloadData', 'close'];
 export function useEventForm({ props: props, emit: emit }) {
   const { proxy } = getCurrentInstance();
-  const form = ref<EventDto>({});
+  const form = ref<MeetingDto>({});
   const formRef = ref(null);
   const rules: Record<string, Rule[]> = {
     name: [{ required: true, message: '日程主题不能为空', trigger: 'change' }],
@@ -18,13 +19,13 @@ export function useEventForm({ props: props, emit: emit }) {
   const uploadFile = ref(null); // 附件ref
   const ynValidList = ref([]); // 是否可用通用代码
   const ynPublicList = ref([]); // 是否公开通用代码
-  const typeList = ref([]); // 日程类型通用代码
-  const remindTypeList = ref([]); // 提醒类型通用代码
+  const eventTypeList = ref([]); // 日程类型通用代码
+  const remindTypeList = ref([]); // 待办提醒通用代码
   const secretLevelList = ref([]); // 密级通用代码
   const lookupParams = [
     { fieldName: 'ynValid', lookUpType: 'PLATFORM_YES_NO_FLAG' },
     { fieldName: 'ynPublic', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-    { fieldName: 'type', lookUpType: 'MYPORTAL_EVENT_TYPE' },
+    { fieldName: 'eventType', lookUpType: 'MYPORTAL_EVENT_TYPE' },
     { fieldName: 'remindType', lookUpType: 'MYPORTAL_REMIND_TYPE' }
   ];
 
@@ -37,25 +38,45 @@ export function useEventForm({ props: props, emit: emit }) {
       // 编辑、详情页面加载数据
       getFormData(props.formId);
     } else {
-      // console.log(proxy.$getLoginUser());
+      initForm();
+    }
+  });
+  function initForm() {
+    if (!form.value.authorId) {
       form.value.authorId = proxy.$getLoginUser().id;
       form.value.authorCode = proxy.$getLoginUser().loginName;
       form.value.authorIdAlias = proxy.$getLoginUser().name;
       form.value.authorName = proxy.$getLoginUser().name;
-      form.value.type = '1';
-      form.value.remindType = '1';
-      form.value.ynPublic = 'Y';
-      form.value.remindDuration = 1;
-      
     }
-  });
-
+    if (!form.value.eventType) {
+      form.value.eventType = '1';
+    }
+    if (!form.value.remindType) {
+      form.value.remindType = '1';
+    }
+    if (!form.value.ynPublic) {
+      form.value.ynPublic = 'Y';
+    }
+    if (!form.value.remindDuration) {
+      form.value.remindDuration = 1;
+    }
+    if(!form.value.preStartTime){
+      form.value.preStartTime = dayjs().format('YYYY-MM-DD HH:mm');
+      form.value.startTime = dayjs().format('YYYY-MM-DD HH:mm');
+      form.value.endTime = dayjs().add(1, 'h').format('YYYY-MM-DD HH:mm');
+    }
+    if (props.dateInfo) {
+      form.value.preStartTime = dayjs(props.dateInfo.start).add(8,'h').format('YYYY-MM-DD HH:mm');
+      form.value.startTime = dayjs(props.dateInfo.start).add(8,'h').format('YYYY-MM-DD HH:mm');
+      form.value.endTime = dayjs(props.dateInfo.end).add(9,'h').format('YYYY-MM-DD HH:mm');
+    }
+  }
   /** 获取通用代码  */
   function getLookupList() {
     proxy.$getLookupByType(lookupParams, result => {
       ynValidList.value = result.ynValid;
       ynPublicList.value = result.ynPublic;
-      typeList.value = result.type;
+      eventTypeList.value = result.eventType;
       remindTypeList.value = result.remindType;
     });
   }
@@ -71,7 +92,7 @@ export function useEventForm({ props: props, emit: emit }) {
    */
   function getFormData(id) {
     loading.value = true;
-    getEvent(id)
+    getMeeting(id)
       .then(async res => {
         if (res.success) {
           form.value = res.data;
@@ -98,7 +119,7 @@ export function useEventForm({ props: props, emit: emit }) {
         // 处理数据
         const postData = proxy.$lodash.cloneDeep(form.value);
         // 发送请求
-        saveEvent(postData)
+        saveMeeting(postData)
           .then(res => {
             if (res.success) {
               uploadFile.value.upload(form.value.id || res.data); // 附件上传
@@ -144,7 +165,6 @@ export function useEventForm({ props: props, emit: emit }) {
   function selectCallback(prop, e) {
     form.value[prop] = e.names;
   }
-  const rangeTime = ref([]);
 
   return {
     form,
@@ -155,7 +175,7 @@ export function useEventForm({ props: props, emit: emit }) {
     loading,
     ynValidList,
     ynPublicList,
-    typeList,
+    eventTypeList,
     remindTypeList,
     secretLevelList,
     uploadFile,

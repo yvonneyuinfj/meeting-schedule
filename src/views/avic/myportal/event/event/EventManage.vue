@@ -7,7 +7,7 @@
           <a-col v-bind="colLayout.cols">
             <a-form-item label="日程类型">
               <a-select
-                v-model:value="queryForm.type"
+                v-model:value="queryForm.eventType"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
@@ -15,7 +15,7 @@
                 placeholder="请选择日程类型"
               >
                 <a-select-option
-                  v-for="item in typeList"
+                  v-for="item in eventTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -284,7 +284,7 @@
                   <search-outlined />
                   查询
                 </a-button>
-                <a-button type="primary" @click="resetQuery" ghost style="margin-right:15px">
+                <a-button type="primary" @click="resetQuery" ghost style="margin-right: 15px">
                   <redo-outlined />
                   重置
                 </a-button>
@@ -321,27 +321,39 @@
       >
         <template #toolBarLeft>
           <a-space>
-            <a-button v-hasPermi="['event:add']" title="添加" type="primary" @click="handleAdd">
+            <a-button v-hasPermi="['meeting:add']" title="添加" type="primary" @click="handleAdd">
               <template #icon>
                 <plus-outlined />
               </template>
               添加
             </a-button>
             <a-button
-              v-hasPermi="['event:del']"
+              v-hasPermi="['meeting:edit']"
+              title="编辑"
+              type="primary"
+              ghost
+              @click="handleEdit"
+            >
+              <template #icon>
+                <edit-outlined />
+              </template>
+              编辑
+            </a-button>
+            <a-button
+              v-hasPermi="['meeting:del']"
               title="删除"
               danger
               :type="selectedRowKeys.length == 0 ? 'default' : 'primary'"
               :loading="delLoading"
-              @click="handleDelete(selectedRowKeys, '')"
+              @click="handleDelete(selectedRows, selectedRowKeys)"
             >
               <template #icon>
                 <delete-outlined />
               </template>
               删除
             </a-button>
-            <a-button
-              v-hasPermi="['event:import']"
+            <!-- <a-button
+              v-hasPermi="['meeting:import']"
               title="导入"
               type="primary"
               ghost
@@ -351,9 +363,9 @@
                 <import-outlined />
               </template>
               导入
-            </a-button>
+            </a-button> -->
             <a-button
-              v-hasPermi="['event:export']"
+              v-hasPermi="['meeting:export']"
               title="导出"
               type="primary"
               ghost
@@ -385,20 +397,32 @@
             </a>
           </template>
           <template v-else-if="column.dataIndex === 'creationDate'">
-              {{ dayjs(record.creationDate).format('YYYY-MM-DD HH:mm') }}
+            {{ dayjs(record.creationDate).format('YYYY-MM-DD HH:mm') }}
           </template>
           <template v-else-if="column.dataIndex === 'remindDuration'">
-              {{ record.remindDuration }}天
+            {{ record.remindDuration }}天
+          </template>
+          <template v-else-if="column.dataIndex === 'eventTypeName'">
+            <a-tag v-if="record.eventType === '1'" color="#00D8D3">{{ text }}</a-tag>
+            <a-tag v-if="record.eventType === '5'" color="#FFB906">{{ text }}</a-tag>
+            <a-tag v-if="record.eventType === '10'" color="#00D8D3">{{ text }}</a-tag>
+            <a-tag v-if="record.eventType === '15'" color="#FF5E8F">{{ text }}</a-tag>
+            <a-tag v-if="record.eventType === '20'" type="default">{{ text }}</a-tag>
           </template>
           <template v-else-if="column.dataIndex === 'action'">
-            <a-button type="link" class="inner-btn" @click.stop="handleEdit(record.id)">
+            <a-button
+              type="link"
+              class="inner-btn"
+              @click.stop="handleEdit(record.id)"
+              v-if="ynCreator(record)"
+            >
               编辑
             </a-button>
             <a-button
-              v-hasPermi="['event:del']"
               type="link"
               class="inner-btn"
               @click.stop="handleDelete([record.id], 'row')"
+              v-if="ynCreator(record)"
             >
               删除
             </a-button>
@@ -428,20 +452,25 @@
       :form-id="formId"
       @close="showDetailModal = false"
     />
-    <AvicExcelImport
+    <!-- <AvicExcelImport
       v-if="showImportModal"
       :formData="excelParams"
-      title="单表模板导入"
-      importUrl="/myportal/event/events/importData/v1"
-      downloadTemplateUrl="/myportal/event/events/downloadTemplate/v1"
+      title="日程会议模板导入"
+      importUrl="/myportal/meeting/meetings/importData/v1"
+      downloadTemplateUrl="/myportal/meeting/meetings/downloadTemplate/v1"
       @reloadData="getList"
       @close="showImportModal = false"
-    />
+    /> -->
   </div>
 </template>
 <script lang="ts" setup>
-import type { EventDto } from '@/api/avic/myportal/event/EventApi'; // 引入模块DTO
-import { listEventByPage, delEvent, exportExcel } from '@/api/avic/myportal/event/EventApi'; // 引入模块API
+import type { MeetingDto } from '@/api/avic/myportal/meeting/MeetingApi'; // 引入模块DTO
+import {
+  listMeetingByPage,
+  delMeeting,
+  exportExcel
+  // listMeetingsByUserId
+} from '@/api/avic/myportal/meeting/MeetingApi'; // 引入模块API
 import EventAdd from './EventAdd.vue'; // 引入添加页面组件
 import EventEdit from './EventEdit.vue'; // 引入编辑页面组件
 import EventDetail from './EventDetail.vue'; // 引入详情页面组件
@@ -457,16 +486,16 @@ const columns = [
     title: '序号',
     dataIndex: 'id',
     ellipsis: true,
-    width: 60,
+    width: 50,
     align: 'center',
     fixed: 'left'
   },
   {
     title: '日程类型',
-    dataIndex: 'typeName',
+    dataIndex: 'eventTypeName',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 100,
     resizable: true,
     align: 'center'
   },
@@ -475,7 +504,7 @@ const columns = [
     dataIndex: 'name',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 150,
     resizable: true,
     align: 'center'
   },
@@ -497,53 +526,27 @@ const columns = [
     resizable: true,
     align: 'center'
   },
-  // {
-  //   title: '作者职工号',
-  //   dataIndex: 'authorCode',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '作者',
-  //   dataIndex: 'authorName',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '日程地点ID',
-  //   dataIndex: 'placeId',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
     title: '日程地点',
-    dataIndex: 'placeName',
+    dataIndex: 'meetingRoomName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
     align: 'center'
   },
-  // {
-  //   title: '是否可用',
-  //   dataIndex: 'ynValidName',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'center'
-  // },
+  {
+    title: '创建人',
+    dataIndex: 'authorName',
+    ellipsis: true,
+    sorter: true,
+    minWidth: 100,
+    resizable: true,
+    align: 'center'
+  },
   {
     title: '共享范围',
-    dataIndex: 'sharedUserNames',
+    dataIndex: 'attendeeNames',
     ellipsis: true,
     sorter: true,
     minWidth: 150,
@@ -555,7 +558,7 @@ const columns = [
     dataIndex: 'remindTypeName',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 100,
     resizable: true,
     align: 'center'
   },
@@ -564,36 +567,10 @@ const columns = [
     dataIndex: 'ynPublicName',
     ellipsis: true,
     sorter: true,
-    minWidth: 120,
+    minWidth: 100,
     resizable: true,
     align: 'center'
   },
-  // {
-  //   title: '共享给',
-  //   dataIndex: 'sharedUserIdsAlias',
-  //   ellipsis: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '共享人员职工号',
-  //   dataIndex: 'sharedUserCodes',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
-  // {
-  //   title: '备注',
-  //   dataIndex: 'note',
-  //   ellipsis: true,
-  //   sorter: true,
-  //   minWidth: 120,
-  //   resizable: true,
-  //   align: 'left'
-  // },
   {
     title: '日程内容',
     dataIndex: 'content',
@@ -604,18 +581,8 @@ const columns = [
     align: 'left'
   },
   {
-    title: '日程提醒',
+    title: '提前提醒',
     dataIndex: 'remindDuration',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'center'
-  },
-  
-  {
-    title: '创建人',
-    dataIndex: 'authorName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
@@ -635,20 +602,48 @@ const columns = [
     title: '密级',
     dataIndex: 'secretLevelName',
     ellipsis: true,
+    sorter: true,
     width: 90,
     resizable: true,
     align: 'center'
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    ellipsis: true,
-    width: 120,
-    align: 'center',
-    fixed: 'right'
   }
+  // {
+  //   title: '流程状态',
+  //   dataIndex: 'businessstate_',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   width: 100,
+  //   align: 'center',
+  //   fixed: 'right'
+  // },
+  // {
+  //   title: '流程当前步骤',
+  //   dataIndex: 'activityalias_',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   width: 120,
+  //   align: 'center',
+  //   fixed: 'right'
+  // },
+  // {
+  //   title: '当前处理人',
+  //   dataIndex: 'assigneenames_',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   width: 100,
+  //   align: 'center',
+  //   fixed: 'right'
+  // }
+  // {
+  //   title: '操作',
+  //   dataIndex: 'action',
+  //   ellipsis: true,
+  //   width: 120,
+  //   align: 'center',
+  //   fixed: 'right'
+  // }
 ];
-const queryForm = ref<EventDto>({});
+const queryForm = ref<MeetingDto>({});
 const queryParam = reactive({
   // 请求表格数据参数
   pageParameter: {
@@ -656,7 +651,7 @@ const queryParam = reactive({
     rows: 20 // 每页条数
   },
   searchParams: {
-    ...queryForm
+    ...queryForm.value
   },
   keyWord: ref(''), // 快速查询数据
   sidx: null, // 排序字段
@@ -665,26 +660,29 @@ const queryParam = reactive({
 const showAddModal = ref(false); // 是否展示添加弹窗
 const showEditModal = ref(false); // 是否展示编辑弹窗
 const showDetailModal = ref(false); // 是否展示详情弹窗
-const showImportModal = ref(false); // 是否展示导入弹窗
-const excelParams = ref({ tableName: 'event' }); // 导入Excel数据过滤参数
-const advanced = ref(false); // 高级搜索 展开/关闭
+// const advanced = ref(false); // 高级搜索 展开/关闭
 const list = ref([]); // 表格数据集合
 const formId = ref(''); // 当前行数据id
 const selectedRowKeys = ref([]); // 选中数据主键集合
+const selectedRows = ref([]); //选中行集合
 const loading = ref(false);
 const delLoading = ref(false);
 const totalPage = ref(0);
 const ynValidList = ref([]); // 是否可用通用代码
 const ynPublicList = ref([]); // 是否公开通用代码
-const typeList = ref([]); // 日程类型通用代码
+const eventTypeList = ref([]); // 日程类型通用代码
 const remindTypeList = ref([]); // 提醒类型通用代码
 const secretLevelList = ref([]); // 密级通用代码
 const lookupParams = [
   { fieldName: 'ynValid', lookUpType: 'PLATFORM_YES_NO_FLAG' },
   { fieldName: 'ynPublic', lookUpType: 'PLATFORM_YES_NO_FLAG' },
-  { fieldName: 'type', lookUpType: 'MYPORTAL_EVENT_TYPE' },
+  { fieldName: 'eventType', lookUpType: 'MYPORTAL_EVENT_TYPE' },
   { fieldName: 'remindType', lookUpType: 'MYPORTAL_REMIND_TYPE' }
 ];
+
+const ynCreator = record => {
+  return proxy.$getLoginUser().id === record.createdBy;
+};
 
 onMounted(() => {
   // 加载表格数据
@@ -698,11 +696,20 @@ onMounted(() => {
 /** 查询数据  */
 function getList() {
   selectedRowKeys.value = []; // 清空选中
+  selectedRows.value = [];
   loading.value = true;
-  listEventByPage(queryParam)
+  listMeetingByPage(queryParam)
     .then(response => {
       list.value = response.data.result;
       totalPage.value = response.data.pageParameter.totalCount;
+      // 设置表格初始选中项
+      if (list.value.length > 0) {
+        selectedRowKeys.value = [list.value[0]['id']];
+        selectedRows.value = [list.value[0]];
+      } else {
+        selectedRowKeys.value = [];
+        selectedRows.value = [];
+      }
       loading.value = false;
     })
     .catch(() => {
@@ -716,7 +723,7 @@ function getLookupList() {
   proxy.$getLookupByType(lookupParams, result => {
     ynValidList.value = result.ynValid;
     ynPublicList.value = result.ynPublic;
-    typeList.value = result.type;
+    eventTypeList.value = result.eventType;
     remindTypeList.value = result.remindType;
   });
 }
@@ -739,9 +746,9 @@ function resetQuery() {
   handleQuery();
 }
 /** 高级查询 展开/收起 */
-function toggleAdvanced() {
-  advanced.value = !advanced.value;
-}
+// function toggleAdvanced() {
+//   advanced.value = !advanced.value;
+// }
 /** 快速查询逻辑 */
 function handleKeyWordQuery(value) {
   const keyWord = {
@@ -756,8 +763,20 @@ function handleAdd() {
   showAddModal.value = true;
 }
 /** 编辑 */
-function handleEdit(id) {
-  formId.value = id;
+function handleEdit() {
+  if (selectedRows.value.length !== 1) {
+    proxy.$message.warning('请勾选一条数据进行编辑！');
+    return;
+  }
+  if (selectedRows.value[0].createdBy != proxy.$getLoginUser().id) {
+    proxy.$message.warning(`不能编辑他人创建的数据！`);
+    return;
+  }
+  if (selectedRows.value[0].businessstate_ && selectedRows.value[0].businessstate_ != '拟稿中') {
+    proxy.$message.warning(`不能编辑${selectedRows.value[0].businessstate_}的数据！`);
+    return;
+  }
+  formId.value = selectedRows.value[0].id;
   showEditModal.value = true;
 }
 /** 详细 */
@@ -766,9 +785,11 @@ function handleDetail(record) {
   showDetailModal.value = true;
 }
 /** 导入 */
-function handleImport() {
-  showImportModal.value = true;
-}
+// const showImportModal = ref(false); // 是否展示导入弹窗
+// const excelParams = ref({ tableName: 'meeting' }); // 导入Excel数据过滤参数
+// function handleImport() {
+//   showImportModal.value = true;
+// }
 /** 导出 */
 function handleExport() {
   proxy.$confirm({
@@ -786,21 +807,32 @@ function handleExport() {
   });
 }
 /** 删除 */
-function handleDelete(ids, type) {
+function handleDelete(rows, ids) {
   if (ids.length == 0) {
     proxy.$message.warning('请选择要删除的数据！');
     return;
   }
+  if (rows.filter(row => row.createdBy !== proxy.$getLoginUser().id)?.length > 0) {
+    proxy.$message.warning('不可以删除他人创建的数据！');
+    return;
+  }
+  if (rows.filter(row => row.bpmState && row.bpmState !== 'start')?.length > 0) {
+    proxy.$message.warning('只有拟稿中或者流程状态为空的数据才可以删除！');
+    return;
+  }
   proxy.$confirm({
-    title: `确认要删除${type == 'row' ? '当前行的' : '选择的'}数据吗?`,
+    title: '确定删除已选数据吗？',
     okText: '确定',
     cancelText: '取消',
     onOk: () => {
       delLoading.value = true;
-      delEvent(ids)
+      delMeeting(ids)
         .then(res => {
           if (res.success) {
             proxy.$message.success('删除成功！');
+            // 清空选中
+            selectedRowKeys.value = [];
+            selectedRows.value = [];
             getList();
           }
           delLoading.value = false;
@@ -812,8 +844,9 @@ function handleDelete(ids, type) {
   });
 }
 /** 勾选复选框时触发 */
-function onSelectChange(rowKeys) {
+function onSelectChange(rowKeys,rows) {
   selectedRowKeys.value = rowKeys;
+  selectedRows.value = rows;
 }
 /** 表格排序 */
 function handleTableChange(pagination, filters, sorter) {

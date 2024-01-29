@@ -1,8 +1,8 @@
 <template>
   <div class="content-wrapper">
-    <div class="top-search-box">
+    <!-- <div class="top-search-box"> -->
       <!-- 高级查询 -->
-      <a-form v-bind="layout" ref="formRef" :model="queryForm">
+      <!-- <a-form v-bind="layout" ref="formRef" :model="queryForm">
         <a-row :gutter="16">
           <a-col v-bind="colLayout.cols">
             <a-form-item label="会议室名称">
@@ -302,8 +302,8 @@
             </div>
           </a-col>
         </a-row>
-      </a-form>
-    </div>
+      </a-form> -->
+    <!-- </div> -->
     <!-- 表格组件 -->
     <div class="table-wrapper">
       <AvicTable
@@ -329,8 +329,8 @@
         <template #toolBarRight>
           <a-input-search
             class="opt-btn-commonsearch"
-            style="width: 200px"
-            placeholder="请输入会议室名称或会议室地点ID"
+            style="width: 300px"
+            placeholder="请输入会议室名称或会议室地点"
             :allow-clear="true"
             @search="handleKeyWordQuery"
           />
@@ -360,53 +360,54 @@ const columns = [
     title: '序号',
     dataIndex: 'id',
     ellipsis: true,
-    width: 60,
+    width: 50,
     align: 'center',
     fixed: 'left'
   },
   {
-    title: '会议室名称',
+    title: '名称',
     dataIndex: 'name',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '会议室容量',
-    dataIndex: 'capacity',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'right'
-  },
-  {
-    title: '会议室地点ID',
-    dataIndex: 'locationId',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '会议室地点名称',
+    title: '地点',
     dataIndex: 'locationName',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
-    title: '会议室描述',
-    dataIndex: 'descrption',
+    title: '容量',
+    dataIndex: 'capacity',
     ellipsis: true,
     sorter: true,
+    width: 80,
+    resizable: true,
+    align: 'center'
+  },
+  // {
+  //   title: '会议室地点ID',
+  //   dataIndex: 'locationId',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+
+  {
+    title: '描述',
+    dataIndex: 'descrption',
+    ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '管理员',
@@ -414,26 +415,26 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
-  {
-    title: '管理员职工号',
-    dataIndex: 'adminCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '管理员姓名',
-    dataIndex: 'adminName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '管理员职工号',
+  //   dataIndex: 'adminCode',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '管理员姓名',
+  //   dataIndex: 'adminName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '联系电话',
     dataIndex: 'adminPhone',
@@ -441,7 +442,7 @@ const columns = [
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '是否公开',
@@ -455,9 +456,10 @@ const columns = [
     title: '排序',
     dataIndex: 'orderBy',
     ellipsis: true,
+    sorter:true,
     minWidth: 120,
     resizable: true,
-    align: 'right'
+    align: 'center'
   },
   {
     title: '管理部门',
@@ -465,26 +467,26 @@ const columns = [
     ellipsis: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
-  {
-    title: '管理部门编号',
-    dataIndex: 'ownerDeptCode',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '管理部门名称',
-    dataIndex: 'ownerDeptName',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '管理部门编号',
+  //   dataIndex: 'ownerDeptCode',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '管理部门名称',
+  //   dataIndex: 'ownerDeptName',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '是否需要审批',
     dataIndex: 'ynApproveName',
@@ -493,49 +495,49 @@ const columns = [
     resizable: true,
     align: 'center'
   },
+  // {
+  //   title: '审批人员IDS',
+  //   dataIndex: 'approvalIdsAlias',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '审批人员职工号',
+  //   dataIndex: 'approvalCodes',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '审批人员IDS',
-    dataIndex: 'approvalIdsAlias',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '审批人员职工号',
-    dataIndex: 'approvalCodes',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '审批人员姓名',
+    title: '审批人员',
     dataIndex: 'approvalNames',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
-  },
-  {
-    title: '是否可用',
-    dataIndex: 'ynValidName',
-    ellipsis: true,
-    minWidth: 120,
-    resizable: true,
     align: 'center'
   },
-  {
-    title: '备注',
-    dataIndex: 'note',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
+  // {
+  //   title: '是否可用',
+  //   dataIndex: 'ynValidName',
+  //   ellipsis: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'center'
+  // },
+  // {
+  //   title: '备注',
+  //   dataIndex: 'note',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
     title: '密级',
     dataIndex: 'secretLevelName',
@@ -544,32 +546,32 @@ const columns = [
     resizable: true,
     align: 'center'
   },
+  // {
+  //   title: '会议室设备ID',
+  //   dataIndex: 'mtDeviceIds',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
+  // {
+  //   title: '会议室设备编号',
+  //   dataIndex: 'mtDeviceCodes',
+  //   ellipsis: true,
+  //   sorter: true,
+  //   minWidth: 120,
+  //   resizable: true,
+  //   align: 'left'
+  // },
   {
-    title: '会议室设备ID',
-    dataIndex: 'mtDeviceIds',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '会议室设备编号',
-    dataIndex: 'mtDeviceCodes',
-    ellipsis: true,
-    sorter: true,
-    minWidth: 120,
-    resizable: true,
-    align: 'left'
-  },
-  {
-    title: '会议室设备名称',
+    title: '会议室设备',
     dataIndex: 'mtDeviceNames',
     ellipsis: true,
     sorter: true,
     minWidth: 120,
     resizable: true,
-    align: 'left'
+    align: 'center'
   },
   {
     title: '操作',
@@ -577,7 +579,7 @@ const columns = [
     ellipsis: true,
     visible: false,
     width: 120,
-    fixed: 'right'
+    fixed: 'center'
   }
 ];
 const queryForm = ref<MeetingRoomDto>({});
@@ -669,7 +671,7 @@ function toggleAdvanced() {
 function handleKeyWordQuery(value) {
   const keyWord = {
     name: value,
-    locationId: value
+    locationName: value
   };
   queryParam.keyWord = JSON.stringify(keyWord);
   queryParam.pageParameter.page = 1;
@@ -678,6 +680,7 @@ function handleKeyWordQuery(value) {
 
 /** 勾选复选框时触发 */
 function onSelectChange(rowKeys, rows) {
+  console.log('onSelectChange',rowKeys,rows);
   selectedRowKeys.value = rowKeys;
   selectedRows.value = rows;
   // 传出选中项

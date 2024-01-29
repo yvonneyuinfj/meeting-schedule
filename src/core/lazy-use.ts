@@ -44,7 +44,8 @@ import {
   Upload,
   Badge,
   Tree,
-  Collapse
+  Collapse,
+  Calendar,Timeline,TimelineItem
 } from 'ant-design-vue';
 import STable from '@surely-vue/table';
 import AvicIcon from '@/components/icon/index.vue';
@@ -114,6 +115,9 @@ export function registerComponents(app) {
     .use(ProProvider)
     .use(Collapse)
     .use(Viewer)
+    .use(Calendar)
+    .use(Timeline)
+    .use(TimelineItem)
     .component('AvicIcon', AvicIcon)
     .component('AvicModal', AvicModal)
     .component('AvicTreeSelect', AvicTreeSelect)

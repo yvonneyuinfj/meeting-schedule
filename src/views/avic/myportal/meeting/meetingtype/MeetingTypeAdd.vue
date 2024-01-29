@@ -41,13 +41,14 @@
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="treeSort" label="排序" has-feedback>
+            <a-form-item name="treeSort" label="TREE_SORT" has-feedback>
               <a-input-number
                 v-model:value="form.treeSort"
-                :min="1"
+                :min="0"
                 :max="999999999999"
                 :precision="0"
                 :step="1"
+                placeholder="请输入TREE_SORT"
               />
             </a-form-item>
           </a-col>

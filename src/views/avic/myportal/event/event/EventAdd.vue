@@ -23,9 +23,9 @@
         </a-row>
         <a-row :gutter="8">
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="type" label="日程类型">
+            <a-form-item name="eventType" label="日程类型">
               <a-select
-                v-model:value="form.type"
+                v-model:value="form.eventType"
                 :get-popup-container="triggerNode => triggerNode.parentNode"
                 option-filter-prop="children"
                 :show-search="true"
@@ -33,7 +33,7 @@
                 placeholder="请选择日程类型"
               >
                 <a-select-option
-                  v-for="item in typeList"
+                  v-for="item in eventTypeList"
                   :key="item.sysLookupTlId"
                   :value="item.lookupCode"
                 >
@@ -87,16 +87,16 @@
           </a-col> -->
 
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="placeName" label="日程地点">
+            <a-form-item name="meetingRoomName" label="日程地点">
               <a-input
-                v-model:value="form.placeName"
+                v-model:value="form.meetingRoomName"
                 :maxLength="100"
                 placeholder="请输入日程地点"
               />
             </a-form-item>
           </a-col>
           <a-col v-bind="colLayout.cols">
-            <a-form-item name="" label="日程提醒">
+            <a-form-item name="remindDuration" label="日程提醒">
               <a-input-number
                 v-model:value="form.remindDuration"
                 :min="1"
@@ -132,13 +132,13 @@
             </a-form-item>
           </a-col> -->
           <a-col v-bind="colLayout.cols2">
-            <a-form-item name="sharedUserIds" label="共享给">
+            <a-form-item name="attendeeIds" label="共享给">
               <AvicCommonSelect
-                v-model:value="form.sharedUserIds"
+                v-model:value="form.attendeeIds"
                 type="userSelect"
                 placeholder="请选择共享给"
                 selectModel="multi"
-                @callback="selectCallback('sharedUserNames', $event)"
+                @callback="selectCallback('attendeeNames', $event)"
               />
             </a-form-item>
           </a-col>
@@ -217,7 +217,7 @@
                 :allow-update-secret-level="true"
                 :form-id="form.id"
                 :form-secret-level="form.secretLevel"
-                table-name="EVENT"
+                table-name="MEETING"
                 @afterUpload="afterUploadEvent"
               />
             </a-form-item>
@@ -238,6 +238,10 @@ const props = defineProps({
   formId: {
     type: String,
     default: ''
+  },
+  dateInfo: {
+    type:Object,
+    default:null
   }
 });
 const emit = defineEmits(emits);
@@ -248,7 +252,7 @@ const {
   layout,
   colLayout,
   loading,
-  typeList,
+  eventTypeList,
   remindTypeList,
   secretLevelList,
   uploadFile,

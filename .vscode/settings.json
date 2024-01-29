@@ -1,6 +1,6 @@
 {
     "EnglishChineseDictionary.enableHover": true,
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "i18n-ally.localesPaths": [
       "src/locales",
       "src/locales/lang",
@@ -12,5 +12,6 @@
       "src/views/form/step-form/locales"
     ],
     "vue.features.codeActions.enable": false,
-    "editor.formatOnSaveMode": "modifications"
+    "editor.formatOnSaveMode": "modifications",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

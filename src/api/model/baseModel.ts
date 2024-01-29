@@ -33,14 +33,14 @@ export interface pageParameter {
  */
 export interface QueryParamModel {
   // 请求表格数据参数
-  pageParameter: {
+  pageParameter?: {
     page: number; // 页数
     rows: number; // 每页条数
   };
-  searchParams: object;
-  keyWord: string; // 快速查询数据
-  sidx: string; // 排序字段
-  sord: string; // 排序方式: desc降序 asc升序
+  searchParams?: object;
+  keyWord?: string; // 快速查询数据
+  sidx?: string; // 排序字段
+  sord?: string; // 排序方式: desc降序 asc升序
 }
 
 /**
